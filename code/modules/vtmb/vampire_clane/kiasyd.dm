@@ -221,7 +221,7 @@
 /obj/item/clothing/mask/facehugger/kiasyd/attack_hand(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
-		C.adjustBruteLoss(5)
+		C.apply_damage(5, BRUTE)
 		to_chat(user, "<span class='warning'>[src] bites!</span>")
 		return
 	. = ..()

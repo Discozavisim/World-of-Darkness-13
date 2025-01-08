@@ -1478,7 +1478,7 @@
 				if(isliving(caster.lastattacked))
 					var/mob/living/L = caster.lastattacked
 					L.adjustStaminaLoss(80)
-					L.adjustFireLoss(10)
+					L.apply_damage(10, BURN)
 					to_chat(caster, "You send your curse on [L], the last creature you attacked.")
 				else
 					to_chat(caster, "You don't seem to have last attacked soul earlier...")

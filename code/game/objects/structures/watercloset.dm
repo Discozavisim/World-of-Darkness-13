@@ -27,7 +27,7 @@
 		playsound(src.loc, "swing_hit", 25, TRUE)
 		swirlie.visible_message("<span class='danger'>[user] slams the toilet seat onto [swirlie]'s head!</span>", "<span class='userdanger'>[user] slams the toilet seat onto your head!</span>", "<span class='hear'>You hear reverberating porcelain.</span>")
 		log_combat(user, swirlie, "swirlied (brute)")
-		swirlie.adjustBruteLoss(5)
+		swirlie.apply_damage(5, BRUTE)
 
 	else if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -58,7 +58,7 @@
 					playsound(src.loc, 'sound/effects/bang.ogg', 25, TRUE)
 					GM.visible_message("<span class='danger'>[user] slams [GM.name] into [src]!</span>", "<span class='userdanger'>[user] slams you into [src]!</span>")
 					log_combat(user, GM, "toilet slammed")
-					GM.adjustBruteLoss(5)
+					GM.apply_damage(5, BRUTE)
 		else
 			to_chat(user, "<span class='warning'>You need a tighter grip!</span>")
 
@@ -172,7 +172,7 @@
 				return
 			user.changeNext_move(CLICK_CD_MELEE)
 			user.visible_message("<span class='danger'>[user] slams [GM] into [src]!</span>", "<span class='danger'>You slam [GM] into [src]!</span>")
-			GM.adjustBruteLoss(8)
+			GM.apply_damage(8, BRUTE)
 		else
 			to_chat(user, "<span class='warning'>You need a tighter grip!</span>")
 

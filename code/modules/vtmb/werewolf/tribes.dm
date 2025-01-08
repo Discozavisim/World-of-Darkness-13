@@ -135,7 +135,7 @@
 		if(do_after(owner, 3 SECONDS))
 			for(var/mob/living/L in orange(5, owner))
 				if(L)
-					L.adjustFireLoss(40)
+					L.apply_damage(40, BURN)
 			for(var/turf/T in orange(4, get_turf(owner)))
 				var/obj/effect/fire/F = new(T)
 				spawn(5)

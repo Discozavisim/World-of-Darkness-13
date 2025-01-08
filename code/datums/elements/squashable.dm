@@ -65,4 +65,4 @@
 	if(squash_flags & SQUASHED_SHOULD_BE_GIBBED)
 		target.gib()
 	else
-		target.adjustBruteLoss(squash_damage)
+		target.apply_damage_type(squash_damage, BRUTE)

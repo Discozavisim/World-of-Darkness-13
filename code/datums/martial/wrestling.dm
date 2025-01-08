@@ -302,11 +302,11 @@ If you make a derivative work from this code, you must include this notification
 
 			switch(rand(1,3))
 				if (2)
-					D.adjustBruteLoss(rand(20,30))
+					D.apply_damage(rand(20,30), BRUTE)
 				if (3)
 					D.ex_act(EXPLODE_LIGHT)
 				else
-					D.adjustBruteLoss(rand(10,20))
+					D.apply_damage(rand(10,20), BRUTE)
 		else
 			D.ex_act(EXPLODE_LIGHT)
 
@@ -340,7 +340,7 @@ If you make a derivative work from this code, you must include this notification
 		D.visible_message("<span class='danger'>[A] headbutts [D]!</span>", \
 						"<span class='userdanger'>You're headbutted by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, "<span class='danger'>You headbutt [D]!</span>")
-		D.adjustBruteLoss(rand(10,20))
+		D.apply_damage(rand(10,20), BRUTE)
 		playsound(A.loc, "swing_hit", 50, TRUE)
 		D.Unconscious(20)
 	log_combat(A, D, "headbutted")
@@ -356,7 +356,7 @@ If you make a derivative work from this code, you must include this notification
 					"<span class='userdanger'>You're roundhouse-kicked by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
 	to_chat(A, "<span class='danger'>You roundhouse-kick [D]!</span>")
 	playsound(A.loc, "swing_hit", 50, TRUE)
-	D.adjustBruteLoss(rand(10,20))
+	D.apply_damage(rand(10,20), BRUTE)
 
 	var/turf/T = get_edge_target_turf(A, get_dir(A, get_step_away(D, A)))
 	if (T && isturf(T))
@@ -400,7 +400,7 @@ If you make a derivative work from this code, you must include this notification
 			if (falling == 1)
 				A.visible_message("<span class='danger'>...and dives head-first into the ground, ouch!</span>", \
 								"<span class='userdanger'>...and dive head-first into the ground, ouch!</span>")
-				A.adjustBruteLoss(rand(10,20))
+				A.apply_damage(rand(10,20), BRUTE)
 				A.Paralyze(60)
 			to_chat(A, "<span class='warning'>[D] is too far away!</span>")
 			return
@@ -428,9 +428,9 @@ If you make a derivative work from this code, you must include this notification
 			if (prob(33) || D.stat)
 				D.ex_act(EXPLODE_LIGHT)
 			else
-				D.adjustBruteLoss(rand(20,30))
+				D.apply_damage(rand(20,30), BRUTE)
 		else
-			D.adjustBruteLoss(rand(20,30))
+			D.apply_damage(rand(20,30), BRUTE)
 
 		D.Paralyze(40)
 

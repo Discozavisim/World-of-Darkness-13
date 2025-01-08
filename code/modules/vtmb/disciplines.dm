@@ -819,7 +819,7 @@
 	activate_sound = 'code/modules/wod13/sounds/fortitude_activate.ogg'
 
 /datum/discipline/fortitude/post_gain(mob/living/carbon/human/caster)
-	var/passive_negation_percent = (0.1*level)+0.1
+	var/passive_negation_percent = (0.1*max(1, level))+0.1
 	caster.physiology.brute_mod = caster.physiology.brute_mod-passive_negation_percent
 
 /datum/discipline/fortitude/activate(mob/living/target, mob/living/carbon/human/caster)

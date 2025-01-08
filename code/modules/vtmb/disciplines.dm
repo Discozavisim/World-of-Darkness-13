@@ -824,7 +824,7 @@
 
 /datum/discipline/fortitude/activate(mob/living/target, mob/living/carbon/human/caster)
 	. = ..()
-	var/mod = min(1, level_casting)
+	var/mod = max(1, level_casting)
 	var/active_negation_percent = (0.1*mod)+0.1 // 20%, 30%, 40%, 50%, 60%
 	var/fortitude_duration = 5*level_casting // 5, 10, 15, 20, 25
 	caster.physiology.burn_mod -= active_negation_percent

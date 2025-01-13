@@ -379,7 +379,7 @@
 			if(hed)
 				hed.receive_damage(brute=40, updating_health=FALSE, wound_bonus = 40)
 			else
-				user.adjustBruteLoss(40, updating_health=FALSE)
+				user.apply_damage(40, BRUTE)
 			user.adjustStaminaLoss(30)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
 			playsound(user, 'sound/effects/splat.ogg', 70, TRUE)
@@ -396,7 +396,7 @@
 			if(hed)
 				hed.receive_damage(brute=30, updating_health=FALSE, wound_bonus = 25)
 			else
-				user.adjustBruteLoss(40, updating_health=FALSE)
+				user.apply_damage(40, BRUTE)
 			user.adjustStaminaLoss(30)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			playsound(user, 'sound/effects/blobattack.ogg', 60, TRUE)
@@ -409,7 +409,7 @@
 		if(93 to 96)
 			user.visible_message("<span class='danger'>[user] slams face-first into [hit] with a concerning squish, immediately going limp!</span>", "<span class='userdanger'>You slam face-first into [hit], and immediately lose consciousness!</span>")
 			user.adjustStaminaLoss(30)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, BRUTE)
 			user.Unconscious(100)
 			user.gain_trauma_type(BRAIN_TRAUMA_MILD)
 			user.playsound_local(get_turf(user), 'sound/weapons/flashbang.ogg', 100, TRUE, 8)
@@ -420,7 +420,7 @@
 		if(86 to 92)
 			user.visible_message("<span class='danger'>[user] slams head-first into [hit], suffering major cranial trauma!</span>", "<span class='userdanger'>You slam head-first into [hit], and the world explodes around you!</span>")
 			user.adjustStaminaLoss(30, updating_health=FALSE)
-			user.adjustBruteLoss(30)
+			user.apply_damage(30, BRUTE)
 			user.add_confusion(15)
 			if(prob(80))
 				user.gain_trauma(/datum/brain_trauma/mild/concussion)
@@ -433,7 +433,7 @@
 		if(68 to 85)
 			user.visible_message("<span class='danger'>[user] slams hard into [hit], knocking [user.p_them()] senseless!</span>", "<span class='userdanger'>You slam hard into [hit], knocking yourself senseless!</span>")
 			user.adjustStaminaLoss(30, updating_health=FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(10, BRUTE)
 			user.add_confusion(10)
 			user.Knockdown(30)
 			shake_camera(user, 3, 4)
@@ -441,7 +441,7 @@
 		if(1 to 67)
 			user.visible_message("<span class='danger'>[user] slams into [hit]!</span>", "<span class='userdanger'>You slam into [hit]!</span>")
 			user.adjustStaminaLoss(20, updating_health=FALSE)
-			user.adjustBruteLoss(10)
+			user.apply_damage(10, BRUTE)
 			user.Knockdown(20)
 			shake_camera(user, 2, 2)
 
@@ -476,7 +476,7 @@
 		user.Knockdown(30)
 		W.take_damage(30 * speed)
 		user.adjustStaminaLoss(10 * speed, updating_health=FALSE)
-		user.adjustBruteLoss(5 * speed)
+		user.apply_damage(5*speed, BRUTE)
 
 /datum/component/tackler/proc/delayedSmash(obj/structure/window/W)
 	if(W)
@@ -519,7 +519,7 @@
 
 	owner.visible_message("<span class='danger'>[owner] trips over [kevved] and slams into it face-first[HOW_big_of_a_miss_did_we_just_make]!</span>", "<span class='userdanger'>You trip over [kevved] and slam into it face-first[HOW_big_of_a_miss_did_we_just_make]!</span>")
 	owner.adjustStaminaLoss(15 + messes.len * 2, FALSE)
-	owner.adjustBruteLoss(8 + messes.len)
+	owner.apply_damage(8+messes.len, BRUTE)
 	owner.Paralyze(0.4 SECONDS * messes.len) // .4 seconds of paralyze for each thing you knock around
 	owner.Knockdown(2 SECONDS + 0.4 SECONDS * messes.len) // 2 seconds of knockdown after the paralyze
 

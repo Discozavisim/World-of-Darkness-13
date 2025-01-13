@@ -814,25 +814,26 @@
 	icon_state = "fortitude"
 	cost = 1
 	ranged = FALSE
-	delay = 7.5 SECONDS
+	delay = 7.5 SECONDS // 37,5 Fortitude 5
+	leveldelay = TRUE
 	activate_sound = 'code/modules/wod13/sounds/fortitude_activate.ogg'
+
+/datum/discipline/fortitude/post_gain(mob/living/carbon/human/caster)
+	var/passive_negation_percent = (0.1*max(1, level))+0.1
+	caster.physiology.brute_mod = caster.physiology.brute_mod-passive_negation_percent
 
 /datum/discipline/fortitude/activate(mob/living/target, mob/living/carbon/human/caster)
 	. = ..()
-	var/mod = min(3, level_casting)
-	var/armah = 15*mod
-//	caster.remove_overlay(FORTITUDE_LAYER)
-//	var/mutable_appearance/fortitude_overlay = mutable_appearance('code/modules/wod13/icons.dmi', "fortitude", -FORTITUDE_LAYER)
-//	caster.overlays_standing[FORTITUDE_LAYER] = fortitude_overlay
-//	caster.apply_overlay(FORTITUDE_LAYER)
-	caster.physiology.armor.melee += armah
-	caster.physiology.armor.bullet += armah
-	spawn(delay+caster.discipline_time_plus)
+	var/mod = max(1, level_casting)
+	var/active_negation_percent = (0.1*mod)+0.1 // 20%, 30%, 40%, 50%, 60%
+	var/fortitude_duration = 5*level_casting // 5, 10, 15, 20, 25
+	caster.physiology.burn_mod -= active_negation_percent
+	caster.physiology.clone_mod -= active_negation_percent
+	spawn(delay+caster.discipline_time_plus+fortitude_duration)
 		if(caster)
 			caster.playsound_local(caster.loc, 'code/modules/wod13/sounds/fortitude_deactivate.ogg', 50, FALSE)
-			caster.physiology.armor.melee -= armah
-			caster.physiology.armor.bullet -= armah
-//			caster.remove_overlay(FORTITUDE_LAYER)
+			caster.physiology.burn_mod += active_negation_percent
+			caster.physiology.clone_mod += active_negation_percent
 
 /datum/discipline/obfuscate
 	name = "Obfuscate"
@@ -1477,7 +1478,7 @@
 				if(isliving(caster.lastattacked))
 					var/mob/living/L = caster.lastattacked
 					L.adjustStaminaLoss(80)
-					L.adjustFireLoss(10)
+					L.apply_damage(10, BURN)
 					to_chat(caster, "You send your curse on [L], the last creature you attacked.")
 				else
 					to_chat(caster, "You don't seem to have last attacked soul earlier...")

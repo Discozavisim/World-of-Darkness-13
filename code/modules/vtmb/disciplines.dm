@@ -1469,10 +1469,7 @@
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
 	desc = "Choose your path of Dark Thaumaturgy."
-	button_icon_state = "blood"
-	button_icon = 'code/modules/wod13/UI/kuei_jin.dmi'
-	background_icon_state = "discipline"
-	icon_icon = 'code/modules/wod13/UI/kuei_jin.dmi'
+	button_icon_state = "dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
 
@@ -1481,92 +1478,103 @@
 		var/mob/living/carbon/human/user = usr
 		var/new_path = input(user, "Choose your Dark Thaumaturgy Path", "Dark Thaumaturgy Path") as null|anything in list("Blood", "Pain", "Destruction")
 		if(new_path)
-			button.button_icon_state = lowertext(new_path)
-			UpdateButtonIcon()
 			to_chat(user, "Your new path is [new_path].")
-			var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy
-			if(new_path == "Blood") // Если выбран путь крови, то выдать ритуалы + бладшилд
-				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path) // В дальнейшем добавить возможность забирать ритуалы+абилку если сменили путь
-					if(dark_thaumaturgy.level >= 1)
-						var/datum/action/thaumaturgy/T = new()
-						T.Grant(user)
-						T.level = dark_thaumaturgy.level
-					if(dark_thaumaturgy.level >= 3)
-						var/datum/action/bloodshield/B = new()
-						B.Grant(H)
-			if(new_path == "Pain")
-				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path)
-					if(dark_thaumaturgy.level >= 1)
-						// Сюда проверку на наличие action/thaumaturgy, action/bloodshield и всего остального чтобы убрать
-						return
-			if(new_path == "Destruction")
-				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path)
-					if(dark_thaumaturgy.level >= 1)
-						// Сюда проверку на наличие action/thaumaturgy, action/bloodshield и всего остального чтобы убрать
-						return
 			for(var/datum/action/discipline/discipline_action in user.actions)
 				if(discipline_action)
 					if(istype(discipline_action.discipline, /datum/discipline/dark_thaumaturgy))
 						var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy_discipline = discipline_action.discipline
 						dark_thaumaturgy_discipline.dark_thaumaturgy_path = new_path
+						discipline_action.button_icon_state = dark_thaumaturgy_discipline.dark_thaumaturgy_path
+						UpdateButtonIcon()
+						var/datum/action/thaumaturgy/T = new()
+						var/datum/action/bloodshield/B = new()
+						if((new_path == "Blood") && (new_path != dark_thaumaturgy_discipline.dark_thaumaturgy_path))
+							T.Grant(user)
+							B.Grant(user)
+						if((new_path == "Pain") && (new_path != dark_thaumaturgy_discipline.dark_thaumaturgy_path))
+							T.Remove(user)
+							B.Remove(user)
+						if((new_path == "Destruction") && (new_path != dark_thaumaturgy_discipline.dark_thaumaturgy_path))
+							T.Remove(user)
+							B.Remove(user)
 
-/datum/action/dark_thaumaturgy_ritual
-	name = "Dark Thaumaturgy"
+/datum/action/dark_thaumaturgy_pain_ritual
+	name = "Pain Path - Dark Thaumaturgy"
 	desc = "Magic rune drawing."
-	button_icon_state = "thaumaturgy"
+	button_icon_state = "dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
-	var/drawing = FALSE
-	var/level = 1
+
+/datum/action/dark_thaumaturgy_destruction_ritual
+	name = "Destruction Path - Dark Thaumaturgy"
+	desc = "Magic rune drawing."
+	button_icon_state = "dark_thaumaturgy"
+	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
+	vampiric = TRUE
 
 /datum/discipline/dark_thaumaturgy/activate(mob/living/target, mob/living/carbon/human/caster)
 	. = ..()
-	switch(dark_thaumaturgy_path)
-		if("Blood")
-			switch(level_casting)
-				if(1)
-					var/turf/start = get_turf(caster)
-					var/obj/projectile/thaumaturgy/H = new(start)
-					H.firer = caster
-					H.preparePixelProjectile(target, start)
-					H.fire(direct_target = target)
-				if(2)
-					var/turf/start = get_turf(caster)
-					var/obj/projectile/thaumaturgy/H = new(start)
-					H.firer = caster
-					H.damage = 10+caster.thaum_damage_plus
-					H.preparePixelProjectile(target, start)
-					H.level = 2
-					H.fire(direct_target = target)
-				if(3)
-					var/turf/start = get_turf(caster)
-					var/obj/projectile/thaumaturgy/H = new(start)
-					H.firer = caster
-					H.damage = 15+caster.thaum_damage_plus
-					H.preparePixelProjectile(target, start)
-					H.level = 2
-					H.fire(direct_target = target)
+	switch(level_casting)
+		if(1)
+			if(dark_thaumaturgy_path == "Blood")
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/thaumaturgy/H = new(start)
+				H.firer = caster
+				H.preparePixelProjectile(target, start)
+				H.fire(direct_target = target)
+			if(dark_thaumaturgy_path == "Pain")
+				to_chat(caster, "You've used Pain...")
+			if(dark_thaumaturgy_path == "Destruction")
+				to_chat(caster, "You've used Destruction...")
+		if(2)
+			if(dark_thaumaturgy_path == "Blood")
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/thaumaturgy/H = new(start)
+				H.firer = caster
+				H.damage = 10+caster.thaum_damage_plus
+				H.preparePixelProjectile(target, start)
+				H.level = 2
+				H.fire(direct_target = target)
+			if(dark_thaumaturgy_path == "Pain")
+				to_chat(caster, "You've used Pain...")
+			if(dark_thaumaturgy_path == "Destruction")
+				to_chat(caster, "You've used Destruction...")
+		if(3)
+			if(dark_thaumaturgy_path == "Blood")
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/thaumaturgy/H = new(start)
+				H.firer = caster
+				H.damage = 15+caster.thaum_damage_plus
+				H.preparePixelProjectile(target, start)
+				H.level = 2
+				H.fire(direct_target = target)
+			if(dark_thaumaturgy_path == "Pain")
+				to_chat(caster, "You've used Pain...")
+			if(dark_thaumaturgy_path == "Destruction")
+				to_chat(caster, "You've used Destruction...")
+		if(4)
+			if(dark_thaumaturgy_path == "Blood")
+				if(iscarbon(target))
+					target.Stun(2.5 SECONDS)
+					target.visible_message("<span class='danger'>[target] throws up!</span>", "<span class='userdanger'>You throw up!</span>")
+					playsound(get_turf(target), 'code/modules/wod13/sounds/vomit.ogg', 75, TRUE)
+					target.add_splatter_floor(get_turf(target))
+					target.add_splatter_floor(get_turf(get_step(target, target.dir)))
 				else
-					if(iscarbon(target))
-						target.Stun(2.5 SECONDS)
-						target.visible_message("<span class='danger'>[target] throws up!</span>", "<span class='userdanger'>You throw up!</span>")
-						playsound(get_turf(target), 'code/modules/wod13/sounds/vomit.ogg', 75, TRUE)
-						target.add_splatter_floor(get_turf(target))
-						target.add_splatter_floor(get_turf(get_step(target, target.dir)))
-					else
-						caster.bloodpool = min(caster.maxbloodpool, caster.bloodpool + target.bloodpool)
-						if(!istype(target, /mob/living/simple_animal/hostile/megafauna))
-	//				if(isnpc(target))
-	//					AdjustHumanity(caster, -1, 0)
-							target.tremere_gib()
-		if("Pain")
-			switch(level_casting)
-				if(1)
-					to_chat(caster, "You've used Pain!")
-		if("Destruction")
-			switch(level_casting)
-				if(1)
-					to_chat(caster, "You've used Destruction!")
+					caster.bloodpool = min(caster.maxbloodpool, caster.bloodpool + target.bloodpool)
+					if(!istype(target, /mob/living/simple_animal/hostile/megafauna))
+						target.tremere_gib()
+			if(dark_thaumaturgy_path == "Pain")
+				to_chat(caster, "You've used Pain...")
+			if(dark_thaumaturgy_path == "Destruction")
+				to_chat(caster, "You've used Destruction...")
+		if(5)
+			if(dark_thaumaturgy_path == "Blood")
+				to_chat(caster, "You've used Blood...")
+			if(dark_thaumaturgy_path == "Pain")
+				to_chat(caster, "You've used Pain...")
+			if(dark_thaumaturgy_path == "Destruction")
+				to_chat(caster, "You've used Destruction...")
 
 /datum/discipline/serpentis
 	name = "Serpentis"

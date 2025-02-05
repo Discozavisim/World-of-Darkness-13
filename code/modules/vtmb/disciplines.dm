@@ -1449,6 +1449,125 @@
 			caster.color = initial(caster.color)
 */
 
+/datum/discipline/dark_thaumaturgy
+	name = "Dark Thaumaturgy"
+	desc = "Opens the secrets of blood magic and how you use it, allows to steal other's blood. Violates Masquerade."
+	icon_state = "dark_thaumaturgy"
+	cost = 1
+	ranged = TRUE
+	delay = 5 SECONDS
+	violates_masquerade = TRUE
+	activate_sound = 'code/modules/wod13/sounds/thaum.ogg'
+	clane_restricted = TRUE
+	var/dark_thaumaturgy_path = "Blood"
+
+/datum/discipline/dark_thaumaturgy/post_gain(mob/living/carbon/human/user)
+	var/datum/action/choose_dark_thaumaturgy_path/dark_thaumaturgy_action = new()
+	dark_thaumaturgy_action.Grant(user)
+	user.thaumaturgy_knowledge = TRUE
+
+/datum/action/choose_dark_thaumaturgy_path
+	name = "Choose Dark Thaumaturgy Path"
+	desc = "Choose your path of Dark Thaumaturgy."
+	button_icon_state = "blood"
+	button_icon = 'code/modules/wod13/UI/kuei_jin.dmi'
+	background_icon_state = "discipline"
+	icon_icon = 'code/modules/wod13/UI/kuei_jin.dmi'
+	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
+	vampiric = TRUE
+
+/datum/action/choose_dark_thaumaturgy_path/Trigger()
+	if(istype(owner, /mob/living/carbon/human))
+		var/mob/living/carbon/human/user = usr
+		var/new_path = input(user, "Choose your Dark Thaumaturgy Path", "Dark Thaumaturgy Path") as null|anything in list("Blood", "Pain", "Destruction")
+		if(new_path)
+			button.button_icon_state = lowertext(new_path)
+			UpdateButtonIcon()
+			to_chat(user, "Your new path is [new_path].")
+			var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy
+			if(new_path == "Blood") // Если выбран путь крови, то выдать ритуалы + бладшилд
+				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path) // В дальнейшем добавить возможность забирать ритуалы+абилку если сменили путь
+					if(dark_thaumaturgy.level >= 1)
+						var/datum/action/thaumaturgy/T = new()
+						T.Grant(user)
+						T.level = dark_thaumaturgy.level
+					if(dark_thaumaturgy.level >= 3)
+						var/datum/action/bloodshield/B = new()
+						B.Grant(H)
+			if(new_path == "Pain")
+				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path)
+					if(dark_thaumaturgy.level >= 1)
+						// Сюда проверку на наличие action/thaumaturgy, action/bloodshield и всего остального чтобы убрать
+						return
+			if(new_path == "Destruction")
+				if(new_path != dark_thaumaturgy.dark_thaumaturgy_path)
+					if(dark_thaumaturgy.level >= 1)
+						// Сюда проверку на наличие action/thaumaturgy, action/bloodshield и всего остального чтобы убрать
+						return
+			for(var/datum/action/discipline/discipline_action in user.actions)
+				if(discipline_action)
+					if(istype(discipline_action.discipline, /datum/discipline/dark_thaumaturgy))
+						var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy_discipline = discipline_action.discipline
+						dark_thaumaturgy_discipline.dark_thaumaturgy_path = new_path
+
+/datum/action/dark_thaumaturgy_ritual
+	name = "Dark Thaumaturgy"
+	desc = "Magic rune drawing."
+	button_icon_state = "thaumaturgy"
+	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
+	vampiric = TRUE
+	var/drawing = FALSE
+	var/level = 1
+
+/datum/discipline/dark_thaumaturgy/activate(mob/living/target, mob/living/carbon/human/caster)
+	. = ..()
+	switch(dark_thaumaturgy_path)
+		if("Blood")
+			switch(level_casting)
+				if(1)
+					var/turf/start = get_turf(caster)
+					var/obj/projectile/thaumaturgy/H = new(start)
+					H.firer = caster
+					H.preparePixelProjectile(target, start)
+					H.fire(direct_target = target)
+				if(2)
+					var/turf/start = get_turf(caster)
+					var/obj/projectile/thaumaturgy/H = new(start)
+					H.firer = caster
+					H.damage = 10+caster.thaum_damage_plus
+					H.preparePixelProjectile(target, start)
+					H.level = 2
+					H.fire(direct_target = target)
+				if(3)
+					var/turf/start = get_turf(caster)
+					var/obj/projectile/thaumaturgy/H = new(start)
+					H.firer = caster
+					H.damage = 15+caster.thaum_damage_plus
+					H.preparePixelProjectile(target, start)
+					H.level = 2
+					H.fire(direct_target = target)
+				else
+					if(iscarbon(target))
+						target.Stun(2.5 SECONDS)
+						target.visible_message("<span class='danger'>[target] throws up!</span>", "<span class='userdanger'>You throw up!</span>")
+						playsound(get_turf(target), 'code/modules/wod13/sounds/vomit.ogg', 75, TRUE)
+						target.add_splatter_floor(get_turf(target))
+						target.add_splatter_floor(get_turf(get_step(target, target.dir)))
+					else
+						caster.bloodpool = min(caster.maxbloodpool, caster.bloodpool + target.bloodpool)
+						if(!istype(target, /mob/living/simple_animal/hostile/megafauna))
+	//				if(isnpc(target))
+	//					AdjustHumanity(caster, -1, 0)
+							target.tremere_gib()
+		if("Pain")
+			switch(level_casting)
+				if(1)
+					to_chat(caster, "You've used Pain!")
+		if("Destruction")
+			switch(level_casting)
+				if(1)
+					to_chat(caster, "You've used Destruction!")
+
 /datum/discipline/serpentis
 	name = "Serpentis"
 	desc = "Act like a cobra, get the powers to stun targets with your gaze and your tongue, praise the mummy traditions and spread them to your childe. Violates Masquerade."

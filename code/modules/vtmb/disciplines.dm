@@ -1650,13 +1650,18 @@
 	if(drawing)
 		return
 
-	if(istype(H.get_active_held_item(), /obj/item/arcane_tome))
+	if(istype(H.get_active_held_item(), /obj/item/suspicious_arcane_tome))
 		var/list/shit = list()
 		for(var/i in subtypesof(/obj/ritualrune))
 			var/obj/ritualrune/R = new i(owner)
 			if(R.thaumlevel <= level)
 				shit += i
 			qdel(R)
+		for(var/dark_ritual in subtypesof(/obj/darkrune))
+			var/obj/darkrune/D = new dark_ritual(owner)
+			if(D.darkthaumlevel <= level)
+				shit += dark_ritual
+			qdel(D)
 		var/ritual = input(owner, "Choose rune to draw:", "Dark Thaumaturgy") as null|anything in shit
 		if(ritual)
 			drawing = TRUE
@@ -1681,6 +1686,11 @@
 			if(R.thaumlevel <= level)
 				shit += i
 			qdel(R)
+		for(var/dark_ritual in subtypesof(/obj/darkrune))
+			var/obj/darkrune/D = new dark_ritual(owner)
+			if(D.darkthaumlevel <= level)
+				shit += dark_ritual
+			qdel(D)
 		var/ritual = input(owner, "Choose rune to draw (You need Suspicious Arcane Tome to reduce random):", "Dark Thaumaturgy") as null|anything in list("???")
 		if(ritual)
 			drawing = TRUE

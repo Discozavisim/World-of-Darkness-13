@@ -213,6 +213,8 @@
 
 	var/thaumaturgy_knowledge = FALSE
 
+	var/dark_thaumaturgy_knowledge = FALSE
+
 	var/elysium_checks = 0
 	var/bloodhunted = FALSE
 

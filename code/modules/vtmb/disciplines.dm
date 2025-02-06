@@ -1465,6 +1465,7 @@
 	var/datum/action/choose_dark_thaumaturgy_path/dark_thaumaturgy_action = new()
 	dark_thaumaturgy_action.Grant(user)
 	user.thaumaturgy_knowledge = TRUE
+	user.dark_thaumaturgy_knowledge = TRUE
 	var/datum/action/dark_thaumaturgy/TB = new()
 	var/datum/action/bloodshield_dark_thaumaturgy/BDT = new()
 	TB.Grant(user)
@@ -1482,13 +1483,34 @@
 
 /obj/item/suspicious_arcane_tome/Initialize()
 	. = ..()
-	for(var/i in subtypesof(/obj/ritualrune))
+	for(var/ritual in subtypesof(/obj/darkrune))
+		if(ritual)
+			var/obj/darkrune/dark_thaum = new ritual(src)
+			rituals |= dark_thaum
+	for(var/i in subtypesof(/obj/ritualrune)) // Blood Thaumaturgy - Basic Tremere Shit
 		if(i)
 			var/obj/ritualrune/R = new i(src)
 			rituals |= R
 
 /obj/item/suspicious_arcane_tome/attack_self(mob/user)
 	. = ..()
+	for(var/obj/darkrune/dark_thaum in rituals)
+		if(dark_thaum)
+			if(dark_thaum.sacrifices.len > 0)
+				var/list/dark_thaum_required_items = list()
+				for(var/dark_thaum_item_type in dark_thaum.sacrifices)
+					var/obj/item/dark_I = new item_type(src)
+					dark_thaum_required_items += dark_I.name
+					qdel(dark_I)
+				var/dark_thaum_required_list
+				if(dark_thaum_required_items.len == 1)
+					dark_thaum_required_list = dark_thaum_required_items[1]
+				else
+					for(var/dark_thaum_item_name in dark_thaum_required_items)
+						dark_thaum_required_list += (dark_thaum_required_list == "" ? dark_thaum_item_name : ", [dark_thaum_item_name]")
+				to_chat(user, "[dark_thaum.darkthaumlevel] [dark_thaum.name] - [dark_thaum.desc] Requirements: [dark_thaum_required_list].")
+			else
+				to_chat(user, "[dark_thaum.darkthaumlevel] [dark_thaum.name] - [dark_thaum.desc]")
 	for(var/obj/ritualrune/R in rituals)
 		if(R)
 			if(R.sacrifices.len > 0)
@@ -1506,6 +1528,68 @@
 				to_chat(user, "[R.thaumlevel] [R.name] - [R.desc] Requirements: [required_list].")
 			else
 				to_chat(user, "[R.thaumlevel] [R.name] - [R.desc]")
+
+/obj/darkrune
+	name = "Dark Thaumaturgy Rune"
+	desc = "This manifests demonic arts."
+	icon = 'code/modules/wod13/icons.dmi'
+	icon_state = "rune1"
+	color = rgb(49, 4, 4)
+	anchored = TRUE
+	var/word = "DA BA'AL"
+	var/activator_bonus = 0
+	var/activated = FALSE
+	var/mob/living/last_activator
+	var/darkthaumlevel = 1
+	var/list/sacrifices = list()
+
+/obj/darkrune/proc/complete()
+	return
+
+/obj/darkrune/attack_hand(mob/user)
+	if(!activated)
+		var/mob/living/L = user
+		if(L.dark_thaumaturgy_knowledge)
+			L.say("[word]")
+			L.Immobilize(30)
+			last_activator = user
+			activator_bonus = L.thaum_damage_plus
+			if(sacrifices.len > 0)
+				var/list/found_items = list()
+				for(var/obj/item/I in get_turf(src))
+					for(var/item_type in sacrifices)
+						if(istype(I, item_type))
+							if(istype(I, /obj/item/drinkable_bloodpack))
+								var/obj/item/drinkable_bloodpack/bloodpack = I
+								if(!bloodpack.empty)
+									found_items += I
+									break
+							else
+								found_items += I
+								break
+
+				if(found_items.len == sacrifices.len)
+					for(var/obj/item/I in found_items)
+						if(I)
+							qdel(I)
+					complete()
+				else
+					to_chat(user, "You lack the necessary sacrifices to complete the ritual. Found [found_items.len], required [sacrifices.len].")
+			else
+				complete()
+
+/obj/darkrune/AltClick(mob/user)
+	..()
+	qdel(src)
+
+/obj/darkrune/selfgib
+	name = "Self Destruction"
+	desc = "Meet the Final Death."
+	icon_state = "rune2"
+	word = "I TI TH' IS"
+
+/obj/darkrune/selfgib/complete()
+	last_activator.death()
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"

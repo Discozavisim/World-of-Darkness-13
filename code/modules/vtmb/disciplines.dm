@@ -1729,7 +1729,7 @@
 	H.bloodpool = max(0, H.bloodpool-2)
 	playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
 	abuse_fix = world.time
-	H.attributes.bloodshield_bonus += 4
+	H.attributes.bloodshield_bonus = 4
 	animate(H, color = "#ff0000", time = 1 SECONDS, loop = 1)
 	if(H.CheckEyewitness(H, H, 7, FALSE))
 		H.AdjustMasquerade(-1)

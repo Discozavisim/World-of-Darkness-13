@@ -1452,6 +1452,7 @@
 /datum/discipline/dark_thaumaturgy
 	name = "Dark Thaumaturgy"
 	desc = "Opens the secrets of blood magic and how you use it, allows to steal other's blood. Violates Masquerade."
+	icon_icon = 'code/modules/wod13/disciplines.dmi'
 	icon_state = "dark_thaumaturgy"
 	cost = 1
 	ranged = TRUE
@@ -1469,7 +1470,8 @@
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
 	desc = "Choose your path of Dark Thaumaturgy."
-	button_icon_state = "dark_thaumaturgy"
+	button_icon = 'code/modules/wod13/disciplines.dmi'
+	button_icon_state = "dark_thaumaturgy_choose"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
 

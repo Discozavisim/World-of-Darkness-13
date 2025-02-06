@@ -1465,6 +1465,47 @@
 	var/datum/action/choose_dark_thaumaturgy_path/dark_thaumaturgy_action = new()
 	dark_thaumaturgy_action.Grant(user)
 	user.thaumaturgy_knowledge = TRUE
+	var/datum/action/blood_dark_thaumaturgy/TB = new()
+	var/datum/action/bloodshield/BDT = new()
+	TB.Grant(user)
+	BDT.Grant(user)
+
+/obj/item/suspicious_arcane_tome
+	name = "suspicious arcane tome"
+	desc = "The secrets of Dark Magic..."
+	icon_state = "dark_arcane"
+	icon = 'code/modules/wod13/items.dmi'
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
+	w_class = WEIGHT_CLASS_SMALL
+	is_magic = TRUE
+	var/list/rituals = list()
+
+/obj/item/suspicious_arcane_tome/Initialize()
+	. = ..()
+	for(var/i in subtypesof(/obj/ritualrune))
+		if(i)
+			var/obj/ritualrune/R = new i(src)
+			rituals |= R
+
+/obj/item/suspicious_arcane_tome/attack_self(mob/user)
+	. = ..()
+	for(var/obj/ritualrune/R in rituals)
+		if(R)
+			if(R.sacrifices.len > 0)
+				var/list/required_items = list()
+				for(var/item_type in R.sacrifices)
+					var/obj/item/I = new item_type(src)
+					required_items += I.name
+					qdel(I)
+				var/required_list
+				if(required_items.len == 1)
+					required_list = required_items[1]
+				else
+					for(var/item_name in required_items)
+						required_list += (required_list == "" ? item_name : ", [item_name]")
+				to_chat(user, "[R.thaumlevel] [R.name] - [R.desc] Requirements: [required_list].")
+			else
+				to_chat(user, "[R.thaumlevel] [R.name] - [R.desc]")
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
@@ -1485,11 +1526,11 @@
 						var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy_discipline = discipline_action.discipline
 						dark_thaumaturgy_discipline.dark_thaumaturgy_path = new_path
 						var/datum/action/blood_dark_thaumaturgy/TB = locate() in user.actions
-						var/datum/action/bloodshield/B = locate() in user.actions
+						var/datum/action/bloodshield_dark_thaumaturgy/BDT = locate() in user.actions
 						if(TB)
 							qdel(TB)
-						if(B)
-							qdel(B)
+						if(BDT)
+							qdel(BDT)
 						var/datum/action/pain_dark_thaumaturgy/TP = locate() in user.actions
 						if(TP)
 							qdel(TP)
@@ -1499,9 +1540,9 @@
 						switch(new_path)
 							if("Blood")
 								TB = new()
-								B = new()
+								BDT = new()
 								TB.Grant(user)
-								B.Grant(user)
+								BDT.Grant(user)
 								to_chat(user, "Blood Granted")
 							if("Pain")
 								TP = new()
@@ -1561,7 +1602,7 @@
 			if(R.thaumlevel <= level)
 				shit += i
 			qdel(R)
-		var/ritual = input(owner, "Choose rune to draw (You need an Arcane Tome to reduce random):", "Blood, Dark Thaumaturgy") as null|anything in list("???")
+		var/ritual = input(owner, "Choose rune to draw (You need Suspicious Arcane Tome to reduce random):", "Blood, Dark Thaumaturgy") as null|anything in list("???")
 		if(ritual)
 			drawing = TRUE
 			if(do_after(H, 5 SECONDS, H))
@@ -1579,6 +1620,35 @@
 						H.AdjustKnockdown(3 SECONDS)
 			else
 				drawing = FALSE
+
+/datum/action/bloodshield_dark_thaumaturgy
+	name = "Bloodshield"
+	desc = "Gain armor with blood."
+	button_icon_state = "bloodshield_dark_thaumaturgy"
+	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
+	vampiric = TRUE
+	var/abuse_fix = 0
+
+/datum/action/bloodshield_dark_thaumaturgy/Trigger()
+	. = ..()
+	if((abuse_fix + 25 SECONDS) > world.time)
+		return
+	var/mob/living/carbon/human/H = owner
+	if(H.bloodpool < 2)
+		to_chat(owner, "<span class='warning'>You don't have enough <b>BLOOD</b> to do that!</span>")
+		return
+	H.bloodpool = max(0, H.bloodpool-2)
+	playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	abuse_fix = world.time
+	H.attributes.bloodshield_bonus += 4
+	animate(H, color = "#ff0000", time = 1 SECONDS, loop = 1)
+	if(H.CheckEyewitness(H, H, 7, FALSE))
+		H.AdjustMasquerade(-1)
+	spawn(15 SECONDS)
+		if(H)
+			playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+			H.attributes.bloodshield_bonus = 0
+			H.color = initial(H.color)
 
 /datum/action/pain_dark_thaumaturgy
 	name = "Pain Thaumaturgy"

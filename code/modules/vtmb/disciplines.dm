@@ -1465,7 +1465,7 @@
 	var/datum/action/choose_dark_thaumaturgy_path/dark_thaumaturgy_action = new()
 	dark_thaumaturgy_action.Grant(user)
 	user.thaumaturgy_knowledge = TRUE
-	var/datum/action/blood_dark_thaumaturgy/TB = new()
+	var/datum/action/dark_thaumaturgy/TB = new()
 	var/datum/action/bloodshield_dark_thaumaturgy/BDT = new()
 	TB.Grant(user)
 	BDT.Grant(user)
@@ -1525,10 +1525,7 @@
 					if(istype(discipline_action.discipline, /datum/discipline/dark_thaumaturgy))
 						var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy_discipline = discipline_action.discipline
 						dark_thaumaturgy_discipline.dark_thaumaturgy_path = new_path
-						var/datum/action/blood_dark_thaumaturgy/TB = locate() in user.actions
 						var/datum/action/bloodshield_dark_thaumaturgy/BDT = locate() in user.actions
-						if(TB)
-							qdel(TB)
 						if(BDT)
 							qdel(BDT)
 						var/datum/action/pain_dark_thaumaturgy/TP = locate() in user.actions
@@ -1539,9 +1536,7 @@
 							qdel(TD)
 						switch(new_path)
 							if("Blood")
-								TB = new()
 								BDT = new()
-								TB.Grant(user)
 								BDT.Grant(user)
 								to_chat(user, "Blood Granted")
 							if("Pain")
@@ -1553,16 +1548,16 @@
 								TD.Grant(user)
 								to_chat(user, "Destruction Granted")
 
-/datum/action/blood_dark_thaumaturgy
-	name = "Blood Thaumaturgy"
-	desc = "Blood magic rune drawing."
+/datum/action/dark_thaumaturgy
+	name = "Dark Thaumaturgy"
+	desc = "Dark magic rune drawing."
 	button_icon_state = "blood_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
 	var/drawing = FALSE
 	var/level = 1
 
-/datum/action/blood_dark_thaumaturgy/Trigger()
+/datum/action/dark_thaumaturgy/Trigger()
 	. = ..()
 	var/mob/living/carbon/human/H = owner
 	if(H.bloodpool < 2)
@@ -1578,7 +1573,7 @@
 			if(R.thaumlevel <= level)
 				shit += i
 			qdel(R)
-		var/ritual = input(owner, "Choose rune to draw:", "Blood, Dark Thaumaturgy") as null|anything in shit
+		var/ritual = input(owner, "Choose rune to draw:", "Dark Thaumaturgy") as null|anything in shit
 		if(ritual)
 			drawing = TRUE
 			if(do_after(H, 5 SECONDS, H))
@@ -1602,7 +1597,7 @@
 			if(R.thaumlevel <= level)
 				shit += i
 			qdel(R)
-		var/ritual = input(owner, "Choose rune to draw (You need Suspicious Arcane Tome to reduce random):", "Blood, Dark Thaumaturgy") as null|anything in list("???")
+		var/ritual = input(owner, "Choose rune to draw (You need Suspicious Arcane Tome to reduce random):", "Dark Thaumaturgy") as null|anything in list("???")
 		if(ritual)
 			drawing = TRUE
 			if(do_after(H, 5 SECONDS, H))

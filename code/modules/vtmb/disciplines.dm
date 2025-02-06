@@ -1472,7 +1472,6 @@
 	button_icon = 'code/modules/wod13/disciplines.dmi'
 	button_icon_state = "dark_thaumaturgy_choose"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
-	vampiric = TRUE
 
 /datum/action/choose_dark_thaumaturgy_path/Trigger()
 	if(istype(owner, /mob/living/carbon/human))
@@ -1653,7 +1652,16 @@
 				to_chat(caster, "You've used Destruction...")
 		if(5)
 			if(dark_thaumaturgy_path == "Blood")
-				to_chat(caster, "You've used Blood...")
+				if(iscarbon(target))
+					target.Stun(2.5 SECONDS)
+					target.visible_message("<span class='danger'>[target] throws up!</span>", "<span class='userdanger'>You throw up!</span>")
+					playsound(get_turf(target), 'code/modules/wod13/sounds/vomit.ogg', 75, TRUE)
+					target.add_splatter_floor(get_turf(target))
+					target.add_splatter_floor(get_turf(get_step(target, target.dir)))
+				else
+					caster.bloodpool = min(caster.maxbloodpool, caster.bloodpool + target.bloodpool)
+					if(!istype(target, /mob/living/simple_animal/hostile/megafauna))
+						target.tremere_gib()
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")

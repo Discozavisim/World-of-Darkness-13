@@ -1534,7 +1534,7 @@
 	desc = "This manifests demonic arts."
 	icon = 'code/modules/wod13/icons.dmi'
 	icon_state = "rune1"
-	color = rgb(49, 4, 4)
+	color = rgb(128,0,0)
 	anchored = TRUE
 	var/word = "DA BA'AL"
 	var/activator_bonus = 0

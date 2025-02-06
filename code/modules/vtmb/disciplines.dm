@@ -1452,7 +1452,6 @@
 /datum/discipline/dark_thaumaturgy
 	name = "Dark Thaumaturgy"
 	desc = "Opens the secrets of blood magic and how you use it, allows to steal other's blood. Violates Masquerade."
-	icon_icon = 'code/modules/wod13/disciplines.dmi'
 	icon_state = "dark_thaumaturgy"
 	cost = 1
 	ranged = TRUE
@@ -1486,43 +1485,113 @@
 					if(istype(discipline_action.discipline, /datum/discipline/dark_thaumaturgy))
 						var/datum/discipline/dark_thaumaturgy/dark_thaumaturgy_discipline = discipline_action.discipline
 						dark_thaumaturgy_discipline.dark_thaumaturgy_path = new_path
-						discipline_action.button_icon_state = dark_thaumaturgy_discipline.dark_thaumaturgy_path
-						UpdateButtonIcon()
-						if(new_path == "Blood")
-							if(/datum/action/thaumaturgy in user.actions)
-								to_chat("Blood Found")
-							else
-								var/datum/action/thaumaturgy/T = new()
-								var/datum/action/bloodshield/B = new()
-								T.Grant(user)
+						var/datum/action/blood_dark_thaumaturgy/TB = locate() in user.actions
+						var/datum/action/bloodshield/B = locate() in user.actions
+						if(TB)
+							qdel(TB)
+						if(B)
+							qdel(B)
+						var/datum/action/pain_dark_thaumaturgy/TP = locate() in user.actions
+						if(TP)
+							qdel(TP)
+						var/datum/action/destruction_dark_thaumaturgy/TD = locate() in user.actions
+						if(TD)
+							qdel(TD)
+						switch(new_path)
+							if("Blood")
+								TB = new()
+								B = new()
+								TB.Grant(user)
 								B.Grant(user)
 								to_chat(user, "Blood Granted")
-						if(new_path == "Pain")
-							if(/datum/action/thaumaturgy in user.actions)
-								var/datum/action/thaumaturgy/T = new()
-								var/datum/action/bloodshield/B = new()
-								to_chat(user, "Pain")
-								T.Remove(user)
-								B.Remove(user)
-						if(new_path == "Destruction")
-							if(/datum/action/thaumaturgy in user.actions)
-								var/datum/action/thaumaturgy/T = new() // user.actions.Find(/datum/action/bloodshield)
-								var/datum/action/bloodshield/B = new()
-								to_chat(user, "Destruction")
-								T.Remove(user)
-								B.Remove(user)
+							if("Pain")
+								TP = new()
+								TP.Grant(user)
+								to_chat(user, "Pain Granted")
+							if("Destruction")
+								TD = new()
+								TD.Grant(user)
+								to_chat(user, "Destruction Granted")
 
-/datum/action/dark_thaumaturgy_pain_ritual
-	name = "Pain Path - Dark Thaumaturgy"
-	desc = "Magic rune drawing."
-	button_icon_state = "dark_thaumaturgy"
+/datum/action/blood_dark_thaumaturgy
+	name = "Blood Thaumaturgy"
+	desc = "Blood magic rune drawing."
+	button_icon_state = "blood_dark_thaumaturgy"
+	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
+	vampiric = TRUE
+	var/drawing = FALSE
+	var/level = 1
+
+/datum/action/blood_dark_thaumaturgy/Trigger()
+	. = ..()
+	var/mob/living/carbon/human/H = owner
+	if(H.bloodpool < 2)
+		to_chat(H, "<span class='warning'>You need more <b>BLOOD</b> to do that!</span>")
+		return
+	if(drawing)
+		return
+
+	if(istype(H.get_active_held_item(), /obj/item/arcane_tome))
+		var/list/shit = list()
+		for(var/i in subtypesof(/obj/ritualrune))
+			var/obj/ritualrune/R = new i(owner)
+			if(R.thaumlevel <= level)
+				shit += i
+			qdel(R)
+		var/ritual = input(owner, "Choose rune to draw:", "Blood, Dark Thaumaturgy") as null|anything in shit
+		if(ritual)
+			drawing = TRUE
+			if(do_after(H, 5 SECONDS, H))
+				var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
+				if(result > 1)
+					drawing = FALSE
+					new ritual(H.loc)
+					H.bloodpool = max(0, H.bloodpool-2)
+					if(H.CheckEyewitness(H, H, 7, FALSE))
+						H.AdjustMasquerade(-1)
+				else
+					drawing = FALSE
+					if(result == -1)
+						H.AdjustKnockdown(3 SECONDS)
+			else
+				drawing = FALSE
+	else
+		var/list/shit = list()
+		for(var/i in subtypesof(/obj/ritualrune))
+			var/obj/ritualrune/R = new i(owner)
+			if(R.thaumlevel <= level)
+				shit += i
+			qdel(R)
+		var/ritual = input(owner, "Choose rune to draw (You need an Arcane Tome to reduce random):", "Blood, Dark Thaumaturgy") as null|anything in list("???")
+		if(ritual)
+			drawing = TRUE
+			if(do_after(H, 5 SECONDS, H))
+				var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
+				if(result > 1)
+					drawing = FALSE
+					var/rune = pick(shit)
+					new rune (H.loc)
+					H.bloodpool = max(0, H.bloodpool-2)
+					if(H.CheckEyewitness(H, H, 7, FALSE))
+						H.AdjustMasquerade(-1)
+				else
+					drawing = FALSE
+					if(result == -1)
+						H.AdjustKnockdown(3 SECONDS)
+			else
+				drawing = FALSE
+
+/datum/action/pain_dark_thaumaturgy
+	name = "Pain Thaumaturgy"
+	desc = "Pain magic rune drawing."
+	button_icon_state = "pain_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
 
-/datum/action/dark_thaumaturgy_destruction_ritual
-	name = "Destruction Path - Dark Thaumaturgy"
-	desc = "Magic rune drawing."
-	button_icon_state = "dark_thaumaturgy"
+/datum/action/destruction_dark_thaumaturgy
+	name = "Destruction Thaumaturgy"
+	desc = "Destruction magic rune drawing."
+	button_icon_state = "destruction_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
 

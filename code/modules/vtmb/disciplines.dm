@@ -1466,7 +1466,7 @@
 	dark_thaumaturgy_action.Grant(user)
 	user.thaumaturgy_knowledge = TRUE
 	var/datum/action/blood_dark_thaumaturgy/TB = new()
-	var/datum/action/bloodshield/BDT = new()
+	var/datum/action/bloodshield_dark_thaumaturgy/BDT = new()
 	TB.Grant(user)
 	BDT.Grant(user)
 

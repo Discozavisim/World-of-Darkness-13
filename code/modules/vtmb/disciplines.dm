@@ -1499,7 +1499,7 @@
 			if(dark_thaum.sacrifices.len > 0)
 				var/list/dark_thaum_required_items = list()
 				for(var/dark_thaum_item_type in dark_thaum.sacrifices)
-					var/obj/item/dark_I = new item_type(src)
+					var/obj/item/dark_I = new dark_thaum_item_type(src)
 					dark_thaum_required_items += dark_I.name
 					qdel(dark_I)
 				var/dark_thaum_required_list

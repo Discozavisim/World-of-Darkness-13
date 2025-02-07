@@ -1600,7 +1600,7 @@
 
 /datum/action/choose_dark_thaumaturgy_path/Trigger()
 	if(istype(owner, /mob/living/carbon/human))
-		var/mob/living/carbon/human/user = usr
+		var/mob/living/carbon/human/user = owner
 		var/new_path = input(user, "Choose your Dark Thaumaturgy Path", "Dark Thaumaturgy Path") as null|anything in list("Blood", "Pain", "Destruction")
 		if(new_path)
 			to_chat(user, "Your new path is [new_path].")
@@ -1745,6 +1745,32 @@
 	button_icon_state = "pain_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
+	var/abuse_fix = 0
+
+/datum/action/pain_dark_thaumaturgy/Trigger()
+	. = ..()
+	if((abuse_fix + 25 SECONDS) > world.time)
+		return
+	if(H.bloodpool < 2)
+		to_chat(owner, "<span class='warning'>You don't have enough <b>BLOOD</b> to do that!</span>")
+		return
+	H.bloodpool = max(0, H.bloodpool-2)
+	playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	abuse_fix = world.time
+	var/mob/living/carbon/human/H = owner
+	ADD_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
+	ADD_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
+	ADD_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
+	animate(H, color = "#004c03", time = 1 SECONDS, loop = 1)
+	if(H.CheckEyewitness(H, H, 7, FALSE))
+		H.AdjustMasquerade(-1)
+	spawn(15 SECONDS)
+		if(H)
+			playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+			REMOVE_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
+			REMOVE_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
+			REMOVE_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
+			H.color = initial(H.color)
 
 /datum/action/destruction_dark_thaumaturgy
 	name = "Destruction Thaumaturgy"

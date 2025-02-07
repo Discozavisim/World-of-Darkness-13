@@ -1591,6 +1591,85 @@
 /obj/darkrune/selfgib/complete()
 	last_activator.death()
 
+/obj/effect/projectile/tracer/destruction_dark_thaumaturgy
+	name = "destruction beam"
+	icon_state = "cult"
+
+/obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
+	name = "destruction beam"
+	icon_state = "muzzle_bfg"
+
+/obj/effect/projectile/impact/destruction_dark_thaumaturgy
+	name = "destruction beam"
+	icon_state = "impact_bfg"
+
+/obj/projectile/destruction_dark_thaumaturgy
+	name = "destruction beam"
+	icon_state = "thaumaturgy"
+	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
+	damage = 5
+	damage_type = BURN
+	hitsound = 'code/modules/wod13/sounds/drinkblood1.ogg'
+	hitsound_wall = 'sound/weapons/effects/searwall.ogg'
+	flag = LASER
+	light_system = MOVABLE_LIGHT
+	light_range = 1
+	light_power = 1
+	light_color = COLOR_SOFT_RED
+	ricochets_max = 0
+	ricochet_chance = 0
+	tracer_type = /obj/effect/projectile/tracer/destruction_dark_thaumaturgy
+	muzzle_type = /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
+	impact_type = /obj/effect/projectile/impact/destruction_dark_thaumaturgy
+	var/level = 1
+
+/obj/projectile/destruction_dark_thaumaturgy/clothes
+	name = "destruction beam"
+
+/obj/projectile/destruction_dark_thaumaturgy/clothes/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	if(ishuman(target))
+		var/mob/living/H = target
+		H.clothes_destruction_counter += 1
+		if(H.clothes_destruction_counter == 1)
+			for(var/obj/item/clothing/I in target.contents)
+				if(I)
+					if(istype(I, /obj/item/clothing))
+						if(I.armor)
+							I.armor = I.armor?.modifyAllRatings(0.5)
+						I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
+						AddElement(/datum/element/update_icon_updates_onmob)
+		if(H.clothes_destruction_counter == 2)
+			to_chat(H, "<span class='warning'>Your clothes start to melt away!</span>")
+		if(H.clothes_destruction_counter >= 3)
+			H.clothes_destruction_counter = 0
+			for(var/obj/item/clothing/I in target.contents)
+				if(I)
+					if(istype(I, /obj/item/clothing))
+						qdel(I)
+
+/obj/projectile/destruction_dark_thaumaturgy/weapons
+	name = "destruction beam"
+
+/obj/projectile/destruction_dark_thaumaturgy/weapons/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	if(ishuman(target))
+		var/mob/living/H = target
+		H.weapon_destruction_counter += 1
+		if(H.weapon_destruction_counter == 1)
+			for(var/obj/item/melee/vampirearms/I in target.contents)
+				if(I)
+					if(istype(I, /obj/item/melee/vampirearms))
+						I.force /= 2
+						I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
+						AddElement(/datum/element/update_icon_updates_onmob)
+		if(H.weapon_destruction_counter == 2)
+			to_chat(H, "<span class='warning'>Your melee weapons start to melt away!</span>")
+		if(H.weapon_destruction_counter >= 2)
+			H.weapon_destruction_counter = 0
+			for(var/obj/item/melee/vampirearms/I in target.contents)
+				if(I)
+					if(istype(I, /obj/item/melee/vampirearms))
+						qdel(I)
+
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
 	desc = "Choose your path of Dark Thaumaturgy."
@@ -1802,23 +1881,11 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				target.clothes_destruction_counter += 1
-				if(target.clothes_destruction_counter == 1)
-					for(var/obj/item/clothing/I in target.contents)
-						if(I)
-							if(istype(I, /obj/item/clothing))
-								if(I.armor)
-									I.armor = I.armor?.modifyAllRatings(0.5)
-								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
-								AddElement(/datum/element/update_icon_updates_onmob)
-				if(target.clothes_destruction_counter == 2)
-					to_chat(target, "<span class='warning'>Your clothes start to melt away!</span>")
-				if(target.clothes_destruction_counter >= 3)
-					target.clothes_destruction_counter = 0
-					for(var/obj/item/clothing/I in target.contents)
-						if(I)
-							if(istype(I, /obj/item/clothing))
-								qdel(I)
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/destruction_dark_thaumaturgy/clothes/H = new(start)
+				H.firer = caster
+				H.preparePixelProjectile(target, start)
+				H.fire(direct_target = target)
 		if(2)
 			if(dark_thaumaturgy_path == "Blood")
 				var/turf/start = get_turf(caster)
@@ -1831,22 +1898,11 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				target.weapon_destruction_counter += 1
-				if(target.weapon_destruction_counter == 1)
-					for(var/obj/item/melee/vampirearms/I in target.contents)
-						if(I)
-							if(istype(I, /obj/item/melee/vampirearms))
-								I.force /= 2
-								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
-								AddElement(/datum/element/update_icon_updates_onmob)
-				if(target.weapon_destruction_counter == 2)
-					to_chat(target, "<span class='warning'>Your melee weapons start to melt away!</span>")
-				if(target.weapon_destruction_counter >= 2)
-					target.weapon_destruction_counter = 0
-					for(var/obj/item/melee/vampirearms/I in target.contents)
-						if(I)
-							if(istype(I, /obj/item/melee/vampirearms))
-								qdel(I)
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/destruction_dark_thaumaturgy/weapons/H = new(start)
+				H.firer = caster
+				H.preparePixelProjectile(target, start)
+				H.fire(direct_target = target)
 		if(3)
 			if(dark_thaumaturgy_path == "Blood")
 				var/turf/start = get_turf(caster)

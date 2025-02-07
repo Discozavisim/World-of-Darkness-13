@@ -1810,7 +1810,7 @@
 								if(I.armor)
 									I.armor = I.armor?.modifyAllRatings(0.5)
 								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
-								I.update_icon()
+								AddElement(/datum/element/update_icon_updates_onmob)
 				if(target.clothes_destruction_counter == 2)
 					to_chat(target, "<span class='warning'>Your clothes start to melt away!</span>")
 				if(target.clothes_destruction_counter >= 3)
@@ -1838,7 +1838,7 @@
 							if(istype(I, /obj/item/melee/vampirearms))
 								I.force /= 2
 								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
-								I.update_icon()
+								AddElement(/datum/element/update_icon_updates_onmob)
 				if(target.weapon_destruction_counter == 2)
 					to_chat(target, "<span class='warning'>Your melee weapons start to melt away!</span>")
 				if(target.weapon_destruction_counter >= 2)

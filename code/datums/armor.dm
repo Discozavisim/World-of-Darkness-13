@@ -44,7 +44,7 @@
 	return getArmor(src.bashing+bashing, src.lethal+lethal, src.aggravated+aggravated, src.melee+melee, src.bullet+bullet, src.laser+laser, src.energy+energy, src.bomb+bomb, src.bio+bio, src.rad+rad, src.fire+fire, src.acid+acid, src.magic+magic, src.wound+wound)
 
 /datum/armor/proc/modifyAllRatings(modifier = 0)
-	return getArmor(bashing+modifier, lethal+modifier, aggravated+modifier, melee+modifier, bullet+modifier, laser+modifier, energy+modifier, bomb+modifier, bio+modifier, rad+modifier, fire+modifier, acid+modifier, magic+modifier, wound+modifier)
+	return getArmor(bashing*modifier, lethal*modifier, aggravated*modifier, melee*modifier, bullet*modifier, laser*modifier, energy*modifier, bomb*modifier, bio*modifier, rad*modifier, fire*modifier, acid*modifier, magic*modifier, wound*modifier)
 
 /datum/armor/proc/setRating(bashing, lethal, aggravated, melee, bullet, laser, energy, bomb, bio, rad, fire, acid, magic, wound)
 	return getArmor((isnull(bashing) ? src.bashing : bashing),\

@@ -1615,7 +1615,7 @@
 	light_system = MOVABLE_LIGHT
 	light_range = 1
 	light_power = 1
-	light_color = COLOR_SOFT_RED
+	light_color = COLOR_DARK_LIME
 	ricochets_max = 0
 	ricochet_chance = 0
 	tracer_type = /obj/effect/projectile/tracer/destruction_dark_thaumaturgy

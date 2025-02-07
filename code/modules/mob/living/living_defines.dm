@@ -215,6 +215,8 @@
 
 	var/dark_thaumaturgy_knowledge = FALSE
 
+	var/is_torpor_immune = FALSE
+
 	var/elysium_checks = 0
 	var/bloodhunted = FALSE
 

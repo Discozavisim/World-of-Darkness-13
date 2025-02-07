@@ -540,7 +540,7 @@
 
 	to_chat(source, "<span class='warning'>You can feel yourself slipping into Torpor. You can use succumb to immediately sleep...</span>")
 	spawn(2 MINUTES)
-		if (source.stat >= SOFT_CRIT)
+		if (source.stat >= SOFT_CRIT && !source.is_torpor_immune)
 			source.torpor("damage")
 
 /**

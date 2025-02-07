@@ -1761,7 +1761,8 @@
 	ADD_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
-	animate(H, color = "#ddab15", time = 1 SECONDS, loop = 1)
+	H.is_torpor_immune = TRUE
+	animate(H, color = "#f45601", time = 1 SECONDS, loop = 1)
 	if(H.CheckEyewitness(H, H, 7, FALSE))
 		H.AdjustMasquerade(-1)
 	spawn(15 SECONDS)
@@ -1770,6 +1771,7 @@
 			REMOVE_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
 			REMOVE_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 			REMOVE_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
+			H.is_torpor_immune = FALSE
 			H.color = initial(H.color)
 
 /datum/action/destruction_dark_thaumaturgy

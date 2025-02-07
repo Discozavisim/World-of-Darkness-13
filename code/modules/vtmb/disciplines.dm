@@ -1807,7 +1807,8 @@
 					for(var/obj/item/clothing/I in target.contents)
 						if(I)
 							if(istype(I, /obj/item/clothing))
-								I.armor = I.armor/2
+								if(I.armor)
+									I.armor = I.armor/2
 								I.color = "#f45601"
 				if(target.clothes_destruction_counter >= 2)
 					for(var/obj/item/clothing/I in target.contents)

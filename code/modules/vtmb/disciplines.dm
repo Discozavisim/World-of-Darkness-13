@@ -1749,6 +1749,7 @@
 
 /datum/action/pain_dark_thaumaturgy/Trigger()
 	. = ..()
+	var/mob/living/carbon/human/H = owner
 	if((abuse_fix + 25 SECONDS) > world.time)
 		return
 	if(H.bloodpool < 2)
@@ -1757,7 +1758,6 @@
 	H.bloodpool = max(0, H.bloodpool-2)
 	playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
 	abuse_fix = world.time
-	var/mob/living/carbon/human/H = owner
 	ADD_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)

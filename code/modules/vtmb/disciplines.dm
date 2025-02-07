@@ -1603,7 +1603,7 @@
 	name = "destruction beam"
 	icon_state = "impact_bfg"
 
-/obj/projectile/destruction_dark_thaumaturgy
+/obj/projectile/clothes_destruction_dark_thaumaturgy
 	name = "destruction beam"
 	icon_state = "dark_thaumaturgy"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
@@ -1622,10 +1622,7 @@
 	muzzle_type = /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
 	impact_type = /obj/effect/projectile/impact/destruction_dark_thaumaturgy
 
-/obj/projectile/destruction_dark_thaumaturgy/clothes
-	name = "destruction beam"
-
-/obj/projectile/destruction_dark_thaumaturgy/clothes/on_hit(atom/target, blocked = FALSE, pierce_hit)
+/obj/projectile/clothes_destruction_dark_thaumaturgy/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	if(ishuman(target))
 		var/mob/living/H = target
 		H.clothes_destruction_counter += 1
@@ -1646,10 +1643,26 @@
 					if(istype(I, /obj/item/clothing))
 						qdel(I)
 
-/obj/projectile/destruction_dark_thaumaturgy/weapons
+/obj/projectile/weapon_destruction_dark_thaumaturgy
 	name = "destruction beam"
+	icon_state = "dark_thaumaturgy"
+	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
+	damage = 5
+	damage_type = BURN
+	hitsound = 'code/modules/wod13/sounds/drinkblood1.ogg'
+	hitsound_wall = 'sound/weapons/effects/searwall.ogg'
+	flag = LASER
+	light_system = MOVABLE_LIGHT
+	light_range = 1
+	light_power = 1
+	light_color = COLOR_DARK_LIME
+	ricochets_max = 0
+	ricochet_chance = 0
+	tracer_type = /obj/effect/projectile/tracer/destruction_dark_thaumaturgy
+	muzzle_type = /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
+	impact_type = /obj/effect/projectile/impact/destruction_dark_thaumaturgy
 
-/obj/projectile/destruction_dark_thaumaturgy/weapons/on_hit(atom/target, blocked = FALSE, pierce_hit)
+/obj/projectile/weapon_destruction_dark_thaumaturgy/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	if(ishuman(target))
 		var/mob/living/H = target
 		H.weapon_destruction_counter += 1
@@ -1669,10 +1682,26 @@
 					if(istype(I, /obj/item/melee/vampirearms))
 						qdel(I)
 
-/obj/projectile/destruction_dark_thaumaturgy/fire
+/obj/projectile/damage_destruction_dark_thaumaturgy
 	name = "destruction beam"
+	icon_state = "dark_thaumaturgy"
+	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
+	damage = 5
+	damage_type = BURN
+	hitsound = 'code/modules/wod13/sounds/drinkblood1.ogg'
+	hitsound_wall = 'sound/weapons/effects/searwall.ogg'
+	flag = LASER
+	light_system = MOVABLE_LIGHT
+	light_range = 1
+	light_power = 1
+	light_color = COLOR_DARK_LIME
+	ricochets_max = 0
+	ricochet_chance = 0
+	tracer_type = /obj/effect/projectile/tracer/destruction_dark_thaumaturgy
+	muzzle_type = /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
+	impact_type = /obj/effect/projectile/impact/destruction_dark_thaumaturgy
 
-/obj/projectile/destruction_dark_thaumaturgy/fire/on_hit(atom/target, blocked = FALSE, pierce_hit)
+/obj/projectile/damage_destruction_dark_thaumaturgy/on_hit(atom/target, blocked = FALSE, pierce_hit)
 	if(ishuman(target))
 		var/mob/living/carbon/H = target
 		H.AdjustKnockdown(1 SECONDS)
@@ -1694,10 +1723,10 @@
 		qdel(src)
 
 /mob/living/proc/baali_fake_gib()
-	new /obj/effect/temp_visual/baali(loc, "destruction_gib")
+	var proj = new /obj/effect/temp_visual/baali(loc, "destruction_gib")
 	animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
 	spawn(3 SECONDS)
-	qdel(src)
+	qdel(proj)
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
@@ -1911,7 +1940,7 @@
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
 				var/turf/start = get_turf(caster)
-				var/obj/projectile/destruction_dark_thaumaturgy/clothes/H = new(start)
+				var/obj/projectile/clothes_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)
@@ -1928,7 +1957,7 @@
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
 				var/turf/start = get_turf(caster)
-				var/obj/projectile/destruction_dark_thaumaturgy/weapons/H = new(start)
+				var/obj/projectile/weapon_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)
@@ -1945,7 +1974,7 @@
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
 				var/turf/start = get_turf(caster)
-				var/obj/projectile/destruction_dark_thaumaturgy/fire/H = new(start)
+				var/obj/projectile/damage_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)

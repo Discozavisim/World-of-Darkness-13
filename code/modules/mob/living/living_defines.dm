@@ -220,6 +220,7 @@
 	var/thaumaturgy_ability_active = FALSE
 
 	var/clothes_destruction_counter = 0
+	var/weapon_destruction_counter = 0
 
 	var/elysium_checks = 0
 	var/bloodhunted = FALSE

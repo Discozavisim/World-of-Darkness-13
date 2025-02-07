@@ -1714,20 +1714,17 @@
 	animate(src, pixel_y = 16, color = "#696969", time = 50, loop = 1)
 	spawn(5 SECONDS)
 		if(stat != DEAD)
-			death()
-		var/list/items = list()
-		items |= get_equipped_items(TRUE)
-		for(var/obj/item/I in items)
-			dropItemToGround(I)
+			dust(TRUE, TRUE)
 		drop_all_held_items()
 		qdel(src)
 
 /mob/living/proc/baali_fake_gib()
+	var/mob/living/carbon/human/H = owner
 	var proj = new /obj/effect/temp_visual/baali(loc, "destruction_gib")
-	var anim = animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
+	animate(H, pixel_y = 16, color = "#0a9600", time = 2 SECONDS, loop = 1)
 	spawn(3 SECONDS)
 	qdel(proj)
-	qdel(anim)
+	H.color = initial(H.color)
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"

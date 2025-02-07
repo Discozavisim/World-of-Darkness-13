@@ -1808,8 +1808,8 @@
 						if(I)
 							if(istype(I, /obj/item/clothing))
 								if(I.armor)
-									I.armor = list(BASHING = BASHING/2, LETHAL = LETHAL/2, AGGRAVATED = AGGRAVATED/2, MELEE = MELEE/2, BULLET = BULLET/2, LASER = LASER/2, ENERGY = ENERGY/2, BOMB = BOMB/2, BIO = BIO/2, RAD = RAD/2, FIRE = FIRE/2, ACID = ACID/2, WOUND = WOUND/2)
-								I.color = "#4ec302"
+									I.armor.modifyAllRatings(0.5)
+								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
 				if(target.clothes_destruction_counter >= 2)
 					target.clothes_destruction_counter = 0
 					for(var/obj/item/clothing/I in target.contents)
@@ -1834,7 +1834,7 @@
 						if(I)
 							if(istype(I, /obj/item/melee/vampirearms))
 								I.force /= 2
-								I.color = "#4ec302"
+								I.add_atom_colour("#4ec302", TEMPORARY_COLOUR_PRIORITY)
 				if(target.weapon_destruction_counter >= 2)
 					target.weapon_destruction_counter = 0
 					for(var/obj/item/melee/vampirearms/I in target.contents)

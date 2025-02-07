@@ -1621,7 +1621,6 @@
 	tracer_type = /obj/effect/projectile/tracer/destruction_dark_thaumaturgy
 	muzzle_type = /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
 	impact_type = /obj/effect/projectile/impact/destruction_dark_thaumaturgy
-	var/level = 1
 
 /obj/projectile/destruction_dark_thaumaturgy/clothes
 	name = "destruction beam"
@@ -1669,6 +1668,36 @@
 				if(I)
 					if(istype(I, /obj/item/melee/vampirearms))
 						qdel(I)
+
+/obj/projectile/destruction_dark_thaumaturgy/fire
+	name = "destruction beam"
+
+/obj/projectile/destruction_dark_thaumaturgy/fire/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	if(ishuman(target))
+		var/mob/living/carbon/H = target
+		H.AdjustKnockdown(1 SECONDS)
+		H.adjustStaminaLoss(25)
+		H.adjustFireLoss(25)
+
+/mob/living/proc/baali_gib()
+	Stun(5 SECONDS)
+	new /obj/effect/temp_visual/baali(loc, "destruction_gib")
+	animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
+	spawn(5 SECONDS)
+		if(stat != DEAD)
+			death()
+		var/list/items = list()
+		items |= get_equipped_items(TRUE)
+		for(var/obj/item/I in items)
+			dropItemToGround(I)
+		drop_all_held_items()
+		qdel(src)
+
+/mob/living/proc/baali_fake_gib()
+	new /obj/effect/temp_visual/baali(loc, "destruction_gib")
+	animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
+	spawn(3 SECONDS)
+	qdel(src)
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
@@ -1915,7 +1944,11 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				to_chat(caster, "You've used Destruction...")
+				var/turf/start = get_turf(caster)
+				var/obj/projectile/destruction_dark_thaumaturgy/fire/H = new(start)
+				H.firer = caster
+				H.preparePixelProjectile(target, start)
+				H.fire(direct_target = target)
 		if(4)
 			if(dark_thaumaturgy_path == "Blood")
 				if(iscarbon(target))
@@ -1931,7 +1964,12 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				to_chat(caster, "You've used Destruction...")
+				target.baali_fake_gib()
+				var/mob/living/carbon/human/H = target
+				var/obj/item/bodypart/bodypart = pick(H.bodyparts)
+				var/datum/wound/blunt/critical/crit_wound = new
+				crit_wound.apply_wound(bodypart)
+				crit_wound.apply_wound(bodypart)
 		if(5)
 			if(dark_thaumaturgy_path == "Blood")
 				if(iscarbon(target))
@@ -1947,7 +1985,15 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				to_chat(caster, "You've used Destruction...")
+				if(!(iskindred(target)) && !(isgarou(target)) && !(iscathayan(target)))
+					target.baali_gib()
+				else
+					target.baali_fake_gib()
+					var/mob/living/carbon/human/H = target
+					var/obj/item/bodypart/bodypart = pick(H.bodyparts)
+					var/datum/wound/blunt/critical/crit_wound = new
+					crit_wound.apply_wound(bodypart)
+					crit_wound.apply_wound(bodypart)
 
 /datum/discipline/serpentis
 	name = "Serpentis"

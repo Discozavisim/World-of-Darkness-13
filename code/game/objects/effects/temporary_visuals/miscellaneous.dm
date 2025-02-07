@@ -348,6 +348,12 @@
 	pixel_w = -8
 	duration = 50
 
+/obj/effect/temp_visual/baali
+	icon = 'code/modules/wod13/48x48.dmi'
+	icon_state = "destruction_gib"
+	pixel_w = -8
+	duration = 50
+
 /obj/effect/temp_visual/dust_animation/Initialize(mapload, dust_icon)
 	icon_state = dust_icon // Before ..() so the correct icon is flick()'d
 	set_light(2, 2, "#feb716")

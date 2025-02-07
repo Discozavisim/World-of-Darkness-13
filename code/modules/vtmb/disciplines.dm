@@ -1719,7 +1719,7 @@
 		qdel(src)
 
 /mob/living/proc/baali_fake_gib()
-	var/mob/living/carbon/human/H = owner
+	var/mob/living/carbon/human/H = usr
 	var proj = new /obj/effect/temp_visual/baali(loc, "destruction_gib")
 	animate(H, pixel_y = 16, color = "#0a9600", time = 2 SECONDS, loop = 1)
 	spawn(3 SECONDS)

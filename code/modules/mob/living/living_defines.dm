@@ -217,6 +217,8 @@
 
 	var/is_torpor_immune = FALSE
 
+	var/thaumaturgy_ability_active = FALSE
+
 	var/elysium_checks = 0
 	var/bloodhunted = FALSE
 

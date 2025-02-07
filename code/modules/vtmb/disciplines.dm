@@ -1720,9 +1720,11 @@
 
 /datum/action/bloodshield_dark_thaumaturgy/Trigger()
 	. = ..()
+	var/mob/living/carbon/human/H = owner
+	if(H.thaumaturgy_ability_active)
+		return
 	if((abuse_fix + 25 SECONDS) > world.time)
 		return
-	var/mob/living/carbon/human/H = owner
 	if(H.bloodpool < 2)
 		to_chat(owner, "<span class='warning'>You don't have enough <b>BLOOD</b> to do that!</span>")
 		return
@@ -1733,8 +1735,10 @@
 	animate(H, color = "#ff0000", time = 1 SECONDS, loop = 1)
 	if(H.CheckEyewitness(H, H, 7, FALSE))
 		H.AdjustMasquerade(-1)
+	H.thaumaturgy_ability_active = TRUE
 	spawn(15 SECONDS)
 		if(H)
+			H.thaumaturgy_ability_active = FALSE
 			playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
 			H.attributes.bloodshield_bonus = 0
 			H.color = initial(H.color)
@@ -1750,6 +1754,8 @@
 /datum/action/pain_dark_thaumaturgy/Trigger()
 	. = ..()
 	var/mob/living/carbon/human/H = owner
+	if(H.thaumaturgy_ability_active)
+		return
 	if((abuse_fix + 25 SECONDS) > world.time)
 		return
 	if(H.bloodpool < 2)
@@ -1762,6 +1768,7 @@
 	ADD_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
 	H.is_torpor_immune = TRUE
+	H.thaumaturgy_ability_active = TRUE
 	animate(H, color = "#f45601", time = 1 SECONDS, loop = 1)
 	if(H.CheckEyewitness(H, H, 7, FALSE))
 		H.AdjustMasquerade(-1)
@@ -1772,6 +1779,7 @@
 			REMOVE_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 			REMOVE_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
 			H.is_torpor_immune = FALSE
+			H.thaumaturgy_ability_active = FALSE
 			H.color = initial(H.color)
 
 /datum/action/destruction_dark_thaumaturgy

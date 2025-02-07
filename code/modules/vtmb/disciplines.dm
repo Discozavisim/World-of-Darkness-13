@@ -1808,7 +1808,7 @@
 						if(I)
 							if(istype(I, /obj/item/clothing))
 								if(I.armor)
-									I.armor /= 2
+									I.armor = list(BASHING = BASHING/2, LETHAL = LETHAL/2, AGGRAVATED = AGGRAVATED/2, MELEE = MELEE/2, BULLET = BULLET/2, LASER = LASER/2, ENERGY = ENERGY/2, BOMB = BOMB/2, BIO = BIO/2, RAD = RAD/2, FIRE = FIRE/2, ACID = ACID/2, WOUND = WOUND/2)
 								I.color = "#4ec302"
 				if(target.clothes_destruction_counter >= 2)
 					target.clothes_destruction_counter = 0

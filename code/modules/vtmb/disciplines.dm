@@ -1593,7 +1593,7 @@
 
 /obj/effect/projectile/tracer/destruction_dark_thaumaturgy
 	name = "destruction beam"
-	icon_state = "cult"
+	icon_state = "bfg"
 
 /obj/effect/projectile/muzzle/destruction_dark_thaumaturgy
 	name = "destruction beam"
@@ -1605,7 +1605,7 @@
 
 /obj/projectile/destruction_dark_thaumaturgy
 	name = "destruction beam"
-	icon_state = "thaumaturgy"
+	icon_state = "dark_thaumaturgy"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	damage = 5
 	damage_type = BURN

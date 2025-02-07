@@ -1604,7 +1604,7 @@
 	icon_state = "impact_bfg"
 
 /obj/projectile/clothes_destruction_dark_thaumaturgy
-	name = "destruction beam"
+	name = "clothes destruction beam"
 	icon_state = "dark_thaumaturgy"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	damage = 5
@@ -1644,7 +1644,7 @@
 						qdel(I)
 
 /obj/projectile/weapon_destruction_dark_thaumaturgy
-	name = "destruction beam"
+	name = "weapon destruction beam"
 	icon_state = "dark_thaumaturgy"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	damage = 5
@@ -1683,7 +1683,7 @@
 						qdel(I)
 
 /obj/projectile/damage_destruction_dark_thaumaturgy
-	name = "destruction beam"
+	name = "damage destruction beam"
 	icon_state = "dark_thaumaturgy"
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 	damage = 5
@@ -1711,7 +1711,7 @@
 /mob/living/proc/baali_gib()
 	Stun(5 SECONDS)
 	new /obj/effect/temp_visual/baali(loc, "destruction_gib")
-	animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
+	animate(src, pixel_y = 16, color = "#696969", time = 50, loop = 1)
 	spawn(5 SECONDS)
 		if(stat != DEAD)
 			death()
@@ -1724,9 +1724,10 @@
 
 /mob/living/proc/baali_fake_gib()
 	var proj = new /obj/effect/temp_visual/baali(loc, "destruction_gib")
-	animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
+	var anim = animate(src, pixel_y = 16, color = "#0a9600", time = 50, loop = 1)
 	spawn(3 SECONDS)
 	qdel(proj)
+	qdel(anim)
 
 /datum/action/choose_dark_thaumaturgy_path
 	name = "Choose Dark Thaumaturgy Path"
@@ -1942,6 +1943,7 @@
 				var/turf/start = get_turf(caster)
 				var/obj/projectile/clothes_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
+				H.damage = 15+caster.thaum_damage_plus
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)
 		if(2)
@@ -1959,6 +1961,7 @@
 				var/turf/start = get_turf(caster)
 				var/obj/projectile/weapon_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
+				H.damage = 15+caster.thaum_damage_plus
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)
 		if(3)
@@ -1976,6 +1979,7 @@
 				var/turf/start = get_turf(caster)
 				var/obj/projectile/damage_destruction_dark_thaumaturgy/H = new(start)
 				H.firer = caster
+				H.damage = 15+caster.thaum_damage_plus
 				H.preparePixelProjectile(target, start)
 				H.fire(direct_target = target)
 		if(4)
@@ -1995,10 +1999,13 @@
 			if(dark_thaumaturgy_path == "Destruction")
 				target.baali_fake_gib()
 				var/mob/living/carbon/human/H = target
-				var/obj/item/bodypart/bodypart = pick(H.bodyparts)
-				var/datum/wound/blunt/critical/crit_wound = new
-				crit_wound.apply_wound(bodypart)
-				crit_wound.apply_wound(bodypart)
+				var/obj/item/bodypart/bodypart_one = pick(H.bodyparts)
+				var/obj/item/bodypart/bodypart_two = pick(H.bodyparts)
+				var/datum/wound/blunt/critical/crit_wound_one = new
+				var/datum/wound/blunt/critical/crit_wound_two = new
+				crit_wound_one.apply_wound(bodypart_one)
+				crit_wound_two.apply_wound(bodypart_two)
+				target.adjustFireLoss(15)
 		if(5)
 			if(dark_thaumaturgy_path == "Blood")
 				if(iscarbon(target))
@@ -2019,10 +2026,19 @@
 				else
 					target.baali_fake_gib()
 					var/mob/living/carbon/human/H = target
-					var/obj/item/bodypart/bodypart = pick(H.bodyparts)
-					var/datum/wound/blunt/critical/crit_wound = new
-					crit_wound.apply_wound(bodypart)
-					crit_wound.apply_wound(bodypart)
+					var/obj/item/bodypart/bodypart_one = pick(H.bodyparts)
+					var/obj/item/bodypart/bodypart_two = pick(H.bodyparts)
+					var/obj/item/bodypart/bodypart_three = pick(H.bodyparts)
+					var/obj/item/bodypart/bodypart_four = pick(H.bodyparts)
+					var/datum/wound/blunt/critical/crit_wound_one = new
+					var/datum/wound/blunt/critical/crit_wound_two = new
+					var/datum/wound/blunt/critical/crit_wound_three = new
+					var/datum/wound/blunt/critical/crit_wound_four = new
+					crit_wound_one.apply_wound(bodypart_one)
+					crit_wound_two.apply_wound(bodypart_two)
+					crit_wound_three.apply_wound(bodypart_three)
+					crit_wound_four.apply_wound(bodypart_four)
+					target.adjustFireLoss(25)
 
 /datum/discipline/serpentis
 	name = "Serpentis"

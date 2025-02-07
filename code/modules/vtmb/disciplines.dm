@@ -1740,8 +1740,8 @@
 			H.color = initial(H.color)
 
 /datum/action/pain_dark_thaumaturgy
-	name = "Pain Thaumaturgy"
-	desc = "Pain magic rune drawing."
+	name = "Pain Numbing"
+	desc = "Embrace The Pain."
 	button_icon_state = "pain_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
@@ -1761,7 +1761,7 @@
 	ADD_TRAIT(H, TRAIT_NOSOFTCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NOHARDCRIT, TRAUMA_TRAIT)
 	ADD_TRAIT(H, TRAIT_NODEATH, TRAUMA_TRAIT)
-	animate(H, color = "#004c03", time = 1 SECONDS, loop = 1)
+	animate(H, color = "#ddab15", time = 1 SECONDS, loop = 1)
 	if(H.CheckEyewitness(H, H, 7, FALSE))
 		H.AdjustMasquerade(-1)
 	spawn(15 SECONDS)

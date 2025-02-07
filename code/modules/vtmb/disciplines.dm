@@ -1802,7 +1802,18 @@
 			if(dark_thaumaturgy_path == "Pain")
 				to_chat(caster, "You've used Pain...")
 			if(dark_thaumaturgy_path == "Destruction")
-				to_chat(caster, "You've used Destruction...")
+				target.clothes_destruction_counter += 1
+				if(target.clothes_destruction_counter == 1)
+					for(var/obj/item/clothing/I in target.contents)
+						if(I)
+							if(istype(I, /obj/item/clothing))
+								I.armor = I.armor/2
+								I.color = "#f45601"
+				if(target.clothes_destruction_counter >= 2)
+					for(var/obj/item/clothing/I in target.contents)
+						if(I)
+							if(istype(I, /obj/item/clothing))
+								qdel(I)
 		if(2)
 			if(dark_thaumaturgy_path == "Blood")
 				var/turf/start = get_turf(caster)

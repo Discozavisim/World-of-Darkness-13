@@ -331,6 +331,7 @@
 
 	var/closed = TRUE
 	var/locked = FALSE
+	var/destruction_locked = FALSE
 	var/lock_id = "nothing"
 	var/glass = FALSE
 	var/hacking = FALSE
@@ -404,7 +405,7 @@
 /obj/structure/vampdoor/attack_hand(mob/user)
 	. = ..()
 	var/mob/living/N = user
-	if(locked)
+	if(locked || destruction_locked)
 		if(N.a_intent != INTENT_HARM)
 			playsound(src, lock_sound, 75, TRUE)
 			to_chat(user, "<span class='warning'>[src] is locked!</span>")
@@ -437,7 +438,7 @@
 						pixel_w = initial(pixel_w)
 		return
 
-	if(closed)
+	if(closed && !destruction_locked)
 		playsound(src, open_sound, 75, TRUE)
 		icon_state = "[baseicon]-0"
 		density = FALSE
@@ -490,7 +491,7 @@
 		else
 			hacking = FALSE
 	if(istype(W, /obj/item/vamp/keys/hack))
-		if(locked)
+		if(locked && !destruction_locked)
 			hacking = TRUE
 			playsound(src, 'code/modules/wod13/sounds/hack.ogg', 100, TRUE)
 			for(var/mob/living/carbon/human/npc/police/P in oviewers(7, src))

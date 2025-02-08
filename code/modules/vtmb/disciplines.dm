@@ -1918,11 +1918,47 @@
 			H.color = initial(H.color)
 
 /datum/action/destruction_dark_thaumaturgy
-	name = "Destruction Thaumaturgy"
-	desc = "Destruction magic rune drawing."
+	name = "Acidic Touch"
+	desc = "Emit poisonous acid around yourself."
 	button_icon_state = "destruction_dark_thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
+	var/abuse_fix = 0
+
+/datum/action/destruction_dark_thaumaturgy/proc/destruction_aura_loop(caster, duration)
+	var/loop_started_time = world.time
+	while (world.time <= (loop_started_time + duration))
+		for(var/obj/structure/vampdoor/rusted in oviewers(5, caster))
+			if(rusted.destruction_locked == FALSE)
+				rusted.destruction_locked = TRUE
+		for(var/mob/living/affected_by_destruction in oviewers(5, caster))
+			affected_by_destruction.adjustFireLoss(5)
+		sleep(1 SECONDS)
+
+
+/datum/action/destruction_dark_thaumaturgy/Trigger()
+	. = ..()
+	var/mob/living/carbon/human/H = owner
+	if(H.thaumaturgy_ability_active)
+		return
+	if((abuse_fix + 25 SECONDS) > world.time)
+		return
+	if(H.bloodpool < 2)
+		to_chat(owner, "<span class='warning'>You don't have enough <b>BLOOD</b> to do that!</span>")
+		return
+	H.bloodpool = max(0, H.bloodpool-2)
+	playsound(H.loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	abuse_fix = world.time
+	var/mutable_appearance/fortitude_overlay = mutable_appearance('code/modules/wod13/icons.dmi', "tornado", -FORTITUDE_LAYER)
+	fortitude_overlay.alpha = 128
+	H.overlays_standing[FORTITUDE_LAYER] = fortitude_overlay
+	H.apply_overlay(FORTITUDE_LAYER)
+	spawn()
+		destruction_aura_loop(H, 15 SECONDS)
+	spawn(15 SECONDS)
+		if(H)
+			H.remove_overlay(FORTITUDE_LAYER)
+
 
 /datum/discipline/dark_thaumaturgy/activate(mob/living/target, mob/living/carbon/human/caster)
 	. = ..()

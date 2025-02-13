@@ -239,7 +239,7 @@ SUBSYSTEM_DEF(factionwar)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF | FREEZE_PROOF
 	var/repainting = FALSE
 	var/permanent = FALSE
-//	invisibility = INVISIBILITY_FACTION
+	invisibility = INVISIBILITY_FACTION
 
 /obj/graffiti/Initialize()
 	. = ..()

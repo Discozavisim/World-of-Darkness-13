@@ -2,6 +2,7 @@
 	name = "heart"
 	desc = "I feel bad for the heartless bastard who lost this."
 	icon_state = "heart-on"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	illegal = TRUE
 	cost = 1500
 	zone = BODY_ZONE_CHEST
@@ -29,6 +30,7 @@
 		icon_state = "[icon_base]-on"
 	else
 		icon_state = "[icon_base]-off"
+		onflooricon = 'code/modules/wod13/onfloor.dmi'
 
 /obj/item/organ/heart/Remove(mob/living/carbon/M, special = 0)
 	..()

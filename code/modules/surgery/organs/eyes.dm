@@ -1,6 +1,7 @@
 /obj/item/organ/eyes
 	name = BODY_ZONE_PRECISE_EYES
 	icon_state = "eyeballs"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	desc = "I see you!"
 	illegal = TRUE
 	cost = 300
@@ -127,6 +128,7 @@
 	name = "burning red eyes"
 	desc = "Even without their shadowy owner, looking at these eyes gives you a sense of dread."
 	icon_state = "burning_eyes"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 
 /obj/item/organ/eyes/night_vision/mushroom
 	name = "fung-eye"

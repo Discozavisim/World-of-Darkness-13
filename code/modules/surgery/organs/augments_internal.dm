@@ -113,6 +113,7 @@
 	name = "Second Heart"
 	desc = "This organ will automatically give you back control over your central nervous system, reducing downtime when stunned. Installs to the head."
 	icon_state = "heart-tzi"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 
 /obj/item/organ/cyberimp/brain/anti_stun/Remove(mob/living/carbon/M, special = FALSE)
 	. = ..()

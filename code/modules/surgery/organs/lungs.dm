@@ -3,6 +3,7 @@
 	var/operated = FALSE	//whether we can still have our damages fixed through surgery
 	name = "lungs"
 	icon_state = "lungs"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	illegal = TRUE
 	cost = 800
 	zone = BODY_ZONE_CHEST

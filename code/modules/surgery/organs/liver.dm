@@ -4,6 +4,7 @@
 /obj/item/organ/liver
 	name = "liver"
 	icon_state = "liver"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	illegal = TRUE
 	cost = 800
 	w_class = WEIGHT_CLASS_SMALL

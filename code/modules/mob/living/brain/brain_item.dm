@@ -2,6 +2,7 @@
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
 	icon_state = "brain"
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	throw_speed = 3
 	throw_range = 5
 	layer = ABOVE_MOB_LAYER

@@ -170,8 +170,10 @@
 	desc = "A .50 bullet casing."
 	caliber = CALIBER_50
 	projectile_type = /obj/projectile/beam/beam_rifle/vampire/vamp50
-	icon_state = "50"
-	base_iconstate = "50"
+//	icon_state = "50"
+//	base_iconstate = "50"
+	icon_state = "45"
+	base_iconstate = "45"
 
 /obj/item/ammo_casing/vampire/c556mm
 	name = "5.56mm bullet casing"
@@ -425,6 +427,8 @@
 	name = ".45 ACP silver bullet casing"
 	desc = "A .45 ACP silver bullet casing."
 	projectile_type = /obj/projectile/beam/beam_rifle/vampire/vamp45acp/silver
+	icon_state = "s45"
+	base_iconstate = "s45"
 
 /obj/item/ammo_casing/vampire/c44/silver
 	name = ".44 silver bullet casing"

@@ -1,4 +1,3 @@
-
 /////BURN FIXING SURGERIES//////
 
 //the step numbers of each of these two, we only currently use the first to switch back and forth due to advancing after finishing steps anyway
@@ -28,7 +27,7 @@
 ///// realign the blood vessels so we can reweld them
 /datum/surgery_step/repair_innards
 	name = "realign blood vessels"
-	implements = list(TOOL_HEMOSTAT = 100, TOOL_SCALPEL = 85, TOOL_WIRECUTTER = 40)
+	implements = list(TOOL_HEMOSTAT = 100, TOOL_SCALPEL = 85, TOOL_OSTROE = 85, TOOL_WIRECUTTER = 40)
 	time = 3 SECONDS
 
 /datum/surgery_step/repair_innards/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)

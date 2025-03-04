@@ -23,7 +23,7 @@
 ///// Debride
 /datum/surgery_step/debride
 	name = "excise infection"
-	implements = list(TOOL_HEMOSTAT = 100, TOOL_SCALPEL = 85, TOOL_SAW = 60, TOOL_WIRECUTTER = 40)
+	implements = list(TOOL_HEMOSTAT = 100, TOOL_SCALPEL = 85, TOOL_SAW = 60, TOOL_OSTROE = 60, TOOL_WIRECUTTER = 40)
 	time = 30
 	repeatable = TRUE
 

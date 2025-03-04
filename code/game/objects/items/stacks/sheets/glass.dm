@@ -260,6 +260,7 @@ GLOBAL_LIST_INIT(plastitaniumglass_recipes, list(
 	resistance_flags = ACID_PROOF
 	armor = list(MELEE = 100, BULLET = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 100)
 	max_integrity = 40
+	tool_behaviour = TOOL_OSTROE
 	sharpness = SHARP_EDGED
 	var/icon_prefix
 	var/obj/item/stack/sheet/weld_material = /obj/item/stack/sheet/glass

@@ -8,6 +8,7 @@
 	backpack_contents = list(
 		/obj/item/storage/book/bible = 1,
 		/obj/item/vampire_stake = 3,
+		/obj/item/vampire_stake/metal = 2,
 		/obj/item/molotov = 1,
 		/obj/item/gas_can/full = 1,
 		/obj/item/vamp/keys/hack=1

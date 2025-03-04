@@ -552,6 +552,7 @@
 		new /datum/data/mining_equipment("silver .44 ammo",	/obj/item/ammo_box/vampire/c44/silver,	3000),
 		new /datum/data/mining_equipment("silver 5.56 ammo",	/obj/item/ammo_box/vampire/c556/silver,	6000),
 		new /datum/data/mining_equipment("stake",	/obj/item/vampire_stake,	100),
+		new /datum/data/mining_equipment("stake",	/obj/item/vampire_stake/metal,	150),
 		new /datum/data/mining_equipment("lockpick",	/obj/item/vamp/keys/hack, 50),
 		new /datum/data/mining_equipment("zippo lighter",	/obj/item/lighter,	20),
 		new /datum/data/mining_equipment("Surgery dufflebag", /obj/item/storage/backpack/duffelbag/med/surgery, 100),

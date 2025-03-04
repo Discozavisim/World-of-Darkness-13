@@ -3,6 +3,7 @@
 	righthand_file = 'code/modules/wod13/lefthand.dmi'
 	worn_icon = 'code/modules/wod13/worn.dmi'
 	onflooricon = 'code/modules/wod13/onfloor.dmi'
+	icon = 'code/modules/wod13/weapons.dmi'
 	var/quieted = FALSE
 	cost = 25
 
@@ -11,12 +12,12 @@
 	var/attack_diff_override = 0
 
 /obj/item/kastet
+	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "kastet"
 	name = "brass knuckles"
 	desc = "Lethaly efficient brawl weapon."
 	force = 20
 	attack_diff_override = 4
-	icon = 'code/modules/wod13/weapons.dmi'
 	lefthand_file = 'code/modules/wod13/righthand.dmi'
 	righthand_file = 'code/modules/wod13/lefthand.dmi'
 	worn_icon = 'code/modules/wod13/worn.dmi'
@@ -34,7 +35,6 @@
 	icon_state = "sledgehammer"
 	name = "sledgehammer"
 	desc = "Truly, the weapon of a madman. Who would think to fight sledge with an hammer?"
-	icon = 'code/modules/wod13/weapons.dmi'
 	force = 50
 	throwforce = 20
 	w_class = WEIGHT_CLASS_BULKY
@@ -156,7 +156,6 @@
 /obj/item/melee/vampirearms/rapier
 	name = "rapier"
 	desc = "A thin, elegant sword, the rapier is a weapon of the duelist, designed for thrusting."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "rapier"
 	flags_1 = CONDUCT_1
 	force = 48
@@ -178,7 +177,6 @@
 /obj/item/melee/vampirearms/machete
     name = "machete"
     desc = "A certified chopper fit for the jungles...but you don't see any vines around. Well-weighted enough to be thrown."
-    icon = 'code/modules/wod13/weapons.dmi'
     icon_state = "machete"
     flags_1 = CONDUCT_1
     force = 45
@@ -201,7 +199,6 @@
 /obj/item/melee/vampirearms/sabre
 	name = "sabre"
 	desc = "A curved sword, the sabre is a weapon of the cavalry, designed for slashing and thrusting."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "sabre"
 	flags_1 = CONDUCT_1
 	force = 56
@@ -223,7 +220,6 @@
 /obj/item/melee/vampirearms/longsword
 	name = "longsword"
 	desc = "A classic weapon of the knight, the longsword is a versatile weapon that can be used for both cutting and thrusting."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "longsword"
 	flags_1 = CONDUCT_1
 	force = 58
@@ -344,7 +340,6 @@
 /obj/item/melee/vampirearms/baseball
 	name = "baseball bat"
 	desc = "There ain't a skull in the league that can withstand a swatter."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "baseball"
 	force = 30
 	wound_bonus = 5
@@ -377,7 +372,6 @@
 /obj/item/melee/vampirearms/tire
 	name = "tire iron"
 	desc = "Can be used as a tool or as a weapon."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "pipe"
 	force = 20
 	wound_bonus = 10
@@ -392,7 +386,6 @@
 /obj/item/melee/vampirearms/knife
 	name = "knife"
 	desc = "Don't cut yourself accidentally."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "knife"
 	force = 30
 	wound_bonus = -5
@@ -433,9 +426,9 @@
 /obj/item/melee/touch_attack/quietus
 	name = "\improper poison touch"
 	desc = "This is kind of like when you rub your feet on a shag rug so you can zap your friends, only a lot less safe."
-	icon = 'code/modules/wod13/weapons.dmi'
 	catchphrase = null
 	on_use_sound = 'sound/magic/disintegrate.ogg'
+	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "quietus"
 	inhand_icon_state = "mansus"
 
@@ -451,8 +444,8 @@
 /obj/item/melee/touch_attack/werewolf
 	name = "\improper falling touch"
 	desc = "This is kind of like when you rub your feet on a shag rug so you can zap your friends, only a lot less safe."
-	icon = 'code/modules/wod13/weapons.dmi'
 	catchphrase = null
+	icon = 'code/modules/wod13/weapons.dmi'
 	on_use_sound = 'sound/magic/disintegrate.ogg'
 	icon_state = "falling"
 	inhand_icon_state = "disintegrate"
@@ -494,7 +487,6 @@
 /obj/item/melee/vampirearms/chainsaw
 	name = "chainsaw"
 	desc = "A versatile power tool. Useful for limbing trees and delimbing humans."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "chainsaw"
 	flags_1 = CONDUCT_1
 	force = 15
@@ -557,6 +549,10 @@
 /obj/item/vampire_stake
 	name = "stake"
 	desc = "Paralyzes blank-bodies if aimed straight to the heart."
+	lefthand_file = 'code/modules/wod13/righthand.dmi'
+	righthand_file = 'code/modules/wod13/lefthand.dmi'
+//	worn_icon = 'code/modules/wod13/worn.dmi'
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
 	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "stake"
 	force = 10
@@ -570,6 +566,15 @@
 	w_class = WEIGHT_CLASS_SMALL
 	is_wood = TRUE
 
+/obj/item/vampire_stake/metal
+	name = "metal stake"
+	desc = "Paralyzes blank-bodies if aimed straight to the heart."
+	icon_state = "stake_armatura"
+	force = 15
+	throwforce = 15
+	is_iron = TRUE
+	is_wood = FALSE
+
 /obj/item/vampire_stake/attack(mob/living/target, mob/living/user)
 	. = ..()
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -578,7 +583,8 @@
 		return
 	if(target.IsParalyzed() || target.IsKnockdown() || target.IsStun())
 		return
-	if(!target.IsParalyzed() && iskindred(target) && !target.stakeimmune)
+//	if(!target.IsParalyzed() && iskindred(target) && !target.stakeimmune)
+	if(iscathayan(target) || iskindred(target) && !target.stakeimmune)
 		if(HAS_TRAIT(target, TRAIT_STAKE_RESISTANT))
 			visible_message("<span class='warning'>[user]'s stake splinters as it touches [target]'s heart!</span>", "<span class='warning'>Your stake splinters as it touches [target]'s heart!</span>")
 			REMOVE_TRAIT(target, TRAIT_STAKE_RESISTANT, MAGIC_TRAIT)
@@ -586,14 +592,16 @@
 		else
 			visible_message("<span class='warning'>[user] aims [src] straight to the [target]'s heart!</span>", "<span class='warning'>You aim [src] straight to the [target]'s heart!</span>")
 			if(do_after(user, 20, target))
-				user.do_attack_animation(target)
-				visible_message("<span class='warning'>[user] pierces [target]'s torso!</span>", "<span class='warning'>You pierce [target]'s torso!</span>")
-				target.Paralyze(1200)
-				target.Sleeping(1200)
-				qdel(src)
+				if((iscathayan(target) && (is_iron && (target.yang_chi > target.yin_chi+2) || (is_wood && (target.yin_chi > target.yang_chi+2)))) || (iskindred(target) && is_wood))
+					user.do_attack_animation(target)
+					visible_message("<span class='warning'>[user] pierces [target]'s torso!</span>", "<span class='warning'>You pierce [target]'s torso!</span>")
+					target.Paralyze(1200)
+					target.Sleeping(1200)
+					qdel(src)
+				else
+					qdel(src)
 
 /obj/item/melee/vampirearms/shovel
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "shovel"
 	name = "shovel"
 	desc = "Great weapon against mortal or immortal."
@@ -620,7 +628,6 @@
 /obj/item/melee/vampirearms/katana/kosa
 	name = "scythe"
 	desc = "More instrument, than a weapon. Instrumentally cuts heads..."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "kosa"
 	force = 50
 	w_class = WEIGHT_CLASS_NORMAL
@@ -703,7 +710,6 @@
 	name = "\improper door"
 	desc = "It opens and closes."
 	icon_state = "door"
-	icon = 'code/modules/wod13/weapons.dmi'
 	lefthand_file = 'code/modules/wod13/righthand.dmi'
 	righthand_file = 'code/modules/wod13/lefthand.dmi'
 	force = 20
@@ -722,7 +728,6 @@
 /obj/item/melee/classic_baton/vampire
 	name = "police baton"
 	desc = "Blunt instrument of justice."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "baton"
 	w_class = WEIGHT_CLASS_NORMAL
 	attack_verb_continuous = list("bludgeons", "bashes", "beats")
@@ -786,7 +791,6 @@
 /obj/item/melee/vampirearms/brick
 	name = "Brick"
 	desc = "Killer of gods and men alike, builder of worlds vast."
-	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "red_brick"
 	lefthand_file = 'code/modules/wod13/lefthand.dmi'
 	righthand_file = 'code/modules/wod13/righthand.dmi'

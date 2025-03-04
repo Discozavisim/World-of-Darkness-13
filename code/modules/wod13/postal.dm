@@ -75,6 +75,7 @@
 						/obj/item/storage/pill_bottle/ephedrine,
 						/obj/item/storage/pill_bottle/potassiodide,
 						/obj/item/vampire_stake,
+						/obj/item/vampire_stake/metal,
 						/obj/item/stack/dollar/rand,
 						/obj/item/melee/vampirearms/knife,
 						/obj/item/melee/vampirearms/tire,

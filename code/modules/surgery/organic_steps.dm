@@ -1,8 +1,7 @@
-
 //make incision
 /datum/surgery_step/incise
 	name = "make incision"
-	implements = list(TOOL_SCALPEL = 100, /obj/item/melee/transforming/energy/sword = 75, /obj/item/kitchen/knife = 65,
+	implements = list(TOOL_SCALPEL = 100, TOOL_OSTROE = 80, /obj/item/melee/transforming/energy/sword = 75, /obj/item/kitchen/knife = 65,
 		/obj/item/shard = 45, /obj/item = 30) // 30% success with any sharp item.
 	time = 16
 
@@ -101,7 +100,7 @@
 //saw bone
 /datum/surgery_step/saw
 	name = "saw bone"
-	implements = list(TOOL_SAW = 100,/obj/item/melee/arm_blade = 75,
+	implements = list(TOOL_SAW = 100, TOOL_OSTROE = 80, /obj/item/melee/arm_blade = 75,
 	/obj/item/fireaxe = 50, /obj/item/hatchet = 35, /obj/item/kitchen/knife/butcher = 25, /obj/item = 20) //20% success (sort of) with any sharp item with a force>=10
 	time = 54
 
@@ -138,3 +137,4 @@
 		"<span class='notice'>[user] drills into [target]'s [parse_zone(target_zone)]!</span>",
 		"<span class='notice'>[user] drills into [target]'s [parse_zone(target_zone)]!</span>")
 	return ..()
+

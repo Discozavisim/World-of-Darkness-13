@@ -274,6 +274,7 @@
 	icon_state = "menu"
 	icon_deny = "menu"
 	prize_list = list()
+	flags_1 = NODECONSTRUCT_1
 	var/dispenses_dollars = TRUE
 
 /obj/machinery/mineral/equipment_vendor/fastfood/sodavendor

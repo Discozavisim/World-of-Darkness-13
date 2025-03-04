@@ -72,6 +72,13 @@
 	contains = list(/obj/item/vampire_stake, /obj/item/vampire_stake, /obj/item/vampire_stake)
 	crate_name = "weapon crate"
 
+/datum/supply_pack/vampire/weaponstake_metal
+	name = "Weapon (stake)"
+	desc = "Contains 3 usable iron stakes."
+	cost = 150
+	contains = list(/obj/item/vampire_stake/metal, /obj/item/vampire_stake/metal, /obj/item/vampire_stake/metal)
+	crate_name = "weapon crate"
+
 /datum/supply_pack/vampire/weaponknife
 	name = "Weapon (knife)"
 	desc = "Contains a knife."

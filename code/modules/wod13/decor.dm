@@ -193,23 +193,24 @@
 			if(V.upper)
 				icon_state = "[initial(icon_state)]-snow"
 
-/obj/effect/decal/litter
+/obj/effect/decal/cleanable/litter
 	name = "litter"
 	icon = 'code/modules/wod13/tiles.dmi'
 	icon_state = "paper1"
+	random_icon_states = list("paper1", "paper2", "paper3", "paper4", "paper5", "paper6")
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/litter/Initialize()
-	. = ..()
-	icon_state = "paper[rand(1, 6)]"
-
-/obj/effect/decal/cardboard
+/obj/effect/decal/cleanable/cardboard
 	name = "cardboard"
 	icon = 'code/modules/wod13/tiles.dmi'
 	icon_state = "cardboard1"
+	random_icon_states = list("cardboard1", "cardboard2", "cardboard3", "cardboard4", "cardboard5")
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/cardboard/Initialize()
+/obj/effect/decal/cleanable/cardboard/Initialize()
 	. = ..()
-	icon_state = "cardboard[rand(1, 5)]"
 	var/matrix/M = matrix()
 	M.Turn(rand(0, 360))
 	transform = M
@@ -649,12 +650,14 @@
 	. = ..()
 	icon_state = "under[rand(1, 2)]"
 
-/obj/effect/decal/trash
+/obj/effect/decal/cleanable/trash
 	name = "trash"
 	icon = 'code/modules/wod13/props.dmi'
 	icon_state = "trash1"
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/trash/Initialize()
+/obj/effect/decal/cleanable/trash/Initialize()
 	. = ..()
 	icon_state = "trash[rand(1, 30)]"
 

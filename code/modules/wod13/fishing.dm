@@ -57,9 +57,40 @@
 					onflooricon = initial(onflooricon)
 					icon = onflooricon
 
+
+/obj/item/fishing_rod/proc/catch_fish_ocean(var/diceroll, mob/living/user)
+	if(diceroll <= 5)
+		return /obj/item/food/fish/tune
+	else if(diceroll <= 10)
+		return /obj/item/food/fish/catfish
+	else if(diceroll <= 15)
+		return /obj/item/food/fish/crab
+	else
+		return /obj/item/food/fish/shark
+
+/obj/item/fishing_rod/proc/catch_fish_sewer(var/diceroll, mob/living/user)
+	if(diceroll <= 2)
+		return /mob/living/simple_animal/hostile/regalrat
+	else if(diceroll <= 5)
+		return /mob/living/simple_animal/pet/rat
+	else if(diceroll <= 10)
+		return /obj/item/clothing/under/vampire/gangrel
+	else if(diceroll <= 12)
+		return /obj/item/storage/pill_bottle/antibirth
+	else if(diceroll <= 15)
+		return /obj/item/reagent_containers/food/drinks/beer/vampire
+	else if(diceroll <= 17)
+		return /obj/item/food/fish/catfish
+	else if(diceroll == 20)
+		return /obj/item/reagent_containers/food/drinks/meth/cocaine
+	else
+		return /obj/item/flashlight
+
 /obj/item/fishing_rod/attack_hand(mob/living/user)
 	if(anchored)
-		if(!istype(get_step(src, dir), /turf/open/floor/plating/vampocean))
+		var/is_ocean =  istype(get_step(src, dir), /turf/open/floor/plating/vampocean)
+		var/is_shit = istype(get_step(src, dir), /turf/open/floor/plating/shit)
+		if(!is_ocean && !is_shit)
 			return
 		if(user.isfishing)
 			return
@@ -71,29 +102,13 @@
 				catching = FALSE
 				user.isfishing = FALSE
 				var/diceroll = rand(1, 20)
-				var/IT
-				if(diceroll <= 5)
-					IT = /obj/item/food/fish/tune
-				else if(diceroll <= 10)
-					IT = /obj/item/food/fish/catfish
-				else if(diceroll <= 15)
-					IT = /obj/item/food/fish/crab
+				var/catched_object
+				if(istype(get_step(src, dir), /turf/open/floor/plating/vampocean))
+					catched_object = catch_fish_ocean(diceroll, user)
 				else
-					IT = /obj/item/food/fish/shark
-				new IT(user.loc)
+					catched_object = catch_fish_sewer(diceroll, user)
+				new catched_object(user.loc)
 				playsound(loc, 'code/modules/wod13/sounds/catched.ogg', 50, FALSE)
-//					var/IT = pick(/obj/item/food/fish/shark,
-//									/obj/item/food/fish/tune,
-//									/obj/item/food/fish/catfish,
-//									/obj/item/food/fish/crab)
-//				var/i = rand(1, 1000)
-//				if(i == 1000)
-//					IT = /obj/item/vtm_artifact/rand
-
-//					if(user.key)
-//						var/datum/preferences/P = GLOB.preferences_datums[ckey(user.key)]
-//						if(P)
-//							P.exper = min(calculate_mob_max_exper(user), P.exper+10)
 			else
 				catching = FALSE
 				user.isfishing = FALSE

@@ -21,7 +21,7 @@
 	throwforce = 25
 	wound_bonus = -10
 	bare_wound_bonus = 20
-	armour_penetration = 0
+	armour_penetration = 35
 	actions_types = list(/datum/action/item_action/cult_dagger)
 	var/drawing_rune = FALSE
 
@@ -89,7 +89,7 @@
 	block_chance = 50
 	throwforce = 20
 	force = 35
-	armour_penetration = 0
+	armour_penetration = 45
 	throw_speed = 1
 	throw_range = 3
 	sharpness = SHARP_EDGED
@@ -353,7 +353,7 @@
 	inhand_icon_state = "cult_armor"
 	desc = "A heavily-armored exosuit worn by warriors of the Nar'Sien cult. It can withstand hard vacuum."
 	w_class = WEIGHT_CLASS_BULKY
-	allowed = list(/obj/item/tome, /obj/item/melee/cultblade, /obj/item/tank/internals/)
+	allowed = list(/obj/item/tome, /obj/item/melee/cultblade)
 	armor = list(MELEE = 70, BULLET = 50, LASER = 30,ENERGY = 40, BOMB = 30, BIO = 30, RAD = 30, FIRE = 40, ACID = 75)
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/cult
 
@@ -476,9 +476,6 @@
 	if(totalcurses >= MAX_SHUTTLE_CURSES)
 		to_chat(user, "<span class='warning'>You try to shatter the orb, but it remains as solid as a rock!</span>")
 		to_chat(user, "<span class='danger'><span class='big'>It seems that the blood cult has exhausted its ability to curse the emergency escape shuttle. It would be unwise to create more cursed orbs or to continue to try to shatter this one.</span></span>")
-		return
-	if(locate(/obj/narsie) in GLOB.poi_list)
-		to_chat(user, "<span class='warning'>Nar'Sie is already on this plane, there is no delaying the end of all things.</span>")
 		return
 
 	if(SSshuttle.emergency.mode == SHUTTLE_CALL)
@@ -641,7 +638,7 @@
 	force = 17
 	throwforce = 40
 	throw_speed = 2
-	armour_penetration = 0
+	armour_penetration = 30
 	block_chance = 30
 	attack_verb_continuous = list("attacks", "impales", "stabs", "tears", "lacerates", "gores")
 	attack_verb_simple = list("attack", "impale", "stab", "tear", "lacerate", "gore")

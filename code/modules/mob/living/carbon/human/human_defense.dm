@@ -54,25 +54,6 @@
 
 
 /mob/living/carbon/human/bullet_act(obj/projectile/P, def_zone, piercing_hit = FALSE)
-	if(ishuman(P.firer))
-		var/mob/living/carbon/human/ohvampire = P.firer
-		if(ohvampire.MyPath && P.firer != src)
-			ohvampire.MyPath.trigger_morality("attackfirst")
-	if(MyPath && src != P.firer && !warform)
-		if(MyPath.ready_events["attacked"] == 0 && MyPath.ready_events["attackedfail"] == 0)
-			if(secret_vampireroll(MyPath.courage, 3, src, TRUE, FALSE) > 2)
-				MyPath.trigger_morality("attacked")
-			else
-				if(MyPath.trigger_morality("attackedfail"))
-					caster = P.firer
-					var/datum/cb = CALLBACK(src, TYPE_PROC_REF(/mob/living/carbon/human, step_away_caster))
-					for(var/i in 1 to 20)
-						addtimer(cb, (i - 1)*total_multiplicative_slowdown())
-//					emote("scream")
-					do_jitter_animation(30)
-			spawn(10 MINUTES)
-				MyPath.ready_events["attacked"] = 0
-				MyPath.ready_events["attackedfail"] = 0
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCK_PROJECTILES) && !HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		if(prob(75))
 			src.visible_message("<span class='danger'>[src] effortlessly swats the projectile aside! [p_they(TRUE)] can block bullets with [p_their()] bare hands!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
@@ -80,16 +61,6 @@
 			P.firer = src
 			P.setAngle(rand(0, 360))//SHING
 			emote("flip")
-			return BULLET_ACT_FORCE_PIERCE
-	var/my_dodge_chances = get_a_dexterity(src)+get_a_alertness(src)-getarmor(def_zone, LETHAL)
-	if(my_dodge_chances && stat == 0 && body_position == STANDING_UP && get_dist(src, P.firer) >= 3 && angle2dir_cardinal(P.original_angle) != dir)
-		if(secret_vampireroll(my_dodge_chances, 6+get_health_difficulty(), src, TRUE) >= 3)
-			var/matrix/initial_transform = matrix(transform)
-			var/matrix/rotated_transform = transform.Turn(pick(-15, 15))
-			animate(src, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
-			animate(transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
-			src.visible_message("<span class='danger'>[src] dodges the projectile!</span>", "<span class='danger'>You dodge the projectile!</span>")
-			playsound(get_turf(src), pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, TRUE)
 			return BULLET_ACT_FORCE_PIERCE
 	if(dna?.species)
 		var/spec_return = dna.species.bullet_act(P, src)
@@ -177,7 +148,6 @@
 	return FALSE
 
 /mob/living/carbon/human/proc/check_block()
-
 	if(mind)
 		if(mind.martial_art && prob(mind.martial_art.block_chance) && mind.martial_art.can_use(src) && in_throw_mode && !incapacitated(FALSE, TRUE))
 			return TRUE
@@ -295,7 +265,7 @@
 			if(check_shields(M, damage, "the [M.name]"))
 				return FALSE
 			if(stat != DEAD)
-				apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, BASHING))
+				apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, MELEE))
 		return TRUE
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M)
@@ -320,7 +290,7 @@
 		var/obj/item/bodypart/affecting = get_bodypart(ran_zone(M.zone_selected))
 		if(!affecting)
 			affecting = get_bodypart(BODY_ZONE_CHEST)
-		var/armor_block = run_armor_check(affecting, LETHAL,"","",10)
+		var/armor_block = run_armor_check(affecting, MELEE,"","",10)
 
 		playsound(loc, 'sound/weapons/slice.ogg', 25, TRUE, -1)
 		visible_message("<span class='danger'>[M] slashes at [src]!</span>", \
@@ -361,7 +331,7 @@
 		var/obj/item/bodypart/affecting = get_bodypart(ran_zone(L.zone_selected))
 		if(!affecting)
 			affecting = get_bodypart(BODY_ZONE_CHEST)
-		var/armor_block = run_armor_check(affecting, BASHING)
+		var/armor_block = run_armor_check(affecting, MELEE)
 		apply_damage(damage, BRUTE, affecting, armor_block)
 
 
@@ -378,13 +348,8 @@
 	var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
 	if(!affecting)
 		affecting = get_bodypart(BODY_ZONE_CHEST)
-	var/modifikator = secret_vampireroll(get_a_strength(M)+get_a_brawl(M), 4, M)
-	if(modifikator <= 0)
-		M.visible_message("<span class='warning'>[M] fails to attack [src]!</span>", \
-						"<span class='userdanger'>You fail to attack [src]!</span>")
-		return
-	var/armor = run_armor_check(affecting, BASHING, armour_penetration = 0)
-	apply_damage(round(damage*((modifikator+1)/4)), M.melee_damage_type, affecting, armor, wound_bonus = M.wound_bonus, bare_wound_bonus = M.bare_wound_bonus, sharpness = M.sharpness)
+	var/armor = run_armor_check(affecting, MELEE, armour_penetration = M.armour_penetration)
+	apply_damage(damage, M.melee_damage_type, affecting, armor, wound_bonus = M.wound_bonus, bare_wound_bonus = M.bare_wound_bonus, sharpness = M.sharpness)
 
 
 /mob/living/carbon/human/attack_slime(mob/living/simple_animal/slime/M)
@@ -409,7 +374,7 @@
 	var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
 	if(!affecting)
 		affecting = get_bodypart(BODY_ZONE_CHEST)
-	var/armor_block = run_armor_check(affecting, BASHING)
+	var/armor_block = run_armor_check(affecting, MELEE)
 	apply_damage(damage, BRUTE, affecting, armor_block, wound_bonus=wound_mod)
 
 
@@ -488,7 +453,7 @@
 	show_message("<span class='userdanger'>The blob attacks you!</span>")
 	var/dam_zone = pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 	var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
-	apply_damage(5, BRUTE, affecting, run_armor_check(affecting, AGGRAVATED))
+	apply_damage(5, BRUTE, affecting, run_armor_check(affecting, MELEE))
 
 
 ///Calculates the siemens coeff based on clothing and species, can also restart hearts.
@@ -793,9 +758,9 @@
 
 		for(var/obj/item/I in LB.embedded_objects)
 			if(I.isEmbedHarmless())
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>"
+				combined_msg += "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] stuck to your [LB.name]!</a>"
 			else
-				combined_msg += "\t <a href='?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>"
+				combined_msg += "\t <a href='byond://?src=[REF(src)];embedded_object=[REF(I)];embedded_limb=[REF(LB)]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>"
 
 	for(var/t in missing)
 		combined_msg += "<span class='boldannounce'>Your [parse_zone(t)] is missing!</span>"

@@ -115,7 +115,7 @@
 	damage_coeff = list(BRUTE = 1, BURN = 0.6, TOX = 0.5, CLONE = 1.5, STAMINA = 0, OXY = 1)
 	melee_damage_lower = 20
 	melee_damage_upper = 20
-	armour_penetration = 0
+	armour_penetration = 15
 	obj_damage = 20
 	deathmessage = "collapses into a pile of goo!"
 	///The ability to give yourself a metabolic speed boost which raises heat
@@ -348,7 +348,7 @@
 		message = "<span class='notice'>You prepare to launch a mending globule. <B>Left-click to fire at a target!</B></span>"
 		add_ranged_ability(user, message, TRUE)
 
-/obj/effect/proc_holder/globules/InterceptClickOn(mob/living/caller, params, atom/target)
+/obj/effect/proc_holder/globules/InterceptClickOn(mob/living/clicker, params, atom/target)
 	. = ..()
 	if(.)
 		return

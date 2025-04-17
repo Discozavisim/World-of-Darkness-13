@@ -34,7 +34,7 @@
 	friendly_verb_simple = "stare down"
 	icon = 'icons/mob/32x64.dmi'
 	speak_emote = list("roars")
-	armour_penetration = 0
+	armour_penetration = 100
 	melee_damage_lower = 100
 	melee_damage_upper = 100
 	speed = 10
@@ -288,7 +288,7 @@
 	name ="death bolt"
 	icon_state= "chronobolt"
 	damage = 100
-	armour_penetration = 0
+	armour_penetration = 100
 	speed = 2
 	eyeblur = 0
 	damage_type = BRUTE
@@ -646,7 +646,7 @@
 	if(..() && !ready_to_deploy)
 		AddElement(/datum/element/point_of_interest)
 		ready_to_deploy = TRUE
-		notify_ghosts("An anomalous crystal has been activated in [get_area(src)]! This crystal can always be used by ghosts hereafter.", enter_link = "<a href=?src=[REF(src)];ghostjoin=1>(Click to enter)</a>", ghost_sound = 'sound/effects/ghost2.ogg', source = src, action = NOTIFY_ATTACK, header = "Anomalous crystal activated")
+		notify_ghosts("An anomalous crystal has been activated in [get_area(src)]! This crystal can always be used by ghosts hereafter.", enter_link = "<a href=byond://?src=[REF(src)];ghostjoin=1>(Click to enter)</a>", ghost_sound = 'sound/effects/ghost2.ogg', source = src, action = NOTIFY_ATTACK, header = "Anomalous crystal activated")
 
 /obj/machinery/anomalous_crystal/helpers/attack_ghost(mob/dead/observer/user)
 	. = ..()

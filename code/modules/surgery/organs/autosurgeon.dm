@@ -44,6 +44,9 @@
 	else if(!storedorgan)
 		to_chat(user, "<span class='alert'>[src] currently has no implant stored.</span>")
 		return
+	if(storedorgan == /obj/item/organ/penis && user.gender == FEMALE)
+		to_chat(user, "<span class='alert'>[src] refuse to give you penis...</span>")
+		return
 	storedorgan.Insert(user)//insert stored organ into the user
 	user.visible_message("<span class='notice'>[user] presses a button on [src], and you hear a short mechanical noise.</span>", "<span class='notice'>You feel a sharp sting as [src] plunges into your body.</span>")
 	playsound(get_turf(user), 'sound/weapons/circsawhit.ogg', 50, TRUE)

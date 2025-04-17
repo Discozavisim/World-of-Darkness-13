@@ -114,10 +114,10 @@
 		if(vw.low)
 			return TRUE
 
-/obj/structure/table/CanAStarPass(ID, dir, caller)
+/obj/structure/table/CanAStarPass(ID, dir, pathfinding_atom)
 	. = !density
-	if(ismovable(caller))
-		var/atom/movable/mover = caller
+	if(ismovable(pathfinding_atom))
+		var/atom/movable/mover = pathfinding_atom
 		. = . || (mover.pass_flags & PASSTABLE)
 
 /obj/structure/table/proc/tableplace(mob/living/user, mob/living/pushed_mob)
@@ -223,9 +223,6 @@
 		return TRUE
 
 	if(user.a_intent != INTENT_HARM && !(I.item_flags & ABSTRACT))
-		var/obj/item/reagent_containers/food/drinks/meth/MT = I
-		if(istype(I, /obj/item/reagent_containers/food/drinks/meth) && MT.open)
-			return
 		if(user.transferItemToLoc(I, drop_location(), silent = FALSE))
 			var/list/click_params = params2list(params)
 			//Center the icon where the user clicked.
@@ -572,6 +569,9 @@
 	buckle_requires_restraints = TRUE
 	var/mob/living/carbon/human/patient = null
 	var/obj/machinery/computer/operating/computer = null
+
+/obj/structure/table/optable/optable2 // wow, it faces the other way.
+	icon_state = "surgeonchair2"
 
 /obj/structure/table/optable/Initialize()
 	. = ..()

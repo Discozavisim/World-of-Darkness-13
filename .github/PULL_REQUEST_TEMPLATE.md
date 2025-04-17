@@ -7,20 +7,32 @@
 
 ## Why It's Good For The Game
 
-<!-- Please add a short description of why you think these changes would benefit the game. If you can't justify it in words, it might not be worth adding. -->
+<!-- Argue for the merits of your changes and how they benefit the game, especially if they are controversial and/or far reaching. If you can't actually explain WHY what you are doing will improve the game, then it probably isn't good for the game in the first place. -->
+
+## Testing Photographs and Procedure
+<!-- Include any screenshots/videos/debugging steps of the modified code functioning successfully, ideally including edge cases. -->
+<!-- You can uncomment line 1 @ _maps/_basemap.dm to boot up a test map that loads much faster. -->
+<details>
+<summary>Screenshots&Videos</summary>
+
+Put screenshots and videos here with an empty line between the screenshots and the `<details>` tags.
+
+</details>
 
 ## Changelog
+
+<!-- If your PR modifies aspects of the game that can be concretely observed by players or admins you should add a changelog. If your change does NOT meet this description, remove this section. Be sure to properly mark your PRs to prevent unnecessary GBP loss. You can read up on GBP and its effects on PRs in the tgstation guides for contributors. Please note that maintainers freely reserve the right to remove and add tags should they deem it appropriate. You can attempt to finagle the system all you want, but it's best to shoot for clear communication right off the bat. -->
+
 :cl:
-add: Added new things
+add: Added new mechanics or gameplay changes
 add: Added more things
 del: Removed old things
-tweak: tweaked a few things
+qol: made something easier to use
 balance: rebalanced something
 fix: fixed a few things
-soundadd: added a new sound thingy
-sounddel: removed an old sound thingy
-imageadd: added some icons and images
-imagedel: deleted some icons and images
+sound: added/modified/removed audio or sound effects
+image: added/modified/removed some icons or images
+map: added/modified/removed map content
 spellcheck: fixed a few typos
 code: changed some code
 refactor: refactored some code

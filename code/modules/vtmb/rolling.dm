@@ -492,8 +492,6 @@ SUBSYSTEM_DEF(woddices)
 				background-color: #090909; color: white;
 			}
 
-			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 			</style>
 			"}
@@ -716,7 +714,7 @@ SUBSYSTEM_DEF(woddices)
 			if(host.bank_id == account.bank_id)
 				dat += "<b>My bank account code is: [account.code]</b><BR>"
 				break
-		host << browse(dat, "window=vampire;size=400x450;border=1;can_resize=1;can_minimize=0")
+		host << browse(HTML_SKELETON(dat), "window=vampire;size=400x450;border=1;can_resize=1;can_minimize=0")
 		onclose(host, "vampire", src)
 
 /mob/living/carbon/human

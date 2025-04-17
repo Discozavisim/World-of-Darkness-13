@@ -40,21 +40,6 @@
 /obj/effect/mob_spawn/attack_ghost(mob/user)
 	if(!SSticker.HasRoundStarted() || !loc || !ghost_usable)
 		return
-	if(!usr.can_respawn())
-		if(istype(usr.client.mob, /mob/dead/observer))
-			var/mob/dead/observer/obs = usr.client.mob
-			if(obs.auspex_ghosted)
-				to_chat(usr, "<span class='notice'>You cannot spawn while astrally projecting!</span>")
-				return
-
-		to_chat(usr, "<span class='notice'>You need to wait [DisplayTimeText(GLOB.respawn_timers[usr.client.ckey] + 2 MINUTES - world.time)] before you can  spawn.</span>")
-
-		if(check_rights_for(usr.client, R_ADMIN))
-			if(alert(usr, "Do you want to respawn faster than usual player? (only admins can)", "Respawn", "Yes", "No") != "Yes")
-				return
-			GLOB.respawn_timers[usr.client.ckey] = 0
-		else
-			return
 	var/ghost_role = alert("Become [mob_name]? (Warning, You can no longer be revived!)",,"Yes","No")
 	if(ghost_role == "No" || !loc || QDELETED(user))
 		return

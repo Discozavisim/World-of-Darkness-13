@@ -4,9 +4,9 @@ GLOBAL_LIST_EMPTY(ghost_images_simple) //this is a list of all ghost images as t
 GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 var/list/CMNoir = list(0.3,0.3,0.3,0,\
-						0.3,0.3,0.3,0,\
-						0.3,0.3,0.3,0,\
-						0.0,0.0,0.0,1,)// [ChillRaccoon] - more about "color matrix" you can read in BYOND documentation
+			 		   0.3,0.3,0.3,0,\
+					   0.3,0.3,0.3,0,\
+					   0.0,0.0,0.0,1,)// [ChillRaccoon] - more about "color matrix" you can read in BYOND documentation
 
 /mob/dead/observer
 	name = "ghost"
@@ -71,13 +71,6 @@ var/list/CMNoir = list(0.3,0.3,0.3,0,\
 	var/datum/spawners_menu/spawners_menu
 	var/aghosted = FALSE
 	var/auspex_ghosted = FALSE
-
-//mob/dead/observer/Login()
-//	..()
-//	if(client && !aghosted)
-//		animate(client, color = CMNoir, time = 30)
-//		client.color = CMNoir
-//There was observer music here. It's gone now.
 
 /mob/dead/observer/Initialize()
 	set_invisibility(GLOB.observer_default_invisibility)
@@ -319,7 +312,6 @@ Works together with spawning an observer, noted above.
 		// [ChillRaccoon] - setting mob icons
 		ghost.icon = src.icon // [ChillRaccoon] - We should transfer mob visuals to the ghost
 		ghost.overlays = src.overlays // [ChillRaccoon] - Overlays too, else we will not see wounds, hair, skin, and etc.
-		ghost.color = CMNoir // [ChillRaccoon] - it makes our ghost looks like noir
 		// -------
 		ghost.key = key
 		ghost.client.init_verbs()
@@ -343,7 +335,7 @@ Works together with spawning an observer, noted above.
 			ghost.mind = null
 		return ghost
 
-/mob/living/ghostize(can_reenter_corpse = TRUE)
+/mob/living/ghostize(can_reenter_corpse = TRUE, aghosted = FALSE, auspex_ghosted = FALSE)
 	. = ..()
 	if(. && can_reenter_corpse)
 		var/mob/dead/observer/ghost = .
@@ -376,7 +368,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/dead/observer/Move(NewLoc, direct, glide_size_override = 32)
 	..()
-
+/*
 	if(updatedir)
 		setDir(direct)//only update dir if we actually need it, so overlays won't spin on base sprites that don't have directions of their own
 	var/oldloc = loc
@@ -400,7 +392,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			x--
 
 	Moved(oldloc, direct)
-
+*/
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
@@ -478,7 +470,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 				A.add_overlay(source)
 				source.layer = old_layer
 				source.plane = old_plane
-	to_chat(src, "<span class='ghostalert'><a href=?src=[REF(src)];reenter=1>(Click to re-enter)</a></span>")
+	to_chat(src, "<span class='ghostalert'><a href=byond://?src=[REF(src)];reenter=1>(Click to re-enter)</a></span>")
 	if(sound)
 		SEND_SOUND(src, sound(sound))
 

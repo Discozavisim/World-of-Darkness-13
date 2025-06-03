@@ -1,3 +1,90 @@
+/datum/supply_pack/vampire/vegetable_supplies //behold, ordering legal things.
+	name = "Community Produce Seed Pack" //aimed at helping the poorest members of community.
+	desc = "Contains a selection of seeds intended for use with the community or personal gardens. Bulk at a cheaper price. No trays."
+	cost = 150
+	contains = list(
+		/obj/item/seeds/cabbage,
+		/obj/item/seeds/carrot,
+		/obj/item/seeds/corn,
+		/obj/item/seeds/onion,
+		/obj/item/seeds/carrot/parsnip,
+		/obj/item/seeds/peas,
+		/obj/item/seeds/potato,
+		/obj/item/seeds/pumpkin,
+		/obj/item/seeds/soya,
+		/obj/item/seeds/tomato,
+		/obj/item/seeds/apple,
+		/obj/item/seeds/wheat/rice,
+		/obj/item/seeds/wheat/oat,
+		/obj/item/seeds/aloe,
+	)
+	crate_name = "veggie crate"
+
+/datum/supply_pack/vampire/flower_supplies
+	name = "Community Flower Seed Pack" //verified as local, non-invasive from https://calscape.org/ & https://plants.usda.gov/
+	desc = "Contains a selection of flower seeds. No trays."
+	cost = 150
+	contains = list(
+		/obj/item/seeds/poppy,
+		/obj/item/seeds/poppy,
+		/obj/item/seeds/poppy,
+		/obj/item/seeds/sunflower,
+		/obj/item/seeds/sunflower,
+		/obj/item/seeds/sunflower,
+		/obj/item/seeds/poppy/geranium,
+		/obj/item/seeds/poppy/geranium,
+		/obj/item/seeds/poppy/geranium,
+		/obj/item/seeds/poppy/lily,
+		/obj/item/seeds/poppy/lily,
+		/obj/item/seeds/poppy/lily,
+		/obj/item/seeds/forgetmenot,
+		/obj/item/seeds/forgetmenot,
+		/obj/item/seeds/forgetmenot,
+	)
+	crate_name = "flower crate"
+
+/datum/supply_pack/vampire/hydro_tray
+	name = "Hydroponics Tray Kit"
+	desc = "Everything you need to start your own hydroponics setup."
+	cost = 200
+	contains = list(/obj/machinery/hydroponics)
+	crate_name = "hydro crate"
+
+/datum/supply_pack/vampire/hydro_supplies
+	name = "Hydroponics Tool Kit"
+	desc = "All the tools you need to cultivate plants at home."
+	cost = 400
+	contains = list(/obj/item/secateurs,
+		/obj/item/cultivator/rake,
+		/obj/item/cultivator,
+		/obj/item/reagent_containers/spray/weedspray,
+		/obj/item/reagent_containers/spray/pestspray,
+		/obj/item/shovel/spade,
+		/obj/item/storage/bag/plants,
+		/obj/item/reagent_containers/glass/bucket/wooden,
+		)
+	crate_name = "hydro crate"
+
+/datum/supply_pack/vampire/hydro_adv_supplies
+	name = "Advanced Fertilizer"
+	desc = "Customized fertilizer mixed for the superior homegrown botanist."
+	cost = 500
+	contains = list(
+		/obj/item/reagent_containers/glass/bottle/nutrient/rh,
+		/obj/item/reagent_containers/glass/bottle/nutrient/rh,
+		/obj/item/reagent_containers/glass/bottle/nutrient/rh,
+		/obj/item/reagent_containers/glass/bottle/nutrient/rh,
+		/obj/item/reagent_containers/glass/bottle/nutrient/rh,
+		)
+	crate_name = "hydro crate"
+
+
+/datum/supply_pack/vampire/weed_supplies
+	desc = "Contains a bailer and some seeds. No trays."
+	cost = 100
+	contains = list(/obj/item/bailer, /obj/item/weedseed, /obj/item/weedseed, /obj/item/weedseed, /obj/item/weedseed, /obj/item/weedseed)
+	crate_name = "hydro crate"
+
 /datum/supply_pack/vampire/weed_tray
 	name = "Weed Tray"
 	desc = "Contains a tray of weed."

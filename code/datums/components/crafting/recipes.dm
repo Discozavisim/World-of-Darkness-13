@@ -723,7 +723,33 @@
 	reqs = list(/obj/item/bodypart/l_arm/robot = 1, /obj/item/clothing/gloves/boxing = 1)
 	result = /obj/item/extendohand
 	category = CAT_MISC
+*/
 
+/datum/crafting_recipe/flowercrown_mixed
+	name = "Mixed flower crown"
+	result = /obj/item/flower_crown
+	reqs = list (/obj/item/food/grown/flower/ = 5)
+	category = CAT_MISC
+
+/datum/crafting_recipe/flowercrown_sunflower
+	name = "Sunflower flower crown"
+	result = /obj/item/flower_crown/sunflower
+	reqs = list (/obj/item/food/grown/flower/sunflower = 5)
+	category = CAT_MISC
+
+/datum/crafting_recipe/flowercrown_poppy
+	name = "Poppy flower crown"
+	result = /obj/item/flower_crown/poppy
+	reqs = list (/obj/item/food/grown/flower/poppy = 5)
+	category = CAT_MISC
+
+/datum/crafting_recipe/flowercrown_lily
+	name = "Lily flower crown"
+	result = /obj/item/flower_crown/lily
+	reqs = list (/obj/item/food/grown/flower/poppy/lily = 5)
+	category = CAT_MISC
+
+/*
 /datum/crafting_recipe/chemical_payload
 	name = "Chemical Payload (C4)"
 	result = /obj/item/bombcore/chemical

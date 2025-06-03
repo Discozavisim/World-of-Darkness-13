@@ -1,3 +1,34 @@
+
+// Flower template originally created to facilitate different bouquet types with minimal overlap
+/obj/item/food/grown/flower
+	seed = /obj/item/seeds/template //seed the flower will grow from.
+	name = "flower" //name of the flower
+	desc = "you shouldn't be seeing this. please contact staff." //examine text
+	icon_state = "poppy" //the sprite to render
+	slot_flags = ITEM_SLOT_HEAD //Where you can equip it
+	bite_consumption_mod = 3 //How many bites to eat it
+	foodtypes = VEGETABLES | GROSS
+	distill_reagent = /datum/reagent/consumable/ethanol
+
+/obj/item/seeds/template //seed template to make the flower template work. you can't specify a seed that doesn't exist.
+	name = "pack of testing seeds"
+	desc = "These seeds grow into code testing flowers."
+	icon_state = "seed-poppy"
+	species = "flower"
+	plantname = "flower"
+	product = /obj/item/food/grown/flower
+	endurance = 10
+	maturation = 8
+	yield = 6
+	potency = 20
+	instability = 1 //Flowers have 1 instability, if you want to breed out instability, crossbreed with flowers.
+	growthstages = 3
+	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
+	icon_grow = "poppy-grow"
+	icon_dead = "poppy-dead"
+	mutatelist = list(/obj/item/seeds/poppy/geranium, /obj/item/seeds/poppy/lily)
+	reagents_add = list(/datum/reagent/consumable/nutriment = 0.05)
+
 // Poppy
 /obj/item/seeds/poppy
 	name = "pack of poppy seeds"
@@ -5,7 +36,7 @@
 	icon_state = "seed-poppy"
 	species = "poppy"
 	plantname = "Poppy Plants"
-	product = /obj/item/food/grown/poppy
+	product = /obj/item/food/grown/flower/poppy
 	endurance = 10
 	maturation = 8
 	yield = 6
@@ -18,7 +49,7 @@
 	mutatelist = list(/obj/item/seeds/poppy/geranium, /obj/item/seeds/poppy/lily)
 	reagents_add = list(/datum/reagent/medicine/c2/libital = 0.2, /datum/reagent/consumable/nutriment = 0.05)
 
-/obj/item/food/grown/poppy
+/obj/item/food/grown/flower/poppy
 	seed = /obj/item/seeds/poppy
 	name = "poppy"
 	desc = "Long-used as a symbol of rest, peace, and death."
@@ -35,10 +66,10 @@
 	icon_state = "seed-lily"
 	species = "lily"
 	plantname = "Lily Plants"
-	product = /obj/item/food/grown/poppy/lily
+	product = /obj/item/food/grown/flower/poppy/lily
 	mutatelist = list(/obj/item/seeds/poppy/lily/trumpet)
 
-/obj/item/food/grown/poppy/lily
+/obj/item/food/grown/flower/poppy/lily
 	seed = /obj/item/seeds/poppy/lily
 	name = "lily"
 	desc = "A beautiful orange flower."
@@ -90,13 +121,15 @@
 	icon_state = "seed-geranium"
 	species = "geranium"
 	plantname = "Geranium Plants"
+	icon_grow = "geranium-grow"
+	icon_dead = "geranium-dead"
 	product = /obj/item/food/grown/poppy/geranium
 	mutatelist = list(/obj/item/seeds/poppy/geranium/fraxinella)
 
 /obj/item/food/grown/poppy/geranium
 	seed = /obj/item/seeds/poppy/geranium
 	name = "geranium"
-	desc = "A beautiful blue flower."
+	desc = "A beautiful purple flower."
 	icon_state = "geranium"
 
 ///Fraxinella seeds.
@@ -156,7 +189,7 @@
 	icon_state = "seed-sunflower"
 	species = "sunflower"
 	plantname = "Sunflowers"
-	product = /obj/item/grown/sunflower
+	product = /obj/item/food/grown/flower/sunflower
 	endurance = 20
 	production = 2
 	yield = 2
@@ -168,7 +201,7 @@
 	mutatelist = list(/obj/item/seeds/sunflower/moonflower, /obj/item/seeds/sunflower/novaflower)
 	reagents_add = list(/datum/reagent/consumable/cornoil = 0.08, /datum/reagent/consumable/nutriment = 0.04)
 
-/obj/item/grown/sunflower // FLOWER POWER!
+/obj/item/food/grown/flower/sunflower // FLOWER POWER!
 	seed = /obj/item/seeds/sunflower
 	name = "sunflower"
 	desc = "It's beautiful! A certain person might beat you to death if you trample these."
@@ -183,7 +216,7 @@
 	throw_speed = 1
 	throw_range = 3
 
-/obj/item/grown/sunflower/attack(mob/M, mob/user)
+/obj/item/food/grown/flower/sunflower/attack(mob/M, mob/user)
 	to_chat(M, "<font color='green'>[user] smacks you with a sunflower!<font color='orange'><b>FLOWER POWER!</b></font></font>")
 	to_chat(user, "<font color='green'>Your sunflower's <font color='orange'><b>FLOWER POWER</b></font> strikes [M]!</font>")
 
@@ -277,3 +310,52 @@
 	if(!user.gloves)
 		to_chat(user, "<span class='danger'>The [name] burns your bare hand!</span>")
 		user.adjustFireLoss(rand(1, 5))
+
+/obj/item/seeds/forgetmenot
+	name = "pack of forget me not seeds"
+	desc = "These seeds grow into forget me nots."
+	icon_state = "seed-forget_me_not"
+	species = "forget_me_not"
+	plantname = "Forget Me Not Plants"
+	product = /obj/item/food/grown/flower/forgetmenot
+	endurance = 10
+	maturation = 8
+	yield = 6
+	potency = 20
+	instability = 1 //Flowers have 1 instability, if you want to breed out instability, crossbreed with flowers.
+	growthstages = 3
+	growing_icon = 'icons/obj/hydroponics/growing_flowers.dmi'
+	icon_grow = "forget_me_not-grow"
+	icon_dead = "forget_me_not-dead"
+	reagents_add = list(/datum/reagent/medicine/c2/libital = 0.2, /datum/reagent/consumable/nutriment = 0.05)
+
+/obj/item/food/grown/flower/forgetmenot
+	seed = /obj/item/seeds/forgetmenot
+	name = "forget me not"
+	desc = "A beautiful blue flower."
+	icon_state = "forget_me_not"
+
+/obj/item/flower_crown
+	name = "variety flower crown"
+	desc = "A flower crown woven out of an assortment of flowers."
+	icon = 'icons/obj/clothing/hats.dmi'
+	icon_state = "variety_crown"
+	slot_flags = ITEM_SLOT_HEAD
+	grid_width = 2 GRID_BOXES
+	grid_height = 2 GRID_BOXES
+	cost = 50
+
+/obj/item/flower_crown/sunflower
+	name = "sunflower flower crown"
+	desc = "A flower crown woven out of sunflowers."
+	icon_state = "sunflower_crown"
+
+/obj/item/flower_crown/poppy
+	name = "poppy flower crown"
+	desc = "A flower crown woven out of poppies."
+	icon_state = "poppy_crown"
+
+/obj/item/flower_crown/lily
+	name = "lily flower crown"
+	desc = "A flower crown woven out of lillies."
+	icon_state = "lily_crown"

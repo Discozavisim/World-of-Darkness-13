@@ -1,6 +1,6 @@
 /obj/damap
 	icon = 'code/modules/wod13/map.dmi'
-	icon_state = "map"
+	icon_state = "map2"
 	plane = GAME_PLANE
 	layer = ABOVE_NORMAL_TURF_LAYER
 

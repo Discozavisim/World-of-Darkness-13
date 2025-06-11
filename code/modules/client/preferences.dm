@@ -42,6 +42,14 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	// Custom Keybindings
 	var/list/key_bindings = list()
 
+	var/list/equipped_gear = list()
+	var/show_loadout = TRUE
+	var/gear_tab = "General"
+	var/loadout_dots_max = 0
+	var/loadout_dots = 0
+	var/loadout_slots = 0
+	var/loadout_slots_max = 0
+
 	var/tgui_fancy = TRUE
 	var/tgui_lock = FALSE
 	var/windowflashing = TRUE
@@ -323,6 +331,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		discipline_levels += 1
 	humanity = clane.start_humanity
 	enlightenment = clane.enlightenment
+	equipped_gear = list()
 	random_species()
 	random_character()
 	body_model = rand(1, 3)
@@ -380,7 +389,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(slot_randomized)
 		load_character(default_slot) // Reloads the character slot. Prevents random features from overwriting the slot if saved.
 		slot_randomized = FALSE
-	update_preview_icon()
+
+	show_loadout = (current_tab == 5) ? show_loadout : FALSE
+	update_preview_icon(show_loadout)
+//	update_preview_icon()
 	var/list/dat = list("<center>")
 
 	if(istype(user, /mob/dead/new_player))
@@ -389,6 +401,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	dat += "<a href='byond://?_src_=prefs;preference=tab;tab=2' [current_tab == 2 ? "class='linkOn'" : ""]>[make_font_cool("GAME PREFERENCES")]</a>"
 	dat += "<a href='byond://?_src_=prefs;preference=tab;tab=3' [current_tab == 3 ? "class='linkOn'" : ""]>[make_font_cool("OOC PREFERENCES")]</a>"
 	dat += "<a href='byond://?_src_=prefs;preference=tab;tab=4' [current_tab == 4 ? "class='linkOn'" : ""]>[make_font_cool("CUSTOM KEYBINDINGS")]</a>"
+	dat += "<a href='byond://?_src_=prefs;preference=tab;tab=5' [current_tab == 5 ? "class='linkOn'" : ""]>[make_font_cool("LOADOUT")]</a>"
 
 	if(!path)
 		dat += "<div class='notice'>Please create an account to save your preferences</div>"
@@ -399,937 +412,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	switch(current_tab)
 		if (0) // Character Settings#
-			if(path)
-				var/savefile/S = new /savefile(path)
-				if(S)
-					dat += "<center>"
-					var/name
-					var/unspaced_slots = 0
-					for(var/i=1, i<=max_save_slots, i++)
-						unspaced_slots++
-						if(unspaced_slots > 4)
-							dat += "<br>"
-							unspaced_slots = 0
-						S.cd = "/character[i]"
-						S["real_name"] >> name
-						if(!name)
-							name = "Character[i]"
-						if(istype(user, /mob/dead/new_player))
-							dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[i];' [i == default_slot ? "class='linkOn'" : ""]>[name]</a> "
-					dat += "</center>"
-
-			if(reason_of_death != "None")
-				dat += "<center><b>Last death</b>: [reason_of_death]</center>"
-
-			dat += "<center><h2>[make_font_cool("OCCUPATION CHOISES")]</h2>"
-			dat += "<a href='byond://?_src_=prefs;preference=job;task=menu'>Set Occupation Preferences</a><br></center>"
-			dat += "<h2>[make_font_cool("IDENTITY")]</h2>"
-			dat += "<table width='100%'><tr><td width='75%' valign='top'>"
-			if(is_banned_from(user.ckey, "Appearance"))
-				dat += "<b>You are banned from using custom names and appearances. You can continue to adjust your characters, but you will be randomised once you join the game.</b><br>"
-			dat += "<a href='byond://?_src_=prefs;preference=name;task=random'>Random Name</A> "
-			dat += "<br><b>Name:</b> "
-			dat += "<a href='byond://?_src_=prefs;preference=name;task=input'>[real_name]</a><BR>"
-
-
-			if(!(AGENDER in pref_species.species_traits))
-				var/dispGender
-				if(gender == MALE)
-					dispGender = "Male"
-				else if(gender == FEMALE)
-					dispGender = "Female"
-				else
-					dispGender = "Other"
-				dat += "<b>Gender:</b> <a href='byond://?_src_=prefs;preference=gender'>[dispGender]</a>"
-				if(gender == PLURAL || gender == NEUTER)
-					dat += "<BR><b>Body Type:</b> <a href='byond://?_src_=prefs;preference=body_type'>[body_type == MALE ? "Male" : "Female"]</a>"
-
-			var/body_m = "Normal"
-			switch(body_model)
-				if(1)
-					body_m = "Slim"
-				if(2)
-					body_m = "Normal"
-				if(3)
-					body_m = "Fat"
-
-			dat += "<BR><b>Shape:</b> <a href='byond://?_src_=prefs;preference=body_model'>[body_m]</a>"
-
-			dat += "<br><b>Biological Age:</b> <a href='byond://?_src_=prefs;preference=age;task=input'>[age]</a>"
-			dat += "<br><b>Actual Age:</b> <a href='byond://?_src_=prefs;preference=total_age;task=input'>[max(age, total_age)]</a>"
-			dat += "<br><b>Known Languages:</b> <br>English"
-			for(var/i in languages)
-				var/datum/language/L = i
-				dat += "<br>[initial(L.name)]"
-			if(length(languages) < Linguistics)
-				dat += "<br><a href='byond://?_src_=prefs;preference=languages;task=input'>Learn</a>"
-			if(length(languages))
-				dat += "<br><a href='byond://?_src_=prefs;preference=languages_reset;task=input'>Reset</a>"
-
-			dat += "</tr></table>"
-
-			dat += "<h2>[make_font_cool("BODY")]</h2>"
-			/*
-			dat += "<BR>"
-			var/max_death = 6
-			if(pref_species.name == "Vampire")
-				switch(generation)
-					if(13)
-						max_death = 6
-					if(12)
-						max_death = 6
-					if(11)
-						max_death = 5
-					if(10)
-						max_death = 4
-					if(9)
-						max_death = 3
-					if(8)
-						max_death = 2
-					if(7)
-						max_death = 2
-					if(6)
-						max_death = 1
-					if(5)
-						max_death = 1
-					if(4)
-						max_death = 1
-					if(3)
-						max_death = 1
-
-			dat += "<b>[pref_species.name == "Vampire" ? "Torpor" : "Clinical Death"] Count:</b> [torpor_count]/[max_death]"
-			if(true_experience >= 3*(14-generation) && torpor_count > 0)
-				dat += " <a href='byond://?_src_=prefs;preference=torpor_restore;task=input'>Restore ([5*(14-generation)])</a><BR>"
-			dat += "<BR>"
-			*/
-			dat += "<a href='byond://?_src_=prefs;preference=all;task=random'>Random Body</A> "
-
-			dat += "<table width='100%'><tr><td width='24%' valign='top'>"
-
-			dat += "<b>Species:</b><BR><a href='byond://?_src_=prefs;preference=species;task=input'>[pref_species.name]</a><BR>"
-			if(pref_species.name == "Vampire")
-//				dat += "<b>Path of [enlightenment ? "Enlightenment" : "Humanity"]:</b> [humanity]/10"
-				dat += "<b>Humanity:</b> [humanity]/10"
-				//if(SSwhitelists.is_whitelisted(parent.ckey, "enlightenment") && !slotlocked)
-				if ((true_experience >= (humanity * 2)) && (humanity < 10))
-					dat += " <a href='byond://?_src_=prefs;preference=path;task=input'>Restore Humanity ([humanity * 2])</a>"
-				dat += "<br>"
-				dat += "Consience: [consience]/5 <a href='byond://?_src_=prefs;preference=consience;task=input'>Adjust</a><br>"
-				dat += "Self-Control: [selfcontrol]/5 <a href='byond://?_src_=prefs;preference=selfcontrol;task=input'>Adjust</a><br>"
-				dat += "Courage: [courage]/5 <a href='byond://?_src_=prefs;preference=courage;task=input'>Adjust</a><br>"
-//				if(!slotlocked)
-//					dat += "<a href='byond://?_src_=prefs;preference=pathof;task=input'>Switch Path</a><BR>"
-			if(pref_species.name == "Kuei-Jin")
-				var/datum/dharma/D = new dharma_type()
-				dat += "<b>Dharma:</b> [D.name] [dharma_level]/6 <a href='byond://?_src_=prefs;preference=dharmatype;task=input'>Switch</a><BR>"
-				dat += "[D.desc]<BR>"
-				if(true_experience >= 20 && (dharma_level < 6))
-					dat += " <a href='byond://?_src_=prefs;preference=dharmarise;task=input'>Learn (20)</a><BR>"
-				dat += "<b>P'o Personality</b>: [po_type] <a href='byond://?_src_=prefs;preference=potype;task=input'>Switch</a><BR>"
-				dat += "<b>Awareness:</b> [masquerade]/5<BR>"
-				dat += "<b>Yin/Yang</b>: [yin]/[yang] <a href='byond://?_src_=prefs;preference=chibalance;task=input'>Adjust</a><BR>"
-				dat += "<b>Hun/P'o</b>: [hun]/[po] <a href='byond://?_src_=prefs;preference=demonbalance;task=input'>Adjust</a><BR>"
-			if(pref_species.name == "Werewolf")
-				dat += "<b>Veil:</b> [masquerade]/5<BR>"
-			if(pref_species.name == "Vampire" || pref_species.name == "Ghoul")
-				dat += "<b>Masquerade:</b> [masquerade]/5<BR>"
-			if(pref_species.name == "Vampire")
-				dat += "<b>Generation:</b> [generation-generation_bonus]"
-				var/generation_allowed = TRUE
-				if(clane)
-					if(clane.name == "Caitiff")
-						generation_allowed = FALSE
-				if(slotlocked)
-					generation_allowed = FALSE
-				if(generation_allowed)
-					dat += " <a href='byond://?_src_=prefs;preference=generation;task=input'>Change</a><BR>"
-				else
-					dat += "<BR>"
-			if(pref_species.name == "Werewolf")
-				dat += "<h2>[make_font_cool("TRIBE")]</h2>"
-				dat += "<br><b>Werewolf Name:</b> "
-				dat += "<a href='byond://?_src_=prefs;preference=werewolf_name;task=input'>[werewolf_name]</a><BR>"
-				dat += "<b>Auspice:</b> <a href='byond://?_src_=prefs;preference=auspice;task=input'>[auspice.name]</a><BR>"
-				dat += "Description: [auspice.desc]<BR>"
-				dat += "<b>Power:</b> •[auspice_level > 1 ? "•" : "o"][auspice_level > 2 ? "•" : "o"]([auspice_level])"
-				if(true_experience >= 10*auspice_level && auspice_level != 3)
-					dat += "<a href='byond://?_src_=prefs;preference=auspice_level;task=input'>Increase ([10*auspice_level])</a>"
-				dat += "<b>Initial Rage:</b> •[auspice.start_rage > 1 ? "•" : "o"][auspice.start_rage > 2 ? "•" : "o"][auspice.start_rage > 3 ? "•" : "o"][auspice.start_rage > 4 ? "•" : "o"]([auspice.start_rage])<BR>"
-				var/gifts_text = ""
-				var/num_of_gifts = 0
-				for(var/i in 1 to auspice_level)
-					var/zalupa
-					switch (tribe)
-						if ("Glasswalkers")
-							zalupa = auspice.glasswalker[i]
-						if ("Wendigo")
-							zalupa = auspice.wendigo[i]
-						if ("Black Spiral Dancers")
-							zalupa = auspice.spiral[i]
-					var/datum/action/T = new zalupa()
-					gifts_text += "[T.name], "
-				for(var/i in auspice.gifts)
-					var/datum/action/ACT = new i()
-					num_of_gifts = min(num_of_gifts+1, length(auspice.gifts))
-					if(num_of_gifts != length(auspice.gifts))
-						gifts_text += "[ACT.name], "
-					else
-						gifts_text += "[ACT.name].<BR>"
-					qdel(ACT)
-				dat += "<b>Initial Gifts:</b> [gifts_text]"
-
-				var/mob/living/carbon/werewolf/crinos/DAWOF = new (get_turf(parent.mob))
-				var/mob/living/carbon/werewolf/lupus/DAWOF2 = new (get_turf(parent.mob))
-
-				DAWOF.sprite_color = werewolf_color
-				DAWOF2.sprite_color = werewolf_color
-
-				var/obj/overlay/eyes_crinos = new(DAWOF)
-				eyes_crinos.icon = 'code/modules/wod13/werewolf.dmi'
-				eyes_crinos.icon_state = "eyes"
-				eyes_crinos.layer = ABOVE_HUD_LAYER
-				eyes_crinos.color = werewolf_eye_color
-				DAWOF.overlays |= eyes_crinos
-
-				var/obj/overlay/scar_crinos = new(DAWOF)
-				scar_crinos.icon = 'code/modules/wod13/werewolf.dmi'
-				scar_crinos.icon_state = "scar[werewolf_scar]"
-				scar_crinos.layer = ABOVE_HUD_LAYER
-				DAWOF.overlays |= scar_crinos
-
-				var/obj/overlay/hair_crinos = new(DAWOF)
-				hair_crinos.icon = 'code/modules/wod13/werewolf.dmi'
-				hair_crinos.icon_state = "hair[werewolf_hair]"
-				hair_crinos.layer = ABOVE_HUD_LAYER
-				hair_crinos.color = werewolf_hair_color
-				DAWOF.overlays |= hair_crinos
-
-				var/obj/overlay/eyes_lupus = new(DAWOF2)
-				eyes_lupus.icon = 'code/modules/wod13/werewolf_lupus.dmi'
-				eyes_lupus.icon_state = "eyes"
-				eyes_lupus.layer = ABOVE_HUD_LAYER
-				eyes_lupus.color = werewolf_eye_color
-				DAWOF2.overlays |= eyes_lupus
-
-				DAWOF.update_icons()
-				DAWOF2.update_icons()
-				dat += "[icon2html(getFlatIcon(DAWOF), user)][icon2html(getFlatIcon(DAWOF2), user)]<BR>"
-				qdel(DAWOF)
-				qdel(DAWOF2)
-
-				dat += "<b>Breed:</b> <a href='byond://?_src_=prefs;preference=breed;task=input'>[breed]</a><BR>"
-				dat += "<b>Tribe:</b> <a href='byond://?_src_=prefs;preference=tribe;task=input'>[tribe]</a><BR>"
-				dat += "Color: <a href='byond://?_src_=prefs;preference=werewolf_color;task=input'>[werewolf_color]</a><BR>"
-				dat += "Scars: <a href='byond://?_src_=prefs;preference=werewolf_scar;task=input'>[werewolf_scar]</a><BR>"
-				dat += "Hair: <a href='byond://?_src_=prefs;preference=werewolf_hair;task=input'>[werewolf_hair]</a><BR>"
-				dat += "Hair Color: <a href='byond://?_src_=prefs;preference=werewolf_hair_color;task=input'>[werewolf_hair_color]</a><BR>"
-				dat += "Eyes: <a href='byond://?_src_=prefs;preference=werewolf_eye_color;task=input'>[werewolf_eye_color]</a><BR>"
-			if(pref_species.name == "Vampire")
-				dat += "<h2>[make_font_cool("CLANE")]</h2>"
-				dat += "<b>Clane/Bloodline:</b> <a href='byond://?_src_=prefs;preference=clane;task=input'>[clane.name]</a><BR>"
-				dat += "<b>Description:</b> [clane.desc]<BR>"
-				dat += "<b>Curse:</b> [clane.curse]<BR>"
-				if(length(clane.accessories))
-					if(clane_accessory in clane.accessories)
-						dat += "<b>Marks:</b> <a href='byond://?_src_=prefs;preference=clane_acc;task=input'>[clane_accessory]</a><BR>"
-					else
-						if("none" in clane_accessory)
-							clane_accessory = "none"
-						else
-							clane_accessory = pick(clane.accessories)
-						dat += "<b>Marks:</b> <a href='byond://?_src_=prefs;preference=clane_acc;task=input'>[clane_accessory]</a><BR>"
-				else
-					clane_accessory = null
-				dat += "<h2>[make_font_cool("DISCIPLINES")]</h2>"
-
-				for (var/i in 1 to discipline_types.len)
-					var/discipline_type = discipline_types[i]
-					var/datum/discipline/discipline = new discipline_type
-					var/discipline_level = discipline_levels[i]
-
-					var/cost
-					if (discipline_level <= 0)
-						cost = 10
-					else if (clane.name == "Caitiff")
-						cost = discipline_level * 6
-					else if (clane.clane_disciplines.Find(discipline_type))
-						cost = discipline_level * 5
-					else
-						cost = discipline_level * 7
-
-					dat += "<b>[discipline.name]</b>: [discipline_level > 0 ? "•" : "o"][discipline_level > 1 ? "•" : "o"][discipline_level > 2 ? "•" : "o"][discipline_level > 3 ? "•" : "o"][discipline_level > 4 ? "•" : "o"]([discipline_level])"
-					if((true_experience >= cost) && (discipline_level != 5))
-						dat += "<a href='byond://?_src_=prefs;preference=discipline;task=input;upgradediscipline=[i]'>Learn ([cost])</a><BR>"
-					else
-						dat += "<BR>"
-					dat += "-[discipline.desc]<BR>"
-					qdel(discipline)
-
-				if (clane.name == "Caitiff")
-					var/list/possible_new_disciplines = subtypesof(/datum/discipline) - discipline_types
-					for (var/discipline_type in possible_new_disciplines)
-						var/datum/discipline/discipline = new discipline_type
-						if (discipline.clane_restricted)
-							possible_new_disciplines -= discipline_type
-						qdel(discipline)
-					if (possible_new_disciplines.len && (true_experience >= 10))
-						dat += "<a href='byond://?_src_=prefs;preference=newdiscipline;task=input'>Learn a new Discipline (10)</a><BR>"
-
-			if(pref_species.name == "Ghoul")
-				for (var/i in 1 to discipline_types.len)
-					var/discipline_type = discipline_types[i]
-					var/datum/discipline/discipline = new discipline_type
-					dat += "<b>[discipline.name]</b>: •(1)<BR>"
-					dat += "-[discipline.desc]<BR>"
-					qdel(discipline)
-
-				var/list/possible_new_disciplines = subtypesof(/datum/discipline) - discipline_types
-				if (possible_new_disciplines.len && (true_experience >= 10))
-					dat += "<a href='byond://?_src_=prefs;preference=newghouldiscipline;task=input'>Learn a new Discipline (10)</a><BR>"
-
-			if (pref_species.name == "Kuei-Jin")
-				dat += "<h2>[make_font_cool("DISCIPLINES")]</h2><BR>"
-				for (var/i in 1 to discipline_types.len)
-					var/discipline_type = discipline_types[i]
-					var/datum/chi_discipline/discipline = new discipline_type
-					var/discipline_level = discipline_levels[i]
-
-					var/cost
-					if (discipline_level <= 0)
-						cost = 10
-					else
-						cost = discipline_level * 6
-
-					dat += "<b>[discipline.name]</b> ([discipline.discipline_type]): [discipline_level > 0 ? "•" : "o"][discipline_level > 1 ? "•" : "o"][discipline_level > 2 ? "•" : "o"][discipline_level > 3 ? "•" : "o"][discipline_level > 4 ? "•" : "o"]([discipline_level])"
-					if((true_experience >= cost) && (discipline_level != 5))
-						dat += "<a href='byond://?_src_=prefs;preference=discipline;task=input;upgradechidiscipline=[i]'>Learn ([cost])</a><BR>"
-					else
-						dat += "<BR>"
-					dat += "-[discipline.desc]. Yin:[discipline.cost_yin], Yang:[discipline.cost_yang], Demon:[discipline.cost_demon]<BR>"
-					qdel(discipline)
-				var/list/possible_new_disciplines = subtypesof(/datum/chi_discipline) - discipline_types
-				var/has_chi_one = FALSE
-				var/has_demon_one = FALSE
-				var/how_much_usual = 0
-				for(var/i in discipline_types)
-					if(i)
-						var/datum/chi_discipline/C = i
-						if(initial(C.discipline_type) == "Shintai")
-							how_much_usual += 1
-						if(initial(C.discipline_type) == "Demon")
-							has_demon_one = TRUE
-						if(initial(C.discipline_type) == "Chi")
-							has_chi_one = TRUE
-				for(var/i in possible_new_disciplines)
-					if(i)
-						var/datum/chi_discipline/C = i
-						if(initial(C.discipline_type) == "Shintai")
-							if(how_much_usual >= 3)
-								possible_new_disciplines -= i
-						if(initial(C.discipline_type) == "Demon")
-							if(has_demon_one)
-								possible_new_disciplines -= i
-						if(initial(C.discipline_type) == "Chi")
-							if(has_chi_one)
-								possible_new_disciplines -= i
-				if (possible_new_disciplines.len && (true_experience >= 10))
-					dat += "<a href='byond://?_src_=prefs;preference=newchidiscipline;task=input'>Learn a new Discipline (10)</a><BR>"
-
-			if(true_experience >= 3 && slotlocked)
-				dat += "<a href='byond://?_src_=prefs;preference=change_appearance;task=input'>Change Appearance (3)</a><BR>"
-
-			dat += "<BR><b>Flavor Text:</b> [flavor_text] <a href='byond://?_src_=prefs;preference=flavor_text;task=input'>Change</a><BR>"
-			dat += "<br><br>"
-
-			dat += "<h2>Headshot Image</h2>"
-			dat += "<a href='byond://?_src_=prefs;preference=headshot'><b>Set Headshot Image</b></a><br>"
-			if(features["headshot_link"])
-				dat += "<img style='border:2px solid rgb(255, 255, 255)' src='[features["headshot_link"]]' width='200px' height='200px'>"
-
-			dat += "<h2>[make_font_cool("EQUIP")]</h2>"
-			dat += "<br><br>"
-			dat += "<b>Underwear:</b><BR><a href ='byond://?_src_=prefs;preference=underwear;task=input'>[underwear]</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_UNDERWEAR]'>[(randomise[RANDOM_UNDERWEAR]) ? "Lock" : "Unlock"]</A>"
-
-			dat += "<br><b>Underwear Color:</b><BR><span style='border: 1px solid #161616; background-color: #[underwear_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=underwear_color;task=input'>Change</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_UNDERWEAR_COLOR]'>[(randomise[RANDOM_UNDERWEAR_COLOR]) ? "Lock" : "Unlock"]</A>"
-
-			dat += "<BR><b>Undershirt:</b><BR><a href ='byond://?_src_=prefs;preference=undershirt;task=input'>[undershirt]</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_UNDERSHIRT]'>[(randomise[RANDOM_UNDERSHIRT]) ? "Lock" : "Unlock"]</A>"
-
-
-			dat += "<br><b>Socks:</b><BR><a href ='byond://?_src_=prefs;preference=socks;task=input'>[socks]</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_SOCKS]'>[(randomise[RANDOM_SOCKS]) ? "Lock" : "Unlock"]</A>"
-
-
-//			dat += "<br><b>Jumpsuit Style:</b><BR><a href ='?_src_=prefs;preference=suit;task=input'>[jumpsuit_style]</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_JUMPSUIT_STYLE]'>[(randomise[RANDOM_JUMPSUIT_STYLE]) ? "Lock" : "Unlock"]</A>"
-
-			dat += "<br><b>Backpack:</b><BR><a href ='byond://?_src_=prefs;preference=bag;task=input'>[backpack]</a>"
-//			dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_BACKPACK]'>[(randomise[RANDOM_BACKPACK]) ? "Lock" : "Unlock"]</A>"
-
-			if(pref_species.name == "Vampire")
-				dat += "<BR><b>Fame:</b><BR><a href ='byond://?_src_=prefs;preference=info_choose;task=input'>[info_known]</a>"
-
-			dat += "<BR><BR><b>Relationships:</b><BR>"
-			dat += "Have a Friend: <a href='byond://?_src_=prefs;preference=friend'>[friend == TRUE ? "Enabled" : "Disabled"]</A><BR>"
-			dat += "What a Friend knows about me: [friend_text] <a href='byond://?_src_=prefs;preference=friend_text;task=input'>Change</a><BR>"
-			dat += "<BR>"
-			dat += "Have an Enemy: <a href='byond://?_src_=prefs;preference=enemy'>[enemy == TRUE ? "Enabled" : "Disabled"]</A><BR>"
-			dat += "What an Enemy knows about me: [enemy_text] <a href='byond://?_src_=prefs;preference=enemy_text;task=input'>Change</a><BR>"
-			dat += "<BR>"
-			dat += "Have a Lover: <a href='byond://?_src_=prefs;preference=lover'>[lover == TRUE ? "Enabled" : "Disabled"]</A><BR>"
-			dat += "What a Lover knows about me: [lover_text] <a href='byond://?_src_=prefs;preference=lover_text;task=input'>Change</a><BR>"
-
-			dat += "<BR><b>Be Ambitious: </b><a href='byond://?_src_=prefs;preference=ambitious'>[ambitious == TRUE ? "Enabled" : "Disabled"]</A><BR>"
-
-			if((HAS_FLESH in pref_species.species_traits) || (HAS_BONE in pref_species.species_traits))
-				dat += "<BR><b>Temporal Scarring:</b><BR><a href='byond://?_src_=prefs;preference=persistent_scars'>[(persistent_scars) ? "Enabled" : "Disabled"]</A>"
-				dat += "<a href='byond://?_src_=prefs;preference=clear_scars'>Clear scar slots</A>"
-
-//			dat += "<br><b>Antagonist Items Spawn Location:</b><BR><a href ='?_src_=prefs;preference=uplink_loc;task=input'>[uplink_spawn_loc]</a><BR></td>"
-//			if (user.client.get_exp_living(TRUE) >= PLAYTIME_VETERAN)
-//				dat += "<br><b>Don The Ultimate Gamer Cloak?:</b><BR><a href ='?_src_=prefs;preference=playtime_reward_cloak'>[(playtime_reward_cloak) ? "Enabled" : "Disabled"]</a><BR></td>"
-			var/use_skintones = pref_species.use_skintones
-			if(use_skintones)
-
-				dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>[make_font_cool("SKIN")]</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=s_tone;task=input'>[skin_tone]</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_SKIN_TONE]'>[(randomise[RANDOM_SKIN_TONE]) ? "Lock" : "Unlock"]</A>"
-				dat += "<br>"
-
-			var/mutant_colors
-			if((MUTCOLORS in pref_species.species_traits) || (MUTCOLORS_PARTSONLY in pref_species.species_traits))
-
-				if(!use_skintones)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Mutant Color</h3>"
-
-				dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=mutant_color;task=input'>Change</a><BR>"
-
-				mutant_colors = TRUE
-
-			if(istype(pref_species, /datum/species/ethereal)) //not the best thing to do tbf but I dont know whats better.
-
-				if(!use_skintones)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Ethereal Color</h3>"
-
-				dat += "<span style='border: 1px solid #161616; background-color: #[features["ethcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=color_ethereal;task=input'>Change</a><BR>"
-
-
-			if((EYECOLOR in pref_species.species_traits) && !(NOEYESPRITES in pref_species.species_traits))
-
-				if(!use_skintones && !mutant_colors)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>[make_font_cool("EYES")]</h3>"
-				dat += "<span style='border: 1px solid #161616; background-color: #[eye_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=eyes;task=input'>Change</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_EYE_COLOR]'>[(randomise[RANDOM_EYE_COLOR]) ? "Lock" : "Unlock"]</A>"
-
-				dat += "<br></td>"
-			else if(use_skintones || mutant_colors)
-				dat += "</td>"
-
-			if(HAIR in pref_species.species_traits)
-
-				dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>[make_font_cool("HAIR")]</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=hairstyle;task=input'>[hairstyle]</a>"
-				dat += "<a href='byond://?_src_=prefs;preference=previous_hairstyle;task=input'>&lt;</a> <a href='byond://?_src_=prefs;preference=next_hairstyle;task=input'>&gt;</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_HAIRSTYLE]'>[(randomise[RANDOM_HAIRSTYLE]) ? "Lock" : "Unlock"]</A>"
-
-				dat += "<br><span style='border:1px solid #161616; background-color: #[hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=hair;task=input'>Change</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_HAIR_COLOR]'>[(randomise[RANDOM_HAIR_COLOR]) ? "Lock" : "Unlock"]</A>"
-
-				dat += "<BR><h3>[make_font_cool("FACIAL")]</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=facial_hairstyle;task=input'>[facial_hairstyle]</a>"
-				dat += "<a href='byond://?_src_=prefs;preference=previous_facehairstyle;task=input'>&lt;</a> <a href='byond://?_src_=prefs;preference=next_facehairstyle;task=input'>&gt;</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_FACIAL_HAIRSTYLE]'>[(randomise[RANDOM_FACIAL_HAIRSTYLE]) ? "Lock" : "Unlock"]</A>"
-
-				dat += "<br><span style='border: 1px solid #161616; background-color: #[facial_hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=facial;task=input'>Change</a>"
-//				dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_FACIAL_HAIR_COLOR]'>[(randomise[RANDOM_FACIAL_HAIR_COLOR]) ? "Lock" : "Unlock"]</A>"
-				dat += "<br></td>"
-
-			//Mutant stuff
-			var/mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["tail_lizard"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Tail</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=tail_lizard;task=input'>[features["tail_lizard"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["snout"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Snout</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=snout;task=input'>[features["snout"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["horns"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Horns</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=horns;task=input'>[features["horns"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["frills"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Frills</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=frills;task=input'>[features["frills"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["spines"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Spines</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=spines;task=input'>[features["spines"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["body_markings"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Body Markings</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=body_markings;task=input'>[features["body_markings"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["legs"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Legs</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=legs;task=input'>[features["legs"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["moth_wings"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Moth wings</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=moth_wings;task=input'>[features["moth_wings"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["moth_antennae"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Moth antennae</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=moth_antennae;task=input'>[features["moth_antennae"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["moth_markings"])
-				if(!mutant_category)
-					dat += APPEARANCE_CATEGORY_COLUMN
-
-				dat += "<h3>Moth markings</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=moth_markings;task=input'>[features["moth_markings"]]</a><BR>"
-
-				mutant_category++
-				if(mutant_category >= MAX_MUTANT_ROWS)
-					dat += "</td>"
-					mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["tail_human"])
-				if(pref_species.id != "kindred" && pref_species.id != "ghoul")
-					if(!mutant_category)
-						dat += APPEARANCE_CATEGORY_COLUMN
-
-					dat += "<h3>Tail</h3>"
-
-					dat += "<a href='byond://?_src_=prefs;preference=tail_human;task=input'>[features["tail_human"]]</a><BR>"
-
-					mutant_category++
-					if(mutant_category >= MAX_MUTANT_ROWS)
-						dat += "</td>"
-						mutant_category = 0
-
-			if(pref_species.mutant_bodyparts["ears"])
-				if(pref_species.id != "kindred" && pref_species.id != "ghoul")
-					if(!mutant_category)
-						dat += APPEARANCE_CATEGORY_COLUMN
-
-					dat += "<h3>Ears</h3>"
-
-					dat += "<a href='byond://?_src_=prefs;preference=ears;task=input'>[features["ears"]]</a><BR>"
-
-					mutant_category++
-					if(mutant_category >= MAX_MUTANT_ROWS)
-						dat += "</td>"
-						mutant_category = 0
-
-			//Adds a thing to select which phobia because I can't be assed to put that in the quirks window
-			if("Phobia" in all_quirks)
-				dat += "<h3>Phobia</h3>"
-
-				dat += "<a href='byond://?_src_=prefs;preference=phobia;task=input'>[phobia]</a><BR>"
-
-			if(CONFIG_GET(flag/join_with_mutant_humans))
-
-				if(pref_species.mutant_bodyparts["wings"] && GLOB.r_wings_list.len >1)
-					if(!mutant_category)
-						dat += APPEARANCE_CATEGORY_COLUMN
-
-					dat += "<h3>Wings</h3>"
-
-					dat += "<a href='byond://?_src_=prefs;preference=wings;task=input'>[features["wings"]]</a><BR>"
-
-					mutant_category++
-					if(mutant_category >= MAX_MUTANT_ROWS)
-						dat += "</td>"
-						mutant_category = 0
-
-			if(mutant_category)
-				dat += "</td>"
-				mutant_category = 0
-			dat += "</tr></table>"
-
+			Character_Settings(user, dat)
 		if(1)
-			dat += "Experience rewarded: [true_experience]<BR>"
-
-			dat += "<h2>[make_font_cool("ATTRIBUTES")]</h2>"
-
-			if(!slotlocked)
-				dat += "<a href='byond://?_src_=prefs;preference=priorities;task=input'>Change Priorities</a><BR>"
-
-			var/physical_priorities = get_freebie_points("Physical")
-			var/social_priorities = get_freebie_points("Social")
-			var/mental_priorities = get_freebie_points("Mental")
-			dat += "<b>PHYSICAL</b>"
-			if(physical_priorities)
-				dat += "([physical_priorities])"
-			dat += "<BR>"
-			dat += "Strength: [build_attribute_score(Strength, get_gen_attribute_limit(generation-generation_bonus), 5, "strength", physical_priorities)]"
-			dat += "Dexterity: [build_attribute_score(Dexterity, get_gen_attribute_limit(generation-generation_bonus), 5, "dexterity", physical_priorities)]"
-			dat += "Stamina: [build_attribute_score(Stamina, get_gen_attribute_limit(generation-generation_bonus), 5, "stamina", physical_priorities)]"
-			dat += "<b>SOCIAL</b>"
-			if(social_priorities)
-				dat += "([social_priorities])"
-			dat += "<BR>"
-			dat += "Charisma: [build_attribute_score(Charisma, get_gen_attribute_limit(generation-generation_bonus), 5, "charisma", social_priorities)]"
-			dat += "Manipulation: [build_attribute_score(Manipulation, get_gen_attribute_limit(generation-generation_bonus), 5, "manipulation", social_priorities)]"
-			dat += "Appearance: [build_attribute_score(Appearance, get_gen_attribute_limit(generation-generation_bonus), 5, "appearance", social_priorities)]"
-			dat += "<b>MENTAL</b>"
-			if(mental_priorities)
-				dat += "([mental_priorities])"
-			dat += "<BR>"
-			dat += "Perception: [build_attribute_score(Perception, get_gen_attribute_limit(generation-generation_bonus), 5, "perception", mental_priorities)]"
-			dat += "Intelligence: [build_attribute_score(Intelligence, get_gen_attribute_limit(generation-generation_bonus), 5, "intelligence", mental_priorities)]"
-			dat += "Wits: [build_attribute_score(Wits, get_gen_attribute_limit(generation-generation_bonus), 5, "wits", mental_priorities)]"
-
-			dat += "<h2>[make_font_cool("ABILITIES")]</h2>"
-
-			dat += "<b>TALENTS</b><BR>"
-			dat += "Alertness: [build_attribute_score(Alertness, 5, 3, "alertness")]"
-			dat += "Athletics: [build_attribute_score(Athletics, 5, 3, "athletics")]"
-			dat += "Brawl: [build_attribute_score(Brawl, 5, 3, "brawl")]"
-			dat += "Empathy: [build_attribute_score(Empathy, 5, 3, "empathy")]"
-			dat += "Intimidation: [build_attribute_score(Intimidation, 5, 3, "intimidation")]"
-			dat += "<b>SKILLS</b><BR>"
-			dat += "Crafts: [build_attribute_score(Crafts, 5, 3, "crafts")]"
-			dat += "Melee: [build_attribute_score(Melee, 5, 3, "melee")]"
-			dat += "Firearms: [build_attribute_score(Firearms, 5, 3, "firearms")]"
-			dat += "Drive: [build_attribute_score(Drive, 5, 3, "drive")]"
-			dat += "Security: [build_attribute_score(Security, 5, 3, "security")]"
-			dat += "<b>KNOWLEDGES</b><BR>"
-			dat += "Finance: [build_attribute_score(Finance, 5, 3, "finance")]"
-			dat += "Investigation: [build_attribute_score(Investigation, 5, 3, "investigation")]"
-			dat += "Medicine: [build_attribute_score(Medicine, 5, 3, "medicine")]"
-			dat += "Linguistics: [build_attribute_score(Linguistics, 5, 3, "linguistics")]"
-			dat += "Occult: [build_attribute_score(Occult, 5, 3, "occult")]"
-
-			if(CONFIG_GET(flag/roundstart_traits))
-				dat += "<center><h2>[make_font_cool("QUIRK SETUP")]</h2>"
-				dat += "<a href='byond://?_src_=prefs;preference=trait;task=menu'>Configure Quirks</a><br></center>"
-				dat += "<center><b>Current Quirks:</b> [all_quirks.len ? all_quirks.Join(", ") : "None"]</center>"
-
+			Character_List(user, dat)
 		if (2) // Game Preferences
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-			dat += "<h2>[make_font_cool("GENERAL")]</h2>"
-			dat += "<b>UI Style:</b> <a href='byond://?_src_=prefs;task=input;preference=ui'>[UI_style]</a><br>"
-			dat += "<b>tgui Window Mode:</b> <a href='byond://?_src_=prefs;preference=tgui_fancy'>[(tgui_fancy) ? "Fancy (default)" : "Compatible (slower)"]</a><br>"
-			dat += "<b>tgui Window Placement:</b> <a href='byond://?_src_=prefs;preference=tgui_lock'>[(tgui_lock) ? "Primary monitor" : "Free (default)"]</a><br>"
-			dat += "<b>Show Runechat Chat Bubbles:</b> <a href='byond://?_src_=prefs;preference=chat_on_map'>[chat_on_map ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Runechat message char limit:</b> <a href='byond://?_src_=prefs;preference=max_chat_length;task=input'>[max_chat_length]</a><br>"
-			dat += "<b>See Runechat for non-mobs:</b> <a href='byond://?_src_=prefs;preference=see_chat_non_mob'>[see_chat_non_mob ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>See Runechat emotes:</b> <a href='byond://?_src_=prefs;preference=see_rc_emotes'>[see_rc_emotes ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<br>"
-			dat += "<b>Action Buttons:</b> <a href='byond://?_src_=prefs;preference=action_buttons'>[(buttons_locked) ? "Locked In Place" : "Unlocked"]</a><br>"
-			dat += "<b>Hotkey mode:</b> <a href='byond://?_src_=prefs;preference=hotkeys'>[(hotkeys) ? "Hotkeys" : "Default"]</a><br>"
-			dat += "<br>"
-			dat += "<b>PDA Color:</b> <span style='border:1px solid #161616; background-color: [pda_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=pda_color;task=input'>Change</a><BR>"
-			dat += "<b>PDA Style:</b> <a href='byond://?_src_=prefs;task=input;preference=pda_style'>[pda_style]</a><br>"
-			dat += "<br>"
-			dat += "<b>Ghost Ears:</b> <a href='byond://?_src_=prefs;preference=ghost_ears'>[(chat_toggles & CHAT_GHOSTEARS) ? "All Speech" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Radio:</b> <a href='byond://?_src_=prefs;preference=ghost_radio'>[(chat_toggles & CHAT_GHOSTRADIO) ? "All Messages":"No Messages"]</a><br>"
-			dat += "<b>Ghost Sight:</b> <a href='byond://?_src_=prefs;preference=ghost_sight'>[(chat_toggles & CHAT_GHOSTSIGHT) ? "All Emotes" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Whispers:</b> <a href='byond://?_src_=prefs;preference=ghost_whispers'>[(chat_toggles & CHAT_GHOSTWHISPER) ? "All Speech" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost PDA:</b> <a href='byond://?_src_=prefs;preference=ghost_pda'>[(chat_toggles & CHAT_GHOSTPDA) ? "All Messages" : "Nearest Creatures"]</a><br>"
-			dat += "<b>Ghost Law Changes:</b> <a href='byond://?_src_=prefs;preference=ghost_laws'>[(chat_toggles & CHAT_GHOSTLAWS) ? "All Law Changes" : "No Law Changes"]</a><br>"
-
-			if(unlock_content)
-				dat += "<b>Ghost Form:</b> <a href='byond://?_src_=prefs;task=input;preference=ghostform'>[ghost_form]</a><br>"
-				dat += "<B>Ghost Orbit: </B> <a href='byond://?_src_=prefs;task=input;preference=ghostorbit'>[ghost_orbit]</a><br>"
-
-			var/button_name = "If you see this something went wrong."
-			switch(ghost_accs)
-				if(GHOST_ACCS_FULL)
-					button_name = GHOST_ACCS_FULL_NAME
-				if(GHOST_ACCS_DIR)
-					button_name = GHOST_ACCS_DIR_NAME
-				if(GHOST_ACCS_NONE)
-					button_name = GHOST_ACCS_NONE_NAME
-
-			dat += "<b>Ghost Accessories:</b> <a href='byond://?_src_=prefs;task=input;preference=ghostaccs'>[button_name]</a><br>"
-
-			switch(ghost_others)
-				if(GHOST_OTHERS_THEIR_SETTING)
-					button_name = GHOST_OTHERS_THEIR_SETTING_NAME
-				if(GHOST_OTHERS_DEFAULT_SPRITE)
-					button_name = GHOST_OTHERS_DEFAULT_SPRITE_NAME
-				if(GHOST_OTHERS_SIMPLE)
-					button_name = GHOST_OTHERS_SIMPLE_NAME
-
-			dat += "<b>Ghosts of Others:</b> <a href='byond://?_src_=prefs;task=input;preference=ghostothers'>[button_name]</a><br>"
-			dat += "<br>"
-
-			dat += "<b>Broadcast Login/Logout:</b> <a href='byond://?_src_=prefs;preference=broadcast_login_logout'>[broadcast_login_logout ? "Broadcast" : "Silent"]</a><br>"
-			dat += "<b>See Login/Logout Messages:</b> <a href='byond://?_src_=prefs;preference=hear_login_logout'>[(chat_toggles & CHAT_LOGIN_LOGOUT) ? "Allowed" : "Muted"]</a><br>"
-			dat += "<br>"
-
-			dat += "<b>Income Updates:</b> <a href='byond://?_src_=prefs;preference=income_pings'>[(chat_toggles & CHAT_BANKCARD) ? "Allowed" : "Muted"]</a><br>"
-			dat += "<br>"
-
-			dat += "<b>FPS:</b> <a href='byond://?_src_=prefs;preference=clientfps;task=input'>[clientfps]</a><br>"
-
-			dat += "<b>Parallax (Fancy Space):</b> <a href='byond://?_src_=prefs;preference=parallaxdown' oncontextmenu='window.location.href=\"?_src_=prefs;preference=parallaxup\";return false;'>"
-			switch (parallax)
-				if (PARALLAX_LOW)
-					dat += "Low"
-				if (PARALLAX_MED)
-					dat += "Medium"
-				if (PARALLAX_INSANE)
-					dat += "Insane"
-				if (PARALLAX_DISABLE)
-					dat += "Disabled"
-				else
-					dat += "High"
-			dat += "</a><br>"
-			dat += "<b>Use old discipline icons:</b> <a href='byond://?_src_=prefs;preference=old_discipline'>[old_discipline ? "Yes" : "No"]</a><br>"
-			dat += "<b>Ambient Occlusion:</b> <a href='byond://?_src_=prefs;preference=ambientocclusion'>[ambientocclusion ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Fit Viewport:</b> <a href='byond://?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? "Auto" : "Manual"]</a><br>"
-			if (CONFIG_GET(string/default_view) != CONFIG_GET(string/default_view_square))
-				dat += "<b>Widescreen:</b> <a href='byond://?_src_=prefs;preference=widescreenpref'>[widescreenpref ? "Enabled ([CONFIG_GET(string/default_view)])" : "Disabled ([CONFIG_GET(string/default_view_square)])"]</a><br>"
-
-			button_name = pixel_size
-			dat += "<b>Pixel Scaling:</b> <a href='byond://?_src_=prefs;preference=pixel_size'>[(button_name) ? "Pixel Perfect [button_name]x" : "Stretch to fit"]</a><br>"
-
-			switch(scaling_method)
-				if(SCALING_METHOD_DISTORT)
-					button_name = "Nearest Neighbor"
-				if(SCALING_METHOD_NORMAL)
-					button_name = "Point Sampling"
-				if(SCALING_METHOD_BLUR)
-					button_name = "Bilinear"
-			dat += "<b>Scaling Method:</b> <a href='byond://?_src_=prefs;preference=scaling_method'>[button_name]</a><br>"
-
-			if (CONFIG_GET(flag/maprotation))
-				var/p_map = preferred_map
-				if (!p_map)
-					p_map = "Default"
-					if (config.defaultmap)
-						p_map += " ([config.defaultmap.map_name])"
-				else
-					if (p_map in config.maplist)
-						var/datum/map_config/VM = config.maplist[p_map]
-						if (!VM)
-							p_map += " (No longer exists)"
-						else
-							p_map = VM.map_name
-					else
-						p_map += " (No longer exists)"
-				if(CONFIG_GET(flag/preference_map_voting))
-					dat += "<b>Preferred Map:</b> <a href='byond://?_src_=prefs;preference=preferred_map;task=input'>[p_map]</a><br>"
-
+			Game_Preferences(user, dat)
 		if(3) //OOC Preferences
-			dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-			dat += "<h2>[make_font_cool("OOC")]</h2>"
-			dat += "<b>Window Flashing:</b> <a href='byond://?_src_=prefs;preference=winflash'>[(windowflashing) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<br>"
-			dat += "<b>Play Admin MIDIs:</b> <a href='byond://?_src_=prefs;preference=hear_midis'>[(toggles & SOUND_MIDI) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>Play Lobby Music:</b> <a href='byond://?_src_=prefs;preference=lobby_music'>[(toggles & SOUND_LOBBY) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>Play End of Round Sounds:</b> <a href='byond://?_src_=prefs;preference=endofround_sounds'>[(toggles & SOUND_ENDOFROUND) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>See Pull Requests:</b> <a href='byond://?_src_=prefs;preference=pull_requests'>[(chat_toggles & CHAT_PULLR) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<br>"
-
-
-			if(user.client)
-				if(unlock_content)
-					dat += "<b>BYOND Membership Publicity:</b> <a href='byond://?_src_=prefs;preference=publicity'>[(toggles & MEMBER_PUBLIC) ? "Public" : "Hidden"]</a><br>"
-
-				if(unlock_content || check_rights_for(user.client, R_ADMIN))
-					dat += "<b>OOC Color:</b> <span style='border: 1px solid #161616; background-color: [ooccolor ? ooccolor : GLOB.normal_ooc_colour];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=ooccolor;task=input'>Change</a><br>"
-				if(hearted_until)
-					dat += "<a href='byond://?_src_=prefs;preference=clear_heart'>Clear OOC Commend Heart</a><br>"
-
-			dat += "</td>"
-
-			if(user.client.holder)
-				dat +="<td width='300px' height='300px' valign='top'>"
-
-				dat += "<h2>[make_font_cool("ADMIN")]</h2>"
-
-				dat += "<b>Adminhelp Sounds:</b> <a href='byond://?_src_=prefs;preference=hear_adminhelps'>[(toggles & SOUND_ADMINHELP)?"Enabled":"Disabled"]</a><br>"
-				dat += "<b>Prayer Sounds:</b> <a href = 'byond://?_src_=prefs;preference=hear_prayers'>[(toggles & SOUND_PRAYERS)?"Enabled":"Disabled"]</a><br>"
-				dat += "<b>Announce Login:</b> <a href='byond://?_src_=prefs;preference=announce_login'>[(toggles & ANNOUNCE_LOGIN)?"Enabled":"Disabled"]</a><br>"
-				dat += "<br>"
-				dat += "<b>Combo HUD Lighting:</b> <a href = 'byond://?_src_=prefs;preference=combohud_lighting'>[(toggles & COMBOHUD_LIGHTING)?"Full-bright":"No Change"]</a><br>"
-				dat += "<br>"
-				dat += "<b>Hide Dead Chat:</b> <a href = 'byond://?_src_=prefs;preference=toggle_dead_chat'>[(chat_toggles & CHAT_DEAD)?"Shown":"Hidden"]</a><br>"
-				dat += "<b>Hide Radio Messages:</b> <a href = 'byond://?_src_=prefs;preference=toggle_radio_chatter'>[(chat_toggles & CHAT_RADIO)?"Shown":"Hidden"]</a><br>"
-				dat += "<b>Hide Prayers:</b> <a href = 'byond://?_src_=prefs;preference=toggle_prayers'>[(chat_toggles & CHAT_PRAYER)?"Shown":"Hidden"]</a><br>"
-				dat += "<b>Ignore Being Summoned as Cult Ghost:</b> <a href = 'byond://?_src_=prefs;preference=toggle_ignore_cult_ghost'>[(toggles & ADMIN_IGNORE_CULT_GHOST)?"Don't Allow Being Summoned":"Allow Being Summoned"]</a><br>"
-				if(CONFIG_GET(flag/allow_admin_asaycolor))
-					dat += "<br>"
-					dat += "<b>ASAY Color:</b> <span style='border: 1px solid #161616; background-color: [asaycolor ? asaycolor : "#FF4500"];'>&nbsp;&nbsp;&nbsp;</span> <a href='byond://?_src_=prefs;preference=asaycolor;task=input'>Change</a><br>"
-
-				//deadmin
-				dat += "<h2>[make_font_cool("DEADMIN")]</h2>"
-				var/timegate = CONFIG_GET(number/auto_deadmin_timegate)
-				if(timegate)
-					dat += "<b>Noted roles will automatically deadmin during the first [FLOOR(timegate / 600, 1)] minutes of the round, and will defer to individual preferences after.</b><br>"
-
-				if(CONFIG_GET(flag/auto_deadmin_players) && !timegate)
-					dat += "<b>Always Deadmin:</b> FORCED</a><br>"
-				else
-					dat += "<b>Always Deadmin:</b> [timegate ? "(Time Locked) " : ""]<a href = 'byond://?_src_=prefs;preference=toggle_deadmin_always'>[(toggles & DEADMIN_ALWAYS)?"Enabled":"Disabled"]</a><br>"
-					if(!(toggles & DEADMIN_ALWAYS))
-						dat += "<br>"
-						if(!CONFIG_GET(flag/auto_deadmin_antagonists) || (CONFIG_GET(flag/auto_deadmin_antagonists) && !timegate))
-							dat += "<b>As Antag:</b> [timegate ? "(Time Locked) " : ""]<a href = 'byond://?_src_=prefs;preference=toggle_deadmin_antag'>[(toggles & DEADMIN_ANTAGONIST)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Antag:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_heads) || (CONFIG_GET(flag/auto_deadmin_heads) && !timegate))
-							dat += "<b>As Command:</b> [timegate ? "(Time Locked) " : ""]<a href = 'byond://?_src_=prefs;preference=toggle_deadmin_head'>[(toggles & DEADMIN_POSITION_HEAD)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Command:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_security) || (CONFIG_GET(flag/auto_deadmin_security) && !timegate))
-							dat += "<b>As Security:</b> [timegate ? "(Time Locked) " : ""]<a href = 'byond://?_src_=prefs;preference=toggle_deadmin_security'>[(toggles & DEADMIN_POSITION_SECURITY)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Security:</b> FORCED<br>"
-
-						if(!CONFIG_GET(flag/auto_deadmin_silicons) || (CONFIG_GET(flag/auto_deadmin_silicons) && !timegate))
-							dat += "<b>As Silicon:</b> [timegate ? "(Time Locked) " : ""]<a href = 'byond://?_src_=prefs;preference=toggle_deadmin_silicon'>[(toggles & DEADMIN_POSITION_SILICON)?"Deadmin":"Keep Admin"]</a><br>"
-						else
-							dat += "<b>As Silicon:</b> FORCED<br>"
-
-				dat += "</td>"
-			dat += "</tr></table>"
+			OOC_Preferences(user, dat)
 		if(4) // Custom keybindings
-			// Create an inverted list of keybindings -> key
-			var/list/user_binds = list()
-			for (var/key in key_bindings)
-				for(var/kb_name in key_bindings[key])
-					user_binds[kb_name] += list(key)
+			custom_keybindings(user, dat)
+		if(5)  //LOADOUT
+			Loadout(user, dat)
 
-			var/list/kb_categories = list()
-			// Group keybinds by category
-			for (var/name in GLOB.keybindings_by_name)
-				var/datum/keybinding/kb = GLOB.keybindings_by_name[name]
-				kb_categories[kb.category] += list(kb)
 
-			dat += "<style>label { display: inline-block; width: 200px; }</style><body>"
-
-			for (var/category in kb_categories)
-				dat += "<h3>[category]</h3>"
-				for (var/i in kb_categories[category])
-					var/datum/keybinding/kb = i
-					if(!length(user_binds[kb.name]) || user_binds[kb.name][1] == "Unbound")
-						dat += "<label>[kb.full_name]</label> <a href ='byond://?_src_=prefs;preference=keybindings_capture;keybinding=[kb.name];old_key=["Unbound"]'>Unbound</a>"
-						var/list/default_keys = hotkeys ? kb.hotkey_keys : kb.classic_keys
-						if(LAZYLEN(default_keys))
-							dat += "| Default: [default_keys.Join(", ")]"
-						dat += "<br>"
-					else
-						var/bound_key = user_binds[kb.name][1]
-						dat += "<label>[kb.full_name]</label> <a href ='byond://?_src_=prefs;preference=keybindings_capture;keybinding=[kb.name];old_key=[bound_key]'>[bound_key]</a>"
-						for(var/bound_key_index in 2 to length(user_binds[kb.name]))
-							bound_key = user_binds[kb.name][bound_key_index]
-							dat += " | <a href ='byond://?_src_=prefs;preference=keybindings_capture;keybinding=[kb.name];old_key=[bound_key]'>[bound_key]</a>"
-						if(length(user_binds[kb.name]) < MAX_KEYS_PER_KEYBIND)
-							dat += "| <a href ='byond://?_src_=prefs;preference=keybindings_capture;keybinding=[kb.name]'>Add Secondary</a>"
-						var/list/default_keys = hotkeys ? kb.classic_keys : kb.hotkey_keys
-						if(LAZYLEN(default_keys))
-							dat += "| Default: [default_keys.Join(", ")]"
-						dat += "<br>"
-
-			dat += "<br><br>"
-			dat += "<a href ='byond://?_src_=prefs;preference=keybindings_reset'>\[Reset to default\]</a>"
-			dat += "</body>"
 	dat += "<hr><center>"
 
 	if(slotlocked)
@@ -1776,72 +871,77 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				expires = " The ban is for [DisplayTimeText(text2num(ban_details["duration"]) MINUTES)] and expires on [ban_details["expiration_time"]] (server time)."
 			to_chat(user, "<span class='danger'>You, or another user of this computer or connection ([ban_details["key"]]) is banned from playing [href_list["bancheck"]].<br>The ban reason is: [ban_details["reason"]]<br>This ban (BanID #[ban_details["id"]]) was applied by [ban_details["admin_key"]] on [ban_details["bantime"]] during round ID [ban_details["round_id"]].<br>[expires]</span>")
 			return
-	if(href_list["preference"] == "job")
-		switch(href_list["task"])
-			if("close")
-				user << browse(null, "window=mob_occupation")
-				ShowChoices(user)
-			if("reset")
-				ResetJobs()
-				SetChoices(user)
-			if("random")
-				switch(joblessrole)
-					if(RETURNTOLOBBY)
-						if(is_banned_from(user.ckey, SSjob.overflow_role))
-							joblessrole = BERANDOMJOB
-						else
-							joblessrole = BEOVERFLOW
-					if(BEOVERFLOW)
-						joblessrole = BERANDOMJOB
-					if(BERANDOMJOB)
-						joblessrole = RETURNTOLOBBY
-				SetChoices(user)
-			if("setJobLevel")
-				UpdateJobPreference(user, href_list["text"], text2num(href_list["level"]))
-			else
-				SetChoices(user)
-		return 1
 
-	else if(href_list["preference"] == "trait")
-		switch(href_list["task"])
-			if("close")
-				user << browse(null, "window=mob_occupation")
-				ShowChoices(user)
-			if("update")
-				var/quirk = href_list["trait"]
-				if(!SSquirks.quirks[quirk])
-					return
-				for(var/V in SSquirks.quirk_blacklist) //V is a list
-					var/list/L = V
-					if(!(quirk in L))
-						continue
-					for(var/Q in all_quirks)
-						if((Q in L) && !(Q == quirk)) //two quirks have lined up in the list of the list of quirks that conflict with each other, so return (see quirks.dm for more details)
-							to_chat(user, "<span class='danger'>[quirk] is incompatible with [Q].</span>")
-							return
-				var/value = SSquirks.quirk_points[quirk]
-				var/balance = GetQuirkBalance()
-				if(quirk in all_quirks)
-					if(balance + value < 0)
-						to_chat(user, "<span class='warning'>Refunding this would cause you to go below your balance!</span>")
-						return
-					all_quirks -= quirk
+	switch(href_list["preference"])
+		if("job")
+			switch(href_list["task"])
+				if("close")
+					user << browse(null, "window=mob_occupation")
+					ShowChoices(user)
+				if("reset")
+					ResetJobs()
+					SetChoices(user)
+				if("random")
+					switch(joblessrole)
+						if(RETURNTOLOBBY)
+							if(is_banned_from(user.ckey, SSjob.overflow_role))
+								joblessrole = BERANDOMJOB
+							else
+								joblessrole = BEOVERFLOW
+						if(BEOVERFLOW)
+							joblessrole = BERANDOMJOB
+						if(BERANDOMJOB)
+							joblessrole = RETURNTOLOBBY
+					SetChoices(user)
+				if("setJobLevel")
+					UpdateJobPreference(user, href_list["text"], text2num(href_list["level"]))
 				else
-					var/is_positive_quirk = SSquirks.quirk_points[quirk] > 0
-					if(is_positive_quirk && GetPositiveQuirkCount() >= MAX_QUIRKS)
-						to_chat(user, "<span class='warning'>You can't have more than [MAX_QUIRKS] positive quirks!</span>")
+					SetChoices(user)
+			return TRUE
+
+		if("trait")
+			switch(href_list["task"])
+				if("close")
+					user << browse(null, "window=mob_occupation")
+					ShowChoices(user)
+				if("update")
+					var/quirk = href_list["trait"]
+					if(!SSquirks.quirks[quirk])
 						return
-					if(balance - value < 0)
-						to_chat(user, "<span class='warning'>You don't have enough balance to gain this quirk!</span>")
-						return
-					all_quirks += quirk
-				SetQuirks(user)
-			if("reset")
-				all_quirks = list()
-				SetQuirks(user)
-			else
-				SetQuirks(user)
-		return TRUE
+					for(var/V in SSquirks.quirk_blacklist) //V is a list
+						var/list/L = V
+						if(!(quirk in L))
+							continue
+						for(var/Q in all_quirks)
+							if((Q in L) && !(Q == quirk)) //two quirks have lined up in the list of the list of quirks that conflict with each other, so return (see quirks.dm for more details)
+								to_chat(user, "<span class='danger'>[quirk] is incompatible with [Q].</span>")
+								return
+					var/value = SSquirks.quirk_points[quirk]
+					var/balance = GetQuirkBalance()
+					if(quirk in all_quirks)
+						if(balance + value < 0)
+							to_chat(user, "<span class='warning'>Refunding this would cause you to go below your balance!</span>")
+							return
+						all_quirks -= quirk
+					else
+						var/is_positive_quirk = SSquirks.quirk_points[quirk] > 0
+						if(is_positive_quirk && GetPositiveQuirkCount() >= MAX_QUIRKS)
+							to_chat(user, "<span class='warning'>You can't have more than [MAX_QUIRKS] positive quirks!</span>")
+							return
+						if(balance - value < 0)
+							to_chat(user, "<span class='warning'>You don't have enough balance to gain this quirk!</span>")
+							return
+						all_quirks += quirk
+					SetQuirks(user)
+				if("reset")
+					all_quirks = list()
+					SetQuirks(user)
+				else
+					SetQuirks(user)
+			return TRUE
+
+		if("loadout")
+			process_loadout_links(user, href_list)
 
 	switch(href_list["task"])
 		if("random")
@@ -3263,6 +2363,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if("tab")
 					if (href_list["tab"])
 						current_tab = text2num(href_list["tab"])
+						if(current_tab == 5)
+							show_loadout = TRUE
 
 				if("clear_heart")
 					hearted = FALSE
@@ -3285,7 +2387,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		true_experience -= cost
 	return TRUE
 
-/datum/preferences/proc/copy_to(mob/living/carbon/human/character, icon_updates = 1, roundstart_checks = TRUE, character_setup = FALSE, antagonist = FALSE, is_latejoiner = TRUE)
+/datum/preferences/proc/copy_to(mob/living/carbon/human/character, icon_updates = 1, roundstart_checks = TRUE, character_setup = FALSE, antagonist = FALSE, is_latejoiner = TRUE, loadout = FALSE)
 
 	hardcore_survival_score = 0 //Set to 0 to prevent you getting points from last another time.
 
@@ -3469,6 +2571,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	character.backpack = backpack
 
 	character.jumpsuit_style = jumpsuit_style
+
+	if(loadout)
+		for(var/gear_name in equipped_gear)
+			var/datum/gear/gear = SSloadout.gear_datums[gear_name]
+			if(gear?.slot)
+				character.equip_to_slot_or_del(gear.spawn_item(character, character), gear.slot)
 
 	var/datum/species/chosen_species
 	chosen_species = pref_species.type

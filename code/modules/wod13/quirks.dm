@@ -66,7 +66,10 @@ Dancer
 /datum/quirk/annonymus/on_spawn()
 	if(!iswerewolf(quirk_holder))
 		var/mob/living/carbon/human/H = quirk_holder
-		H.equip_to_slot_or_del(new /obj/item/clothing/mask/vampire/balaclava(H), ITEM_SLOT_MASK)
+		var/mask = pick(/obj/item/clothing/mask/vampire/balaclava, /obj/item/clothing/mask/vampire/gasmask/tactical,
+		/obj/item/clothing/mask/vampire/tragedy, /obj/item/clothing/mask/vampire/comedy,
+		/obj/item/clothing/mask/vampire/shemagh,/obj/item/clothing/mask/vampire/venetian_mask)
+		H.equip_to_slot_or_del(new mask(H), ITEM_SLOT_MASK)
 
 /datum/quirk/bloody_lover
 	name = "Bloody Lover"

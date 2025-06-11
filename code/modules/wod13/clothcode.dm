@@ -113,6 +113,39 @@
 	desc = "Some military clothes."
 	icon_state = "milfatigues"
 
+/obj/item/clothing/under/vampire/maid
+	name = "Maid Uniform"
+	desc = "An authentic victorian maid uniform. Old fashioned, but nonetheless timeless."
+	icon_state = "maid"
+	inhand_icon_state = "maid"
+	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+
+
+/obj/item/clothing/under/vampire/turtleneck_black
+	name = "Black"
+	desc = "A black turtleneck for badass."
+	icon_state = "turtleneck_black"
+
+/obj/item/clothing/under/vampire/turtleneck_navy
+	name = "Navy"
+	desc = "A turtleneck for sailor."
+	icon_state = "turtleneck_navy"
+
+/obj/item/clothing/under/vampire/turtleneck_red
+	name = "Red"
+	desc = "A red turtleneck for blood lovers."
+	icon_state = "turtleneck_red"
+
+/obj/item/clothing/under/vampire/turtleneck_white
+	name = "White "
+	desc = "A white turtleneck for hansome man."
+	icon_state = "turtleneck_white"
+
+
+/obj/item/clothing/under/vampire/kon4atel
+	name = "Black T-short"
+	desc = "I hate crimes..."
+	icon_state = "kon4atel"
 //FOR NPC
 
 //GANGSTERS AND BANDITS
@@ -484,6 +517,13 @@
 	armor = list(BASHING = 2, LETHAL = 0, AGGRAVATED = 0, MELEE = 0, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 50, BIO = 0, RAD = 0, FIRE = 50, ACID = 100, WOUND = 10)
 	body_worn = TRUE
 
+/obj/item/clothing/suit/vampire/nun
+	name = "nun robe"
+	desc = "Maximum piety in this star system."
+	icon_state = "nun"
+	inhand_icon_state = "nun"
+	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+
 //** SPOOOOKY ROBES FROM THE CAPPADOCIAN UPDATE **//
 /obj/item/clothing/suit/hooded/robes
 	name = "white robe"
@@ -648,9 +688,14 @@
 
 /obj/item/clothing/suit/vampire/trench/archive
 	name = "rich trenchcoat"
-	desc = "Best choise for pleasant life... or not."
+	desc = "Best choise for pleasant life... or not. This trench smeels like blood."
 	icon_state = "trench3"
-	armor = list(BASHING = 2, LETHAL = 1, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+	armor = list(BASHING = 2, LETHAL = 1, AGGRAVATED = 1, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+
+/obj/item/clothing/suit/vampire/trench/archive/pidors
+	desc = "Best choise for pleasant life... or not."
+	armor = list(BASHING = 1, LETHAL = 1, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+
 
 /obj/item/clothing/suit/vampire/trench/tzi
 	name = "fleshcoat"
@@ -669,7 +714,7 @@
 	name = "bulletproof vest"
 	desc = "Durable, lightweight vest designed to protect against most threats efficiently."
 	icon_state = "vest"
-	armor = list(BASHING = 2, LETHAL = 4, AGGRAVATED = 2, MELEE = 55, BULLET = 55, LASER = 10, ENERGY = 10, BOMB = 55, BIO = 0, RAD = 0, FIRE = 45, ACID = 10, WOUND = 25)
+	armor = list(BASHING = 2, LETHAL = 4, AGGRAVATED = 3, MELEE = 55, BULLET = 55, LASER = 10, ENERGY = 10, BOMB = 55, BIO = 0, RAD = 0, FIRE = 45, ACID = 10, WOUND = 25)
 	allowed = list(
 		/obj/item/card/id,
 		/obj/item/flashlight,
@@ -681,6 +726,12 @@
 	desc = "Probably spanish. Provides good protection."
 	icon_state = "medieval"
 	armor = list(BASHING = 4, LETHAL = 4, AGGRAVATED = 2, MELEE = 55, BULLET = 55, LASER = 10, ENERGY = 10, BOMB = 55, BIO = 0, RAD = 0, FIRE = 45, ACID = 10, WOUND = 25)
+
+/obj/item/clothing/suit/vampire/vest/kon4atel
+	name = "Black trench"
+	desc = "Ya nenaviju prestupnost."
+	icon_state = "coat_kon4atel"
+
 
 //Police + Army
 /obj/item/clothing/suit/vampire/vest/police
@@ -873,6 +924,12 @@
 
 /obj/item/clothing/head/vampire/beanie/homeless
 	icon_state = "hat_homeless"
+
+/obj/item/clothing/head/vampire/nun
+	name = "Sisterly Habit"
+	desc = "The head covering of a religious sister."
+	icon_state = "nun_hood"
+	inhand_icon_state = "nun_hood"
 
 /obj/item/clothing/head/vampire/police
 	name = "police hat"

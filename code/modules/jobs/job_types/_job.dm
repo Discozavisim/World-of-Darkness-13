@@ -2,6 +2,8 @@
 	///The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
 
+	var/endorsement_required = FALSE
+
 	///Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
 	var/list/minimal_access = list()		//Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
 	var/list/access = list()				//Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
@@ -145,6 +147,65 @@
 
 	if(length(known_contacts) > 0)
 		H.knowscontacts = known_contacts
+
+	var/list/gear_leftovers
+
+	var/mob/living/carbon/human/spawnee = H
+
+	if(M.client && (M.client.prefs.equipped_gear && length(M.client.prefs.equipped_gear)))
+		for(var/gear in M.client.prefs.equipped_gear)
+			var/datum/gear/G = SSloadout.gear_datums[gear]
+			if(G)
+				var/permitted = FALSE
+
+				if(G.allowed_roles && H.mind && (H.mind.assigned_role in G.allowed_roles))
+					permitted = TRUE
+				else if(!G.allowed_roles)
+					permitted = TRUE
+				else
+					permitted = FALSE
+
+				if(G.splat_blacklist && (spawnee.dna.species.id in G.splat_blacklist))
+					permitted = FALSE
+
+				if(G.splat_whitelist && !(spawnee.dna.species.id in G.splat_whitelist))
+					permitted = FALSE
+
+				if(!permitted)
+					to_chat(M, span_warning("Your current species or role does not permit you to spawn with [gear]!"))
+					continue
+				if(G.slot)
+					var/item = G.spawn_item(null, H)
+					if(!H.equip_to_slot_or_del(item, G.slot, TRUE))
+						LAZYADD(gear_leftovers, G)
+				else
+					LAZYADD(gear_leftovers, G)
+			else
+				M.client.prefs.equipped_gear -= gear
+
+	if(length(gear_leftovers))
+		for(var/datum/gear/G in gear_leftovers)
+			var/item = G.spawn_item(null, H)
+			var/atom/placed_in = spawnee.equip_to_slot_if_possible(item, disable_warning = TRUE)
+
+			if(istype(placed_in))
+				if(isturf(placed_in))
+					to_chat(M, span_notice("Placing [G.display_name] on [placed_in]!"))
+				else
+					to_chat(M, span_notice("Placing [G.display_name] in [placed_in.name]]"))
+				continue
+
+			if(H.put_in_hands(item))
+				to_chat(M, span_notice("Placing [G.display_name] in your hands!"))
+				continue
+
+			if(H.equip_to_slot_if_possible(item, ITEM_SLOT_BACKPACK, TRUE))
+				to_chat(M, span_notice("Placing [G.display_name] in your backpack!"))
+				continue
+
+			to_chat(M, span_danger("Failed to locate a storage object on your mob, either you spawned with no hands free and no backpack or this is a bug."))
+			qdel(item)
+	qdel(gear_leftovers)
 
 /datum/job/proc/announce(mob/living/carbon/human/H)
 	if(head_announce)

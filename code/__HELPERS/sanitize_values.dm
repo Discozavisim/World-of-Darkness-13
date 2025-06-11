@@ -42,6 +42,13 @@
 		return null
 
 
+/proc/sanitize_each_inlist(values, list/List)
+	. = list()
+	for (var/value in values)
+		if (value in List)
+			. += value
+
+
 //more specialised stuff
 /proc/sanitize_gender(gender,neuter=0,plural=1, default="male")
 	switch(gender)

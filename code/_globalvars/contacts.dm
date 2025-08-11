@@ -1,4 +1,4 @@
-a// Important Contacts
+// Important Contacts
 
 GLOBAL_LIST_INIT(important_contacts, alist())
 

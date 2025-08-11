@@ -185,7 +185,7 @@
 	for(var/mob/living/carbon/human/npc/NPC in GLOB.npc_list)
 		if (NPC.danger_source == owner)
 			NPC.danger_source = null
-	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
+//	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
 	owner.alpha = 100
 	owner.obfuscate_level = level
 
@@ -220,7 +220,7 @@
 	for(var/mob/living/carbon/human/npc/NPC in GLOB.npc_list)
 		if (NPC.danger_source == owner)
 			NPC.danger_source = null
-	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
+//	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
 	owner.alpha = 100
 	owner.obfuscate_level = level
 
@@ -256,7 +256,7 @@
 	for(var/mob/living/carbon/human/npc/NPC in GLOB.npc_list)
 		if (NPC.danger_source == owner)
 			NPC.danger_source = null
-	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
+//	owner.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
 	owner.alpha = 100
 	owner.obfuscate_level = level
 

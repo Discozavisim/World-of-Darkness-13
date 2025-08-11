@@ -260,7 +260,7 @@ GLOBAL_LIST_EMPTY(vampire_computers)
 	apps.Add(error_app)
 
 /obj/vampire_computer/proc/throw_site()
-	playsound(loc, 'sound/winxp/Falko_1.wav', 100)
+//	playsound(loc, 'sound/winxp/Falko_1.wav', 100)
 	var/datum/app/site/narko = new ()
 	narko.launched = TRUE
 	current_app = narko

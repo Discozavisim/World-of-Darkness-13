@@ -357,3 +357,18 @@
 	set_vehicle_dir_offsets(NORTH, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(EAST, movable_parent.pixel_x, 0)
 	set_vehicle_dir_offsets(WEST, movable_parent.pixel_x, 0)
+
+/datum/component/riding/creature/horse
+	vehicle_move_delay = 0.75
+
+/datum/component/riding/creature/horse/handle_specials()
+	. = ..()
+	set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(17, 20), TEXT_SOUTH = list(16, 14), TEXT_EAST = list(9, 22), TEXT_WEST = list(16, 22)))
+	set_vehicle_dir_layer(SOUTH, CAR_LAYER)
+	set_vehicle_dir_layer(NORTH,  OBJ_LAYER)
+	set_vehicle_dir_layer(EAST, ABOVE_MOB_LAYER)
+	set_vehicle_dir_layer(WEST, ABOVE_MOB_LAYER)
+
+
+/datum/component/riding/creature/horse/vamp
+	can_be_driven = FALSE

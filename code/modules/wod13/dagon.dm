@@ -91,6 +91,7 @@
 	icon_state = "horse"
 	icon_living = "horse"
 	icon_dead = "horse_dead"
+	icon_buckle = "horse_buckle"
 	speak = list(, "Igo-go!", "Purr!", "HSSSSS")
 	emote_see = list("shakes its head.", "shivers.")
 	butcher_results = list(/obj/item/food/meat/slab = 7)

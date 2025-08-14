@@ -12,6 +12,9 @@
 	/// Whether things buckled to this atom can be pulled while they're buckled
 	var/buckle_prevents_pull = FALSE
 
+	var/icon_buckle = ""
+	var/icon_old = ""
+
 //Interaction
 /atom/movable/attack_hand(mob/living/user)
 	. = ..()
@@ -294,10 +297,14 @@
 			M.visible_message("<span class='notice'>[M] buckles [M.p_them()]self to [src].</span>",\
 				"<span class='notice'>You buckle yourself to [src].</span>",\
 				"<span class='hear'>You hear metal clanking.</span>")
+
 		else
 			M.visible_message("<span class='warning'>[user] buckles [M] to [src]!</span>",\
 				"<span class='warning'>[user] buckles you to [src]!</span>",\
 				"<span class='hear'>You hear metal clanking.</span>")
+		if(src.icon_buckle != "")
+			src.icon_old = icon_state
+			src.icon_state = icon_buckle
 /**
  * Handles a user unbuckling a mob from src and sends a visible_message
  *
@@ -318,6 +325,8 @@
 			M.visible_message("<span class='notice'>[M] unbuckles [M.p_them()]self from [src].</span>",\
 				"<span class='notice'>You unbuckle yourself from [src].</span>",\
 				"<span class='hear'>You hear metal clanking.</span>")
+		if(src.icon_state == icon_buckle)
+			src.icon_state = icon_old
 		add_fingerprint(user)
 		if(isliving(M.pulledby))
 			var/mob/living/L = M.pulledby

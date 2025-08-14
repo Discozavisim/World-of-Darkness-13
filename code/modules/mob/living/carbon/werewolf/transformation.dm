@@ -234,7 +234,7 @@
 //		ntransform.Scale(1.25, 1.5)
 //	animate(owner, transform = ntransform, color = "#9d0e0eff", time = 10)
 	if(time == null)
-		time = 10 SECONDS
+		time = 2 TURNS
 	to_chat(owner, "Ты начинаешь превращаться...")
 	spawn(time)
 		owner.drop_all_held_items()

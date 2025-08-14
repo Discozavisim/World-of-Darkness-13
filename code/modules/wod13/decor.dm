@@ -1656,6 +1656,9 @@
 
 /obj/structure/bury_pit/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/melee/vampirearms/shovel))
+		if(supernatural)
+			user.visible_message("<span class='warning'>[user] пытается вскопать твердую землю.</span>", "<span class='warning'>Земля слишком.. плотная. Ты не можешь её вскопать</span>")
+			return
 		if(!burying)
 			burying = TRUE
 			user.visible_message("<span class='warning'>[user] starts to dig [src]</span>", "<span class='warning'>You start to dig [src].</span>")

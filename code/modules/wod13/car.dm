@@ -606,6 +606,8 @@ SUBSYSTEM_DEF(carpool)
 		return
 	if(istype(A, /mob/living))
 		var/mob/living/hit_mob = A
+		if(HAS_TRAIT(hit_mob, TRAIT_MOVE_FLYING))
+			return
 		if(istype(hit_mob, /mob/living/simple_animal/pet/cat))
 			cat = TRUE
 		var/impact_protection = hit_mob.run_armor_check(BODY_ZONE_CHEST, LETHAL)

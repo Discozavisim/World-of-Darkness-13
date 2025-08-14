@@ -178,6 +178,16 @@
 	color = "#0920eeff"
 	damage_coeff = list(BRUTE = 0, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 
+/mob/living/simple_animal/hostile/smokecrawler/mist/Move(NewLoc, direct)
+	. = ..()
+	var/obj/structure/vampdoor/V = locate() in NewLoc
+	var/obj/machinery/door/poddoor/shutters/S = locate() in NewLoc
+	if(V)
+		if(!V.magic_lock)
+			forceMove(get_turf(V))
+	if(S)
+		forceMove(get_turf(S))
+
 //MIST FORM
 /datum/discipline_power/protean/mist_form
 	name = "Mist Form"
@@ -233,6 +243,7 @@
 /mob/living/simple_animal/pet/cat/floppa/vampire
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
+	AIStatus = AI_OFF
 	maxHealth = 300
 	health = 300
 	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
@@ -241,6 +252,7 @@
 	name = "Big cat"
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
+	AIStatus = AI_OFF
 	maxHealth = 300
 	health = 300
 	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
@@ -254,6 +266,7 @@
 /mob/living/simple_animal/hostile/beastmaster/rat/vampire
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
+	AIStatus = AI_OFF
 	maxHealth = 300
 	health = 300
 	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
@@ -267,6 +280,7 @@
 /mob/living/simple_animal/pet/horse/vampire
 	bloodquality = BLOOD_QUALITY_HIGH
 	vampiric = 1
+	AIStatus = AI_OFF
 	melee_damage_type = CLONE
 	maxHealth = 300
 	health = 300
@@ -276,6 +290,7 @@
 	bloodquality = BLOOD_QUALITY_HIGH
 	is_flying_animal = FALSE
 	melee_damage_type = CLONE
+	AIStatus = AI_OFF
 	maxHealth = 300
 	health = 300
 	icon_state = "crow"

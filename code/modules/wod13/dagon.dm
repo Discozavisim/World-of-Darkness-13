@@ -134,9 +134,10 @@
 	response_disarm_simple = "gently push"
 	response_harm_continuous = "punches"
 	response_harm_simple = "punch"
-	speed = -1.25
+	speed = 1.5
 
 	is_flying_animal = TRUE
+
 
 
 	bloodquality = BLOOD_QUALITY_LOW
@@ -152,11 +153,18 @@
 
 /datum/action/I_belive_I_can_Fly/Trigger()
 	var/mob/living/simple_animal/pet/crow/C = owner
+	var/prejnii = C.movement_type
 	if(C.icon_state == "crow")
 		C.icon_state = "crow_fly"
 		C.is_flying_animal = TRUE
+		ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
+		C.movement_type = FLYING
+		C.add_movespeed_modifier(/datum/movespeed_modifier/centipede)
 		owner.up()
 
 	else if(C.icon_state == "crow_fly")
 		C.icon_state = "crow"
 		C.is_flying_animal = FALSE
+		REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
+		C.movement_type = prejnii
+		C.remove_movespeed_modifier(/datum/movespeed_modifier/centipede)

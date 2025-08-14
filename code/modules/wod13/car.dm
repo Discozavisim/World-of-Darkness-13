@@ -601,10 +601,13 @@ SUBSYSTEM_DEF(carpool)
 	if(!A)
 		return
 	var/prev_speed = round(abs(speed_in_pixels))
+	var/cat = FALSE
 	if(!prev_speed)
 		return
 	if(istype(A, /mob/living))
 		var/mob/living/hit_mob = A
+		if(istype(hit_mob, /mob/living/simple_animal/pet/cat))
+			cat = TRUE
 		var/impact_protection = hit_mob.run_armor_check(BODY_ZONE_CHEST, LETHAL)
 		hit_mob.adjustBruteLoss(round((prev_speed/100)*(100-impact_protection)), TRUE, TRUE)
 		switch(hit_mob.mob_size)
@@ -645,9 +648,10 @@ SUBSYSTEM_DEF(carpool)
 				L.client.pixel_y = 0
 	if(istype(A, /mob/living))
 		var/dam = prev_speed
-		if(istype(A, /mob/living/simple_animal/pet/cat))
+		if(cat)
 			return
-		get_damage(dam, A, dam)
+		else
+			get_damage(dam, A, dam)
 		if(abs(prev_speed) >= 32)
 			var/mob/living/Livedyoung = A
 			var/atom/throw_target = get_edge_target_turf(src, dir)
@@ -788,6 +792,9 @@ SUBSYSTEM_DEF(carpool)
 		delivery_trunk.retrieval_menu(user)
 	else
 		var/obj/structure/delivery_crate/pulled_crate = user.pulling
+		var/mob/living/L = user.pulling
+		if(L)
+			return
 		if(!pulled_crate)
 			to_chat(user, span_warning("The special compartments in the back dont really fit anything other than delivery crates. Use a nomral truck for other cargo."))
 			return

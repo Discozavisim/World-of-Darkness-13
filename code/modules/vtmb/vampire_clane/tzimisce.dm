@@ -105,7 +105,6 @@
 	var/obj/structure/vampdoor/V = locate() in NewLoc
 	var/obj/machinery/door/poddoor/shutters/S = locate() in NewLoc
 	if(V)
-	//	if(V.lockpick_difficulty <= 10)
 		if(!V.magic_lock)
 			forceMove(get_turf(V))
 	if(S)
@@ -632,4 +631,3 @@
 		playsound(get_turf(M), 'sound/misc/splort.ogg', 50, 1)
 		desc += "Looks like it's been used up."
 
-//GiveSpeciesFlight(mob/living/carbon/human/H)

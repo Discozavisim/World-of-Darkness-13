@@ -62,7 +62,6 @@
 	///If the mob is charging, how long will it stun it's target on success, and itself on failure?
 	var/knockdown_time = 3 SECONDS
 	///Declares a cooldown for potential charges right off the bat.
-	var/mob/living/carbon/human/my_creator
 	COOLDOWN_DECLARE(charge_cooldown)
 
 /mob/living/simple_animal/hostile/Initialize()

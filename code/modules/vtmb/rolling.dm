@@ -859,8 +859,17 @@ SUBSYSTEM_DEF(woddices)
 		if ("robbery")
 			if(dot > 6)
 				var/rolls = secret_vampireroll(consience+selfcontrol, 6, owner, TRUE, FALSE)
+				if(owner.job == "Doctor" || owner.job == "Chief Doctor")
+					ready_events["robbery"] = 0
+					var/replic_doctor_robbery = pick(" — Все как по протоколу. Раздеть, понять причину, вылечить!", " — Ну что же... За работу!", " — Засучим рукава, да начнется работа!")
+					var/replic_doctor_robbery_soft = pick(" — Ну раздел. И что дальше? Ты уже не спасешь это тело.", " — Прекрати, этого мертвеца не спасти.", " — Бесполезно даже начинать.")
+					if(rolls >2)
+						to_chat(owner, "<font size=12>[icon2html('icons/self-control.png', owner)]</font> <span class='medradio'><b>SELF-CONTROL</b></span> <span class='info'>Failure</span> <span class='discosay'>[replic_doctor_robbery]</span>")
+					else
+						to_chat(owner, "<font size=12>[icon2html('icons/self-control.png', owner)]</font> <span class='medradio'><b>SELF-CONTROL</b></span> <span class='info'>Failure</span> <span class='discosay'>[replic_doctor_robbery_soft]</span>")
+					return
 				if(rolls > 2)
-					var/replic_robbery = pick(" — До чего докатился этот мир... Нуждающиеся воруют у нуждающихся. Порочный круг бомже-краж.", " — Нам нужнее, мы ведь вернём то что взяли.", " — Не переживай, ты не [owner.gender == FEMALE ? "воровка" : "вор"], это всё жестокий фашистский режим капитализма.", "",
+					var/replic_robbery = pick(" — До чего докатился этот мир... Нуждающиеся воруют у нуждающихся. Порочный круг бомже-краж.", " — Нам нужнее, мы ведь вернём то что взяли.", " — Не переживай, ты не [owner.gender == FEMALE ? "воровка" : "вор"], это всё жестокий фашистский режим капитализма.",
 					" — Думаю он сможет прожить без этого.", " — Вору краденное грошом кажется...")
 					ready_events["robbery"] = 0
 					to_chat(owner, "<font size=12>[icon2html('icons/consience.png', owner)]</font> <span class='comradio'><b>CONSIENCE</b></span> <span class='info'>Success</span> <span class='discosay'>[replic_robbery]</span>")

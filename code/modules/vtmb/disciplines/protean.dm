@@ -95,6 +95,7 @@
 
 /datum/discipline_power/protean/earth_meld/activate()
 	. = ..()
+	to_chat(owner, "<span class='warning'>Земля, родная земля... Здесь прохладно и безопасно... Чтобы из неё выйти тебе придеться хорошенечко начать сопротивляться!</span>")
 	var/obj/structure/bury_pit/burial_pit = new (get_turf(owner))
 	burial_pit.icon_state = "pit1"
 	burial_pit.alpha = 50
@@ -177,6 +178,14 @@
 	alpha = 20
 	color = "#0920eeff"
 	damage_coeff = list(BRUTE = 0, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
+	a_intent = INTENT_HELP
+//	density = FALSE
+	is_flying_animal = 1
+	movement_type = FLYING
+
+/mob/living/simple_animal/hostile/smokecrawler/mist/Initialize()
+	. = ..()
+	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
 
 /mob/living/simple_animal/hostile/smokecrawler/mist/Move(NewLoc, direct)
 	. = ..()
@@ -238,7 +247,11 @@
 /mob/living/simple_animal/hostile/beastmaster/rat/flying/vampire
 	melee_damage_type = CLONE
 	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	movement_type = FLYING
 
+/mob/living/simple_animal/hostile/beastmaster/rat/flying/vampire/Initialize()
+	. = ..()
+	ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
 
 /mob/living/simple_animal/pet/cat/floppa/vampire
 	bloodquality = BLOOD_QUALITY_HIGH
@@ -251,11 +264,14 @@
 /mob/living/simple_animal/hostile/beastmaster/shapeshift/cat/vampire
 	name = "Big cat"
 	bloodquality = BLOOD_QUALITY_HIGH
+	icon = 'code/modules/wod13/mobs.dmi'
+	icon_state = "cat2"
 	melee_damage_type = CLONE
 	AIStatus = AI_OFF
 	maxHealth = 300
 	health = 300
 	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+
 
 /mob/living/simple_animal/hostile/beastmaster/shapeshift/cat/vampire/Initialize()
 	. = ..()

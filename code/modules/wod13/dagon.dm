@@ -146,6 +146,9 @@
 
 ///////// CROW FLY ANIMATION //////////
 
+/datum/movespeed_modifier/fly
+	multiplicative_slowdown = -1.2
+
 /datum/action/I_belive_I_can_Fly
 	name = "Fly Up"
 	desc = "Fly to the upper level."
@@ -168,3 +171,4 @@
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
 		C.movement_type = prejnii
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/centipede)
+		owner.down()

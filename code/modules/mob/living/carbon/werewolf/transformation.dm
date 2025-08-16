@@ -292,4 +292,5 @@
 		Lviv.warform.warform.attributes.strength_bonus = 0
 		Lviv.warform.warform.attributes.dexterity_bonus = 0
 		Lviv.warform.warform.attributes.stamina_bonus = 0
+		Lviv.warform.humanform.bloodpool = Lviv.bloodpool
 		Lviv.warform.warform.warform.end()

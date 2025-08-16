@@ -1458,3 +1458,66 @@
 	flags_inv = HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	visor_flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
+
+
+///////// GASTARBAITER ///////////////
+
+/obj/item/clothing/head/kaska
+	name ="Yellow working helmet"
+	desc = "A helmet for workers and uzbek gastarbaiters"
+	icon_state = "rabochii"
+	armor = list(BASHING = 1, LETHAL = 0, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+	flags_inv = HIDEHAIR
+
+/obj/item/clothing/head/kaska/pro
+	name = "Orange orking helmet"
+	desc = "A helmet for workers and who leads they"
+	icon_state = "pro_rabochii"
+
+/obj/item/clothing/head/kaska/prorab
+	name = "White working helmet"
+	desc = "A helmet for prorabs"
+	icon_state = "prorab"
+
+
+/obj/item/clothing/suit/gastarbaiters
+	name = "Yellow working vest"
+	desc = "A vest for workers and uzbek gastarbaiters"
+	icon_state = "jeletka"
+	armor = list(BASHING = 1, LETHAL = 0, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+
+
+/////////////// SHAKPKI-USHANKI ////////////////////
+
+/obj/item/clothing/head/ushanka
+	name = "Ushanka"
+	desc = "For cold winters!"
+	icon_state = "ushanka_rus"
+	armor = list(BASHING = 1, LETHAL = 0, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+	flags_inv = HIDEHAIR
+	actions_types = list(/datum/action/item_action/toggle)
+	earflaps = TRUE
+	var/storona = 1
+
+/obj/item/clothing/head/ushanka/red
+	name = "Ushanka"
+	desc = "For cold winters!"
+	icon_state = "ushanka_red"
+	storona = 2
+
+/obj/item/clothing/head/ushanka/blue
+	name = "Ushanka"
+	desc = "For cold winters!"
+	icon_state = "ushanka_blue"
+	storona = 3
+
+/obj/item/clothing/head/ushanka/attack_self(mob/user)
+	if(earflaps)
+		icon_state = "ushanka_zavyaz_[storona]"
+		inhand_icon_state = "ushanka_zavyaz_[storona]"
+		to_chat(user, "<span class='notice'>You raise the ear flaps on the ushanka.</span>")
+	else
+		icon_state = "ushanka_[storona]"
+		inhand_icon_state = "ushanka_[storona]"
+		to_chat(user, "<span class='notice'>You lower the ear flaps on the ushanka.</span>")
+	earflaps = !earflaps

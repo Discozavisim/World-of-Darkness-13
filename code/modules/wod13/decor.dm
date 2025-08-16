@@ -1702,3 +1702,57 @@
 			for(var/mob/living/L in src)
 				L.forceMove(get_turf(src))
 			qdel(src)
+
+
+/obj/structure/leas
+	name = "Building scaffolding"
+	desc = "Building scaffolding. Nothing else."
+	icon = 'code/modules/wod13/128x96.dmi'
+	icon_state = "lesa1"
+	plane = GAME_PLANE
+	layer = ABOVE_OPEN_TURF_LAYER
+	anchored = TRUE
+	density = FALSE
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+
+/obj/structure/leas/Initialize()
+	. = ..()
+	icon_state = "lesa[rand(1, 2)]"
+
+
+/obj/structure/museum
+	name = "Some museum exhibits"
+	desc = "What else?"
+	icon = 'code/modules/wod13/museum.dmi'
+	icon_state = "lesa1"
+	plane = GAME_PLANE
+	layer = ABOVE_OPEN_TURF_LAYER
+	anchored = TRUE
+	density = FALSE
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+
+/obj/structure/museum/dino
+	name = "Museum exhibits"
+	desc = "Museum exhibits of dinozaurus. Wow!"
+	icon_state = "t-rex"
+
+/obj/structure/museum/ptero
+	name = "Museum exhibits"
+	desc = "Museum exhibits of flying dinozaurus. Incredeble!"
+	icon_state = "requiem"
+
+/obj/structure/museum/requiem
+	name = "Museum exhibits"
+	desc = "Museum exhibits of pre-historical bug. Amazing!"
+	icon_state = "cyclope"
+
+/obj/structure/museum/cyclo
+	name = "Museum exhibits"
+	desc = "Museum exhibits of... What is it? Cyclope? No way..."
+	icon_state = "pterotacdel"
+
+/obj/structure/museum/kroko
+	name = "Museum exhibits"
+	desc = "Museum exhibits of crocodile! Awesome!"
+	icon = 'code/modules/wod13/128x96.dmi'
+	icon_state = "krokodil"

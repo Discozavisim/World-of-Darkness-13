@@ -353,6 +353,12 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 					continue
 			listening |= M
 			the_dead[M] = TRUE
+		for(var/mob/living/carbon/C in GLOB.auspex_users)
+			if(HAS_TRAIT(C, AUSPEX_TRAIT))
+				if(get_dist(C, src) > 7)
+					continue
+			listening |= C
+		//	the_dead[C] = TRUE
 
 	var/eavesdropping
 	var/eavesrendered

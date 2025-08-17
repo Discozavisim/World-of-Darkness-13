@@ -9,6 +9,7 @@ import { Error } from './Apps/Error';
 import { Gmail } from './Apps/Gmail';
 import { News } from './Apps/News';
 
+import{Shreknet} from './Apps/Shreknet';
 export const GetIconByName = (name) => {
   switch (name) {
     case 'icq':
@@ -21,6 +22,8 @@ export const GetIconByName = (name) => {
       return gmailicon;
     case 'news':
       return newsIcon;
+    case 'shreknet':
+      return sherknetIcon;
     default:
       return null;
   }
@@ -38,6 +41,8 @@ export const GetAppByName = (app, act) => {
       return <Gmail app={app} act={act} />;
     case 'news':
       return <News app={app} act={act} />;
+    case 'shreknet':
+      return <Shreknet app = {app} act = {act}/>;
     default:
       return null;
   }

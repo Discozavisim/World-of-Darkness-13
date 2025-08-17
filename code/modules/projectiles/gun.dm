@@ -159,11 +159,56 @@
 /obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
 //	if(recoil)
 //		shake_camera(user, recoil + 1, recoil)
-
 	if(suppressed)
 		playsound(user, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
 	else
 		playsound(user, fire_sound, fire_sound_volume, vary_fire_sound)
+		for(var/mob/living/carbon/C in GLOB.auspex_users)
+			var/dist = get_dist(C, src)
+			var/dir = get_dir(C, src)
+			var/napravlenie = ""
+			if(HAS_TRAIT(C, AUSPEX_TRAIT))
+				switch(dir)
+					if(NORTH)
+						napravlenie = "севера"
+					if(NORTHWEST)
+						napravlenie = "северо-запада"
+					if(NORTHEAST)
+						napravlenie = "северо-востока"
+					if(SOUTH)
+						napravlenie = "юга"
+					if(SOUTHEAST)
+						napravlenie = "юго-востока"
+					if(SOUTHWEST)
+						napravlenie = "юно-запада"
+					if(WEST)
+						napravlenie = "запада"
+					if(EAST)
+						napravlenie = "востока"
+				switch(dist)
+					if(0 to 10)
+						C.playsound_local(user, fire_sound, 100, vary_fire_sound)
+						C.soundbang_act(1, 100, 5, 10)
+						to_chat(C, "<span class='danger'>Выстрелы совсем близко! Вашим ушам очень больно!</span>")
+					if(11 to 20)
+						C.playsound_local(user, fire_sound, 90, vary_fire_sound)
+						C.soundbang_act(1, 50, 1, 5)
+						to_chat(C, "<span class='danger'>Выстрелы примерно на расстоянии в пару десятков метров в направлении [napravlenie]! В ушах начинает гудеть...</span>")
+					if(21 to 39)
+						C.playsound_local(user, fire_sound, 80, vary_fire_sound)
+						C.soundbang_act(1, 20, 1, 5)
+						to_chat(C, "<span class='danger'>Пальба примерно на расстоянии в несколько метров в направлении [napravlenie]! В ушах начинает гудеть...</span>")
+					if(40 to 50)
+						C.playsound_local(user, fire_sound, 70, vary_fire_sound)
+						to_chat(C, "<span class='danger'> Вы слышите выстрелы! Кажется они доносятся по направлению [napravlenie]...</span>")
+					if(51 to 60)
+						C.playsound_local(user, fire_sound, fire_sound_volume, vary_fire_sound)
+						to_chat(C, "<span class='danger'>Вы слышите выстрелы, что доносятся откуда-то издалека, по направлению [napravlenie]!</span>")
+					if(61 to INFINITY)
+						C.playsound_local(user, fire_sound, 30, vary_fire_sound)
+						to_chat(C, "<span class='danger'>До вас доходят редкие и плохо различимые звуки... Кажется это выстрелы? Они в направлении [napravlenie].</span>")
+
+
 		if(message)
 			if(pointblank)
 				user.visible_message("<span class='danger'>[user] fires [src] point blank at [pbtarget]!</span>", \

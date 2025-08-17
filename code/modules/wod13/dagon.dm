@@ -162,7 +162,7 @@
 		C.is_flying_animal = TRUE
 		ADD_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
 		C.movement_type = FLYING
-		C.add_movespeed_modifier(/datum/movespeed_modifier/centipede)
+		C.add_movespeed_modifier(/datum/movespeed_modifier/fly)
 		owner.up()
 
 	else if(C.icon_state == "crow_fly")
@@ -170,5 +170,5 @@
 		C.is_flying_animal = FALSE
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
 		C.movement_type = prejnii
-		C.remove_movespeed_modifier(/datum/movespeed_modifier/centipede)
+		C.remove_movespeed_modifier(/datum/movespeed_modifier/fly)
 		owner.down()

@@ -356,10 +356,12 @@ SUBSYSTEM_DEF(carpool)
 			on = FALSE
 			set_light(0)
 			dam_multiplicator = 1
+		if(dam_multiplicator == 0)
+			dam_multiplicator = 1.5
 		if(onbump_force)
 			for(var/mob/living/L in src)
 				if(L)
-					var/dam = round((onbump_force*3)/dam_multiplicator)
+					var/dam = round((onbump_force*2)/dam_multiplicator)
 					if(driver)
 						if(HAS_TRAIT(driver, TRAIT_EXP_DRIVER))
 							dam = round(dam/2)
@@ -449,6 +451,10 @@ SUBSYSTEM_DEF(carpool)
 		if(V.last_beep+10 < world.time)
 			V.last_beep = world.time
 			playsound(V.loc, V.beep_sound, 60, FALSE)
+			for(var/mob/living/carbon/C in oviewers(7, src))
+				if(HAS_TRAIT(C, AUSPEX_TRAIT))
+					C.playsound_local(src, V.beep_sound, 100, TRUE)
+					C.soundbang_act(1, 100, 10, 15)
 
 /datum/action/carr/stage
 	name = "Toggle Transmission"
@@ -794,10 +800,7 @@ SUBSYSTEM_DEF(carpool)
 		delivery_trunk.retrieval_menu(user)
 	else
 		var/obj/structure/delivery_crate/pulled_crate = user.pulling
-		var/mob/living/L = user.pulling
-		if(L)
-			return
-		if(!pulled_crate)
+		if(!istype(pulled_crate, /obj/structure/delivery_crate))
 			to_chat(user, span_warning("The special compartments in the back dont really fit anything other than delivery crates. Use a nomral truck for other cargo."))
 			return
 		else
@@ -1089,6 +1092,15 @@ SUBSYSTEM_DEF(carpool)
 
 /obj/vampire_car/proc/controlling(var/adjusting_speed, var/adjusting_turn)
 	var/drift = 1
+	var/drive = get_a_drive(driver)
+	var/ugl = 1
+	switch(drive)
+		if(0)
+			ugl = rand(-5, 5)
+		if(1)
+			ugl = rand(3, 7)
+		if(2)
+			ugl = rand(2, 4)
 	if(driver)
 		if(HAS_TRAIT(driver, TRAIT_EXP_DRIVER))
 			drift = 2
@@ -1101,11 +1113,11 @@ SUBSYSTEM_DEF(carpool)
 			if(adjusting_speed > 0 && speed_in_pixels <= 0)
 				playsound(src, 'code/modules/wod13/sounds/stopping.ogg', 10, FALSE)
 				speed_in_pixels = speed_in_pixels+adjusting_speed*6
-				movement_vector = SIMPLIFY_DEGREES(movement_vector+adjust_true*drift)
+				movement_vector = SIMPLIFY_DEGREES((movement_vector+adjust_true*drift)/ugl)
 			else if(adjusting_speed < 0 && speed_in_pixels > 0)
 				playsound(src, 'code/modules/wod13/sounds/stopping.ogg', 10, FALSE)
 				speed_in_pixels = speed_in_pixels+adjusting_speed*6
-				movement_vector = SIMPLIFY_DEGREES(movement_vector+adjust_true*drift)
+				movement_vector = SIMPLIFY_DEGREES((movement_vector+adjust_true*drift)/ugl)
 			else
 				speed_in_pixels = min(stage*64, max(-stage*64, speed_in_pixels+adjusting_speed*stage))
 				playsound(src, 'code/modules/wod13/sounds/drive.ogg', 10, FALSE)
@@ -1113,11 +1125,11 @@ SUBSYSTEM_DEF(carpool)
 			if(adjusting_speed > 0 && speed_in_pixels < 0)
 				playsound(src, 'code/modules/wod13/sounds/stopping.ogg', 10, FALSE)
 				speed_in_pixels = min(0, speed_in_pixels+adjusting_speed*6)
-				movement_vector = SIMPLIFY_DEGREES(movement_vector+adjust_true*drift)
+				movement_vector = SIMPLIFY_DEGREES((movement_vector+adjust_true*drift)*ugl)
 			else if(adjusting_speed < 0 && speed_in_pixels > 0)
 				playsound(src, 'code/modules/wod13/sounds/stopping.ogg', 10, FALSE)
 				speed_in_pixels = max(0, speed_in_pixels+adjusting_speed*6)
-				movement_vector = SIMPLIFY_DEGREES(movement_vector+adjust_true*drift)
+				movement_vector = SIMPLIFY_DEGREES((movement_vector+adjust_true*drift)*ugl)
 
 /obj/vampire_car/proc/apply_vector_angle()
 	var/minus_angle = 0

@@ -1489,29 +1489,29 @@
 
 /////////////// SHAKPKI-USHANKI ////////////////////
 
-/obj/item/clothing/head/ushanka
+/obj/item/clothing/head/uzanka
 	name = "Ushanka"
 	desc = "For cold winters!"
 	icon_state = "ushanka_rus"
 	armor = list(BASHING = 1, LETHAL = 0, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
 	flags_inv = HIDEHAIR
 	actions_types = list(/datum/action/item_action/toggle)
-	earflaps = TRUE
+	var/earflaps = TRUE
 	var/storona = 1
 
-/obj/item/clothing/head/ushanka/red
+/obj/item/clothing/head/uzanka/red
 	name = "Ushanka"
 	desc = "For cold winters!"
 	icon_state = "ushanka_red"
 	storona = 2
 
-/obj/item/clothing/head/ushanka/blue
+/obj/item/clothing/head/uzanka/blue
 	name = "Ushanka"
 	desc = "For cold winters!"
 	icon_state = "ushanka_blue"
 	storona = 3
 
-/obj/item/clothing/head/ushanka/attack_self(mob/user)
+/obj/item/clothing/head/uzanka/attack_self(mob/user)
 	if(earflaps)
 		icon_state = "ushanka_zavyaz_[storona]"
 		inhand_icon_state = "ushanka_zavyaz_[storona]"

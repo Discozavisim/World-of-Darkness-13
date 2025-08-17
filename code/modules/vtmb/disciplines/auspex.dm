@@ -1,8 +1,14 @@
+GLOBAL_LIST_EMPTY(auspex_users)
+
 /datum/discipline/auspex
 	name = "Auspex"
 	desc = "Allows to see entities, auras and their health through walls."
 	icon_state = "auspex"
 	power_type = /datum/discipline_power/auspex
+
+
+/datum/discipline/auspex/post_gain()
+	GLOB.auspex_users += owner
 
 /datum/discipline_power/auspex
 	name = "Auspex power name"
@@ -13,7 +19,7 @@
 
 /datum/discipline_power/auspex/activate()
 	. = ..()
-	owner.see_invisible = SEE_INVISIBLE_LEVEL_OBFUSCATE+maxlevel
+	owner.see_invisible = SEE_INVISIBLE_LEVEL_OBFUSCATE+20+maxlevel /// {T.WINER} - Временный фикс на +20, так как почему то си инвизибил лвл обфус меньше обфус инвизибл
 
 /datum/discipline_power/auspex/deactivate()
 	. = ..()
@@ -27,7 +33,7 @@
 	check_flags = DISC_CHECK_CONSCIOUS
 
 	level = 1
-//	vitae_cost = 0
+	vitae_cost = 0
 
 	toggled = TRUE
 	duration_length = 30 SECONDS
@@ -38,6 +44,7 @@
 
 	ADD_TRAIT(owner, TRAIT_THERMAL_VISION, TRAIT_GENERIC)
 	ADD_TRAIT(owner, TRAIT_NIGHT_VISION, TRAIT_GENERIC)
+	ADD_TRAIT(owner, AUSPEX_TRAIT, TRAIT_GENERIC)
 
 	owner.update_sight()
 
@@ -47,6 +54,8 @@
 
 	REMOVE_TRAIT(owner, TRAIT_THERMAL_VISION, TRAIT_GENERIC)
 	REMOVE_TRAIT(owner, TRAIT_NIGHT_VISION, TRAIT_GENERIC)
+	REMOVE_TRAIT(owner, AUSPEX_TRAIT, TRAIT_GENERIC)
+
 
 	owner.update_sight()
 

@@ -262,7 +262,12 @@ SUBSYSTEM_DEF(explosions)
 						shake_camera(M, 25, clamp(baseshakeamount, 0, 10))
 				// You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
 				else if(dist <= far_dist)
-					var/far_volume = clamp(far_dist/2, FAR_LOWER, FAR_UPPER) // Volume is based on explosion size and dist
+					var/far_volume = clamp(far_dist/2, FAR_LOWER, FAR_UPPER)
+
+					if(HAS_TRAIT(M, AUSPEX_TRAIT))
+						far_volume = clamp(far_dist/1.2, FAR_LOWER, FAR_UPPER)
+
+						 // Volume is based on explosion size and dist
 					if(creaking_explosion)
 						M.playsound_local(epicenter, null, far_volume, 1, frequency, S = creaking_explosion_sound, distance_multiplier = 0)
 					else if(prob(PROB_SOUND)) // Sound variety during meteor storm/tesloose/other bad event
@@ -279,7 +284,10 @@ SUBSYSTEM_DEF(explosions)
 					if(devastation_range)
 						baseshakeamount = devastation_range
 						shake_camera(M, 10, clamp(baseshakeamount*0.25, 0, SHAKE_CLAMP))
-						echo_volume = 60
+						if(!HAS_TRAIT(M, AUSPEX_TRAIT))
+							echo_volume = 60
+						else
+							echo_volume = 80
 					M.playsound_local(epicenter, null, echo_volume, 1, frequency, S = explosion_echo_sound, distance_multiplier = 0)
 
 				if(creaking_explosion) // 5 seconds after the bang, the station begins to creak

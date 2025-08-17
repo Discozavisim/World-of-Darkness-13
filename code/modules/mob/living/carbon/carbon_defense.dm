@@ -603,6 +603,12 @@
 	if(.) // we've been flashed
 		if(visual)
 			return
+		if(HAS_TRAIT(src, AUSPEX_TRAIT))
+			eyes.applyOrganDamage(damage*2)
+			blind_eyes(damage*2)
+			blur_eyes(damage * rand(3, 6))
+			to_chat(src, "<span class='warning'> Твои глаза ужасно болят!</span>")
+			return
 
 		if (damage == 1)
 			to_chat(src, "<span class='warning'>Your eyes sting a little.</span>")
@@ -647,6 +653,10 @@
 	var/ear_safety = get_ear_protection()
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	var/effect_amount = intensity - ear_safety
+	if(HAS_TRAIT(src, AUSPEX_TRAIT))
+		damage_pwr *=2
+		intensity *=3
+		stun_pwr *= 3
 	if(effect_amount > 0)
 		if(stun_pwr)
 			Paralyze((stun_pwr*effect_amount)*0.1)

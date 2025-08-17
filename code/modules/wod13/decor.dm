@@ -193,23 +193,24 @@
 			if(V.upper)
 				icon_state = "[initial(icon_state)]-snow"
 
-/obj/effect/decal/litter
+/obj/effect/decal/cleanable/litter
 	name = "litter"
 	icon = 'code/modules/wod13/tiles.dmi'
 	icon_state = "paper1"
+	random_icon_states = list("paper1", "paper2", "paper3", "paper4", "paper5", "paper6")
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/litter/Initialize()
-	. = ..()
-	icon_state = "paper[rand(1, 6)]"
-
-/obj/effect/decal/cardboard
+/obj/effect/decal/cleanable/cardboard
 	name = "cardboard"
 	icon = 'code/modules/wod13/tiles.dmi'
 	icon_state = "cardboard1"
+	random_icon_states = list("cardboard1", "cardboard2", "cardboard3", "cardboard4", "cardboard5")
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/cardboard/Initialize()
+/obj/effect/decal/cleanable/cardboard/Initialize()
 	. = ..()
-	icon_state = "cardboard[rand(1, 5)]"
 	var/matrix/M = matrix()
 	M.Turn(rand(0, 360))
 	transform = M
@@ -270,7 +271,6 @@
 	anchored = TRUE
 	density = TRUE
 	var/searching = FALSE
-	zaklad = TRUE
 
 /obj/structure/trashcan/Initialize()
 	. = ..()
@@ -319,16 +319,12 @@
 		else
 			searching = FALSE
 
-/obj/structure
-	var/zaklad = FALSE
-
 /obj/structure/trashbag
 	name = "trash bag"
 	desc = "Holds garbage inside."
 	icon = 'code/modules/wod13/props.dmi'
 	icon_state = "garbage1"
 	anchored = TRUE
-	zaklad = TRUE
 
 /obj/structure/trashbag/Initialize()
 	. = ..()
@@ -654,13 +650,14 @@
 	. = ..()
 	icon_state = "under[rand(1, 2)]"
 
-/obj/effect/decal/trash
+/obj/effect/decal/cleanable/trash
 	name = "trash"
 	icon = 'code/modules/wod13/props.dmi'
 	icon_state = "trash1"
-	var/zaklad = TRUE
+	clean_type = CLEAN_TYPE_HARD_DECAL
+	mergeable_decal = FALSE
 
-/obj/effect/decal/trash/Initialize()
+/obj/effect/decal/cleanable/trash/Initialize()
 	. = ..()
 	icon_state = "trash[rand(1, 30)]"
 
@@ -1109,32 +1106,35 @@
 		obj_flags &= ~IN_USE
 		user.pixel_y = 0
 		icon_state = initial(icon_state)
-
-		var/difficulties = 0
-		for(var/obj/item/clothing/C in user)
-			if(C)
-				if(!istype(C, /obj/item/clothing/head/vampire) && !istype(C, /obj/item/clothing/under ))
+		if(user.client)
+			var/difficulties = 0
+			for(var/obj/item/clothing/C in user)
+				if(C)
 					difficulties += 1
-		difficulties = round(difficulties/2)
-		if(difficulties)
-			to_chat(user, "<span class='warning'>Clothes are making you worse at dancing... Take them off.")
-		var/result = secret_vampireroll(get_a_appearance(user)+get_a_empathy(user), 6+difficulties, user)
-		if(result == -1)
-			for(var/mob/living/carbon/human/npc/NPC in oviewers(2, user))
-				if(NPC)
-					if(NPC.CheckMove())
-						NPC.RealisticSay(pick("Фуу!", "Позорище!", "Убирайся!"))
-		if(result >= 3)
-			for(var/mob/living/carbon/human/npc/NPC in oviewers(2, user))
-				if(NPC)
-					if(NPC.CheckMove())
-						if(prob(50))
-							NPC.RealisticSay(pick("Так держать!", "Красотища...", "Детка, я твой фанат!"))
-						else
-							NPC.emote("clap")
-			var/obj/item/stack/dollar/fifty/F = new get_turf(user)
-			user.put_in_active_hand(F)
-
+			difficulties = round(difficulties/2)
+			if(difficulties)
+				to_chat(user, "<span class='warning'>Clothes are making you worse at dancing... Take them off.")
+			var/result = secret_vampireroll(get_a_appearance(user)+get_a_empathy(user), 6+difficulties, user)
+			if(result == -1)
+				for(var/mob/living/carbon/human/npc/NPC in oviewers(2, user))
+					if(NPC)
+						if(!NPC.CheckMove())
+							NPC.RealisticSay(pick("Фуу!", "Позорище!", "Убирайся!"))
+			if(result >= 3)
+				var/i_have_someone_to_fuck = 0
+				for(var/mob/living/carbon/human/npc/NPC in oviewers(2, user))
+					if(NPC)
+						if(!NPC.CheckMove())
+							i_have_someone_to_fuck += 1
+							if(prob(50))
+								NPC.RealisticSay(pick("Так держать!", "Красотища...", "Детка, я твой фанат!"))
+							else
+								NPC.emote("clap")
+				if(i_have_someone_to_fuck)
+					for(var/i in 1 to i_have_someone_to_fuck)
+						var/obj/item/stack/dollar/ten/F = new get_turf(user)
+						if(!user.put_in_active_hand(F))
+							user.put_in_inactive_hand(F)
 
 /obj/structure/pole/proc/animatepole(mob/living/user)
 	return
@@ -1402,29 +1402,6 @@
 	pixel_z = -16
 	icon = 'code/modules/wod13/64x64.dmi'
 	icon_state = "kopatich"
-
-/obj/effect/decal/baalirune
-	name = "satanic rune"
-	pixel_w = -16
-	pixel_z = -16
-	icon = 'code/modules/wod13/64x64.dmi'
-	icon_state = "baali"
-	var/total_corpses = 0
-
-/obj/effect/decal/baalirune/attack_hand(mob/living/user)
-	. = ..()
-	var/mob/living/carbon/human/H = locate() in get_turf(src)
-	if(H)
-		if(H.stat == DEAD)
-			H.gib()
-			total_corpses += 1
-			if(total_corpses >= 20)
-				total_corpses = 0
-				playsound(get_turf(src), 'sound/magic/demon_dies.ogg', 100, TRUE)
-				new /mob/living/simple_animal/hostile/baali_guard(get_turf(src))
-//			var/datum/preferences/P = GLOB.preferences_datums[ckey(user.key)]
-//			if(P)
-//				P.exper = min(calculate_mob_max_exper(user), P.exper+15)
 
 /obj/structure/vamptree
 	name = "tree"
@@ -1703,7 +1680,6 @@
 				L.forceMove(get_turf(src))
 			qdel(src)
 
-
 /obj/structure/leas
 	name = "Building scaffolding"
 	desc = "Building scaffolding. Nothing else."
@@ -1756,3 +1732,51 @@
 	desc = "Museum exhibits of crocodile! Awesome!"
 	icon = 'code/modules/wod13/128x96.dmi'
 	icon_state = "krokodil"
+
+///////////// BOXES ////////////////
+
+/obj/structure/boxes
+	name = "Box"
+	desc = "Storage some items."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "box1"
+	plane = GAME_PLANE
+	layer = ABOVE_ALL_MOB_LAYER
+	anchored = TRUE
+	density = TRUE
+
+/obj/structure/boxes/two_down
+	name = "Box"
+	desc = "Storage some items."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "box2_1"
+
+/obj/structure/boxes/two_up
+	name = "Box"
+	desc = "Storage some items."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "box2_2"
+
+/obj/structure/boxes/three
+	name = "Box"
+	desc = "Storage some items."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "box3"
+
+/*
+/obj/structure/boxes/Initialize()
+	. = ..()
+	icon_state = "box[rand(1, 2)]"
+	*/
+
+////////////// VERSTAK /////////////////
+
+/obj/structure/verstak
+	name = "Craftable"
+	desc = "Table for something selfmade things."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "verstak"
+	plane = GAME_PLANE
+	layer = ABOVE_ALL_MOB_LAYER
+	anchored = TRUE
+	density = TRUE

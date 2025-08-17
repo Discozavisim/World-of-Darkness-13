@@ -133,7 +133,6 @@
 	)
 
 	var/is_gangrel = FALSE
-	cancelable = TRUE
 	cooldown_length = 20 SECONDS
 
 
@@ -168,15 +167,15 @@
 /datum/discipline_power/protean/shape_of_the_beast/activate()
 	. = ..()
 	var/datum/warform/Warform = new
-	Warform.transform(shapeshift_type, owner, TRUE)
+	Warform.transform(shapeshift_type, owner, FALSE)
 
 
 /mob/living/simple_animal/hostile/smokecrawler/mist
 	name = "Mist"
 	desc = "Levitating Spritz of Water."
 	speed = -1
-	alpha = 20
-	color = "#0920eeff"
+	alpha = 15
+	color = "#0920ee31"
 	damage_coeff = list(BRUTE = 0, BURN = 1, TOX = 0, CLONE = 0, STAMINA = 0, OXY = 0)
 	a_intent = INTENT_HELP
 //	density = FALSE
@@ -209,7 +208,6 @@
 
 	violates_masquerade = TRUE
 
-	cancelable = TRUE
 	cooldown_length = 20 SECONDS
 
 /datum/discipline_power/protean/mist_form/activate()

@@ -680,7 +680,7 @@
 	. = ..()
 						///////////////////// CARS///////////////
 
-/obj/vampire_car/delivery_truck
+/obj/vampire_car/track/delivery_truck
 	name = "delivery truck"
 	desc = "A truck with specially prepared racks in the back allowing for easy storage and retrieval of delivery packages."
 	icon_state = "track"
@@ -698,41 +698,6 @@
 		delivery = null
 	qdel(delivery_trunk)
 	. = ..()
-
-/*
-/obj/vampire_car/delivery_truck/Initialize()
-	. = ..()
-	delivery_trunk = new(src,delivery_capacity)
-
-/obj/vampire_car/delivery_truck/ComponentInitialize()
-	return
-
-/obj/vampire_car/delivery_truck/attack_hand(mob/user)
-	. = ..()
-	if(locked == TRUE)
-		to_chat(user,span_warning("The [src.name] is locked!"))
-		return
-	if(user.pulling == null)
-		if(delivery_trunk.storage.len == 0)
-			to_chat(user, span_notice("There is nothing in the back of the [src.name]."))
-			return
-		var/turf/user_turf = get_turf(user)
-		for(var/obj/structure/delivery_crate/potential_crate in user_turf.contents)
-			if(potential_crate)
-				to_chat(user, span_warning("There is already a crate on the ground here!"))
-				return
-		delivery_trunk.retrieval_menu(user)
-	else
-		var/obj/structure/delivery_crate/pulled_crate = user.pulling
-		if(!pulled_crate)
-			to_chat(user, span_warning("The special compartments in the back dont really fit anything other than delivery crates. Use a nomral truck for other cargo."))
-			return
-		else
-			playsound(src,'code/modules/wod13/delevery_club/cargocrate_move.ogg',50,10)
-			if(do_after(user, 2 SECONDS, pulled_crate))
-				playsound(src,'code/modules/wod13/delevery_club/cargocrate_load.ogg',50,10)
-				delivery_trunk.add_to_storage(user,pulled_crate)
-*/
 
 /obj/effect/landmark/delivery_truck_beacon
 	name = "delivery truck spawner"

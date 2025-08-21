@@ -120,24 +120,34 @@
 /datum/discipline_power/vicissitude/malleable_visage/activate()
 	. = ..()
 
-	if (is_shapeshifted)
-		var/choice = alert(owner, "What form do you wish to take?", name, "Yours", "Someone Else's")
-		if (choice == "Yours")
+	if(is_shapeshifted)
+		var/choice = alert(owner, "What form do you wish to take?", name, "Yours", "Original","Someone Else's")
+		if(choice == "Yours")
 			deactivate()
 			return
-
-	choose_impersonating()
-	shapeshift()
+		if(choice == "Original")
+			make_original()
+			shapeshift()
+		if(choice == "Someone Else's")
+			choose_impersonating()
+			shapeshift()
 
 /datum/discipline_power/vicissitude/malleable_visage/deactivate()
 	. = ..()
 	shapeshift(to_original = TRUE)
 
+/datum/discipline_power/vicissitude/malleable_visage/proc/make_original()
+	initialize_original()
+	var/random = input(owner, "Want make yourself or randomized?", name)
+	if(random)
+		to_chat(owner, "Sigmaboy")
+	else
+		to_chat(owner, "Inshalla")
 /datum/discipline_power/vicissitude/malleable_visage/proc/choose_impersonating()
 	initialize_original()
 
 	var/list/mob/living/carbon/human/potential_victims = list()
-	for (var/mob/living/carbon/human/adding_victim in oviewers(3, owner))
+	for (var/mob/living/carbon/human/adding_victim in oviewers(7, owner))
 		potential_victims += adding_victim
 	if (!length(potential_victims))
 		to_chat(owner, span_warning("No one is close enough for you to examine..."))
@@ -182,24 +192,32 @@
 	original_alt_sprite_greyscale = owner.clane?.alt_sprite_greyscale
 
 /datum/discipline_power/vicissitude/malleable_visage/proc/shapeshift(to_original = FALSE, instant = FALSE)
-	if (!impersonating_dna)
+	var/fleshcrafting = get_a_fleshcraft(owner)
+	// secret_vampireroll
+	if(!impersonating_dna)
 		return
-	if (!instant)
+	if(!instant)
 		var/time_delay = 10 SECONDS
-		if (original_body_mod != impersonating_body_mod)
+		if(original_body_mod != impersonating_body_mod)
 			time_delay += 5 SECONDS
-		if (original_alt_sprite != impersonating_alt_sprite)
+		if(original_alt_sprite != impersonating_alt_sprite)
 			time_delay += 10 SECONDS
-		to_chat(owner, span_notice("You begin molding your appearance... This will take [DisplayTimeText(time_delay)]."))
-		if (!do_after(owner, time_delay))
-			return
+		if(fleshcrafting)
+			time_delay -= 3*fleshcrafting SECONDS
+		if(time_delay)
+			to_chat(owner, span_notice("You begin molding your appearance... This will take [DisplayTimeText(time_delay)]."))
+
+			if (!do_after(owner, time_delay))
+				return
 
 	owner.Stun(1 SECONDS)
 	owner.do_jitter_animation(10)
 	playsound(get_turf(owner), 'code/modules/wod13/sounds/vicissitude.ogg', 100, TRUE, -6)
 
 	if (to_original)
-		original_dna.transfer_identity(destination = owner, transfer_SE = TRUE, superficial = TRUE)
+		if(fleshcrafting >4)
+			original_dna.transfer_identity(destination = owner, transfer_SE = TRUE, superficial = TRUE)
+			QDEL_NULL(impersonating_dna)
 		owner.real_name = original_name
 		owner.skin_tone = original_skintone
 		owner.hairstyle = original_hairstyle
@@ -212,12 +230,12 @@
 		owner.phonevoicetag = original_phonevoicetag
 		owner.clane?.alt_sprite_greyscale = original_alt_sprite_greyscale
 		is_shapeshifted = FALSE
-		QDEL_NULL(impersonating_dna)
 	else
 		//Nosferatu, Cappadocians, Gargoyles, Kiasyd, etc. will revert instead of being indefinitely without their curse
 		if (original_alt_sprite)
 			addtimer(CALLBACK(src, PROC_REF(revert_to_cursed_form)), 5 MINUTES)
-		impersonating_dna.transfer_identity(destination = owner, superficial = TRUE)
+		if(fleshcrafting >4)
+			impersonating_dna.transfer_identity(destination = owner, superficial = TRUE)
 		owner.real_name = impersonating_name
 		owner.skin_tone = impersonating_skintone
 		owner.hairstyle = impersonating_hairstyle
@@ -362,7 +380,7 @@
 			if("Убрать")
 				remove_upgrade()
 	else
-		if (selected_upgrade)
+		if(selected_upgrade)
 			remove_upgrade()
 		else
 			give_upgrade()
@@ -382,8 +400,8 @@
 //		return
 	selected_upgrade += upgrade
 	ADD_TRAIT(user, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
-	switch (upgrade)
-		if ("Skin armor")
+	switch(upgrade)
+		if("Skin armor")
 			user.unique_body_sprite = "tziarmor"
 			original_skin_tone = user.skin_tone
 			user.skin_tone = "albino"
@@ -393,7 +411,7 @@
 			user.base_body_mod = ""
 			user.physiology.armor.melee += 20
 			user.physiology.armor.bullet += 20
-		if ("Centipede legs")
+		if("Centipede legs")
 			user.remove_overlay(PROTEAN_LAYER)
 			upgrade_overlay = mutable_appearance('code/modules/wod13/64x64.dmi', "centipede", -PROTEAN_LAYER)
 			upgrade_overlay.pixel_z = -16
@@ -401,7 +419,7 @@
 			user.overlays_standing[PROTEAN_LAYER] = upgrade_overlay
 			user.apply_overlay(PROTEAN_LAYER)
 			user.add_movespeed_modifier(/datum/movespeed_modifier/centipede)
-		if ("Second pair of arms")
+		if("Second pair of arms")
 			var/limbs = user.held_items.len
 			user.change_number_of_hands(limbs + 2)
 			user.remove_overlay(PROTEAN_LAYER)
@@ -409,7 +427,7 @@
 			upgrade_overlay.color = "#[skintone2hex(user.skin_tone)]"
 			user.overlays_standing[PROTEAN_LAYER] = upgrade_overlay
 			user.apply_overlay(PROTEAN_LAYER)
-		if ("Leather wings")
+		if("Leather wings")
 			user.dna.species.GiveSpeciesFlight(user)
 
 	user.do_jitter_animation(10)
@@ -417,30 +435,30 @@
 
 /datum/action/basic_vicissitude/proc/remove_upgrade()
 	var/mob/living/carbon/human/user = owner
-	if (!selected_upgrade)
+	if(!selected_upgrade)
 		return
 	to_chat(user, span_notice("You begin surgically removing your enhancements..."))
-	if (!do_after(user, 10 SECONDS))
+	if(!do_after(user, 10 SECONDS))
 		return
 	REMOVE_TRAIT(user, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
-	switch (selected_upgrade)
-		if ("Skin armor")
+	switch(selected_upgrade)
+		if("Skin armor")
 			user.unique_body_sprite = null
 			user.skin_tone = original_skin_tone
 			user.hairstyle = original_hairstyle
 			user.base_body_mod = original_body_mod
 			user.physiology.armor.melee -= 20
 			user.physiology.armor.bullet -= 20
-		if ("Centipede legs")
+		if("Centipede legs")
 			user.remove_overlay(PROTEAN_LAYER)
 			QDEL_NULL(upgrade_overlay)
 			user.remove_movespeed_modifier(/datum/movespeed_modifier/centipede)
-		if ("Second pair of arms")
+		if("Second pair of arms")
 			var/limbs = user.held_items.len
 			user.change_number_of_hands(limbs - 2)
 			user.remove_overlay(PROTEAN_LAYER)
 			QDEL_NULL(upgrade_overlay)
-		if ("Leather wings")
+		if("Leather wings")
 			user.dna.species.RemoveSpeciesFlight(user)
 
 	user.do_jitter_animation(10)
@@ -454,7 +472,6 @@
 	desc = "Shift your flesh and bone into that of a hideous monster."
 
 	level = 4
-	check_flags = DISC_CHECK_CONSCIOUS | DISC_CHECK_CAPABLE | DISC_CHECK_IMMOBILE
 	vitae_cost = 2
 	violates_masquerade = TRUE
 
@@ -462,7 +479,7 @@
 /datum/discipline_power/vicissitude/horrid_form/activate()
 	. = ..()
 	var/datum/warform/Warform = new
-	Warform.transform(/mob/living/simple_animal/hostile/tzimisce_beast, owner, FALSE)
+	Warform.transform(/mob/living/simple_animal/hostile/tzimisce_beast, owner, TRUE)
 
 /datum/discipline_power/vicissitude/horrid_form/post_gain()
 	. = ..()
@@ -476,7 +493,6 @@
 	desc = "Liquefy into a shifting mass of sentient Vitae."
 
 	level = 5
-	check_flags = DISC_CHECK_CONSCIOUS | DISC_CHECK_CAPABLE | DISC_CHECK_IMMOBILE
 
 	violates_masquerade = TRUE
 
@@ -485,7 +501,7 @@
 /datum/discipline_power/vicissitude/bloodform/activate()
 	. = ..()
 	Warform = new
-	Warform.transform(/mob/living/simple_animal/hostile/bloodcrawler, owner, TRUE)
+	Warform.transform(/mob/living/simple_animal/hostile/bloodcrawler, owner, TRUE, 0)
 
 /obj/item/organ/cyberimp/arm/surgery/vicissitude
 	icon_state = "toolkit_implant_vic"

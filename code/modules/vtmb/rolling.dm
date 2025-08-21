@@ -125,6 +125,7 @@ SUBSYSTEM_DEF(woddices)
 	var/Drive = 0
 	var/Security = 0
 	var/Expression = 0
+	var/Fleshcraft = 0
 
 	var/Finance = 0
 	var/Investigation = 0
@@ -274,6 +275,12 @@ SUBSYSTEM_DEF(woddices)
 /proc/get_a_expression(mob/living/Living)
 	if(Living.attributes)
 		return Living.attributes.Expression
+	else
+		return 0
+
+/proc/get_a_fleshcraft(mob/living/Living)
+	if(Living.attributes)
+		return Living.attributes.Fleshcraft
 	else
 		return 0
 

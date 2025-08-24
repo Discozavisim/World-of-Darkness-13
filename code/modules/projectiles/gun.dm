@@ -180,7 +180,7 @@
 					if(SOUTHEAST)
 						napravlenie = "юго-востока"
 					if(SOUTHWEST)
-						napravlenie = "юно-запада"
+						napravlenie = "юго-запада"
 					if(WEST)
 						napravlenie = "запада"
 					if(EAST)

@@ -44,7 +44,7 @@
 	owner.heal_ordered_damage(HEAL_BASHING_LETHAL * vitae_cost, list(BRUTE, TOX, OXY, STAMINA))
 
 	if(length(owner.all_wounds))
-		for (var/i in 1 to min(vitae_cost, length(owner.all_wounds)))
+		for(var/i in 1 to min(vitae_cost, length(owner.all_wounds)))
 			var/datum/wound/wound = owner.all_wounds[i]
 			wound.remove_wound()
 
@@ -53,23 +53,43 @@
 
 	//brain damage and traumas healing
 	var/obj/item/organ/brain/brain = owner.getorganslot(ORGAN_SLOT_BRAIN)
-	if (brain)
+	if(brain)
 		brain.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
 
-		for (var/i in 1 to min(vitae_cost, length(brain.get_traumas_type())))
+		for(var/i in 1 to min(vitae_cost, length(brain.get_traumas_type())))
 			var/datum/brain_trauma/healing_trauma = pick(brain.get_traumas_type())
 			brain.cure_trauma_type(healing_trauma, resilience = TRAUMA_RESILIENCE_WOUND)
 
 	//miscellaneous organ damage healing
 	var/obj/item/organ/eyes/eyes = owner.getorganslot(ORGAN_SLOT_EYES)
-	if (eyes)
+	if(eyes)
 		eyes.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
 
 		owner.adjust_blindness(-HEAL_AGGRAVATED * vitae_cost)
 		owner.adjust_blurriness(-HEAL_AGGRAVATED * vitae_cost)
 
+	var/obj/item/organ/ears/ears = owner.getorganslot(ORGAN_SLOT_EARS)
+	if(ears)
+		ears.applyOrganDamage(-HEAL_AGGRAVATED * vitae_cost)
+
+	var/obj/item/organ/heart/heart = owner.getorganslot(ORGAN_SLOT_EARS)
+	if(heart)
+		heart.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
+
+	var/obj/item/organ/lungs/lungs = owner.getorganslot(ORGAN_SLOT_LUNGS)
+	if(lungs)
+		lungs.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
+
+	var/obj/item/organ/stomach/stomach = owner.getorganslot(ORGAN_SLOT_STOMACH)
+	if(stomach)
+		stomach.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
+
+	var/obj/item/organ/liver/liver = owner.getorganslot(ORGAN_SLOT_LIVER)
+	if(liver)
+		liver.applyOrganDamage(-HEAL_BASHING_LETHAL * vitae_cost)
+
 	//healing too quickly attracts attention
-	if (violates_masquerade)
+	if(violates_masquerade)
 		owner.visible_message(
 			span_warning("[owner]'s wounds heal with unnatural speed!"),
 			span_warning("Your wounds visibly heal with unnatural speed!")
@@ -100,7 +120,7 @@
 	vitae_cost = max(min(vitae_cost, vitae_needed), 1)
 
 	//healing is a masquerade breach if it's done at level 3 and above
-	if (vitae_cost > 2)
+	if(vitae_cost > 2)
 		violates_masquerade = TRUE
 	else
 		violates_masquerade = FALSE

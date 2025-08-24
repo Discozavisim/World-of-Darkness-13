@@ -711,7 +711,7 @@
 /obj/effect/landmark/delivery_truck_beacon/proc/spawn_truck(datum/linked_datum)
 	if(!linked_datum) return
 	var/turf/local_turf = get_turf(src)
-	var/obj/vampire_car/delivery_truck/spawned_truck = new(local_turf)
+	var/obj/vampire_car/track/delivery_truck/spawned_truck = new(local_turf)
 	spawned_truck.dir = spawn_dir
 	switch(spawn_dir)
 		if(NORTH)

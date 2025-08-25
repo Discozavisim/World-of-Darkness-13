@@ -176,6 +176,7 @@
 					if(alert("Ты ДЕЙСТВИТЕЛЬНО хочешь высосать душу?",,"Да","Нет")=="Да")
 						user.Immobilize(80 SECONDS, TRUE)
 						attributes.stamina_bonus = -2
+						ADD_TRAIT(K, BEING_DIABLERIE, TRAIT_GENERIC)
 				//	if(diablerist || P.generation > P2.generation+2)
 						if(diablerist)
 							modifikator_diab = 1
@@ -192,6 +193,7 @@
 									to_chat(user, "<span class='warning'>Ты чувствуешь, как душа [target] слабеет...</span>")
 							else
 								to_chat(user, "<span class='warning'><b> ДУША УСКОЛЬЗНУЛА С ТВОИХ УСТ!!! </b></span>")
+								REMOVE_TRAIT(K, BEING_DIABLERIE, TRAIT_GENERIC)
 								return
 						if(L == 7)
 							switch(uspeh)

@@ -1116,3 +1116,7 @@ VENTORY!
 /obj/item/vampire/drill
 	grid_width = 10 GRID_BOXES
 	grid_height = 10 GRID_BOXES
+
+/obj/item/melee/vampirearms/sledgehammer
+	grid_width = 7 GRID_BOXES
+	grid_height = 1 GRID_BOXES

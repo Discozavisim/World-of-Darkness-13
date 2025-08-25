@@ -537,3 +537,5 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 //// Rolling traits
 #define AUSPEX_TRAIT "auspex_trait"
+
+#define BEING_DIABLERIE "being_diablerie"

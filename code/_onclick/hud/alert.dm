@@ -352,15 +352,21 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "succumb"
 
 /atom/movable/screen/alert/succumb/Click()
-	if (isobserver(usr))
+	if(isobserver(usr))
 		return
+	if(ishuman(usr))
+		var/mob/living/carbon/human/H = owner
+		if(H.diablerist || H.masquerade < 3 || HAS_TRAIT(owner, BEING_DIABLERIE))
+			to_chat(owner, "Тяжесть твоих грехов не отпускает тебя...")
+			return
 
 	var/mob/living/living_owner = owner
 	var/last_whisper = input("Do you have any last words?", "Final Words") as null | text
-	if (isnull(last_whisper) || !CAN_SUCCUMB(living_owner))
+	if(isnull(last_whisper) || !CAN_SUCCUMB(living_owner))
 		return
 
-	if (length(last_whisper))
+
+	if(length(last_whisper))
 		living_owner.say("#[last_whisper]")
 
 	living_owner.succumb(whispered = length(last_whisper) > 0)

@@ -118,14 +118,16 @@ SUBSYSTEM_DEF(woddices)
 	var/Brawl = 0
 	var/Empathy = 0
 	var/Intimidation = 0
+	var/Expression = 0
 
 	var/Crafts = 0
 	var/Melee = 0
 	var/Firearms = 0
 	var/Drive = 0
 	var/Security = 0
-	var/Expression = 0
+
 	var/Fleshcraft = 0
+	var/Performance = 0
 
 	var/Finance = 0
 	var/Investigation = 0
@@ -162,13 +164,14 @@ SUBSYSTEM_DEF(woddices)
 	Brawl = rand(0, 4)
 	Empathy = rand(0, 4)
 	Intimidation = rand(0, 4)
+	Expression = rand(0, 4)
 
 	Crafts = rand(0, 4)
 	Melee = rand(0, 4)
 	Firearms = rand(0, 4)
 	Drive = rand(0, 4)
 	Security = rand(0, 4)
-	Expression = rand(0, 4)
+	Performance = rand(0, 4)
 
 	Finance = rand(0, 4)
 	Investigation = rand(0, 4)
@@ -242,6 +245,12 @@ SUBSYSTEM_DEF(woddices)
 	else
 		return 0
 
+/proc/get_a_expression(mob/living/Living)
+	if(Living.attributes)
+		return Living.attributes.Expression
+	else
+		return 0
+
 /proc/get_a_crafts(mob/living/Living)
 	if(Living.attributes)
 		return Living.attributes.Crafts
@@ -272,9 +281,9 @@ SUBSYSTEM_DEF(woddices)
 	else
 		return 0
 
-/proc/get_a_expression(mob/living/Living)
+/proc/get_a_performance(mob/living/Living)
 	if(Living.attributes)
-		return Living.attributes.Expression
+		return Living.attributes.Performance
 	else
 		return 0
 

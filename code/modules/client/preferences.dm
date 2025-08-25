@@ -252,16 +252,24 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/Intelligence = 1
 	var/Wits = 1
 
+/////TALENTS
 	var/Alertness = 0
 	var/Athletics = 0
 	var/Brawl = 0
 	var/Empathy = 0
 	var/Intimidation = 0
+	var/Expression = 0
+
+////// SKILLS
 	var/Crafts = 0
 	var/Melee = 0
 	var/Firearms = 0
 	var/Drive = 0
 	var/Security = 0
+	var/Fleshcraft = 0
+	var/Performance = 0
+
+//// KNOWELEDGE
 	var/Finance = 0
 	var/Investigation = 0
 	var/Medicine = 0

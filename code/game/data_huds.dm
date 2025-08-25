@@ -169,6 +169,8 @@ Medical HUD! Basic mode needs suit sensors on.
 
 //for carbon suit sensors
 /mob/living/carbon/med_hud_set_health()
+	if(src.invisibility >= INVISIBILITY_LEVEL_OBFUSCATE)
+		return
 	..()
 
 //called when a carbon changes stat, virus or XENO_HOST

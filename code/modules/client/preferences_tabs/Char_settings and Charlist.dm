@@ -20,7 +20,7 @@
 				if(!name)
 					name = "Character[i]"
 				if(istype(user, /mob/dead/new_player))
-					dat += "<a style='white-space:nowrap;' href='byond://?_src_=prefs;preference=changeslot;num=[i];' [i == default_slot ? "class='linkOn'" : ""]>[name]</a> "
+					dat += "<a style='white-space:nowrap;' href='?_src_=prefs;preference=changeslot;num=[i];' [i == default_slot ? "class='linkOn'" : ""]>[name]</a> "
 			dat += "</center>"
 
 	if(reason_of_death != "None")
@@ -257,8 +257,6 @@
 				cost = 10
 			else if (clane.name == "Caitiff")
 				cost = discipline_level * 6
-			else if (discipline.learnable_by_clans.Find(clane.type))
-				cost = discipline_level * 6
 			else if (clane.clane_disciplines.Find(discipline_type))
 				cost = discipline_level * 5
 			else
@@ -272,24 +270,15 @@
 			dat += "-[discipline.desc]<BR>"
 			qdel(discipline)
 
-		var/list/possible_new_disciplines = subtypesof(/datum/discipline) - discipline_types - /datum/discipline/bloodheal
-
-		for (var/discipline_type in possible_new_disciplines)
-			var/datum/discipline/discipline = new discipline_type
-
-			if (discipline.clan_restricted && !(discipline.learnable_by_clans.len))
-				possible_new_disciplines -= discipline_type
-
-			if (discipline.learnable_by_clans.len && !(clane.type in discipline.learnable_by_clans))
-				possible_new_disciplines -= discipline_type
-
-			if (!discipline.clan_restricted && !discipline.learnable_by_clans.len && clane.name != "Caitiff")
-				possible_new_disciplines -= discipline_type
-
-			qdel(discipline)
-
-		if (possible_new_disciplines.len && (true_experience >= 10))
-			dat += "<a href='byond://?_src_=prefs;preference=newdiscipline;task=input'>Learn a new Discipline (10)</a><BR>"
+		if (clane.name == "Caitiff")
+			var/list/possible_new_disciplines = subtypesof(/datum/discipline) - discipline_types
+			for (var/discipline_type in possible_new_disciplines)
+				var/datum/discipline/discipline = new discipline_type
+				if (discipline.clan_restricted)
+					possible_new_disciplines -= discipline_type
+					qdel(discipline)
+			if (possible_new_disciplines.len && (true_experience >= 10))
+				dat += "<a href='byond://?_src_=prefs;preference=newdiscipline;task=input'>Learn a new Discipline (10)</a><BR>"
 
 	if(pref_species.name == "Ghoul")
 		for (var/i in 1 to discipline_types.len)
@@ -378,7 +367,7 @@
 //	dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_SOCKS]'>[(randomise[RANDOM_SOCKS]) ? "Lock" : "Unlock"]</A>"
 
 
-//	dat += "<br><b>Jumpsuit Style:</b><BR><a href ='byond://??_src_=prefs;preference=suit;task=input'>[jumpsuit_style]</a>"
+//	dat += "<br><b>Jumpsuit Style:</b><BR><a href ='?_src_=prefs;preference=suit;task=input'>[jumpsuit_style]</a>"
 //	dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_JUMPSUIT_STYLE]'>[(randomise[RANDOM_JUMPSUIT_STYLE]) ? "Lock" : "Unlock"]</A>"
 
 	dat += "<br><b>Backpack:</b><BR><a href ='byond://?_src_=prefs;preference=bag;task=input'>[backpack]</a>"
@@ -403,9 +392,9 @@
 		dat += "<BR><b>Temporal Scarring:</b><BR><a href='byond://?_src_=prefs;preference=persistent_scars'>[(persistent_scars) ? "Enabled" : "Disabled"]</A>"
 		dat += "<a href='byond://?_src_=prefs;preference=clear_scars'>Clear scar slots</A>"
 
-//	dat += "<br><b>Antagonist Items Spawn Location:</b><BR><a href ='byond://??_src_=prefs;preference=uplink_loc;task=input'>[uplink_spawn_loc]</a><BR></td>"
+//	dat += "<br><b>Antagonist Items Spawn Location:</b><BR><a href ='?_src_=prefs;preference=uplink_loc;task=input'>[uplink_spawn_loc]</a><BR></td>"
 //	if (user.client.get_exp_living(TRUE) >= PLAYTIME_VETERAN)
-//		dat += "<br><b>Don The Ultimate Gamer Cloak?:</b><BR><a href ='byond://??_src_=prefs;preference=playtime_reward_cloak'>[(playtime_reward_cloak) ? "Enabled" : "Disabled"]</a><BR></td>"
+//		dat += "<br><b>Don The Ultimate Gamer Cloak?:</b><BR><a href ='?_src_=prefs;preference=playtime_reward_cloak'>[(playtime_reward_cloak) ? "Enabled" : "Disabled"]</a><BR></td>"
 	var/use_skintones = pref_species.use_skintones
 	if(use_skintones)
 
@@ -607,7 +596,6 @@
 		if(mutant_category >= MAX_MUTANT_ROWS)
 			dat += "</td>"
 			mutant_category = 0
-// ТАБУЛЯЦИИ УДАЛЯТЬ ВЫШЕ
 	if(pref_species.mutant_bodyparts["tail_human"])
 		if(pref_species.id != "kindred" && pref_species.id != "ghoul")
 			if(!mutant_category)
@@ -671,6 +659,9 @@
 	if(!slotlocked)
 		dat += "<a href='byond://?_src_=prefs;preference=priorities;task=input'>Change Priorities</a><BR>"
 
+	var/datum/species/kindred/K = pref_species
+	var/datum/species/ghoul/G = pref_species
+
 	var/physical_priorities = get_freebie_points("Physical")
 	var/social_priorities = get_freebie_points("Social")
 	var/mental_priorities = get_freebie_points("Mental")
@@ -704,18 +695,26 @@
 	dat += "Brawl: [build_attribute_score(Brawl, 5, 3, "brawl")]"
 	dat += "Empathy: [build_attribute_score(Empathy, 5, 3, "empathy")]"
 	dat += "Intimidation: [build_attribute_score(Intimidation, 5, 3, "intimidation")]"
+	dat += "Expression: [build_attribute_score(Expression, 5, 3, "expression")]"
 	dat += "<b>SKILLS</b><BR>"
 	dat += "Crafts: [build_attribute_score(Crafts, 5, 3, "crafts")]"
 	dat += "Melee: [build_attribute_score(Melee, 5, 3, "melee")]"
 	dat += "Firearms: [build_attribute_score(Firearms, 5, 3, "firearms")]"
 	dat += "Drive: [build_attribute_score(Drive, 5, 3, "drive")]"
 	dat += "Security: [build_attribute_score(Security, 5, 3, "security")]"
+	dat += "Performance: [build_attribute_score(Performance, 5, 3, "performance")]"
+	if(clane.name == "Tzimisce" || (clane.name == "Old Clan Tzimisce" && K.get_discipline("Vicissitude" )) || (pref_species.name == "Ghoul" && G.get_discipline("Vicissitude")) )
+		dat += "Fleshcraft: [build_attribute_score(Fleshcraft, 5, 3, "fleshcraft")]"
+
 	dat += "<b>KNOWLEDGES</b><BR>"
 	dat += "Finance: [build_attribute_score(Finance, 5, 3, "finance")]"
 	dat += "Investigation: [build_attribute_score(Investigation, 5, 3, "investigation")]"
 	dat += "Medicine: [build_attribute_score(Medicine, 5, 3, "medicine")]"
 	dat += "Linguistics: [build_attribute_score(Linguistics, 5, 3, "linguistics")]"
 	dat += "Occult: [build_attribute_score(Occult, 5, 3, "occult")]"
+
+	// if(clane.name == "Old Clan Tzimiscee" || (clane.name == "Tzimisce" && K.get_discipline("Koldunstvo" )) || (pref_species.name == "Ghoul" && G.get_discipline("Koldunstvo")) )
+	//	dat += "Koldun Sorcery: [build_attribute_score(Koldunt, 5, 3, "koldun")]"
 
 	if(CONFIG_GET(flag/roundstart_traits))
 		dat += "<center><h2>[make_font_cool("QUIRK SETUP")]</h2>"

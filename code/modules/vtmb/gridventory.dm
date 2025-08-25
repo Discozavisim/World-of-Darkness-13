@@ -16,7 +16,7 @@ VENTORY!
 /// jimmy joger variable
 #define CHECK_BITFIELD(variable, flag) (variable & (flag))
 
-/obj/item/storage/Initialize(mapload)
+/obj/item/storage/Initialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	if(STR)
@@ -878,8 +878,8 @@ VENTORY!
 	grid_height = 1 GRID_BOXES
 
 /obj/item/melee/vampirearms/machete
-	grid_width = 3 GRID_BOXES
-	grid_height = 1 GRID_BOXES
+    grid_width = 3 GRID_BOXES
+    grid_height = 1 GRID_BOXES
 
 /obj/item/melee/vampirearms/rapier
 	grid_width = 2 GRID_BOXES
@@ -1054,7 +1054,7 @@ VENTORY!
 	grid_height = 2 GRID_BOXES
 
 /obj/item/gun/ballistic/automatic/vampire/sniper
-	grid_width = 4 GRID_BOXES
+	grid_width = 8 GRID_BOXES
 	grid_height = 2 GRID_BOXES
 
 /obj/item/gun/ballistic/shotgun/vampire
@@ -1117,6 +1117,6 @@ VENTORY!
 	grid_width = 10 GRID_BOXES
 	grid_height = 10 GRID_BOXES
 
-#undef CHECK_BITFIELD
-#undef STORAGE_NO_EQUIPPED_ACCESS
-#undef STORAGE_NO_WORN_ACCESS
+/obj/item/melee/vampirearms/sledgehammer
+	grid_width = 7 GRID_BOXES
+	grid_height = 1 GRID_BOXES

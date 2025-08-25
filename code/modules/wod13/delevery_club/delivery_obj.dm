@@ -185,103 +185,103 @@
 	delivery_employer_tag = "bar_delivery"
 
 
-	///////////////////// Delivery receivers ///////////////////////
+	///////////////////// Delivery recievers ///////////////////////
 
-/obj/structure/delivery_receiver/store1
+/obj/structure/delivery_reciever/store1
 	chute_name = "Bubway - Ghetto"
 
-/obj/structure/delivery_receiver/store2
+/obj/structure/delivery_reciever/store2
 	chute_name = "Veterinary Clinic - Ghetto"
 
-/obj/structure/delivery_receiver/store3
+/obj/structure/delivery_reciever/store3
 	chute_name = "Pawn Shop - Ghetto"
 
-/obj/structure/delivery_receiver/store4
+/obj/structure/delivery_reciever/store4
 	chute_name = "Weapon Shop - Ghetto"
 
-/obj/structure/delivery_receiver/store5
+/obj/structure/delivery_reciever/store5
 	chute_name = "Pawn Shop - Pacific Heights"
 
-/obj/structure/delivery_receiver/store6
+/obj/structure/delivery_reciever/store6
 	chute_name = "Gumma Guts(slot machine room) - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store7
+/obj/structure/delivery_reciever/store7
 	chute_name = "Seaside Arcade - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store8
+/obj/structure/delivery_reciever/store8
 	chute_name = "Seaside Grocery Store - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store9
+/obj/structure/delivery_reciever/store9
 	chute_name = "Convineance Store - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store10
+/obj/structure/delivery_reciever/store10
 	chute_name = "Boardwalk Store North - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store11
+/obj/structure/delivery_reciever/store11
 	chute_name = "Boardwalk Store South - Fisherman's Wharf"
 
-/obj/structure/delivery_receiver/store12
+/obj/structure/delivery_reciever/store12
 	chute_name = "Big Clothing Store - Union Square"
 
-/obj/structure/delivery_receiver/store13
+/obj/structure/delivery_reciever/store13
 	chute_name = "Small Clothing Store - Union Square"
 
-/obj/structure/delivery_receiver/store14
+/obj/structure/delivery_reciever/store14
 	chute_name = "Weapon Store - Union Square"
 
-/obj/structure/delivery_receiver/store15
+/obj/structure/delivery_reciever/store15
 	chute_name = "Medium Clothing Store - Union Square"
 
-/obj/structure/delivery_receiver/store16
+/obj/structure/delivery_reciever/store16
 	chute_name = "Baco Tell Central - Union Square"
 
-/obj/structure/delivery_receiver/store17
+/obj/structure/delivery_reciever/store17
 	chute_name = "Baco Tell South - Union Square"
 
-/obj/structure/delivery_receiver/store18
+/obj/structure/delivery_reciever/store18
 	chute_name = "Clothing Store South - Union Square"
 
-/obj/structure/delivery_receiver/store19
+/obj/structure/delivery_reciever/store19
 	chute_name = "Gas Station - Pacific Heights"
 
-/obj/structure/delivery_receiver/store20
+/obj/structure/delivery_reciever/store20
 	chute_name = "Gas Station - Fisherman's Wharf"
 
 
-/obj/structure/delivery_receiver/special1
+/obj/structure/delivery_reciever/special1
 	chute_name = "Casino - Chinatown"
 
-/obj/structure/delivery_receiver/special2
+/obj/structure/delivery_reciever/special2
 	chute_name = "Laundromat - Chinatown"
 
-/obj/structure/delivery_receiver/special3
+/obj/structure/delivery_reciever/special3
 	chute_name = "Restaurant - Chinatown"
 
-/obj/structure/delivery_receiver/special4
+/obj/structure/delivery_reciever/special4
 	chute_name = "Hotel - Ghetto"
 
-/obj/structure/delivery_receiver/special5
+/obj/structure/delivery_reciever/special5
 	chute_name = "Museum Rear - Ghetto"
 
-/obj/structure/delivery_receiver/special6
+/obj/structure/delivery_reciever/special6
 	chute_name = "City Limits North"
 
-/obj/structure/delivery_receiver/special7
+/obj/structure/delivery_reciever/special7
 	chute_name = "City Limits East"
 
-/obj/structure/delivery_receiver/special8
+/obj/structure/delivery_reciever/special8
 	chute_name = "City Limits South"
 
-/obj/structure/delivery_receiver/special9
+/obj/structure/delivery_reciever/special9
 	chute_name = "City Limits West"
 
-/obj/structure/delivery_receiver/special10
+/obj/structure/delivery_reciever/special10
 	chute_name = "Church Side Entrance - Pacific Heights"
 
-/obj/structure/delivery_receiver/special11
+/obj/structure/delivery_reciever/special11
 	chute_name = "Private/Undisclosed Enterprise - Pacific Heights"
 
-/obj/structure/delivery_receiver/special12
+/obj/structure/delivery_reciever/special12
 	chute_name = "Forest Approach - Pacific Heights"
 
 
@@ -341,7 +341,7 @@
 				to_chat(user,span_notice("Only the original owner of the contract, [delivery.original_owner] can remove people from the contract."))
 				return
 			else
-				if(delivery.delivery_receivers.len == 0)
+				if(delivery.delivery_recievers.len == 0)
 					to_chat(user,span_warning("This delivery is complete and should be handed in. Removing users is no longer possibe."))
 					return
 				if(tgui_alert(user,"Do you want to remove [M] from the delivery contract?","Contract remove confirmation",list("Yes","No"),timeout = 10 SECONDS) == "Yes")
@@ -445,7 +445,7 @@
 							delivery_started = 1
 							return
 						if("fail_reci")
-							to_chat(user, span_warning("Not enough receivers avaialble in the game world. This is most likley because too many cotnracts are active at the same time, but is very likely a mapping bug."))
+							to_chat(user, span_warning("Not enough recievers avaialble in the game world. This is most likley because too many cotnracts are active at the same time, but is very likely a mapping bug."))
 							qdel(contract)
 						if("fail_garage")
 							to_chat(user, span_warning("No garage area found. This is a mapping bug and should be reported."))
@@ -471,7 +471,7 @@
 		if(contract_item.delivery.check_owner(user) == 0)
 			to_chat(user,span_warning("You don't seem to be on this contract. Only the person who signed the cotract can add you."))
 			return
-		if(contract_item.delivery.delivery_receivers.len == 0)
+		if(contract_item.delivery.delivery_recievers.len == 0)
 			if(get_area(contract_item.delivery.active_truck) != contract_item.delivery.garage_area)
 				to_chat(user,span_warning("Warning: Truck outside of garage area."))
 			if(tgui_alert(user,"Do you wish to finalize the contract?","Finalize Confirm",list("Yes","No"),timeout = 10 SECONDS) == "Yes")
@@ -499,7 +499,7 @@
 	. = ..()
 
 
-/obj/structure/delivery_receiver
+/obj/structure/delivery_reciever
 
 	name = "delivery chute"
 	desc = "A chute used to handle bulk deliveries. A standard shipping crate should slide right in."
@@ -509,7 +509,7 @@
 	icon_state = "box_put"
 	var/chute_name = "default"
 	var/delivery_in_use = 0
-	var/receiver_in_use = 0
+	var/reciever_in_use = 0
 	var/list/delivery_status = list(
 		"red" = 0,
 		"blue" = 0,
@@ -519,7 +519,7 @@
 	light_color = "#ffffff"
 	light_power = 2
 
-/obj/structure/delivery_receiver/proc/reset_receiver()
+/obj/structure/delivery_reciever/proc/reset_reciever()
 	delivery_in_use = 0
 	delivery_status = list(
 		"red" = 0,
@@ -531,46 +531,46 @@
 	mouse_opacity = 0
 	set_light(0)
 
-/obj/structure/delivery_receiver/proc/check_deliveries()
+/obj/structure/delivery_reciever/proc/check_deliveries()
 	if(delivery_status["red"] != 0 || delivery_status["blue"] != 0 || delivery_status["yellow"] != 0 || delivery_status["green"] != 0) return 0
 	return 1
 
-/obj/structure/delivery_receiver/Initialize(mapload)
+/obj/structure/delivery_reciever/Initialize()
 	. = ..()
 	alpha = 0
 	mouse_opacity = 0
-	GLOB.delivery_available_receivers.Add(src)
+	GLOB.delivery_available_recievers.Add(src)
 	name = "[initial(name)] - [capitalize(chute_name)]"
 
-/obj/structure/delivery_receiver/Destroy()
+/obj/structure/delivery_reciever/Destroy()
 	. = ..()
-	GLOB.delivery_available_receivers.Remove(src)
+	GLOB.delivery_available_recievers.Remove(src)
 
-/obj/structure/delivery_receiver/attack_hand(mob/living/user)
+/obj/structure/delivery_reciever/attack_hand(mob/living/user)
 	. = ..()
-	if(receiver_in_use == 1)
-		to_chat(user, span_warning("Someone is already operating this receiver!"))
+	if(reciever_in_use == 1)
+		to_chat(user, span_warning("Someone is already operating this reciever!"))
 	if(user.pulling)
 		if(delivery_in_use == 0) return
 		if(istype(user.pulling,/obj/structure/delivery_crate/))
 			var/obj/structure/delivery_crate/pulled_crate = user.pulling
 			if(pulled_crate.delivery.check_owner(user) == 0)
-				to_chat(user, span_warning("You aren't authorized to handle this delivery. For security reasons, the receiver denies the package."))
+				to_chat(user, span_warning("You aren't authorized to handle this delivery. For security reasons, the reciever denies the package."))
 				return
-			receiver_in_use = 1
+			reciever_in_use = 1
 			playsound(src,'code/modules/wod13/delevery_club/cargocrate_move.ogg',50,10)
 			if(do_after(user, 2 SECONDS, src))
 				if(delivery_status[pulled_crate.crate_type] > 0)
 					delivery_status[pulled_crate.crate_type] -= 1
 					pulled_crate.delivery.delivery_score["delivered_crates"] += 1
 					if(check_deliveries() == 1)
-						pulled_crate.delivery.receiver_complete(src)
-						reset_receiver()
+						pulled_crate.delivery.reciever_complete(src)
+						reset_reciever()
 				else
 					pulled_crate.delivery.delivery_score["misdelivered_crates"] += 1
 				playsound(src,'code/modules/wod13/delevery_club/cargocrate_load.ogg',50,10)
 				qdel(pulled_crate)
-			receiver_in_use = 0
+			reciever_in_use = 0
 
 /obj/structure/delivery_dispenser
 
@@ -588,7 +588,7 @@
 	light_color = "#ffffff"
 	light_power = 20
 
-/obj/structure/delivery_dispenser/Initialize(mapload)
+/obj/structure/delivery_dispenser/Initialize()
 	. = ..()
 	GLOB.delivery_available_dispensers.Add(src)
 	alpha = 0
@@ -668,7 +668,7 @@
 	var/obj/structure/delivery_dispenser/source_dispenser
 	var/crate_type
 
-/obj/structure/delivery_crate/Initialize(mapload)
+/obj/structure/delivery_crate/Initialize()
 	if(crate_type) name = initial(name) + " - [crate_type]"
 	AddElement(/datum/element/climbable)
 	. = ..()
@@ -733,7 +733,7 @@
 	spawned_truck.delivery.spawned_keys.Add(spawned_keys)
 	spawned_truck.delivery.original_owner.put_in_hands(spawned_keys)
 
-/obj/effect/landmark/delivery_truck_beacon/Initialize(mapload)
+/obj/effect/landmark/delivery_truck_beacon/Initialize()
 	GLOB.delivery_available_veh_spawners.Add(src)
 	. = ..()
 

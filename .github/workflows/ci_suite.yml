@@ -2,17 +2,17 @@ name: CI Suite
 on:
   push:
     branches:
-    - master
-    - 'project/**'
-    - 'gh-readonly-queue/master/**'
-    - 'gh-readonly-queue/project/**'
+      - master
+      - "project/**"
+      - "gh-readonly-queue/master/**"
+      - "gh-readonly-queue/project/**"
   pull_request:
     branches:
-    - master
-    - 'project/**'
+      - master
+      - "project/**"
   merge_group:
     branches:
-    - master
+      - master
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -94,7 +94,7 @@ jobs:
           tools/bootstrap/python -c ''
       - name: Give Linters A Go
         id: linter-setup
-        run: ':'
+        run: ":"
       - name: Run Grep Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: bash tools/ci/check_grep.sh
@@ -115,7 +115,7 @@ jobs:
         run: ~/dreamchecker 2>&1 | bash tools/ci/annotate_dm.sh
       - name: Run TGUI Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
-        run: tools/build/build --ci lint tgui-test  # we build tgui here because asset_cache relies on its output
+        run: tools/build/build --ci lint tgui-test # we build tgui here because asset_cache relies on its output
       - name: Run OpenDream
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: |
@@ -249,7 +249,7 @@ jobs:
 
   compare_screenshots:
     if: needs.collect_data.outputs.alternate_tests == '[]' || needs.run_alternate_tests.result == 'success'
-    needs: [ collect_data, run_all_tests, run_alternate_tests ]
+    needs: [collect_data, run_all_tests, run_alternate_tests]
     name: Compare Screenshot Tests
     timeout-minutes: 15
     runs-on: ubuntu-22.04
@@ -320,7 +320,15 @@ jobs:
   completion_gate: # Serves as a non-moving target for branch rulesets
     if: always() && !cancelled()
     name: Completion Gate
-    needs: [ test_windows, compare_screenshots, compile_all_maps, run_all_tests, run_alternate_tests, run_linters ]
+    needs:
+      [
+        test_windows,
+        compare_screenshots,
+        compile_all_maps,
+        run_all_tests,
+        run_alternate_tests,
+        run_linters,
+      ]
     runs-on: ubuntu-latest
     steps:
       - name: Decide whether the needed jobs succeeded or failed

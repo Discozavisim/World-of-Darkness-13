@@ -15,7 +15,9 @@ Structure: ///////////////////          //////////////////////////
 ```
 
 # About the Holder:
+
 The holder (reagents datum) is the datum that holds a list of all reagents currently in the object.It also has all the procs needed to manipulate reagents
+
 ```
 		remove_any(var/amount)
 			This proc removes reagents from the holder until the passed amount
@@ -111,7 +113,9 @@ The holder (reagents datum) is the datum that holds a list of all reagents curre
 ```
 
 # About Reagents:
+
 Reagents are all the things you can mix and fille in bottles etc. This can be anything from rejuvs over water to ... iron. Each reagent also has a few procs - i'll explain those below.
+
 ```
 		expose_mob(var/mob/living/L, var/methods=TOUCH)
 			This is called by the holder's reation proc.
@@ -144,6 +148,7 @@ Reagents are all the things you can mix and fille in bottles etc. This can be an
 ```
 
 ## Important variables:
+
 ```
 		holder
 			This variable contains a reference to the holder the chemical is 'in'
@@ -167,10 +172,13 @@ Reagents are all the things you can mix and fille in bottles etc. This can be an
 			you define it as "#RRGGBB", or, red green blue. You can also define it using the
 			rgb() proc, which returns a hexadecimal value too. The color is black by default.
 ```
+
 A good website for color calculations: http://www.psyclops.com/tools/rgb/
 
 # About Recipes:
+
 Recipes are simple datums that contain a list of required reagents and a result. They also have a proc that is called when the recipe is matched.
+
 ```
 		on_reaction(var/datum/reagents/holder, var/created_volume)
 			This proc is called when the recipe is matched.
@@ -210,7 +218,9 @@ Recipes are simple datums that contain a list of required reagents and a result.
 ```
 
 # About the Tools:
+
 By default, all atom have a reagents var - but its empty. if you want to use an object for the chem. system you'll need to add something like this in its new proc:
+
 ```
 		var/datum/reagents/R = new/datum/reagents(100) <<<<< create a new datum , 100 is the maximum_volume of the new holder datum.
 		reagents = R <<<<< assign the new datum to the objects reagents var
@@ -221,6 +231,7 @@ By default, all atom have a reagents var - but its empty. if you want to use an 
 ```
 
 ## Other important stuff:
+
 ```
 		amount_per_transfer_from_this var
 			This var is mostly used by beakers and bottles.
@@ -247,6 +258,7 @@ By default, all atom have a reagents var - but its empty. if you want to use an 
 ```
 
 # GOON CHEMS README:
+
 Credit goes to Cogwerks, and all the other goonstation coders for the original idea and implementation of this over at goonstation.
 
 - THE REQUESTED DON'T PORT LIST: IF YOU PORT THESE THE GOONS WILL MURDER US IN OUR SLEEP SO PLEASE DON'T KTHX - Iamgoofball

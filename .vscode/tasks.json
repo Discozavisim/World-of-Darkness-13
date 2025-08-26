@@ -12,11 +12,7 @@
 					"DM_EXE": "${config:dreammaker.byondPath}"
 				}
 			},
-			"problemMatcher": [
-				"$dreammaker",
-				"$tsc",
-				"$eslint-stylish"
-			],
+			"problemMatcher": ["$dreammaker", "$tsc", "$eslint-stylish"],
 			"group": {
 				"kind": "build",
 				"isDefault": true
@@ -27,9 +23,7 @@
 		{
 			"type": "dreammaker",
 			"dme": "tgstation.dme",
-			"problemMatcher": [
-				"$dreammaker"
-			],
+			"problemMatcher": ["$dreammaker"],
 			"group": "build",
 			"label": "dm: build - tgstation.dme"
 		},

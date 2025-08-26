@@ -10,6 +10,7 @@
 <!-- Argue for the merits of your changes and how they benefit the game, especially if they are controversial and/or far reaching. If you can't actually explain WHY what you are doing will improve the game, then it probably isn't good for the game in the first place. -->
 
 ## Testing Photographs and Procedure
+
 <!-- Include any screenshots/videos/debugging steps of the modified code functioning successfully, ideally including edge cases. -->
 <!-- You can uncomment line 1 @ _maps/_basemap.dm to boot up a test map that loads much faster. -->
 <details>

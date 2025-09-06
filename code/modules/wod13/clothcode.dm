@@ -335,6 +335,17 @@
 	desc = "Some work clothes."
 	icon_state = "supply"
 
+/obj/item/clothing/under/vampire/suit/red_dragon
+	name = "suit"
+	desc = "Some red business clothes."
+	icon_state = "suit"
+	color = "#c40b0bff"
+
+/obj/item/clothing/under/vampire/suit/red_dragon/female
+	name = "suitskirt"
+	icon_state = "suit_f"
+	color = "#c40b0bff"
+
 //PRIMOGEN
 
 /obj/item/clothing/under/vampire/primogen_malkavian
@@ -434,6 +445,12 @@
 
 /obj/item/clothing/shoes/vampire/jackboots/work
 	icon_state = "jackboots_work"
+
+/obj/item/clothing/shoes/vampire/jackboots/red_dragon
+	name = "red boots"
+	desc = "Robust-looking boots."
+	icon_state = "jackboots"
+	color = "#c40b0bff"
 
 /obj/item/clothing/shoes/vampire/sneakers
 	name = "sneakers"
@@ -691,6 +708,10 @@
 	name = "armored trenchcoat"
 	armor = list(BASHING = 3, LETHAL = 4, AGGRAVATED = 1, MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 10, BOMB = 40, BIO = 0, RAD = 0, FIRE = 40, ACID = 10, WOUND = 25)
 	max_integrity = 1000
+
+/obj/item/clothing/suit/vampire/trench/armored/red
+	name = "red trenchcoat"
+	color = "#c40b0bff"
 
 /obj/item/clothing/suit/vampire/trench/alt
 	icon_state = "trench2"

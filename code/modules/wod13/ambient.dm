@@ -348,6 +348,17 @@
 	yin_chi = 2
 	wall_rating = HIGH_WALL_RATING
 
+/area/vtm/sewer/metro
+	name = "Metro"
+	icon_state = "police"
+	ambience_index = AMBIENCE_SEWER
+	music = /datum/vampiremusic/sewer
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 0
+	yin_chi = 2
+	wall_rating = HIGH_WALL_RATING
+
 /area/vtm/elevator
 	name = "Elevator"
 	icon_state = "prince"

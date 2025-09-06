@@ -42,10 +42,6 @@
 	v_duty = "You are the top dog of this city. You hold Praxis over San Francisco, and your word is law. Make sure the Masquerade is upheld, and your status is respected."
 	experience_addition = 0
 
-/datum/job/vamp/prince/announce(mob/living/carbon/human/H)
-	..()
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, PROC_REF(minor_announce), "Prince [H.real_name] is in the city!"))
-
 /datum/outfit/job/prince
 	name = "Prince"
 	jobtype = /datum/job/vamp/prince

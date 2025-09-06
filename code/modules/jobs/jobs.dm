@@ -4,7 +4,8 @@ GLOBAL_LIST_INIT(leader_positions, list(
 	"Chantry Regent",
 	"Police Chief",
 	"Dealer",
-	"Capo"
+	"Capo",
+	"Red Dragon"
 
 	))
 
@@ -88,7 +89,10 @@ GLOBAL_LIST_INIT(church_positions, list(
 ))
 
 GLOBAL_LIST_INIT(gang_positions, list(
-	"Triad Soldier",
+	"Red Dragon",
+	"Red Stick",
+	"Paper Wind",
+	"Monk"
 ))
 
 GLOBAL_LIST_INIT(ss13, list(

@@ -358,6 +358,11 @@
 
 /mob/living/simple_animal/hostile/beastmaster/cat/Initialize(mapload)
 	. = ..()
+	src.attributes.dexterity = 3;
+	src.attributes.strength = 1;
+	src.attributes.stamina = 3;
+	src.attributes.Athletics = 3;
+	src.attributes.Brawl = 2;
 	var/id = rand(1, 7)
 	icon_state = "cat[id]"
 	icon_living = "cat[id]"

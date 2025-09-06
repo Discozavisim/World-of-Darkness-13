@@ -37,6 +37,11 @@ SUBSYSTEM_DEF(beastmastering)
 
 /mob/living/simple_animal/hostile/beastmaster/Initialize(mapload)
 	. = ..()
+	src.attributes.dexterity = 3;
+	src.attributes.strength = 4;
+	src.attributes.stamina = 3;
+	src.attributes.Athletics = 3;
+	src.attributes.Brawl = 3;
 	GLOB.beast_list += src
 
 /mob/living/simple_animal/hostile/beastmaster/Destroy()

@@ -1183,8 +1183,14 @@
 	speed = 0
 	dodging = TRUE
 
+
 /mob/living/simple_animal/hostile/beastmaster/rat/Initialize(mapload)
 	. = ..()
+	src.attributes.dexterity = 3;
+	src.attributes.strength = 1;
+	src.attributes.stamina = 2;
+	src.attributes.Athletics = 3;
+	src.attributes.Brawl = 1;
 	pixel_w = rand(-8, 8)
 	pixel_z = rand(-8, 8)
 

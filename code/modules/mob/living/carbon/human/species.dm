@@ -2185,9 +2185,10 @@ GLOBAL_LIST_EMPTY(selectable_races)
 		if(leg_clothes)
 			burning_items |= leg_clothes
 
-		for(var/X in burning_items)
-			var/obj/item/I = X
-			I.fire_act((H.fire_stacks * 50)) //damage taken is reduced to 2% of this value by fire_act()
+		if(!HAS_TRAIT(H, TRAIT_CLOTHES_BURN_IMMUNE))
+			for(var/X in burning_items)
+				var/obj/item/I = X
+				I.fire_act((H.fire_stacks * 50)) //damage taken is reduced to 2% of this value by fire_act()
 
 		var/thermal_protection = H.get_thermal_protection()
 

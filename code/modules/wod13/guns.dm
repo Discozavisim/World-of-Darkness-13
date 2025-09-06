@@ -636,17 +636,25 @@
 	w_class = WEIGHT_CLASS_SMALL
 	var/active = FALSE
 	masquerade_violating = TRUE
+	var/explosion_delay = 2 TURNS
+
+/obj/item/molotov/proc/explosion(atom/hit_atom)
+	if(active)
+		for(var/turf/open/floor/F in range(2, hit_atom))
+			if(F)
+				new /obj/effect/decal/cleanable/gasoline(F)
+		new /obj/effect/fire(get_turf(hit_atom))
+		playsound(get_turf(hit_atom), 'code/modules/wod13/sounds/explode.ogg', 100, TRUE)
+		qdel(src)
 
 /obj/item/molotov/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	call_dharma("grief", throwingdatum.thrower)
-	for(var/turf/open/floor/F in range(2, hit_atom))
-		if(F)
-			new /obj/effect/decal/cleanable/gasoline(F)
-	if(active)
-		new /obj/effect/fire(get_turf(hit_atom))
-	playsound(get_turf(hit_atom), 'code/modules/wod13/sounds/explode.ogg', 100, TRUE)
-	qdel(src)
+	explosion(hit_atom)
 	..()
+
+/obj/item/molotov/dropped(mob/user)
+	..()
+	explosion(src)
 
 /obj/item/molotov/attackby(obj/item/I, mob/user, params)
 	if(I.get_temperature() && !active)

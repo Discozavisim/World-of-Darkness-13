@@ -33,6 +33,11 @@
 
 /mob/living/simple_animal/hostile/zombie/Initialize(mapload)
 	. = ..()
+	src.attributes.dexterity = 2;
+	src.attributes.strength = 3;
+	src.attributes.stamina = 4;
+	src.attributes.Athletics = 2;
+	src.attributes.Brawl = 2;
 	GLOB.zombie_list += src
 /*
 /mob/living/simple_animal/hostile/zombie/Bump(atom/A)

@@ -182,6 +182,8 @@
 #define TRAIT_SUPERNATURAL_DEXTERITY "supernatural_dexterity"
 /// Can pass through walls so long as it doesn't move the mob into a new area
 #define TRAIT_PASS_THROUGH_WALLS "pass_through_walls"
+/// Clothes doesnt burn on the character
+#define TRAIT_CLOTHES_BURN_IMMUNE "clothes_burn_immune"
 
 // You can stare into the abyss, but it does not stare back.
 // You're immune to the hallucination effect of the supermatter, either

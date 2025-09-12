@@ -67,20 +67,17 @@
 /datum/dharma/proc/on_gain(mob/living/carbon/human/mob)
 	mob.mind.dharma = src
 	initial_skin_color = mob.skin_tone
-
-	var/current_animate = rand(1, 10)
-	if(current_animate == 1)
-		animated = "Yang"
-		mob.yang_chi = max(0, mob.yang_chi-1)
-		mob.dna?.species.brutemod = 1
-		mob.dna?.species.burnmod = 0.5
-	else
+	if (mob.max_yin_chi > mob.max_yang_chi+2)
 		animated = "Yin"
 		mob.yin_chi = max(0, mob.yin_chi-1)
 		mob.skin_tone = get_vamp_skin_color(mob.skin_tone)
 		mob.dna?.species.brutemod = initial(mob.dna?.species.brutemod)
 		mob.dna?.species.burnmod = initial(mob.dna?.species.burnmod)
-
+	else
+		animated = "Yang"
+		mob.yang_chi = max(0, mob.yang_chi-1)
+		mob.dna?.species.brutemod = 1
+		mob.dna?.species.burnmod = 0.5
 	if(level >= 5)
 		if(!locate(/datum/action/breathe_chi) in mob.actions)
 			var/datum/action/breathe_chi/breathec = new()
@@ -108,7 +105,7 @@
 	if(level <= 0)
 		return
 
-	var/virtue_pair_limit = max(10, level * 2)
+	var/virtue_pair_limit = min(max(10, level * 4), 20)
 
 	var/total_chi = owner.max_yin_chi + owner.max_yang_chi
 	var/total_virtues = Hun + owner.max_demon_chi

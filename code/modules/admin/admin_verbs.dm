@@ -616,10 +616,14 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			to_chat(usr, "<span class='warning'>Could not find preferences for [player].")
 			return
 		var/datum/preferences/preferences = player.prefs
-		if ((preferences.pref_species.id != "kindred") && (preferences.pref_species.id != "ghoul"))
-			to_chat(usr, "<span class='warning'>Your target is not a vampire or a ghoul.</span>")
+		if ((preferences.pref_species.id != "kindred") && (preferences.pref_species.id != "ghoul") && (preferences.pref_species.id != "kuei-jin"))
+			to_chat(usr, "<span class='warning'>Your target is not a vampire or a ghoul or a kuei-jin.</span>")
 			return
-		var/giving_discipline = input("What Discipline do you want to give [player]?") as null|anything in (subtypesof(/datum/discipline) - preferences.discipline_types - /datum/discipline/bloodheal)
+		var/giving_discipline = null
+		var/allowed_disciplines = subtypesof(/datum/discipline) - preferences.discipline_types - /datum/discipline/bloodheal
+		if(preferences.pref_species.id == "kuei-jin")
+			allowed_disciplines = subtypesof(/datum/chi_discipline)
+		giving_discipline = input("What Discipline do you want to give [player]?") as null|anything in (allowed_disciplines)
 		if (giving_discipline)
 			var/giving_discipline_level = input("What rank of this Discipline do you want to give [player]?") as null|anything in list(0, 1, 2, 3, 4, 5)
 			if (!isnull(giving_discipline_level))
@@ -661,10 +665,10 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			to_chat(usr, "<span class='warning'>Could not find preferences for [player].")
 			return
 		var/datum/preferences/preferences = player.prefs
-		if ((preferences.pref_species.id != "kindred") && (preferences.pref_species.id != "ghoul"))
-			to_chat(usr, "<span class='warning'>Your target is not a vampire or a ghoul.</span>")
+		if ((preferences.pref_species.id != "kindred") && (preferences.pref_species.id != "ghoul") && (preferences.pref_species.id != "kuei-jin"))
+			to_chat(usr, "<span class='warning'>Your target is not a vampire or a ghoul or a kue-jin.</span>")
 			return
-		var/removing_discipline = input("What Discipline do you want to give [player]?") as null|anything in preferences.discipline_types
+		var/removing_discipline = input("What Discipline do you want to remove [player]?") as null|anything in preferences.discipline_types
 		if (removing_discipline)
 			var/reason = input("Why are you removing this Discipline from [player]?") as null|text
 			if (reason)

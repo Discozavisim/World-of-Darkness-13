@@ -652,10 +652,6 @@
 	explosion(hit_atom)
 	..()
 
-/obj/item/molotov/dropped(mob/user)
-	..()
-	explosion(src)
-
 /obj/item/molotov/attackby(obj/item/I, mob/user, params)
 	if(I.get_temperature() && !active)
 		active = TRUE

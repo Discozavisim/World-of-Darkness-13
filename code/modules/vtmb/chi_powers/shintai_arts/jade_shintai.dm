@@ -63,18 +63,11 @@
 			caster.overlays_standing[POTENCE_LAYER] = fortitude_overlay
 			caster.apply_overlay(POTENCE_LAYER)
 			caster.attributes.stamina_bonus += 3
-			caster.drop_all_held_items()
-			var/obj/item/melee/powerfist/stone/righthand_stonefist = new (caster)
-			var/obj/item/melee/powerfist/stone/lefthand_stonefist = new (caster)
-			caster.put_in_r_hand(righthand_stonefist)
-			caster.put_in_l_hand(lefthand_stonefist)
+			caster.attributes.potence_bonus += 3
 			ADD_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
 			spawn(delay+caster.discipline_time_plus)
 				if(caster)
 					caster.attributes.stamina_bonus -= 3
+					caster.attributes.potence_bonus -= 3
 					caster.remove_overlay(POTENCE_LAYER)
 					REMOVE_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
-					if(righthand_stonefist)
-						qdel(righthand_stonefist)
-					if(lefthand_stonefist)
-						qdel(lefthand_stonefist)

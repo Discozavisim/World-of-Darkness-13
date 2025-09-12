@@ -1301,8 +1301,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						return
 
 					var/list/possible_new_disciplines = subtypesof(/datum/chi_discipline) - discipline_types
-					var/has_chi_one = FALSE
-					var/has_demon_one = FALSE
+					var/how_much_usual_chi = 0
+					var/how_much_usual_demon = 0
 					var/how_much_usual = 0
 					for(var/i in discipline_types)
 						if(i)
@@ -1310,20 +1310,20 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							if(initial(C.discipline_type) == "Shintai")
 								how_much_usual += 1
 							if(initial(C.discipline_type) == "Demon")
-								has_demon_one = TRUE
+								how_much_usual_demon += 1
 							if(initial(C.discipline_type) == "Chi")
-								has_chi_one = TRUE
+								how_much_usual_chi += 1
 					for(var/i in possible_new_disciplines)
 						if(i)
 							var/datum/chi_discipline/C = i
 							if(initial(C.discipline_type) == "Shintai")
-								if(how_much_usual >= 3)
+								if(how_much_usual >= 5)
 									possible_new_disciplines -= i
 							if(initial(C.discipline_type) == "Demon")
-								if(has_demon_one)
+								if(how_much_usual_demon >= 2)
 									possible_new_disciplines -= i
 							if(initial(C.discipline_type) == "Chi")
-								if(has_chi_one)
+								if(how_much_usual_chi >= 2)
 									possible_new_disciplines -= i
 					var/new_discipline = input(user, "Select your new Discipline", "Discipline Selection") as null|anything in possible_new_disciplines
 					if(new_discipline)
@@ -1751,12 +1751,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 					true_experience -= 20
 					dharma_level = clamp(dharma_level + 1, 1, 6)
-
+					yin = min(10, yin += 1)
+					yang = min(10, yang += 1)
 					if (dharma_level >= 6)
 						hun += 1
 						po += 1
-						yin += 1
-						yang += 1
 
 				/*
 				if("torpor_restore")
@@ -1784,8 +1783,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 								dharma_level = initial(dharma_level)
 								hun = initial(hun)
 								po = initial(po)
-								yin = initial(yin)
-								yang = initial(yang)
+								yin = min(10, max(5, dharma_level * 2))
+								yang = min(10, max(5, dharma_level * 2))
 
 				if("potype")
 					if(slotlocked)
@@ -1796,7 +1795,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						po_type = result
 
 				if("chibalance")
-					var/max_limit = max(10, dharma_level * 2)
+					var/max_limit = min(dharma_level * 4, 20)
 					var/sett = input(user, "Enter the maximum of Yin your character has:", "Yin/Yang") as num|null
 					if(sett)
 						sett = max(1, min(sett, max_limit-1))

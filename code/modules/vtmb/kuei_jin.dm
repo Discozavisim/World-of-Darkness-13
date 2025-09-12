@@ -1,18 +1,13 @@
 /mob/living/carbon/human/proc/check_kuei_jin_alive()
 	if(iscathayan(src))
 		if(mind?.dharma)
-			if(mind.dharma.animated == "Yang")
-				if(yin_chi < yang_chi+2)
-					return TRUE
-				else
-					return FALSE
-			else
-				if(yang_chi > yin_chi+2)
-					return TRUE
-				else
-					return FALSE
-		else
-			return FALSE
+			if(mind.dharma.animated == "Yang" || max_yang_chi > max_yin_chi + 2) // Alive
+				return TRUE
+			else if(mind.dharma.animated == "Yin" || max_yin_chi > max_yang_chi + 2) // Dead
+				return FALSE
+	else
+		return FALSE
+
 	return TRUE
 
 /mob/living/Life()
@@ -55,7 +50,7 @@
 	disliked_food = GROSS | RAW
 	liked_food = JUNKFOOD | FRIED
 	species_traits = list(EYECOLOR, HAIR, FACEHAIR, LIPS, HAS_FLESH, HAS_BONE)
-	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_VIRUSIMMUNE, TRAIT_PERFECT_ATTACKER, TRAIT_NOBREATH, TRAIT_ALCOHOL_TOLERANCE)
+	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_VIRUSIMMUNE, TRAIT_PERFECT_ATTACKER, TRAIT_NOBLEED, TRAIT_NOBREATH, TRAIT_ALCOHOL_TOLERANCE, TRAIT_NOCRITDAMAGE)
 	use_skintones = TRUE
 	limbs_id = "human"
 	wings_icon = "None"
@@ -82,9 +77,9 @@
 		hud_used.yin_chi_icon.icon_state = "yin-[round((yin_chi/max_yin_chi)*12)]"
 		hud_used.yang_chi_icon.icon_state = "yang-[round((yang_chi/max_yang_chi)*12)]"
 		hud_used.demon_chi_icon.icon_state = "demon-[round((demon_chi/max_demon_chi)*12)]"
-		if(yin_chi > yang_chi+2)
+		if(max_yin_chi > max_yang_chi + 2)
 			hud_used.imbalance_chi_icon.icon_state = "yin_imbalance"
-		else if(yang_chi > yin_chi+2)
+		else if(max_yang_chi > max_yin_chi + 2)
 			hud_used.imbalance_chi_icon.icon_state = "yang_imbalance"
 		else
 			hud_used.imbalance_chi_icon.icon_state = "base"
@@ -319,9 +314,6 @@
 
 	SEND_SOUND(usr, sound('code/modules/wod13/sounds/chi_use.ogg', 0, 0, 75))
 	kueijin.visible_message("<span class='warning'>Some of [kueijin]'s visible injuries disappear!</span>", "<span class='warning'>Some of your injuries disappear!</span>")
-	kueijin.mind.dharma?.animated = "Yin"
-	kueijin.skin_tone = get_vamp_skin_color(kueijin.skin_tone)
-	kueijin.update_body()
 
 	for (var/i in 1 to 5)
 		if(length(kueijin.all_wounds))
@@ -338,9 +330,9 @@
 	if(brain)
 		brain.applyOrganDamage(-100)
 
-	kueijin.heal_ordered_damage(20, list(OXY, STAMINA, BRUTE, TOX))
-	kueijin.heal_ordered_damage(10, BURN)
-	kueijin.adjustCloneLoss(-5, TRUE) // {T.WINER} Не знаю почему, но какого-то хуя эта прока не работала должным образом, пока что временная замена
+	var/heal_level = min(kueijin.mind.dharma.level, 4)
+	kueijin.heal_ordered_damage(20 * heal_level, list(OXY, STAMINA, BRUTE, TOX))
+	kueijin.heal_ordered_damage(5 * heal_level, list(BURN, CLONE))
 	kueijin.blood_volume = min(kueijin.blood_volume + 56, 560)
 	kueijin.yin_chi = max(0, kueijin.yin_chi - 1)
 
@@ -366,7 +358,7 @@
 		return
 	if(HAS_TRAIT(owner, TRAIT_TORPOR))
 		return
-	if (!kueijin.yin_chi > 0)
+	if (!kueijin.yang_chi > 0)
 		return
 	if (!kueijin.mind?.dharma)
 		return
@@ -377,9 +369,6 @@
 
 	SEND_SOUND(usr, sound('code/modules/wod13/sounds/chi_use.ogg', 0, 0, 75))
 	kueijin.visible_message("<span class='warning'>Some of [kueijin]'s visible injuries disappear!</span>", "<span class='warning'>Some of your injuries disappear!</span>")
-	kueijin.mind.dharma?.animated = "Yang"
-	kueijin.skin_tone = kueijin.mind.dharma?.initial_skin_color
-	kueijin.update_body()
 
 	for (var/i in 1 to 5)
 		if(length(kueijin.all_wounds))
@@ -396,9 +385,9 @@
 	if(brain)
 		brain.applyOrganDamage(-100)
 
-	kueijin.heal_ordered_damage(20, list(OXY, STAMINA, BRUTE, TOX))
-	kueijin.heal_ordered_damage(10, BURN)
-	kueijin.adjustCloneLoss(-5, TRUE) // {T.WINER} Не знаю почему, но какого-то хуя эта прока не работала должным образом, пока что временная замена
+	var/heal_level = min(kueijin.mind.dharma.level, 4)
+	kueijin.heal_ordered_damage(10 * heal_level, list(OXY, STAMINA, BRUTE, TOX))
+	kueijin.heal_ordered_damage(2.5 * heal_level, list(BURN, CLONE))
 	kueijin.blood_volume = min(kueijin.blood_volume + 28, 560)
 	kueijin.yang_chi = max(0, kueijin.yang_chi - 1)
 
@@ -420,14 +409,24 @@
 	if(!kueijin.mind?.dharma)
 		return
 
+	var/max_chi_limit = min(20, kueijin.mind.dharma.level * 4)
 	var/max_limit = max(10, kueijin.mind.dharma.level * 2)
-	var/max_yin = input(kueijin, "Enter the maximum of Yin your character has (from 1 to [max_limit - 1]):", "Yin/Yang") as num|null
+	var/max_yin = input(kueijin, "Enter the maximum of Yin your character has (from 1 to [max_chi_limit - 1]):", "Yin/Yang") as num|null
 	if(max_yin)
-		max_yin = clamp(max_yin, 1, max_limit - 1)
+		max_yin = clamp(max_yin, 1, max_chi_limit - 1)
 		kueijin.max_yin_chi = max_yin
 		kueijin.max_yang_chi = max_limit - max_yin
 		kueijin.yin_chi = min(kueijin.yin_chi, kueijin.max_yin_chi)
 		kueijin.yang_chi = min(kueijin.yang_chi, kueijin.max_yang_chi)
+		if (kueijin.max_yin_chi > kueijin.max_yang_chi + 2)
+			kueijin.mind.dharma?.animated = "Yin"
+			kueijin.skin_tone = get_vamp_skin_color(kueijin.skin_tone)
+			kueijin.dna?.species.brutemod = initial(kueijin.dna?.species.brutemod)
+			kueijin.dna?.species.burnmod = initial(kueijin.dna?.species.burnmod)
+		else
+			kueijin.mind.dharma?.animated = "Yang"
+			kueijin.dna?.species.brutemod = 1
+			kueijin.dna?.species.burnmod = 0.5
 	var/max_hun = input(kueijin, "Enter the maximum of Hun your character has (from 1 to [max_limit-1]):", "Hun/P'o") as num|null
 	if(max_hun)
 		max_hun = clamp(max_hun, 1, max_limit - 1)

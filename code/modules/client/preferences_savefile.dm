@@ -369,8 +369,14 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		if(newtype)
 			auspice = new newtype
 
+	var/tribe_id
+	READ_FILE(S["tribe"], tribe_id)
+	if(tribe_id)
+		var/newtype = GLOB.tribes_list[tribe_id]
+		if(newtype)
+			tribe = new newtype
+
 	READ_FILE(S["breed"], breed)
-	READ_FILE(S["tribe"], tribe)
 	READ_FILE(S["werewolf_color"], werewolf_color)
 	READ_FILE(S["werewolf_scar"], werewolf_scar)
 	READ_FILE(S["werewolf_hair"], werewolf_hair)
@@ -451,6 +457,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["generation"], generation)
 	READ_FILE(S["generation_bonus"], generation_bonus)
 	READ_FILE(S["masquerade"], masquerade)
+	READ_FILE(S["renownrank"], renownrank)
+	READ_FILE(S["honor"], honor)
+	READ_FILE(S["glory"], glory)
+	READ_FILE(S["wisdom"], wisdom)
 	READ_FILE(S["real_name"], real_name)
 	READ_FILE(S["werewolf_name"], werewolf_name)
 	READ_FILE(S["gender"], gender)
@@ -585,7 +595,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		undershirt 		= sanitize_inlist(undershirt, GLOB.undershirt_list)
 
 	breed			= sanitize_inlist(breed, list("Homid", "Lupus", "Metis"))
-	tribe			= sanitize_inlist(tribe, list("Wendigo", "Glasswalkers", "Black Spiral Dancers"))
 	werewolf_color	= sanitize_inlist(werewolf_color, list("black", "gray", "red", "white", "ginger", "brown"))
 	werewolf_scar	= sanitize_integer(werewolf_scar, 0, 7, initial(werewolf_scar))
 	werewolf_hair	= sanitize_integer(werewolf_hair, 0, 4, initial(werewolf_hair))
@@ -671,6 +680,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	lover				= sanitize_integer(lover, 0, 1, initial(lover))
 	ambitious				= sanitize_integer(ambitious, 0, 1, initial(ambitious))
 	masquerade				= sanitize_integer(masquerade, 0, 5, initial(masquerade))
+	glory = sanitize_integer(glory, 0, 10, initial(glory))
+	wisdom = sanitize_integer(wisdom, 0, 10, initial(wisdom))
+	honor = sanitize_integer(honor, 0, 10, initial(honor))
+	renownrank = sanitize_integer(renownrank, 0, 5, initial(renownrank))
 	generation				= sanitize_integer(generation, 1, 13, initial(generation))
 	generation_bonus				= sanitize_integer(generation_bonus, 0, 6, initial(generation_bonus))
 	hair_color			= sanitize_hexcolor(hair_color, 3, 0)
@@ -752,7 +765,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["version"]			, SAVEFILE_VERSION_MAX)	//load_character will sanitize any bad data, so assume up-to-date.)
 
 	WRITE_FILE(S["breed"], breed)
-	WRITE_FILE(S["tribe"], tribe)
+	WRITE_FILE(S["tribe"], tribe.name)
 	WRITE_FILE(S["werewolf_color"], werewolf_color)
 	WRITE_FILE(S["werewolf_scar"], werewolf_scar)
 	WRITE_FILE(S["werewolf_hair"], werewolf_hair)
@@ -831,6 +844,10 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["enemy_text"]			, enemy_text)
 	WRITE_FILE(S["lover_text"]			, lover_text)
 	WRITE_FILE(S["reason_of_death"]			, reason_of_death)
+	WRITE_FILE(S["renownrank"]			, renownrank)
+	WRITE_FILE(S["honor"]			, honor)
+	WRITE_FILE(S["glory"]			, glory)
+	WRITE_FILE(S["wisdom"]			, wisdom)
 	WRITE_FILE(S["clane"]			, clane.name)
 	WRITE_FILE(S["generation"]			, generation)
 	WRITE_FILE(S["generation_bonus"]			, generation_bonus)

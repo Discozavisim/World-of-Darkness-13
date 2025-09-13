@@ -91,6 +91,15 @@ GLOBAL_LIST_INIT(gang_positions, list(
 	"Triad Soldier",
 ))
 
+GLOBAL_LIST_INIT(spiral_positions, list(
+	"Endron Branch Lead",
+	"Endron Executive",
+	"Endron Internal Affairs Agent",
+	"Endron Chief of Security",
+	"Endron Security Agent",
+	"Endron Employee"
+))
+
 GLOBAL_LIST_INIT(ss13, list(
 	"SS13",
 ))
@@ -111,12 +120,14 @@ GLOBAL_LIST_INIT(position_categories, list(
 	EXP_TYPE_POLICE = list("jobs" = police_positions, "color" = "#b3c6ff"),
 	EXP_TYPE_NATIONAL_SECURITY = list("jobs" = national_security_positions, "color" = "#b3b8ff"),
 	EXP_TYPE_GANG = list("jobs" = gang_positions, "color" = "#e6d9b3"),
-	EXP_TYPE_TZIMISCE = list("jobs" = tzimisce_positions, "color" = "#98493d")
+	EXP_TYPE_TZIMISCE = list("jobs" = tzimisce_positions, "color" = "#98493d"),
+	EXP_TYPE_TZIMISCE = list("jobs" = tzimisce_positions, "color" = "#fa0207"),
+	EXP_TYPE_SPIRAL = list("jobs" = spiral_positions, "color" = "#015334")
 ))
 
 
 GLOBAL_LIST_INIT(exp_jobsmap, list(
-	EXP_TYPE_CREW = list("titles" = command_positions | church_positions | camarilla_council_positions | citizen_positions | police_positions | national_security_positions | anarch_positions | services_positions  | giovanni_positions | tzimisce_positions | warehouse_positions | tremere_positions | gang_positions), // crew positions
+	EXP_TYPE_CREW = list("titles" = command_positions | church_positions | camarilla_council_positions | citizen_positions | police_positions | national_security_positions | anarch_positions | services_positions  | giovanni_positions | tzimisce_positions | warehouse_positions | tremere_positions | gang_positions | spiral_positions), // crew positions
 	EXP_TYPE_CAMARILLIA = list("titles" = command_positions),
 	EXP_TYPE_TREMERE = list("titles" = tremere_positions),
 	EXP_TYPE_ANARCH = list("titles" = anarch_positions),
@@ -130,7 +141,7 @@ GLOBAL_LIST_INIT(exp_jobsmap, list(
 	EXP_TYPE_WAREHOUSE = list("titles" = warehouse_positions),
 	EXP_TYPE_CHURCH = list("titles" = church_positions),
 	EXP_TYPE_NATIONAL_SECURITY = list("titles" = national_security_positions),
-
+	EXP_TYPE_SPIRAL = list("titles" = spiral_positions)
 ))
 
 GLOBAL_LIST_INIT(exp_specialmap, list(

@@ -1,10 +1,4 @@
 
-/mob/living/carbon/werewolf/get_eye_protection()
-	return ..() + 2 //potential cyber implants + natural eye protection
-
-/mob/living/carbon/werewolf/get_ear_protection()
-	return 2 //no ears
-
 /mob/living/carbon/werewolf/hitby(atom/movable/AM, skipcatch, hitpush, blocked, datum/thrownthing/throwingdatum)
 	..(AM, skipcatch = TRUE, hitpush = FALSE)
 
@@ -28,7 +22,8 @@
 
 /mob/living/carbon/werewolf/attack_animal(mob/living/simple_animal/M)
 	. = ..()
-	do_rage_from_attack()
+	if(M != src)
+		do_rage_from_attack()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		switch(M.melee_damage_type)
@@ -79,20 +74,11 @@
 	if(..())
 		switch(M.a_intent)
 			if ("harm")
-				var/damage = rand(1, 9)
 				if (prob(90))
 					playsound(loc, "punch", 25, TRUE, -1)
 					visible_message("<span class='danger'>[M] punches [src]!</span>", \
 									"<span class='userdanger'>[M] punches you!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, M)
 					to_chat(M, "<span class='danger'>You punch [src]!</span>")
-					if ((stat != DEAD) && (damage > 9 || prob(5)))//Regular humans have a very small chance of knocking an alien down.
-						Unconscious(3 SECONDS)
-						visible_message("<span class='danger'>[M] knocks [src] down!</span>", \
-										"<span class='userdanger'>[M] knocks you down!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", null, M)
-						to_chat(M, "<span class='danger'>You knock [src] down!</span>")
-					var/obj/item/bodypart/affecting = get_bodypart(ran_zone(M.zone_selected))
-					apply_damage(damage, BRUTE, affecting)
-					log_combat(M, src, "attacked")
 				else
 					playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
 					visible_message("<span class='danger'>[M]'s punch misses [src]!</span>", \
@@ -101,25 +87,17 @@
 
 			if ("disarm")
 				if (body_position == STANDING_UP)
-					if (prob(5))
-						Unconscious(3 SECONDS)
+					if (prob(50))
+						dropItemToGround(get_active_held_item())
 						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-						log_combat(M, src, "pushed")
-						visible_message("<span class='danger'>[M] pushes [src] down!</span>", \
-										"<span class='userdanger'>[M] pushes you down!</span>", "<span class='hear'>You hear aggressive shuffling followed by a loud thud!</span>", null, M)
-						to_chat(M, "<span class='danger'>You push [src] down!</span>")
+						visible_message("<span class='danger'>[M] disarms [src]!</span>", \
+										"<span class='userdanger'>[M] disarms you!</span>", "<span class='hear'>You hear aggressive shuffling!</span>", COMBAT_MESSAGE_RANGE, M)
+						to_chat(M, "<span class='danger'>You disarm [src]!</span>")
 					else
-						if (prob(50))
-							dropItemToGround(get_active_held_item())
-							playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, TRUE, -1)
-							visible_message("<span class='danger'>[M] disarms [src]!</span>", \
-											"<span class='userdanger'>[M] disarms you!</span>", "<span class='hear'>You hear aggressive shuffling!</span>", COMBAT_MESSAGE_RANGE, M)
-							to_chat(M, "<span class='danger'>You disarm [src]!</span>")
-						else
-							playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
-							visible_message("<span class='danger'>[M] fails to disarm [src]!</span>",\
-											"<span class='danger'>[M] fails to disarm you!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, M)
-							to_chat(M, "<span class='warning'>You fail to disarm [src]!</span>")
+						playsound(loc, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
+						visible_message("<span class='danger'>[M] fails to disarm [src]!</span>",\
+										"<span class='danger'>[M] fails to disarm you!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, M)
+						to_chat(M, "<span class='warning'>You fail to disarm [src]!</span>")
 
 
 
@@ -132,24 +110,6 @@
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_BITE
 	..()
-
-/mob/living/carbon/werewolf/getarmor(def_zone, type)
-	var/total_cubes = get_a_stamina(src)
-	total_cubes += get_fortitude_dices(src)+get_visceratika_dices(src)+get_bloodshield_dices(src)+get_lasombra_dices(src)+get_tzimisce_dices(src)
-	var/final_block = secret_vampireroll(total_cubes, 6, src)
-	if(final_block == -1)
-		to_chat(src, "<span class='userdanger'>Your armor was penetrated!</span>")
-		return 0
-	else
-		final_block = min(10, final_block)
-		var/armah = final_block*10
-		armah = min(armah, 90)+werewolf_armor
-		if(armour_penetration)
-			to_chat(src, "<span class='userdanger'>Your armor was penetrated!</span>")
-			return max(0, armah-armour_penetration)
-		else if(armah >= 100)
-			to_chat(src, "<span class='notice'>Your armor absorbs the blow!</span>")
-			return 100
 
 /mob/living/simple_animal/getarmor(def_zone, type)
 	var/total_cubes = get_a_stamina(src)

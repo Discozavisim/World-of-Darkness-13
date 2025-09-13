@@ -88,10 +88,6 @@
 		return
 	if(HAS_TRAIT(H, TRAIT_NOBREATH))
 		return
-	if(istype(H.loc, /obj/werewolf_holder/transformation))
-		H.failed_last_breath = FALSE //clear oxy issues
-		H.clear_alert("not_enough_oxy")
-		return
 
 	if(!breath || (breath.total_moles() == 0))
 		if(H.reagents.has_reagent(crit_stabilizing_reagent, needs_metabolizing = TRUE))

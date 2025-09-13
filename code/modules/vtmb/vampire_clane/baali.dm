@@ -16,8 +16,6 @@
 /datum/vampireclane/baali/on_gain(mob/living/carbon/human/H)
 	..()
 	H.faction |= "Baali"
-	var/datum/brain_trauma/mild/phobia/security/T = new ()
-	H.gain_trauma(T, TRAUMA_RESILIENCE_ABSOLUTE)
 
 /mob/living/simple_animal/hostile/baali_guard
 	name = "Infernal Creature"

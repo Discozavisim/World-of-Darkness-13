@@ -278,3 +278,9 @@
 	var/max_demon_chi = 0
 	COOLDOWN_DECLARE(chi_restore)
 	var/datum/action/chi_discipline/chi_ranged
+
+	//Garou stats
+	var/renownrank = 0
+	var/wisdom = 0
+	var/honor = 0
+	var/glory = 0

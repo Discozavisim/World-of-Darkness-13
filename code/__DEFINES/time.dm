@@ -39,11 +39,19 @@ When using time2text(), please use "DDD" to find the weekday. Refrain from using
 #define SATURDAY	"Sat"
 #define SUNDAY		"Sun"
 
+#define MILLISECONDS *0.01
+
+#define DECISECONDS *1 // The base unit all of these defines are scaled by, because byond uses that as a unit of measurement for some fucking reason
+
 #define SECONDS *10
 
 #define MINUTES SECONDS*60
 
 #define HOURS MINUTES*60
+
+#define DAYS HOURS*24
+
+#define YEARS DAYS*365 // Fuck leap days, they were removed in 2069
 
 #define TICKS *world.tick_lag
 

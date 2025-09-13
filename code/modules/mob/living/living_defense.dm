@@ -32,9 +32,16 @@
 				to_chat(src, "<span class='userdanger'>[penetrated_text]</span>")
 			else
 				to_chat(src, "<span class='userdanger'>Your armor was penetrated!</span>")
-			return 0
+			if(iswerewolf(src))
+				var/mob/living/carbon/werewolf/W = src
+				return 0+W.werewolf_armor
+			else
+				return 0
 		else
 			var/armah = final_block*15
+			if(iswerewolf(src))
+				var/mob/living/carbon/werewolf/W = src
+				armah += W.werewolf_armor
 			if(armour_penetration)
 				if(penetrated_text)
 					to_chat(src, "<span class='userdanger'>[penetrated_text]</span>")

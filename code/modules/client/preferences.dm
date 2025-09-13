@@ -159,6 +159,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	// Diablerie
 	var/know_diablerie = 0
 
+	//Renown
+	var/renownrank = 0
+	var/honor = 0
+	var/glory = 0
+	var/wisdom = 0
+
 	//Masquerade
 	var/masquerade = 5
 
@@ -214,7 +220,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/archetype = /datum/archetype/average
 
 	var/breed = "Homid"
-	var/tribe = "Wendigo"
+	var/datum/garou_tribe/tribe = new /datum/garou_tribe/wendigo()
 	var/datum/auspice/auspice = new /datum/auspice/ahroun()
 	var/werewolf_color = "black"
 	var/werewolf_scar = 0
@@ -332,6 +338,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	yang = initial(yang)
 	chi_types = list()
 	chi_levels = list()
+	renownrank = initial(renownrank)
+	auspice_level = initial(auspice_level)
+	honor = initial(honor)
+	glory = initial(glory)
+	wisdom = initial(wisdom)
 	qdel(clane)
 	clane = new /datum/vampireclane/brujah()
 	discipline_types = list()
@@ -393,6 +404,40 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(text)
 		var/coolfont = "<font face='Percolator'>[text]</font>"
 		return coolfont
+
+/proc/RankName(rank, colored = FALSE)
+	switch(rank)
+		if(0)
+			return "Cub"
+		if(1)
+			return "Cliath"
+		if(2)
+			return "Fostern"
+		if(3)
+			return "Adren"
+		if(4)
+			return "Athro"
+		if(5)
+			return "Elder"
+		if(6)
+			return "Legend"
+
+/proc/RankDesc(rank)
+	switch(rank)
+		if(0)
+			return "You are not known to other Garou. Why?"
+		if(1)
+			return "You have completed your rite of passage as a Cliath."
+		if(2)
+			return "Fosterns have challenged for their rank and become proven members of Garou society."
+		if(3)
+			return "With proven work, wit, and function, Adren are higher echelons of Garou society, better known for control."
+		if(4)
+			return "A disciplined lieutenant and trusted Garou to your peers, you have respect and renown within the city as an Athro."
+		if(5)
+			return "One of the renowned names of the region, you are known as outstanding in California to some degree, worthy of the title of Elder."
+		if(6)
+			return "You're a Legendary NPC."
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	if(slot_randomized)
@@ -528,6 +573,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			return 10
 	if(pref_species.name == "Kuei-Jin")
 		return max(5, 4+dharma_level)
+	if(pref_species.name == "Werewolf")
+		return max(5, 4+auspice_level)
 	return 5
 
 #undef APPEARANCE_CATEGORY_COLUMN
@@ -639,6 +686,34 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(!alloww && !bypass)
 						HTML += "<font color=#290204>[rank]</font></td><td><font color=#290204> \[[clane.name] RESTRICTED\]</font></td></tr>"
 						continue
+			if(pref_species.name == "Werewolf")
+				if(tribe)
+					var/alloww = FALSE
+					if(job.allowed_tribes.len)
+						for(var/i in job.allowed_tribes)
+							if(i == tribe.name)
+								alloww = TRUE
+					else
+						alloww = TRUE
+
+					if(!alloww && !bypass)
+						HTML += "<font color=#290204>[rank]</font></td><td><font color=#290204> \[[tribe.name] RESTRICTED\]</font></td></tr>"
+						continue
+				if(auspice)
+					var/alloww = FALSE
+					for(var/i in job.allowed_auspice)
+						if(i == auspice.name)
+							alloww = TRUE
+					if(!alloww && !bypass)
+						HTML += "<font color=#290204>[rank]</font></td><td><font color=#290204> \[[auspice.name] RESTRICTED\]</font></td></tr>"
+						continue
+				var/renownlowed = TRUE
+				if(job.minimal_renownrank)
+					if((renownrank < job.minimal_renownrank) && !bypass)
+						renownlowed = FALSE
+				if(!renownlowed && !bypass)
+					HTML += "<font color=#290204>[rank]</font></td><td><font color=#290204> \[[job.minimal_renownrank] RENOWN RANK REQUIRED\]</font></td></tr>"
+					continue
 			if((job_preferences[SSjob.overflow_role] == JP_LOW) && (rank != SSjob.overflow_role) && !is_banned_from(user.ckey, SSjob.overflow_role))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
@@ -817,6 +892,22 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							species_restricted = FALSE
 					if(species_restricted)
 						lock_reason = "[pref_species.name] restricted."
+						quirk_conflict = TRUE
+				if(Q.allowed_clans.len && "Kindred" == pref_species.name)
+					var/clan_restricted = TRUE
+					for(var/i in Q.allowed_clans)
+						if(i == clane.name)
+							clan_restricted = FALSE
+					if(clan_restricted)
+						lock_reason = "[clane.name] restricted."
+						quirk_conflict = TRUE
+				if(Q.allowed_tribes.len && "Werewolf" == pref_species.name)
+					var/tribe_restricted = TRUE
+					for(var/i in Q.allowed_tribes)
+						if(i == tribe.name)
+							tribe_restricted = FALSE
+					if(tribe_restricted)
+						lock_reason = "[tribe.name] restricted."
 						quirk_conflict = TRUE
 				qdel(Q)
 
@@ -1344,7 +1435,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(slotlocked || !(pref_species.id == "garou"))
 						return
 
-					if(tribe == "Glasswalkers")
+					if(tribe == "Glass Walkers")
 						if(werewolf_scar == 9)
 							werewolf_scar = 0
 						else
@@ -1606,10 +1697,17 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(slotlocked || !(pref_species.id == "garou"))
 						return
 
-					var/new_tribe = input("Choose your Tribe.", "Tribe") as null|anything in list("Wendigo", "Glasswalkers", "Black Spiral Dancers")
-					if (new_tribe)
+					var/list/available_tribes = list()
+					for(var/i in GLOB.tribes_list)
+						var/a = GLOB.tribes_list[i]
+						var/datum/garou_tribe/G = new a
+						available_tribes[G.name] += GLOB.tribes_list[i]
+						qdel(G)
+					var/new_tribe = tgui_input_list(user, "Choose your Tribe:", "Tribe", sort_list(available_tribes))
+					if(new_tribe)
+						var/newtype = GLOB.tribes_list[new_tribe]
+						new_tribe = new newtype()
 						tribe = new_tribe
-
 				if("breed")
 					if(slotlocked || !(pref_species.id == "garou"))
 						return
@@ -1691,6 +1789,36 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						return
 
 					enlightenment = !enlightenment
+
+				if("renownrank")
+					if(slotlocked)
+						return
+
+					var/new_renown = tgui_input_number(user, "Select your Renown Rank (0-3):", "Character Preference", renownrank, 3, 0)
+					if(new_renown)
+						renownrank = clamp(new_renown, 0, 3)
+
+				if("renownglory")
+					if(slotlocked)
+						return
+
+					var/new_glory = tgui_input_number(user, "Select your Glory (0-10):", "Character Preference", glory, 10, 0)
+					if(new_glory)
+						glory = clamp(new_glory, 0, 10)
+				if("renownhonor")
+					if(slotlocked)
+						return
+
+					var/new_honor = tgui_input_number(user, "Select your Honor (0-10):", "Character Preference", honor, 10, 0)
+					if(new_honor)
+						honor = clamp(new_honor, 0, 10)
+				if("renownwisdom")
+					if(slotlocked)
+						return
+
+					var/new_wisdom = tgui_input_number(user, "Select your Wisdom (0-10):", "Character Preference", wisdom, 10, 0)
+					if(new_wisdom)
+						wisdom = clamp(new_wisdom, 0, 10)
 
 				if("languages_reset")
 					languages = list()
@@ -2548,22 +2676,26 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			character.max_yin_chi = 2
 
 	if(pref_species.name == "Werewolf")
-		switch(tribe)
+		switch(tribe.name)
 			if("Wendigo")
 				character.yin_chi = 1
 				character.max_yin_chi = 1
 				character.yang_chi = 5 + (auspice_level * 2)
 				character.max_yang_chi = 5 + (auspice_level * 2)
-			if("Glasswalkers")
+			if("Glass Walkers","Bone Gnawers")
 				character.yin_chi = 1 + auspice_level
 				character.max_yin_chi = 1 + auspice_level
 				character.yang_chi = 5 + auspice_level
 				character.max_yang_chi = 5 + auspice_level
-			if("Black Spiral Dancers")
+			if("Black Spiral Dancers","Ghost Council")
 				character.yin_chi = 1 + auspice_level * 2
 				character.max_yin_chi = 1 + auspice_level * 2
 				character.yang_chi = 5
 				character.max_yang_chi = 5
+		character.honor = honor
+		character.wisdom = wisdom
+		character.glory = glory
+		character.renownrank = renownrank
 	character.humanity = humanity
 	character.masquerade = masquerade
 	if(!character_setup)
@@ -2660,39 +2792,91 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				character.auspice.gnosis = 3
 				character.auspice.start_gnosis = 3
 				character.auspice.base_breed = "Crinos"
-		if(character.transformator)
-			if(character.transformator.crinos_form && character.transformator.lupus_form)
-				character.transformator.crinos_form.sprite_color = werewolf_color
-				character.transformator.crinos_form.sprite_scar = werewolf_scar
-				character.transformator.crinos_form.sprite_hair = werewolf_hair
-				character.transformator.crinos_form.sprite_hair_color = werewolf_hair_color
-				character.transformator.crinos_form.sprite_eye_color = werewolf_eye_color
-				character.transformator.lupus_form.sprite_color = werewolf_color
-				character.transformator.lupus_form.sprite_eye_color = werewolf_eye_color
-				character.transformator.lupus_form.attributes = character.attributes
-				character.transformator.crinos_form.attributes = character.attributes
+		if(character.transformator?.crinos_form && character.transformator?.lupus_form)
+			var/mob/living/carbon/werewolf/crinos/crinos = character.transformator.crinos_form?.resolve()
+			var/mob/living/carbon/werewolf/lupus/lupus = character.transformator.lupus_form?.resolve()
 
-				if(werewolf_name)
-					character.transformator.crinos_form.name = werewolf_name
-					character.transformator.lupus_form.name = werewolf_name
-				else
-					character.transformator.crinos_form.name = real_name
-					character.transformator.lupus_form.name = real_name
-/*
-				character.transformator.crinos_form.physique = physique
-				character.transformator.crinos_form.dexterity = dexterity
-				character.transformator.crinos_form.mentality = mentality
-				character.transformator.crinos_form.social = social
-				character.transformator.crinos_form.blood = blood
+			if(!crinos)
+				character.transformator.crinos_form = null
+				CRASH("[key_name(character)]'s crinos_form weakref contained no crinos mob!")
+			if(!lupus)
+				character.transformator.lupus_form = null
+				CRASH("[key_name(character)]'s lupus_form weakref contained no lupus mob!")
 
-				character.transformator.lupus_form.physique = physique
-				character.transformator.lupus_form.dexterity = dexterity
-				character.transformator.lupus_form.mentality = mentality
-				character.transformator.lupus_form.social = social
-				character.transformator.lupus_form.blood = blood
-*/
-//		character.transformator.crinos_form.update_icons()
-//		character.transformator.lupus_form.update_icons()
+			crinos.sprite_color = werewolf_color
+			crinos.sprite_scar = werewolf_scar
+			crinos.sprite_hair = werewolf_hair
+			crinos.sprite_hair_color = werewolf_hair_color
+			crinos.sprite_eye_color = werewolf_eye_color
+			lupus.sprite_color = werewolf_color
+			lupus.sprite_eye_color = werewolf_eye_color
+
+			if(werewolf_name)
+				crinos.name = werewolf_name
+				lupus.name = werewolf_name
+			else
+				crinos.name = real_name
+				lupus.name = real_name
+
+			crinos.attributes.strength = character.attributes.strength+4
+			crinos.attributes.dexterity = character.attributes.dexterity+1
+			crinos.attributes.stamina = character.attributes.stamina+3
+			crinos.attributes.charisma = character.attributes.charisma
+			crinos.attributes.manipulation = character.attributes.manipulation-3
+			crinos.attributes.appearance = character.attributes.appearance
+			crinos.attributes.perception = character.attributes.perception
+			crinos.attributes.intelligence = character.attributes.intelligence
+			crinos.attributes.wits = character.attributes.wits
+
+			crinos.attributes.Alertness = character.attributes.Alertness
+			crinos.attributes.Athletics = character.attributes.Athletics
+			crinos.attributes.Brawl = character.attributes.Brawl
+			crinos.attributes.Empathy = character.attributes.Empathy
+			crinos.attributes.Intimidation = character.attributes.Intimidation
+			crinos.attributes.Crafts = character.attributes.Crafts
+			crinos.attributes.Melee = character.attributes.Melee
+			crinos.attributes.Firearms = character.attributes.Firearms
+			crinos.attributes.Drive = character.attributes.Drive
+			crinos.attributes.Security = character.attributes.Security
+			crinos.attributes.Finance = character.attributes.strength
+			crinos.attributes.Investigation = character.attributes.Investigation
+			crinos.attributes.Medicine = character.attributes.Medicine
+			crinos.attributes.Linguistics = character.attributes.Linguistics
+			crinos.attributes.Occult = character.attributes.Occult
+			crinos.attributes.Performance = character.attributes.Performance
+			crinos.attributes.Fleshcraft = character.attributes.Fleshcraft
+			crinos.attributes.Expression = character.attributes.Expression
+
+			lupus.attributes.strength = character.attributes.strength+1
+			lupus.attributes.dexterity = character.attributes.dexterity+2
+			lupus.attributes.stamina = character.attributes.stamina+2
+			lupus.attributes.charisma = character.attributes.charisma
+			lupus.attributes.manipulation = character.attributes.manipulation-3
+			lupus.attributes.appearance = character.attributes.appearance
+			lupus.attributes.perception = character.attributes.perception
+			lupus.attributes.intelligence = character.attributes.intelligence
+			lupus.attributes.wits = character.attributes.wits
+
+			lupus.attributes.Alertness = character.attributes.Alertness
+			lupus.attributes.Athletics = character.attributes.Athletics
+			lupus.attributes.Brawl = character.attributes.Brawl
+			lupus.attributes.Empathy = character.attributes.Empathy
+			lupus.attributes.Intimidation = character.attributes.Intimidation
+			lupus.attributes.Crafts = character.attributes.Crafts
+			lupus.attributes.Melee = character.attributes.Melee
+			lupus.attributes.Firearms = character.attributes.Firearms
+			lupus.attributes.Drive = character.attributes.Drive
+			lupus.attributes.Security = character.attributes.Security
+			lupus.attributes.Finance = character.attributes.strength
+			lupus.attributes.Investigation = character.attributes.Investigation
+			lupus.attributes.Medicine = character.attributes.Medicine
+			lupus.attributes.Linguistics = character.attributes.Linguistics
+			lupus.attributes.Occult = character.attributes.Occult
+			lupus.attributes.Performance = character.attributes.Performance
+			lupus.attributes.Fleshcraft = character.attributes.Fleshcraft
+			lupus.attributes.Expression = character.attributes.Expression
+
+
 	if(pref_species.mutant_bodyparts["tail_lizard"])
 		character.dna.species.mutant_bodyparts["tail_lizard"] = pref_species.mutant_bodyparts["tail_lizard"]
 	if(pref_species.mutant_bodyparts["spines"])
@@ -2758,3 +2942,196 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			return
 		else
 			custom_names[name_id] = sanitized_name
+
+/datum/preferences/proc/RenownRequirements()
+	var/gloryy = "Glory"
+	var/honorr = "Honor"
+	var/wisdomm = "Wisdom"
+	var/stringtoreturn
+	if(tribe.name == "Black Spiral Dancers")
+		gloryy = "Infamy"
+		honorr = "Power"
+		wisdomm = "Cunning"
+	switch(auspice.name)
+		if("Ahroun")
+			switch(renownrank)
+				if(0)
+					stringtoreturn = "2 [gloryy], 1 [honorr]"
+					return stringtoreturn
+
+				if(1)
+					stringtoreturn = "4 [gloryy], 1 [honorr], 1 [wisdomm]"
+					return stringtoreturn
+
+				if(2)
+					stringtoreturn = "6 [gloryy], 3 [honorr], 1 [wisdomm]"
+					return stringtoreturn
+
+				if(3)
+					stringtoreturn = "9 [gloryy], 4 [honorr], 2 [wisdomm]"
+					return stringtoreturn
+
+				if(4)
+					stringtoreturn = "10 [gloryy], 9 [honorr], 4 [wisdomm]"
+					return stringtoreturn
+
+
+		if("Galliard")
+			switch(renownrank)
+				if(0)
+					stringtoreturn = "2 [gloryy], 1 [wisdomm]"
+					return stringtoreturn
+
+				if(1)
+					stringtoreturn = "4 [gloryy], 2 [wisdomm]"
+					return stringtoreturn
+
+				if(2)
+					stringtoreturn = "4 [gloryy], 2[honorr], 4 [wisdomm]"
+					return stringtoreturn
+
+				if(3)
+					stringtoreturn = "7 [gloryy], 2 [honorr], 6 [wisdomm]"
+					return stringtoreturn
+
+				if(4)
+					stringtoreturn = "9 [gloryy], 5 [honorr], 9 [wisdomm]"
+					return stringtoreturn
+
+
+		if("Philodox")
+			switch(renownrank)
+				if(0)
+					stringtoreturn = "3 [honorr]"
+					return stringtoreturn
+
+				if(1)
+					stringtoreturn = "1 [gloryy], 4 [honorr], 1 [wisdomm]"
+					return stringtoreturn
+
+				if(2)
+					stringtoreturn = "2 [gloryy], 6 [honorr], 2 [wisdomm]"
+					return stringtoreturn
+
+				if(3)
+					stringtoreturn = "3 [gloryy], 8 [honorr], 4 [wisdomm]"
+					return stringtoreturn
+
+				if(4)
+					stringtoreturn = "4 [gloryy], 10 [honorr], 9 [wisdomm]"
+					return stringtoreturn
+
+
+		if("Theurge")
+			switch(renownrank)
+				if(0)
+					stringtoreturn = "3 [wisdomm]"
+					return stringtoreturn
+
+				if(1)
+					stringtoreturn = "1 [gloryy], 5 [wisdomm]"
+					return stringtoreturn
+
+				if(2)
+					stringtoreturn = "2 [gloryy], 1 [honorr], 7 [wisdomm]"
+					return stringtoreturn
+
+				if(3)
+					stringtoreturn = "4 [gloryy], 2 [honorr], 9 [wisdomm]"
+					return stringtoreturn
+
+				if(4)
+					stringtoreturn = "4 [gloryy], 9 [honorr], 10 [wisdomm]"
+					return stringtoreturn
+
+
+		if("Ragabash")
+			switch(renownrank)
+				if(0)
+					stringtoreturn = "3 Total"
+					return stringtoreturn
+
+				if(1)
+					stringtoreturn = "7 Total"
+					return stringtoreturn
+
+				if(2)
+					stringtoreturn = "13 Total"
+					return stringtoreturn
+
+				if(3)
+					stringtoreturn = "19 Total"
+					return stringtoreturn
+
+				if(4)
+					stringtoreturn = "25 Total"
+					return stringtoreturn
+
+/datum/preferences/proc/AuspiceRankUp()
+	switch(auspice.name)
+		if("Ahroun")
+			switch(renownrank)
+				if(0)
+					if(glory >= 2 && honor >= 1) return TRUE
+				if(1)
+					if(glory >= 4 && honor >= 1 && wisdom >= 1) return TRUE
+				if(2)
+					if(glory >= 6 && honor >= 3 && wisdom >= 1) return TRUE
+				if(3)
+					if(glory >= 9 && honor >= 4 && wisdom >= 2) return TRUE
+				if(4)
+					if(glory >= 10 && honor >= 9 && wisdom >= 4) return TRUE
+
+		if("Galliard")
+			switch(renownrank)
+				if(0)
+					if(glory >= 2 && wisdom >= 1) return TRUE
+				if(1)
+					if(glory >= 4 && wisdom >= 2) return TRUE
+				if(2)
+					if(glory >= 4 && honor >= 2 && wisdom >= 4) return TRUE
+				if(3)
+					if(glory >= 7 && honor >= 2 && wisdom >= 6) return TRUE
+				if(4)
+					if(glory >= 9 && honor >= 5 && wisdom >= 9) return TRUE
+
+		if("Philodox")
+			switch(renownrank)
+				if(0)
+					if(honor >= 3) return TRUE
+				if(1)
+					if(glory >= 1 && honor >= 4 && wisdom >= 1) return TRUE
+				if(2)
+					if(glory >= 2 && honor >= 6 && wisdom >= 2) return TRUE
+				if(3)
+					if(glory >= 3 && honor >= 8 && wisdom >= 4) return TRUE
+				if(4)
+					if(glory >= 4 && honor >= 10 && wisdom >= 9) return TRUE
+
+		if("Theurge")
+			switch(renownrank)
+				if(0)
+					if(wisdom >= 3) return TRUE
+				if(1)
+					if(glory >= 1 && wisdom >= 5) return TRUE
+				if(2)
+					if(glory >= 2 && honor >= 1 && wisdom >= 7) return TRUE
+				if(3)
+					if(glory >= 4 && honor >= 2 && wisdom >= 9) return TRUE
+				if(4)
+					if(glory >= 4 && honor >= 9 && wisdom >= 10) return TRUE
+
+		if("Ragabash")
+			switch(renownrank)
+				if(0)
+					if((glory+honor+wisdom) >= 3) return TRUE
+				if(1)
+					if((glory+honor+wisdom) >= 7) return TRUE
+				if(2)
+					if((glory+honor+wisdom) >= 13) return TRUE
+				if(3)
+					if((glory+honor+wisdom) >= 19) return TRUE
+				if(4)
+					if((glory+honor+wisdom) >= 25) return TRUE
+
+	return FALSE

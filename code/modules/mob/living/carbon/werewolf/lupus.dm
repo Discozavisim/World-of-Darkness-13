@@ -1,7 +1,7 @@
 /mob/living/carbon/werewolf/lupus
 	name = "wolf"
 	icon_state = "black"
-	icon = 'code/modules/wod13/werewolf_lupus.dmi'
+	icon = 'code/modules/wod13/vtm_lupus.dmi'
 	pass_flags = PASSTABLE
 	mob_size = MOB_SIZE_SMALL
 	butcher_results = list(/obj/item/food/meat/slab = 5)
@@ -12,8 +12,9 @@
 //	dextrous = FALSE
 //	speed = -1.5     doesn't work on carbons
 //	var/move_delay_add = -1.5 // movement delay to add    also didn't work
-	melee_damage_lower = 15
-	melee_damage_upper = 35
+	melee_damage_lower = 25
+	melee_damage_upper = 25
+	armour_penetration = 25
 	health = 150
 	maxHealth = 150
 	werewolf_armor = 10
@@ -28,7 +29,7 @@
 	var/hispo = FALSE
 
 /datum/movespeed_modifier/lupusform
-	multiplicative_slowdown = -0.80
+	multiplicative_slowdown = -0.7
 
 /mob/living/carbon/werewolf/lupus/update_icons()
 	cut_overlays()

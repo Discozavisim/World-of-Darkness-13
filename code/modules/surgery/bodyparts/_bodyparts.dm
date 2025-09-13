@@ -547,10 +547,12 @@
 
 
 //Returns total damage.
-/obj/item/bodypart/proc/get_damage(include_stamina = FALSE)
+/obj/item/bodypart/proc/get_damage(include_stamina = FALSE, include_clone = FALSE)
 	var/total = brute_dam + burn_dam
 	if(include_stamina)
 		total = max(total, stamina_dam)
+	if(include_clone)
+		total += owner.getCloneLoss()
 	return total
 
 

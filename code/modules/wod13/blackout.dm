@@ -22,6 +22,12 @@ SUBSYSTEM_DEF(witness_pool)
 
 	var/list/currentrun = list()
 
+#define UMBRA_VEIL_COOLDOWN 40 MINUTES
+#define CAERN_VEIL_COOLDOWN 60 MINUTES
+#define GAROU_BP_REGEN 60 SECONDS
+#define VEIL_COOLDOWN 20 SECONDS
+#define RAGE_LIFE_COOLDOWN 30 SECONDS
+
 /datum/controller/subsystem/witness_pool/stat_entry(msg)
 	var/list/activelist = GLOB.mob_living_list
 	msg = "WITNESS:[length(activelist)]"
@@ -65,7 +71,7 @@ SUBSYSTEM_DEF(witness_pool)
 		for(var/obj/structure/werewolf_totem/W in GLOB.totems)
 			if(W)
 				if(W.totem_health)
-					if(W.tribe == auspice?.tribe)
+					if(W.tribe == auspice.tribe.name)
 						if(get_area(W) == get_area(src) && client)
 							gaining_rage = FALSE
 							if(last_gnosis_buff+300 < world.time)
@@ -75,15 +81,20 @@ SUBSYSTEM_DEF(witness_pool)
 			if(auspice?.base_breed == "Crinos")
 				gaining_rage = FALSE
 			if(CheckEyewitness(src, src, 5, FALSE))
-				adjust_veil(-1)
+				adjust_veil(-1, honoradj = -1)
 		if(islupus(src))
 			if(auspice?.base_breed == "Lupus")
 				gaining_rage = FALSE
 			var/mob/living/carbon/werewolf/lupus/Lupus = src
 			if(Lupus.hispo)
-				CheckEyewitness(src, src, 7, FALSE)
+				if(CheckEyewitness(src, src, 7, FALSE))
+					src.adjust_veil(-1,random = -1)
+			else
+				if(!(HAS_TRAIT(src, TRAIT_DOGWOLF)))
+					if(CheckEyewitness(src, src, 4, FALSE))
+						src.adjust_veil(-1,threshold = 4)
 		if(gaining_rage && client)
-			if((last_rage_gain + 1 MINUTES) < world.time)
+			if(((last_rage_gain + RAGE_LIFE_COOLDOWN) < world.time) && (auspice.rage <= 6))
 				last_rage_gain = world.time
 				adjust_rage(1, src, TRUE)
 
@@ -98,35 +109,46 @@ SUBSYSTEM_DEF(witness_pool)
 					to_chat(src, "<span class='warning'>My Veil is too low to connect with the spirits of Umbra!</span>")
 					adjust_gnosis(-1, src, FALSE)
 
-		if(auspice?.rage >= 9)
+		if(auspice?.rage >= 8)
 			if(!in_frenzy)
 				if((last_frenzy_check + 18 SECONDS) <= world.time)
 					last_frenzy_check = world.time
 					rollfrenzy()
 
-		if(istype(get_area(src), /area/vtm/interior/penumbra))
-			if((last_veil_restore + 40 SECONDS) < world.time)
-				adjust_veil(1, src, TRUE)
+		if(last_veil_restore == 0 || (last_veil_restore + UMBRA_VEIL_COOLDOWN) < world.time)
+			if(masquerade < 5)
+				check_veil_adjust()
+
+// currently being in your caern restores veil to max because theres no other way of doing. remember to cap it to THREE once shame rituals are back
+
+/mob/living/carbon/proc/check_veil_adjust()
+
+	if(istype(get_area(src), /area/vtm/interior/penumbra))
+		if((last_veil_restore + UMBRA_VEIL_COOLDOWN) < world.time)
+			adjust_veil(1, random = -1)
+			last_veil_restore = world.time
+			return
+
+	switch(auspice.tribe.name)
+		if("Wendigo", "Silver Fangs", "Ghost Council")
+			if(istype(get_area(src), /area/vtm/forest))
+				adjust_veil(1, random = -1)
 				last_veil_restore = world.time
 
-		switch(auspice?.tribe)
-			if("Wendigo")
-				if(istype(get_area(src), /area/vtm/forest))
-					if((last_veil_restore + 60 SECONDS) <= world.time)
-						adjust_veil(1, src, TRUE)
-						last_veil_restore = world.time
+		if("Bone Gnawers")
+			if(istype(get_area(src), /area/vtm/sewer))
+				adjust_veil(1, random = -1)
+				last_veil_restore = world.time
 
-			if("Glasswalkers")
-				if(istype(get_area(src), /area/vtm/interior/glasswalker))
-					if((last_veil_restore + 60 SECONDS) <= world.time)
-						adjust_veil(1, src, TRUE)
-						last_veil_restore = world.time
+		if("Glass Walkers")
+			if(istype(get_area(src), /area/vtm/interior/glasswalker))
+				adjust_veil(1, random = -1)
+				last_veil_restore = world.time
 
-			if("Black Spiral Dancers")
-				if(istype(get_area(src), /area/vtm/interior/wyrm_corrupted))
-					if((last_veil_restore + 60 SECONDS) <= world.time)
-						adjust_veil(1, src, TRUE)
-						last_veil_restore = world.time
+		if("Black Spiral Dancers")
+			if(istype(get_area(src), /area/vtm/interior/wyrm_corrupted))
+				adjust_veil(1, random = -1)
+				last_veil_restore = world.time
 
 /mob/living/carbon/human/handle_witness()
 	var/mob/living/carbon/human/H = src
@@ -284,7 +306,7 @@ SUBSYSTEM_DEF(witness_pool)
 
 		if(auspice?.base_breed != "Homid")
 			if(client)
-				if((last_rage_gain + 1 MINUTES) < world.time)
+				if(((last_rage_gain + 1 MINUTES) < world.time) && (auspice.rage <= 6))
 					last_rage_gain = world.time
 					adjust_rage(1, src, TRUE)
 		if(masquerade == 0)
@@ -414,3 +436,9 @@ SUBSYSTEM_DEF(witness_pool)
 		if((last_bloodpool_restore + 60 SECONDS) <= world.time)
 			last_bloodpool_restore = world.time
 			bloodpool = min(maxbloodpool, bloodpool+1)
+
+#undef UMBRA_VEIL_COOLDOWN
+#undef CAERN_VEIL_COOLDOWN
+#undef GAROU_BP_REGEN
+#undef VEIL_COOLDOWN
+#undef RAGE_LIFE_COOLDOWN

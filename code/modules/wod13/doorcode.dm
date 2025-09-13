@@ -309,6 +309,26 @@
 		"laundromat"
 	)
 
+/obj/item/vamp/keys/pentex
+	name = "Pentex keys"
+	accesslocks = list(
+		"pentex"
+	)
+
+/obj/item/vamp/keys/children_of_gaia
+	name = "Ordinary keys"
+	accesslocks = list(
+		"children"
+	)
+
+
+/obj/item/vamp/keys/techstore
+	name = "Tech Shop keys"
+	accesslocks = list(
+		"wolftech"
+	)
+	color = "#466a72"
+
 /obj/item/vamp/keys/hack
 	name = "\improper lockpick"
 	desc = "These can open some doors. Illegally..."

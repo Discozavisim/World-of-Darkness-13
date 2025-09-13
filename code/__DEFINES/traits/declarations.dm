@@ -151,6 +151,7 @@
 
 //#define TRAIT_ACROBATIC			"acrobatic"
 #define TRAIT_LETHALNIGGA		"Lethal_absorb"
+#define TRAIT_THUNDERSHOT		"thundershot" // Fire without ammo.
 #define TRAIT_DANCER			"dancer"
 #define TRAIT_EXP_DRIVER		"experienced_driver"
 #define TRAIT_BONE_KEY			"bone_key"

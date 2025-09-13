@@ -111,6 +111,8 @@ SUBSYSTEM_DEF(job)
 			return FALSE
 		if((player.client.prefs.masquerade < job.minimal_masquerade) && !bypass)
 			return FALSE
+		if((player.client.prefs.renownrank < job.minimal_renownrank) && !bypass)
+			return FALSE
 		if(!job.allowed_species.Find(player.client.prefs.pref_species.name) && !bypass)
 			return FALSE
 		if ((job.species_slots[player.client.prefs.pref_species.name] == 0) && !bypass)
@@ -150,6 +152,9 @@ SUBSYSTEM_DEF(job)
 			continue
 		if((player.client.prefs.generation < job.max_generation) && !bypass)
 			JobDebug("FOC player not enough generation, Player: [player]")
+			continue
+		if((player.client.prefs.renownrank < job.minimal_renownrank) && !bypass)
+			JobDebug("FOC player not enough renown rank, Player: [player]")
 			continue
 		if(!job.scale_with_pop())
 			JobDebug("FOC job limit reached, Player: [player]")
@@ -219,6 +224,9 @@ SUBSYSTEM_DEF(job)
 			continue
 		if(!job.scale_with_pop())
 			JobDebug("GRJ job limit reached, Player: [player]")
+			continue
+		if(player.client.prefs.renownrank < job.minimal_renownrank)
+			JobDebug("GRJ player not enough renown rank, Player: [player]")
 			continue
 		if(player.client.prefs.masquerade < job.minimal_masquerade)
 			JobDebug("GRJ player not enough masquerade, Player: [player]")
@@ -434,6 +442,9 @@ SUBSYSTEM_DEF(job)
 					continue
 				if(!job.scale_with_pop())
 					JobDebug("DO job limit reached, Player: [player]")
+					continue
+				if((player.client.prefs.renownrank > job.minimal_renownrank) && !bypass)
+					JobDebug("DO player not enough renown rank, Player: [player]")
 					continue
 				if((player.client.prefs.masquerade < job.minimal_masquerade) && !bypass)
 					JobDebug("DO player not enough masquerade, Player: [player]")
@@ -768,11 +779,6 @@ SUBSYSTEM_DEF(job)
 		if(H.clane)
 			if(H.clane.violating_appearance)
 				destination = pick(GLOB.masquerade_latejoin)
-		if(isgarou(H))
-			for(var/obj/structure/werewolf_totem/W in GLOB.totems)
-				if(W)
-					if(W.tribe == H.auspice.tribe)
-						destination = W
 		destination.JoinPlayerHere(M, buckle)
 		return TRUE
 

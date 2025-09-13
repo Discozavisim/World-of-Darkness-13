@@ -514,7 +514,10 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	if(!value)
 		return
 
-	M.AdjustMasquerade(value, TRUE)
+	if(isgarou(M) || iswerewolf(M))
+		M.adjust_veil(value, forced = TRUE)
+	else
+		M.AdjustMasquerade(value, TRUE)
 	var/msg = "<span class='adminnotice'><b>Masquerade Adjustment: [key_name_admin(usr)] adjusted [key_name_admin(M)]'s masquerade by [value] to [M.masquerade]</b></span>"
 	log_admin("MasqAdjust: [key_name(usr)] has adjusted [key_name(M)]'s masquerade by [value] to [M.masquerade]")
 	message_admins(msg)

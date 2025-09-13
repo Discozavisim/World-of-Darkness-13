@@ -174,6 +174,16 @@ Dancer
 	lose_text = "<span class='notice'>You don't feel extra <b>HUNGRY</b> anymore.</span>"
 	allowed_species = list("Vampire", "Ghoul")
 
+/datum/quirk/wyrm_tainted
+	name = "Wyrm Tainted"
+	desc = "The touch of the wyrm has perverted you. Other werewolves can sense this taint, and your crinos form is changed."
+	mob_trait = TRAIT_WYRMTAINTED
+	value = -1
+	gain_text = "<span class='warning'>You feel wrongness crawling beneath your skin.</span>"
+	lose_text = "<span class='notice'>You feel relief and warmth.</span>"
+	allowed_species = list("Werewolf")
+	allowed_tribes = list("Wendigo","Ronin", "Glass Walkers", "Ghost Council", "Bone Gnawers", "Silver Fangs")
+
 //Removed after changes to death consequences.
 /*
 /datum/quirk/phoenix

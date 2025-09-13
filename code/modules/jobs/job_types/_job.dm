@@ -78,6 +78,8 @@
 	var/max_generation = 7
 	///Minimum Masquerade level necessary to do this job.
 	var/minimal_masquerade = 1
+	///Minimum Renown Rank (garou) necessary to do this job.
+	var/minimal_renownrank
 
 	///List of species that are allowed to do this job.
 	var/list/allowed_species = list("Vampire")
@@ -85,6 +87,10 @@
 	var/list/species_slots = list()
 	///List of Bloodlines that are allowed to do this job.
 	var/list/allowed_bloodlines = list("Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Giovanni", "Followers of Set")
+	///List of Tribes that are allowed to do this job.
+	var/list/allowed_tribes = list("Wendigo","Ghost Council", "Glass Walkers", "Bone Gnawers", "Ronin", "Black Spiral Dancers", "Silver Fangs")
+	///List of Auspices that are allowed to do this job.
+	var/list/allowed_auspice = list("Philodox", "Galliard", "Ragabash", "Theurge", "Ahroun")
 
 	// List for phone shit
 	var/my_contact_is_important = FALSE

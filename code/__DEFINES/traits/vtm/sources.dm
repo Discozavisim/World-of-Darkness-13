@@ -12,3 +12,5 @@
 
 /// This trait comes from when a mob is currently typing.
 #define CURRENTLY_TYPING_TRAIT "currently_typing"
+
+#define WEREWOLF_TRAIT "werewolf"

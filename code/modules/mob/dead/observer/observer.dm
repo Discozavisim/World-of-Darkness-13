@@ -405,7 +405,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, "<span class='warning'>You cannot re-enter your body.</span>")
 		return
 
-	var/mob/living/carbon/human/original_body = mind.current
+	var/mob/living/carbon/original_body = mind.current
 	var/turf/current_turf = get_turf(src)
 	var/found_body = FALSE
 

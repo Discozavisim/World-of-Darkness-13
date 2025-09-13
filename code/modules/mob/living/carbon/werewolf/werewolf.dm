@@ -32,6 +32,7 @@
 	see_in_dark = 2
 	verb_say = "woofs"
 	rotate_on_lying = 0
+	initial_language_holder = /datum/language_holder/werewolf_transformed
 
 	movement_type = GROUND // [ChillRaccoon] - fucking flying werewolfes is a meme
 
@@ -56,8 +57,7 @@
 	var/wound_bonus = 20
 	var/bare_wound_bonus = 25
 	var/sharpness = 50
-	var/armour_penetration = 0
-	var/melee_damage_type = BRUTE
+	melee_damage_type = CLONE
 	var/list/damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 1)
 	var/attack_verb_continuous = "attacks"
 	var/attack_verb_simple = "attack"
@@ -76,7 +76,11 @@
 
 	var/werewolf_armor = 0
 
+	var/wyrm_tainted = 0
+
 	var/assigned_quirks = FALSE
+
+	wolf_recov = TRUE
 
 /mob/living/carbon/werewolf/update_resting()
 	if(resting)
@@ -108,6 +112,10 @@
 /mob/living/carbon/werewolf/Initialize(mapload)
 	var/datum/action/gift/rage_heal/GH = new()
 	GH.Grant(src)
+	var/datum/action/gift/howling/howl = new()
+	howl.Grant(src)
+	var/datum/action/gift/guise_of_the_hound/guise = new()
+	guise.Grant(src)
 	add_verb(src, /mob/living/proc/mob_sleep)
 	add_verb(src, /mob/living/proc/toggle_resting)
 
@@ -187,7 +195,8 @@
 	limb_destroyer = 1
 	hud_type = /datum/hud/werewolf
 	melee_damage_lower = 35
-	melee_damage_upper = 65
+	melee_damage_upper = 35
+	armour_penetration = 50
 	health = 250
 	maxHealth = 250
 //	speed = -1  doesn't work on carbons

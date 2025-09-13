@@ -5,6 +5,8 @@
 GLOBAL_LIST_EMPTY(clanes_list)	//>:3
 
 GLOBAL_LIST_EMPTY(auspices_list)
+GLOBAL_LIST_EMPTY(tribes_list)
+GLOBAL_LIST_EMPTY(glyph_list)
 
 /proc/make_datum_references_lists()
 	//hair
@@ -50,10 +52,20 @@ GLOBAL_LIST_EMPTY(auspices_list)
 		GLOB.clanes_list[S.name] = spath
 	sortList(GLOB.clanes_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
+	for(var/spath in subtypesof(/datum/garou_tribe))
+		var/datum/garou_tribe/S = new spath()
+		GLOB.tribes_list[S.name] = spath
+	sortList(GLOB.tribes_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
+
 	for(var/spath in subtypesof(/datum/auspice))
 		var/datum/auspice/S = new spath()
 		GLOB.auspices_list[S.name] = spath
 	sortList(GLOB.auspices_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
+
+	for(var/spath in subtypesof(/obj/effect/decal/garou_glyph))
+		var/obj/effect/decal/garou_glyph/S = spath
+		GLOB.glyph_list[S.garou_name] = S
+	sortList(GLOB.glyph_list, GLOBAL_PROC_REF(cmp_typepaths_asc))
 
 	//Surgeries
 	for(var/path in subtypesof(/datum/surgery))

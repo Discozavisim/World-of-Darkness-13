@@ -1215,6 +1215,11 @@
 				H.bloodpool = max(0, H.bloodpool-1)
 				beastmaster.bloodpool = min(beastmaster.maxbloodpool, beastmaster.bloodpool+1)
 
+/mob/living/simple_animal/hostile/beastmaster/cockroach/Initialize(mapload)
+	. = ..()
+	pixel_w = rand(-8, 8)
+	pixel_z = rand(-8, 8)
+
 /datum/socialrole/shop
 	s_tones = list("albino",
 								"caucasian1",

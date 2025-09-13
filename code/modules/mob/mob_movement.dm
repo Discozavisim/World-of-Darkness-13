@@ -94,6 +94,10 @@
 		var/mob/living/carbon/human/H = mob
 		if(H.in_frenzy)
 			return FALSE
+	if(iswerewolf(mob))
+		var/mob/living/carbon/werewolf/W = mob
+		if(W.in_frenzy)
+			return FALSE
 	if(mob.force_moving)
 		return FALSE
 

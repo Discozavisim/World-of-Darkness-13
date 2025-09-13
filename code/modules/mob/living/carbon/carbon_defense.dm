@@ -63,12 +63,11 @@
 							"<span class='userdanger'>You catch [I] in mid-air!</span>")
 			throw_mode_off()
 			return TRUE
-	do_rage_from_attack()
 	return ..()
 
 
 /mob/living/carbon/attacked_by(obj/item/I, mob/living/user, armor_break = FALSE)
-	if(I.force)
+	if(I.force && user != src)
 		do_rage_from_attack(user)
 	var/obj/item/bodypart/affecting
 	if(user == src)
@@ -147,8 +146,7 @@
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /mob/living/carbon/attack_hand(mob/living/carbon/human/user)
-
-	if(user.a_intent == INTENT_HARM)
+	if(user != src)
 		do_rage_from_attack(user)
 
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
@@ -229,6 +227,17 @@
 /mob/living/carbon/proc/dismembering_strike(mob/living/attacker, dam_zone)
 	if(!attacker.limb_destroyer)
 		return dam_zone
+	if(isgarou(attacker) || iswerewolf(attacker))
+		var/list/missing = get_missing_limbs()
+		var/list/needed = list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
+		var/all_missing = TRUE
+		for(var/zone in needed)
+			if(!(zone in missing))
+				all_missing = FALSE
+		if(all_missing)
+			var/obj/item/bodypart/head = get_bodypart(ran_zone(BODY_ZONE_HEAD))
+			if(head)
+				head.dismember()
 	var/obj/item/bodypart/affecting
 	if(dam_zone && attacker.client)
 		affecting = get_bodypart(ran_zone(dam_zone))
@@ -236,13 +245,15 @@
 		var/list/things_to_ruin = shuffle(bodyparts.Copy())
 		for(var/B in things_to_ruin)
 			var/obj/item/bodypart/bodypart = B
-			if(bodypart.body_zone == BODY_ZONE_HEAD || bodypart.body_zone == BODY_ZONE_CHEST)
+			if(bodypart.body_zone == BODY_ZONE_CHEST)
+				continue
+			if(bodypart.body_zone == BODY_ZONE_HEAD)
 				continue
 			if(!affecting || ((affecting.get_damage() / affecting.max_damage) < (bodypart.get_damage() / bodypart.max_damage)))
 				affecting = bodypart
 	if(affecting)
 		dam_zone = affecting.body_zone
-		if(affecting.get_damage() >= affecting.max_damage)
+		if(affecting.get_damage(include_clone = TRUE) >= affecting.max_damage)
 			affecting.dismember()
 			return null
 		return affecting.body_zone
@@ -256,7 +267,7 @@
 
 /mob/living/carbon/proc/do_rage_from_attack(mob/living/target)
 	if(isgarou(src) || iswerewolf(src))
-		if(last_rage_from_attack == 0 || last_rage_from_attack+50 < world.time)
+		if(last_rage_from_attack == 0 || last_rage_from_attack+ATTACK_RAGE_COOLDOWN < world.time)
 			last_rage_from_attack = world.time
 			adjust_rage(1, src, TRUE)
 	if(iscathayan(src))
@@ -272,7 +283,8 @@
 					mind?.dharma?.deserving |= target.real_name
 
 /mob/living/carbon/proc/disarm(mob/living/carbon/target)
-	target.do_rage_from_attack(src)
+	if(target != src)
+		target.do_rage_from_attack(src)
 	if(zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		var/target_on_help_and_unarmed = target.a_intent == INTENT_HELP && !target.get_active_held_item()
 		if(target_on_help_and_unarmed || HAS_TRAIT(target, TRAIT_RESTRAINED))
@@ -742,8 +754,8 @@
 		. += limb.get_organs()
 
 /mob/living/carbon/grabbedby(mob/living/carbon/user, supress_message = FALSE)
-	do_rage_from_attack(user)
 	if(user != src)
+		do_rage_from_attack(user)
 		return ..()
 
 	var/obj/item/bodypart/grasped_part = get_bodypart(zone_selected)

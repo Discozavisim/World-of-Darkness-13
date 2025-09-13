@@ -135,7 +135,57 @@
 		dat += "<b>Yin/Yang</b>: [yin]/[yang] <a href='byond://?_src_=prefs;preference=chibalance;task=input'>Adjust</a><BR>"
 		dat += "<b>Hun/P'o</b>: [hun]/[po] <a href='byond://?_src_=prefs;preference=demonbalance;task=input'>Adjust</a><BR>"
 	if(pref_species.name == "Werewolf")
+		if(!glory)
+			glory = 0
+		if(!honor)
+			honor = 0
+		if(!wisdom)
+			wisdom = 0
+		if(!renownrank)
+			renownrank = 0
 		dat += "<b>Veil:</b> [masquerade]/5<BR>"
+		switch(tribe.name)
+			if("Ronin")
+				dat += "Renown matters little to you, now.<BR>"
+			if("Black Spiral Dancers")
+				dat += "<b>Infamy:</b> [glory]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownglory;task=input'>Change Infamy</a><BR>"
+				else
+					dat +="<BR>"
+				dat += "<b>Power:</b> [honor]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownhonor;task=input'>Change Power</a><BR>"
+				else
+					dat +="<BR>"
+				dat += "<b>Cunning:</b> [wisdom]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownwisdom;task=input'>Change Cunning</a><BR>"
+				else
+					dat +="<BR>"
+			else
+				dat += "<b>Glory:</b> [glory]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownglory;task=input'>Change Glory</a><BR>"
+				else
+					dat +="<BR>"
+				dat += "<b>Honor:</b> [honor]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownhonor;task=input'>Change Honor</a><BR>"
+				else
+					dat +="<BR>"
+				dat += "<b>Wisdom:</b> [wisdom]/10"
+				if(!slotlocked)
+					dat +=" <a href='byond://?_src_=prefs;preference=renownwisdom;task=input'>Change Wisdom</a><BR>"
+				else
+					dat +="<BR>"
+		dat += "<b>Renown Rank:</b> [RankName(renownrank)]"
+		if(!slotlocked)
+			dat +=" <a href='byond://?_src_=prefs;preference=renownrank;task=input'>Change Renown Rank</a><BR>"
+		else
+			dat +="<BR>"
+		dat += "[RankDesc(renownrank)]<BR>"
+		dat += "<BR>"
 	if(pref_species.name == "Vampire" || pref_species.name == "Ghoul")
 		dat += "<b>Masquerade:</b> [masquerade]/5<BR>"
 	if(pref_species.name == "Vampire")
@@ -163,14 +213,7 @@
 		var/gifts_text = ""
 		var/num_of_gifts = 0
 		for(var/i in 1 to auspice_level)
-			var/zalupa
-			switch (tribe)
-				if ("Glasswalkers")
-					zalupa = auspice.glasswalker[i]
-				if ("Wendigo")
-					zalupa = auspice.wendigo[i]
-				if ("Black Spiral Dancers")
-					zalupa = auspice.spiral[i]
+			var/zalupa = tribe.tribal_gifts[i]
 			var/datum/action/T = new zalupa()
 			gifts_text += "[T.name], "
 		for(var/i in auspice.gifts)
@@ -223,7 +266,8 @@
 		qdel(DAWOF2)
 
 		dat += "<b>Breed:</b> <a href='byond://?_src_=prefs;preference=breed;task=input'>[breed]</a><BR>"
-		dat += "<b>Tribe:</b> <a href='byond://?_src_=prefs;preference=tribe;task=input'>[tribe]</a><BR>"
+		dat += "<b>Tribe:</b> <a href='byond://?_src_=prefs;preference=tribe;task=input'>[tribe.name]</a><BR>"
+		dat += "<b>Description:</b> [tribe.desc]<BR>"
 		dat += "Color: <a href='byond://?_src_=prefs;preference=werewolf_color;task=input'>[werewolf_color]</a><BR>"
 		dat += "Scars: <a href='byond://?_src_=prefs;preference=werewolf_scar;task=input'>[werewolf_scar]</a><BR>"
 		dat += "Hair: <a href='byond://?_src_=prefs;preference=werewolf_hair;task=input'>[werewolf_hair]</a><BR>"

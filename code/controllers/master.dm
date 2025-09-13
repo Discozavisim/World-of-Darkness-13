@@ -274,7 +274,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					var/role = H.mind?.assigned_role
 					var/special_role = H.mind?.special_role
 
-					if(role in list("Prince", "Sheriff", "Hound", "Seneschal", "Chantry Regent", "Baron", "Dealer", "Primogen Ventrue", "Primogen Lasombra", "Primogen Banu Haqim", "Primogen Nosferatu", "Primogen Malkavian"))
+					if(role in list("Prince", "Sheriff", "Hound", "Seneschal", "Chantry Regent", "Baron", "Dealer", "Primogen Ventrue", "Primogen Lasombra", "Primogen Banu Haqim", "Primogen Nosferatu", "Primogen Malkavian", "Endron Branch Lead", "Endron Internal Affairs Agent", "Endron Executive", "Endron Chief of Security"))
 						char_sheet.add_experience(2)
 					if(H.total_erp > 1500)
 						char_sheet.add_experience(2)

@@ -102,6 +102,15 @@
 					"<span class='notice'>[user] fails to pull you off of [src].</span>")
 				return
 		else
+			if(iswerewolf(buckled_mob))
+				buckled_mob.visible_message("<span class='warning'>[buckled_mob] tears through the [src]!</span>",\
+				"<span class='notice'>You tear through the [src], attempting to free yourself!</span>",\
+				"<span class='hear'>You hear a wet squishing noise..</span>")
+				if(do_after(buckled_mob, 3 SECONDS, target = src))
+					unbuckle_mob(buckled_mob, force = TRUE)
+					visible_message(text("<span class='danger'>[buckled_mob] falls free of [src]!</span>"))
+					qdel(src)
+					return
 			buckled_mob.visible_message("<span class='warning'>[buckled_mob] struggles to break free from [src]!</span>",\
 			"<span class='notice'>You struggle to break free from [src], exacerbating your wounds! (Stay still for two minutes.)</span>",\
 			"<span class='hear'>You hear a wet squishing noise..</span>")

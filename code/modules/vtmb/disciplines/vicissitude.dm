@@ -251,8 +251,6 @@
 					if("Эктоморф")
 						impersonating_body_mod = "s"
 						continue
-				if(!telo)
-					continue
 			if("Пол")
 				var/gender_bender = input(owner, "Измени свой пол", "Изменчивость") as null|anything in list("Мужской", "Женский")
 				switch(gender_bender)
@@ -260,7 +258,7 @@
 						impersonating_gender = MALE
 						continue
 					if("Женский")
-						impersonating_gender = MALE
+						impersonating_gender = FEMALE
 						continue
 				if(!gender_bender)
 					continue
@@ -553,8 +551,8 @@
 /datum/action/basic_vicissitude/Trigger()
 	. = ..()
 	var/mob/living/carbon/human/H = owner
-	var/stareishii = input(owner, "Что ты хочешь сделать?", "Изменчивость") as null|anything in list("Убрать", "Нарастатить")
 	if(H.generation <= 7)
+		var/stareishii = input(owner, "Что ты хочешь сделать?", "Изменчивость") as null|anything in list("Убрать", "Нарастатить")
 		switch(stareishii)
 			if("Нарастатить")
 				give_upgrade()

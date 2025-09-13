@@ -239,7 +239,7 @@
 	mob_name = "a triad soldier"
 	icon = 'icons/obj/lavaland/spawners.dmi'
 	icon_state = "cryostasis_sleeper"
-	outfit = /datum/outfit/job/triad_soldier
+	outfit =/datum/outfit/job/monk
 	roundstart = FALSE
 	death = FALSE
 	random = FALSE

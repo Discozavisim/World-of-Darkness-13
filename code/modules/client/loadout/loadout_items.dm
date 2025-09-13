@@ -292,6 +292,18 @@
 	display_name = "soviet ushanka"
 	path = /obj/item/clothing/head/uzanka
 
+/datum/gear/hat/worker_helmet
+	display_name = "Yellow working helmet"
+	path = /obj/item/clothing/head/kaska
+
+/datum/gear/hat/pro_helmet
+	display_name = "Orange working helmet"
+	path = /obj/item/clothing/head/kaska/pro
+
+/datum/gear/hat/prorab_helmet
+	display_name = "White working helmet"
+	path = /obj/item/clothing/head/kaska/prorab
+
 //////////////////////////////// NECK || ШЕЯ ////////////////////////////////
 
 /datum/gear/neck
@@ -462,6 +474,10 @@
 /datum/gear/suit/letterman_red
 	display_name = "letterman, red"
 	path = /obj/item/clothing/suit/jacket/letterman_syndie
+
+/datum/gear/suit/jeletka
+	display_name = "Working west"
+	path = /obj/item/clothing/suit/gastarbaiters
 
 //////////////////////////////// UNIFORMS || ФОРМЫ ////////////////////////////////
 

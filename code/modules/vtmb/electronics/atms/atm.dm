@@ -64,24 +64,42 @@
 	var/code
 	var/balance = 0
 	var/has_checked = FALSE
+	var/randhight = 100
+	var/randlow = 800
 
 /obj/item/vamp/creditcard/prince
 	icon_state = "card2"
 	inhand_icon_state = "card2"
+	randhight = 10000
+	randlow = 9000
 
 /obj/item/vamp/creditcard/seneschal
 	icon_state = "card2"
 	inhand_icon_state = "card2"
+	randhight = 2000
+	randlow = 1000
 
 /obj/item/vamp/creditcard/elder
 	icon_state = "card3"
 	inhand_icon_state = "card3"
+	randhight = 4000
+	randlow = 3000
 
 /obj/item/vamp/creditcard/giovanniboss
 	icon_state = "card2"
 	inhand_icon_state = "card2"
+	randhight = 6000
+	randlow = 5000
+
+/obj/item/vamp/creditcard/paper_wind
+	icon_state = "card2"
+	inhand_icon_state = "card2"
+	randhight = 2000
+	randlow = 4000
 
 /obj/item/vamp/creditcard/rich
+	randhight = 2000
+	randlow = 1000
 
 /obj/item/vamp/creditcard/New(mob/user)
 	..()
@@ -89,18 +107,8 @@
 		account = new /datum/vtm_bank_account()
 	if(user)
 		owner = user.ckey
-	if(istype(src, /obj/item/vamp/creditcard/prince))
-		account.balance = rand(9000, 10000)
-	else if(istype(src, /obj/item/vamp/creditcard/elder))
-		account.balance = rand(3000, 4000)
-	else if(istype(src, /obj/item/vamp/creditcard/rich))
-		account.balance = rand(1000, 2000)
-	else if(istype(src, /obj/item/vamp/creditcard/giovanniboss))
-		account.balance = rand(5000, 6000)
-	else if(istype(src, /obj/item/vamp/creditcard/seneschal))
-		account.balance = rand(1000, 2000)
-	else
-		account.balance = rand(100, 800)
+
+	account.balance = rand(randlow, randhight)
 
 /obj/machinery/vamp/atm/Initialize(mapload)
 	..()

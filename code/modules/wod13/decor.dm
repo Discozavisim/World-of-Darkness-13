@@ -1793,3 +1793,60 @@
 	layer = ABOVE_ALL_MOB_LAYER
 	anchored = TRUE
 	density = TRUE
+
+
+
+
+///////////// METRO ////////////////
+
+/obj/metrotrain
+	name = "Train"
+	desc = "It delivers a lot of people."
+	icon = 'code/modules/wod13/icons_metro/metro.dmi'
+	icon_state = "metro-1"
+	plane = GAME_PLANE
+	layer = CAR_LAYER
+	anchored = TRUE
+	density = FALSE
+	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB | PASSGLASS | PASSCLOSEDTURF
+	movement_type = PHASING
+
+/obj/metrotrain/Initialize(mapload)
+	. = ..()
+	icon_state = "metro-[rand(1, 2)]"
+
+/obj/structure/metrorails
+	name = "metro rails"
+	icon = 'code/modules/wod13/icons_metro/relsi.dmi'
+	icon_state = "relsi"
+
+/obj/structure/metrobaner
+	name = "Baner"
+	desc = "Baner for metro"
+	icon = 'code/modules/wod13/icons_metro/metro.dmi'
+	icon_state = "podiem_1"
+	plane = GAME_PLANE
+	layer = ABOVE_ALL_MOB_LAYER
+	anchored = TRUE
+	density = FALSE
+	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB | PASSGLASS | PASSCLOSEDTURF
+
+/obj/structure/metrobaner/alt
+	icon_state = "podiem_2"
+
+/obj/structure/metrobaner/reklama
+	desc = "Adds!"
+	icon_state = "podiem_3"
+
+/obj/structure/chair/lavochka
+	name = "street bench"
+	icon_state = "lavochka_middle"
+	icon = 'code/modules/wod13/icons_metro/lavochka.dmi'
+	buildstackamount = 1
+	item_chair = null
+
+/obj/structure/chair/lavochka/left
+	icon_state = "lavochka_left"
+
+/obj/structure/chair/lavochka/right
+	icon_state = "lavochka_right"

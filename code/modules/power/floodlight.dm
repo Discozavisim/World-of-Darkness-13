@@ -63,12 +63,13 @@
 	integrity_failure = 0.8
 	idle_power_usage = 100
 	active_power_usage = 1000
-	anchored = FALSE
+	anchored = TRUE
 	light_power = 1.75
 	var/list/light_setting_list = list(0, 5, 10, 15)
 	var/light_power_coefficient = 200
 	var/setting = FLOODLIGHT_OFF
 
+/*
 /obj/machinery/power/floodlight/process()
 	var/turf/T = get_turf(src)
 	var/obj/structure/cable/C = locate() in T
@@ -82,13 +83,15 @@
 	else if(avail(idle_power_usage))
 		add_load(idle_power_usage)
 
+*/
+
 /obj/machinery/power/floodlight/proc/change_setting(newval, mob/user)
 	if((newval < FLOODLIGHT_OFF) || (newval > light_setting_list.len))
 		return
 	setting = newval
-	active_power_usage = light_setting_list[setting] * light_power_coefficient
-	if(!avail(active_power_usage) && setting > FLOODLIGHT_OFF)
-		return change_setting(setting - 1)
+//	active_power_usage = light_setting_list[setting] * light_power_coefficient
+//	if(!avail(active_power_usage) && setting > FLOODLIGHT_OFF)
+//		return change_setting(setting - 1)
 	set_light(light_setting_list[setting], light_power)
 	var/setting_text = ""
 	if(setting > FLOODLIGHT_OFF)
@@ -141,6 +144,19 @@
 
 /obj/machinery/power/floodlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	playsound(src, 'sound/effects/glasshit.ogg', 75, TRUE)
+
+/obj/machinery/power/floodlight/Initialize(mapload)
+	. = ..()
+	if(anchored)
+		connect_to_network()
+		change_setting(FLOODLIGHT_HIGH) //Start on high power if anchored. For metro.
+
+/obj/machinery/power/floodlight/standart
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "svetila"
+	setting = FLOODLIGHT_HIGH
+
+
 
 #undef FLOODLIGHT_HIGH
 #undef FLOODLIGHT_LOW

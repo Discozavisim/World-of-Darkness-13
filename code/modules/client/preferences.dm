@@ -864,6 +864,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			C.clear_character_previews()
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
+	if(istype(user.client.mob, /mob/dead/observer/avatar))
+		to_chat(user, "<span class='notice'>You can't modify preferences while auspex ghosted!</span>")
+		return
 	if(href_list["bancheck"])
 		var/list/ban_details = is_banned_from_with_details(user.ckey, user.client.address, user.client.computer_id, href_list["bancheck"])
 		var/admin = FALSE
@@ -2292,27 +2295,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					toggles ^= SOUND_ENDOFROUND
 
 				if("ghost_ears")
-					if(istype(user.client.mob, /mob/dead/observer))
-						var/mob/dead/observer/obs = user.client.mob
-						if(obs.auspex_ghosted)
-							return
-						else
-							chat_toggles ^= CHAT_GHOSTEARS
-					else
-						chat_toggles ^= CHAT_GHOSTEARS
+					chat_toggles ^= CHAT_GHOSTEARS
 
 				if("ghost_sight")
 					chat_toggles ^= CHAT_GHOSTSIGHT
 
 				if("ghost_whispers")
-					if(istype(user.client.mob, /mob/dead/observer))
-						var/mob/dead/observer/obs = user.client.mob
-						if(obs.auspex_ghosted)
-							return
-						else
-							chat_toggles ^= CHAT_GHOSTWHISPER
-					else
-						chat_toggles ^= CHAT_GHOSTWHISPER
+					chat_toggles ^= CHAT_GHOSTWHISPER
 
 				if("ghost_radio")
 

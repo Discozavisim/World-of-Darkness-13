@@ -845,6 +845,21 @@
 		list(NETWORK_ID = TRIADS_NETWORK, OUR_ROLE = "Chinatown Associate")
 		)
 
+/obj/item/vamp/phone/red_dragon
+	contact_networks_pre_init = list(
+		list(NETWORK_ID = TRIADS_NETWORK, OUR_ROLE = "Red Dragon")
+		)
+
+/obj/item/vamp/phone/paper_wind
+	contact_networks_pre_init = list(
+		list(NETWORK_ID = TRIADS_NETWORK, OUR_ROLE = "Paper Wind")
+		)
+
+/obj/item/vamp/phone/red_stick
+	contact_networks_pre_init = list(
+		list(NETWORK_ID = TRIADS_NETWORK, OUR_ROLE = "Owner of Laundry")
+		)
+
 // ENDRON
 
 /obj/item/vamp/phone/endron_lead

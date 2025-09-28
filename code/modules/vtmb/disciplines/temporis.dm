@@ -11,6 +11,8 @@
 
 	activate_sound = 'code/modules/wod13/sounds/temporis.ogg'
 
+	var/datum/martial_art/cowalker/style = new()
+
 /datum/discipline_power/temporis/proc/celerity_explode(datum/source, datum/discipline_power/power, atom/target)
 	SIGNAL_HANDLER
 
@@ -22,6 +24,14 @@
 	addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/living/carbon/human, gib)), 3 SECONDS)
 
 	return POWER_CANCEL_ACTIVATION
+
+/datum/discipline_power/temporis/activate()
+	. = ..()
+	owner.attributes.celerity_bonus += level
+
+/datum/discipline_power/temporis/deactivate()
+	. = ..()
+	owner.attributes.celerity_bonus -= level
 
 //HOURGLASS OF THE MIND
 /datum/discipline_power/temporis/hourglass_of_the_mind
@@ -92,13 +102,20 @@
 
 	violates_masquerade = TRUE
 
+	toggled = TRUE
 	cancelable = TRUE
+
 	duration_length = 10 SECONDS
 	cooldown_length = 15 SECONDS
-	var/datum/martial_art/cowalker/style
+
+	grouped_powers = list(
+		/datum/discipline_power/temporis/clothos_gift
+	)
 
 /datum/discipline_power/temporis/patience_of_the_norns/activate()
 	. = ..()
+	owner.temporis_visual = TRUE
+	owner.add_movespeed_modifier(/datum/movespeed_modifier/temporis4)
 	var/matrix/initial_matrix = matrix(owner.transform)
 	var/matrix/secondary_matrix = matrix(owner.transform)
 	var/matrix/tertiary_matrix = matrix(owner.transform)
@@ -114,6 +131,8 @@
 
 /datum/discipline_power/temporis/patience_of_the_norns/deactivate()
 	. = ..()
+	owner.temporis_visual = FALSE
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/temporis4)
 	style.remove(owner)
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION)
@@ -141,6 +160,9 @@
 	spawn(0.5 SECONDS)
 		qdel(src)
 
+/datum/movespeed_modifier/temporis4
+	multiplicative_slowdown = -1.5
+
 //CLOTHO'S GIFT
 /datum/discipline_power/temporis/clothos_gift
 	name = "Clotho's Gift"
@@ -152,33 +174,43 @@
 
 	violates_masquerade = TRUE
 
+	toggled = TRUE
 	cancelable = TRUE
+
 	duration_length = 10 SECONDS
 	cooldown_length = 15 SECONDS
 
+	grouped_powers = list(
+		/datum/discipline_power/temporis/patience_of_the_norns
+	)
+
 /datum/discipline_power/temporis/clothos_gift/activate()
 	. = ..()
+	owner.temporis_blur = TRUE
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/temporis5)
 	owner.next_move_modifier *= 0.25
-	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(temporis_visual))
+	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(temporis_blur))
 	RegisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION, PROC_REF(celerity_explode))
+	style.teach(owner, make_temporary = TRUE)
 
 /datum/discipline_power/temporis/clothos_gift/deactivate()
 	. = ..()
+	owner.temporis_blur = FALSE
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/temporis5)
 	owner.next_move_modifier /= 0.25
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION)
+	style.remove(owner)
 
-/datum/discipline_power/temporis/clothos_gift/proc/temporis_visual(datum/discipline_power/temporis/source, atom/newloc, dir)
+/datum/discipline_power/temporis/clothos_gift/proc/temporis_blur(datum/discipline_power/temporis/source, atom/newloc, dir)
 	SIGNAL_HANDLER
 
 	spawn()
-		var/obj/effect/temporis/temporis_visual = new(owner.loc)
-		temporis_visual.name = owner.name
-		temporis_visual.appearance = owner.appearance
-		temporis_visual.dir = owner.dir
-		animate(temporis_visual, pixel_x = rand(-32,32), pixel_y = rand(-32,32), alpha = 155, time = 0.5 SECONDS)
+		var/obj/effect/temporis/temporis_blur = new(owner.loc)
+		temporis_blur.name = owner.name
+		temporis_blur.appearance = owner.appearance
+		temporis_blur.dir = owner.dir
+		animate(temporis_blur, pixel_x = rand(-32,32), pixel_y = rand(-32,32), alpha = 155, time = 0.5 SECONDS)
 		if(owner.CheckEyewitness(owner, owner, 7, FALSE))
 			owner.AdjustMasquerade(-1)
 

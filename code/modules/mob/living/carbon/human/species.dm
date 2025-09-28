@@ -1358,6 +1358,7 @@ GLOBAL_LIST_EMPTY(selectable_races)
 						"<span class='userdanger'>You block [user]'s grab!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, "<span class='warning'>Your grab at [target] was blocked!</span>")
 		return FALSE
+
 	if(attacker_style?.grab_act(user,target))
 		return TRUE
 	else
@@ -1448,7 +1449,7 @@ GLOBAL_LIST_EMPTY(selectable_races)
 		if(user.dna.species.punchdamagelow)
 			miss_chance = 0
 
-		var/my_dodge_chances = get_a_dexterity(target)+get_a_alertness(target)-target.getarmor(user.zone_selected, LETHAL)
+		var/my_dodge_chances = get_a_dexterity(target)+get_a_alertness(target)+get_celerity_dices(target)-target.getarmor(user.zone_selected, LETHAL)
 		if(!guaranteed_hit)
 			if(my_dodge_chances && target.stat == 0 && target.body_position == STANDING_UP && user.dir != target.dir)
 				if(secret_vampireroll(my_dodge_chances, 6+target.get_health_difficulty(), target, TRUE) >= 3)
@@ -1652,7 +1653,7 @@ GLOBAL_LIST_EMPTY(selectable_races)
 	if(I.damtype == CLONE || ((iskindred(H) || iscathayan(H)) && I.damtype == BURN))
 		damagtype = AGGRAVATED
 
-	var/my_dodge_chances = get_a_dexterity(H)+get_a_alertness(H)-H.getarmor(def_zone, LETHAL)
+	var/my_dodge_chances = get_a_dexterity(H)+get_a_alertness(H)+get_celerity_dices(H)-H.getarmor(def_zone, LETHAL)
 	if(!guaranteed_hit)
 		if(my_dodge_chances && H.stat == 0 && H.body_position == STANDING_UP && user.dir != H.dir)
 			if(secret_vampireroll(my_dodge_chances, 6+H.get_health_difficulty(), H, TRUE) >= 3)

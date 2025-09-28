@@ -49,6 +49,14 @@
 	spawn(0.5 SECONDS)
 		qdel(src)
 
+/datum/discipline_power/celerity/activate()
+	. = ..()
+	owner.attributes.celerity_bonus += level
+
+/datum/discipline_power/celerity/deactivate()
+	. = ..()
+	owner.attributes.celerity_bonus -= level
+
 //CELERITY 1
 /datum/movespeed_modifier/celerity
 	multiplicative_slowdown = -0.5
@@ -57,7 +65,10 @@
 	name = "Celerity 1"
 	desc = "Enhances your speed to make everything a little bit easier."
 
+	level = 1
+
 	check_flags = DISC_CHECK_LYING | DISC_CHECK_IMMOBILE
+
 
 	toggled = TRUE
 	duration_length = 2 TURNS
@@ -93,6 +104,8 @@
 /datum/discipline_power/celerity/two
 	name = "Celerity 2"
 	desc = "Significantly improves your speed and reaction time."
+
+	level = 2
 
 	check_flags = DISC_CHECK_LYING | DISC_CHECK_IMMOBILE
 
@@ -130,6 +143,8 @@
 	name = "Celerity 3"
 	desc = "Move faster. React in less time. Your body is under perfect control."
 
+	level = 3
+
 	check_flags = DISC_CHECK_LYING | DISC_CHECK_IMMOBILE
 
 	toggled = TRUE
@@ -166,6 +181,8 @@
 	name = "Celerity 4"
 	desc = "Breach the limits of what is humanly possible. Move like a lightning bolt."
 
+	level = 4
+
 	check_flags = DISC_CHECK_LYING | DISC_CHECK_IMMOBILE
 
 	toggled = TRUE
@@ -201,6 +218,8 @@
 /datum/discipline_power/celerity/five
 	name = "Celerity 5"
 	desc = "You are like light. Blaze your way through the world."
+
+	level = 5
 
 	check_flags = DISC_CHECK_LYING | DISC_CHECK_IMMOBILE
 

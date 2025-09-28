@@ -219,6 +219,68 @@
 				drop_all_held_items()
 				stop_pulling()
 				log_combat(user, src, "grabbed", addition="aggressive grab[add_log]")
+
+				if(iscarbon(src))
+					var/mob/living/carbon/C = src
+
+					if(get_potence_dices(user) >= 1)
+						var/modifikator = secret_vampireroll(get_a_strength(user)+get_a_brawl(user), 6, user)
+						if(modifikator >= 3)
+							var/obj/item/bodypart/damaged_limb = C.get_bodypart(user.zone_selected)
+
+							if(get_potence_dices(user) >= 5 && !get_fortitude_dices(C))
+								if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_CHEST || !damaged_limb)
+									var/list/available_cut_limbs = list()
+									for(var/obj/item/bodypart/B in C.bodyparts)
+										if(B.body_zone in list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
+											available_cut_limbs += B
+									if(available_cut_limbs.len)
+										damaged_limb = pick(available_cut_limbs)
+									else
+										damaged_limb = C.get_bodypart(BODY_ZONE_HEAD)
+
+								if(!damaged_limb)
+									to_chat(user, span_danger("There's no limbs left that you can target!"))
+									return
+
+								if(iskindred(user))
+									var/mob/living/carbon/human/H = user
+									if(H.MyPath && H != C)
+										H.MyPath.trigger_morality("attackfirst")
+								C.dismembering_strike(user, damaged_limb.body_zone, TRUE)
+								visible_message(span_danger("[user] tries to sever [C]'s [damaged_limb.name]!"),
+										span_userdanger("[user] tries to tear your [damaged_limb.name] off!"), span_hear("You hear a sickening tearing sound!"), null, user)
+								to_chat(user, span_danger("You attempt to sever [C]'s [damaged_limb.name]!"))
+								playsound(C, "sound/effects/wounds/crack2.ogg", 50)
+
+							else
+								if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_CHEST || (damaged_limb && damaged_limb.wounds && locate(/datum/wound/blunt/critical) in damaged_limb.wounds))
+									var/list/available_smash_limbs = list()
+									for(var/obj/item/bodypart/B in C.bodyparts)
+										if(B.body_zone in list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
+											if(!(locate(/datum/wound/blunt/critical) in B.wounds))
+												available_smash_limbs += B
+									if(available_smash_limbs.len)
+										damaged_limb = pick(available_smash_limbs)
+									else
+										damaged_limb = C.get_bodypart(BODY_ZONE_HEAD)
+
+								if(damaged_limb && damaged_limb.wounds && locate(/datum/wound/blunt/critical) in damaged_limb.wounds)
+									to_chat(user, span_danger("There's no limbs left that you can target!"))
+									return
+
+								if(iskindred(user))
+									var/mob/living/carbon/human/H = user
+									if(H.MyPath && H != C)
+										H.MyPath.trigger_morality("attackfirst")
+
+								var/datum/wound/blunt/critical/crit_wound = new
+								crit_wound.apply_wound(damaged_limb)
+								visible_message(span_danger("[user] tries to wrench [C]'s [damaged_limb.name]!"),
+										span_userdanger("[user] tries to wrench your [damaged_limb.name]!"), span_hear("You hear a crunching sound!"), null, user)
+								to_chat(user, span_danger("You attempt to wrench [C]'s [damaged_limb.name]!"))
+								playsound(C, "sound/effects/wounds/crack2.ogg", 50)
+
 			if(GRAB_NECK)
 				log_combat(user, src, "grabbed", addition="neck grab")
 				visible_message("<span class='danger'>[user] grabs [src] by the neck!</span>",\
@@ -273,7 +335,7 @@
 	if(modifikator == 0)
 		return FALSE
 	var/my_dodge_chances = get_a_dexterity(src) + get_a_alertness(src);
-	if(secret_vampireroll(my_dodge_chances, 6 + src.get_health_difficulty(), src, TRUE) >= 3)
+	if(secret_vampireroll(my_dodge_chances, 6+src.get_health_difficulty(), src, TRUE) >= 3)
 		visible_message("<span class='danger'>[M]'s [M.attack_verb_simple] misses [src]!</span>", \
 							"<span class='danger'>You avoid [M]'s [M.attack_verb_simple]!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, src)
 		return FALSE

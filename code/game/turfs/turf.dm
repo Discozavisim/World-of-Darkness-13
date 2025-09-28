@@ -161,6 +161,23 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(.)
 		return
 	user.Move_Pulled(src)
+	if(isliving(user))
+		var/mob/living/Living = user
+		if(get_potence_dices(Living) >= 1)
+			for(var/mob/living/L in get_turf(src))
+				if(L != user)
+					L.attack_hand(user)
+
+/turf/attackby(obj/item/I, mob/user)
+	. = ..()
+	if(.)
+		return
+	if(isliving(user))
+		var/mob/living/Living = user
+		if(get_potence_dices(Living) >= 1 && istype(I, /obj/item/kastet))
+			for(var/mob/living/L in get_turf(src))
+				if(L != user)
+					L.attackby(I, user)
 
 /turf/proc/multiz_turf_del(turf/T, dir)
 	SEND_SIGNAL(src, COMSIG_TURF_MULTIZ_DEL, T, dir)

@@ -114,6 +114,8 @@
 			Paralyze(1 SECONDS)
 			visible_message("<span class='danger'>[src] crashes into [victim][extra_speed ? " really hard" : ""], knocking them both over!</span>",\
 				"<span class='userdanger'>You violently crash into [victim][extra_speed ? " extra hard" : ""]!</span>")
+			if(src.potential > 0)
+				src.epic_fall()
 		playsound(src,'sound/weapons/punch1.ogg',50,TRUE)
 
 
@@ -220,9 +222,9 @@
 
 	var/adjusted_jump_range = MAX_JUMP_DISTANCE
 
-	adjusted_jump_range = total_successess
+	adjusted_jump_range = total_successess+get_potence_dices(src)
 
-	if(adjusted_jump_range > 7)
+	if(adjusted_jump_range > 7 && !get_potence_dices(src))
 		adjusted_jump_range = 7
 	if(adjusted_jump_range < 1)
 		adjusted_jump_range = 1
@@ -430,6 +432,12 @@
 		return
 	I.item_flags |= BEING_REMOVED
 	breakouttime = I.breakouttime
+	if(get_potence_dices(src) >= 5)
+		clear_cuffs(I, INSTANT_CUFFBREAK)
+		visible_message("<span class='danger'>[src] smashes the [I] effortlessly!</span>")
+		I.item_flags &= ~BEING_REMOVED
+		Stun(3 SECONDS, TRUE)
+		return
 	if(!cuff_break)
 		visible_message("<span class='warning'>[src] attempts to remove [I]!</span>")
 		to_chat(src, "<span class='notice'>You attempt to remove [I]... (This will take around [DisplayTimeText(breakouttime)] and you need to stand still.)</span>")

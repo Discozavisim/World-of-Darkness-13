@@ -137,6 +137,7 @@ SUBSYSTEM_DEF(woddices)
 	var/fortitude_bonus = 0
 	var/passive_fortitude = 0
 	var/potence_bonus = 0
+	var/celerity_bonus = 0
 	var/visceratika_bonus = 0
 	var/bloodshield_bonus = 0
 	var/lasombra_shield = 0
@@ -187,6 +188,12 @@ SUBSYSTEM_DEF(woddices)
 /proc/get_potence_dices(mob/living/Living)
 	if(Living.attributes)
 		return Living.attributes.potence_bonus
+	else
+		return 0
+
+/proc/get_celerity_dices(mob/living/Living)
+	if(Living.attributes)
+		return Living.attributes.celerity_bonus
 	else
 		return 0
 
@@ -433,18 +440,17 @@ SUBSYSTEM_DEF(woddices)
 	return dat
 
 
-/proc/secret_vampireroll(dices_num = 1, hardness = 1, mob/living/rollperformer, stealthy = FALSE, decap_rolls = TRUE)
+/proc/secret_vampireroll(dices_num = 1, hardness = 1, mob/living/rollperformer, stealthy = FALSE, decap_rolls = TRUE, autosuccesses = 0)
 	if(!dices_num)
 		if(!stealthy)
 			create_number_on_mob(rollperformer, "#646464", "0")
 			to_chat(rollperformer, "<b>No dicepool!</b>")
 		return 0
 	var/clan_difficulty = 0
-	var/autosuccesses = 0
 	if(ishuman(rollperformer))
 		var/mob/living/carbon/human/Roller = rollperformer
 		if(Roller.willpower_auto)
-			autosuccesses = 3
+			autosuccesses += 3
 		if(Roller.clane?.name == "Followers of Set")
 			var/datum/vampireclane/setite/Setite = Roller.clane
 			var/turf/T = get_turf(Roller)

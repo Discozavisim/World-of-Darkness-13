@@ -1017,6 +1017,8 @@
 #define COMSIG_MOB_MELEE_SWING "mob_melee_swing"
 //SEND_SIGNAL(thrower, COMSIG_MOB_THREW_MOVABLE, target, TT)
 #define COMSIG_MOB_THREW_MOVABLE "mob_threw_movable"
+///From base of /mob/living/proc/MobBump(mob/M)
+#define COSMIG_MOB_RUN_INTO_SOMEONE "mob_run_into_someone"
 
 // Aquarium related signals
 #define COMSIG_AQUARIUM_BEFORE_INSERT_CHECK "aquarium_about_to_be_inserted"

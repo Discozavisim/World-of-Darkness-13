@@ -69,6 +69,10 @@
 		var/atom/movable/AM = A
 		if(PushAM(AM, move_force))
 			return
+	if(isclosedturf(A))
+		var/turf/closed/T = A
+		if(WallBump(T))
+			return
 
 /mob/living/Bumped(atom/movable/AM)
 	..()
@@ -167,6 +171,39 @@
 		var/mob/living/L = M
 		if(HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
 			return TRUE
+
+	if(isliving(M) && isliving(src))
+		SEND_SIGNAL(src, COSMIG_MOB_RUN_INTO_SOMEONE, M)
+		var/mob/living/bumped = M
+		var/mob/living/bumper = src
+		if(bumped.attributes.fortitude_bonus <= 0 && get_celerity_dices(bumper) >= 3)
+			var/chance = secret_vampireroll(get_a_dexterity(bumper)+get_celerity_dices(bumper), 6, bumper)
+			var/damage = secret_vampireroll(get_a_strength(bumper)+get_a_brawl(bumper), 6, bumper, TRUE)
+			var/atom/throw_bumped = get_edge_target_turf(bumped, get_dir(bumped, get_step_away(bumped, bumper)))
+			var/atom/throw_bumper = get_edge_target_turf(bumper, get_dir(bumper, get_step_away(bumper, bumped)))
+			if(get_celerity_dices(bumper) >= 5)
+				if(chance <= 0)
+					bumper.Knockdown(1 SECONDS)
+					bumper.adjustBruteLoss(clamp(damage*7, 10, 50))
+					bumper.throw_at(throw_bumper, 4, 4, bumper, TRUE)
+					playsound(bumper, "sound/effects/pop_expl.ogg", 75)
+				else
+					bumped.Knockdown(1 SECONDS)
+					bumped.adjustBruteLoss(clamp(damage*7, 10, 50))
+					bumped.throw_at(throw_bumped, 4, 4, bumped, TRUE)
+					playsound(bumped, "sound/effects/pop_expl.ogg", 75)
+			else if(get_celerity_dices(bumper) >= 3)
+				if(chance <= 0)
+					bumper.Knockdown(1 SECONDS)
+					bumper.adjustBruteLoss(clamp(damage*5, 5, 25))
+					bumper.throw_at(throw_bumper, 2, 2, bumper, TRUE)
+					playsound(bumper, "sound/effects/pop_expl.ogg", 75)
+				else
+					bumped.Knockdown(1 SECONDS)
+					bumped.adjustBruteLoss(clamp(damage*5, 5, 25))
+					bumped.throw_at(throw_bumped, 2, 2, bumped, TRUE)
+					playsound(bumped, "sound/effects/pop_expl.ogg", 75)
+
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M) && (M.a_intent != INTENT_HELP))
 		return TRUE
@@ -195,6 +232,39 @@
 //Called when we bump onto an obj
 /mob/living/proc/ObjBump(obj/O)
 	return
+
+/mob/living/proc/WallBump(turf/closed/T)
+	if(last_wallbump == 0 || last_wallbump+1 SECONDS < world.time)
+		last_wallbump = world.time
+
+		if(!istype(T, /turf/closed/wall/vampwall))
+			return
+
+		if(!isliving(src))
+			return
+
+		var/mob/living/user = src
+
+		if(user.a_intent != INTENT_HELP)
+			return
+
+		if(get_celerity_dices(user) < 3 || get_dist(T, user) >= 2)
+			return
+
+
+		var/turf/above_turf = locate(user.x, user.y, user.z + 1)
+		if(!above_turf || !istype(above_turf, /turf/open/openspace))
+			to_chat(user, span_warning("You can't climb this wall!"))
+			return
+
+		var/turf/floor_turf = get_step_multiz(get_turf(user), (user.dir | UP))
+		if(!floor_turf || !istype(floor_turf, /turf/open/floor))
+			to_chat(user, span_warning("There's no surface to grab onto!"))
+			return
+
+		user.climb_wall(above_turf, TRUE)
+
+
 
 //Called when we want to push an atom/movable
 /mob/living/proc/PushAM(atom/movable/AM, force = move_force)
@@ -2001,16 +2071,17 @@
 				attack_result = style.help_act(src, target)
 	return attack_result
 
-/mob/living/proc/climb_wall(turf/above_turf)
+/mob/living/proc/climb_wall(turf/above_turf, instant = FALSE)
 	if(body_position != STANDING_UP)
 		return
 	if(above_turf && istype(above_turf, /turf/open/openspace))
 		to_chat(src, "<span class='notice'>You start climbing up...</span>")
 
-		var/result = do_after(src, 50, src)
-		if(!result)
-			to_chat(src, "<span class='warning'>You were interrupted and failed to climb up.</span>")
-			return
+		if(!instant)
+			var/result = do_after(src, 50, src)
+			if(!result)
+				to_chat(src, "<span class='warning'>You were interrupted and failed to climb up.</span>")
+				return
 
 		var/initial_x = x
 		var/initial_y = y

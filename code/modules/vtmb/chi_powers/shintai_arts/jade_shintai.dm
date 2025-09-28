@@ -63,11 +63,11 @@
 			caster.overlays_standing[POTENCE_LAYER] = fortitude_overlay
 			caster.apply_overlay(POTENCE_LAYER)
 			caster.attributes.stamina_bonus += 3
-			caster.attributes.potence_bonus += 3
+			caster.attributes.potence_bonus += 5
 			ADD_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
 			spawn(delay+caster.discipline_time_plus)
 				if(caster)
 					caster.attributes.stamina_bonus -= 3
-					caster.attributes.potence_bonus -= 3
+					caster.attributes.potence_bonus -= 5
 					caster.remove_overlay(POTENCE_LAYER)
 					REMOVE_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)

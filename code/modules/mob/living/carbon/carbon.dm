@@ -10,10 +10,12 @@
 	// Carbons cannot taste anything without a tongue; the tongue organ removes this on Insert
 	ADD_TRAIT(src, TRAIT_AGEUSIA, NO_TONGUE_TRAIT)
 
+	create_dna(src)
+
 	GLOB.carbon_list += src
 	if(!mapload)  //I don't want no gas leaks on my space ruin you hear?
 		RegisterSignal(src, COMSIG_LIVING_DEATH, PROC_REF(attach_rot))
-
+	//SEND_SIGNAL(src, COMSIG_ADD_EVIDENCE, null, /datum/evidence_moment/choke, "debug")
 /mob/living/carbon/Destroy()
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. =  ..()
@@ -30,6 +32,11 @@
 	QDEL_NULL(dna)
 	GLOB.carbon_list -= src
 
+/*
+/mob/living/carbon/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/evidence)
+*/
 /mob/living/carbon/swap_hand(held_index)
 	. = ..()
 	if(!.)

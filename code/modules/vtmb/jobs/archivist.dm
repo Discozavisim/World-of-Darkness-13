@@ -31,14 +31,11 @@
 	jobtype = /datum/job/vamp/archivist
 
 	id = /obj/item/card/id/archive
-	glasses = /obj/item/clothing/glasses/vampire/perception
 	shoes = /obj/item/clothing/shoes/vampire
-	gloves = /obj/item/clothing/gloves/vampire/latex
 	uniform = /obj/item/clothing/under/vampire/archivist
 	r_pocket = /obj/item/vamp/keys/archive
 	l_pocket = /obj/item/vamp/phone/archivist
-	accessory = /obj/item/clothing/accessory/pocketprotector/full
-	backpack_contents = list(/obj/item/passport=1, /obj/item/cockclock=1, /obj/item/flashlight=1, /obj/item/arcane_tome=1, /obj/item/vamp/creditcard=1, /obj/item/melee/vampirearms/katana/kosa=1)
+	backpack_contents = list(/obj/item/clothing/suit/hooded/robes/tremere=1, /obj/item/passport=1, /obj/item/cockclock=1, /obj/item/flashlight=1, /obj/item/arcane_tome=1, /obj/item/vamp/creditcard=1, /obj/item/drinkable_bloodpack/full=1, /obj/item/drinkable_bloodpack/full/elite=1)
 
 /datum/outfit/job/archivist/pre_equip(mob/living/carbon/human/H)
 	..()

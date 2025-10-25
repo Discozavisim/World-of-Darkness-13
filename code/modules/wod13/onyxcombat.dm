@@ -566,24 +566,8 @@
 	else
 		harm_focus = dir
 
-//mob/living/Click()
-//	if(ishuman(usr) && usr != src)
-//		var/mob/living/carbon/human/SH = usr
-//		for(var/atom/movable/screen/disciplines/DISCP in SH.hud_used.static_inventory)
-//			if(DISCP)
-//				if(DISCP.active)
-//					DISCP.range_activate(src, SH)
-//					SH.face_atom(src)
-//					return
-//	..()
-
 /atom/Click(location,control,params)
-/*
-	if(!isobserver(usr))
-		usr.client.show_popup_menus = FALSE
-	else
-		usr.client.show_popup_menus = TRUE
-*/
+
 	var/list/modifiers = params2list(params)
 	if(ishuman(usr))
 		var/mob/living/carbon/human/HUY = usr
@@ -624,108 +608,7 @@
 						else
 							to_chat(HUY, "<span class='notice'>You are looking far away.</span>")
 	..()
-/*
-/atom/movable/screen/disciplines/Initialize(mapload)
-	. = ..()
 
-/atom/movable/screen/disciplines/Click(location,control,params)
-	var/dadelay = dscpln.delay
-	if(dscpln.leveldelay)
-		dadelay = dscpln.delay*dscpln.level_casting
-	SEND_SOUND(usr, sound('code/modules/wod13/sounds/highlight.ogg', 0, 0, 50))
-	var/list/modifiers = params2list(params)
-	if(LAZYACCESS(modifiers, "right"))
-		if(dscpln)
-			if(dscpln.level > 1)
-				if(dscpln.level_casting < dscpln.level)
-					dscpln.level_casting = min(dscpln.level_casting+1, dscpln.level)
-				else
-					dscpln.level_casting = 1
-			else
-				dscpln.level_casting = 1
-			switch(dscpln.level_casting)
-				if(1)
-					overlays -= level2
-					overlays -= level3
-					overlays -= level4
-					overlays -= level5
-				if(2)
-					overlays |= level2
-					overlays -= level3
-					overlays -= level4
-					overlays -= level5
-				if(3)
-					overlays -= level2
-					overlays |= level3
-					overlays -= level4
-					overlays -= level5
-				if(4)
-					overlays -= level2
-					overlays -= level3
-					overlays |= level4
-					overlays -= level5
-				if(5)
-					overlays -= level2
-					overlays -= level3
-					overlays -= level4
-					overlays |= level5
-			to_chat(usr, "[dscpln.name] [dscpln.level_casting]/[dscpln.level] - [dscpln.desc]")
-		return
-
-	if(ishuman(usr))
-		var/mob/living/carbon/human/BD = usr
-		if(world.time < last_discipline_click+5)
-			return
-		if(world.time < last_discipline_use+dadelay+5)
-			return
-		last_discipline_click = world.time
-		if(active)
-			active = FALSE
-			BD.toggled = null
-			icon_state = main_state
-			return
-		var/plus = 0
-		if(HAS_TRAIT(BD, TRAIT_HUNGRY))
-			plus = 1
-		if(BD.bloodpool < dscpln.cost+plus)
-			SEND_SOUND(BD, sound('code/modules/wod13/sounds/need_blood.ogg', 0, 0, 75))
-			to_chat(BD, "<span class='warning'>You don't have enough <b>BLOOD</b> to use this discipline.</span>")
-			return
-		if(dscpln.ranged)
-			for(var/atom/movable/screen/disciplines/DISCP in BD.hud_used.static_inventory)
-				if(DISCP)
-					if(DISCP.active && DISCP != src && DISCP.dscpln.ranged)
-						DISCP.active = FALSE
-						BD.toggled = null
-						DISCP.icon_state = DISCP.main_state
-			active = TRUE
-			BD.toggled = src
-			icon_state = "[main_state]-on"
-		else if(!dscpln.ranged)
-			last_discipline_use = world.time
-			if(dscpln.check_activated(BD, BD))
-				icon_state = "[main_state]-on"
-				dscpln.activate(BD, BD)
-				spawn(dadelay+BD.discipline_time_plus)
-					icon_state = main_state
-
-/atom/movable/screen/disciplines/proc/range_activate(mob/living/trgt, mob/living/carbon/human/cstr)
-	var/plus = 0
-	if(HAS_TRAIT(cstr, TRAIT_HUNGRY))
-		plus = 1
-	if(cstr.bloodpool < dscpln.cost+plus)
-		icon_state = main_state
-		active = FALSE
-		SEND_SOUND(cstr, sound('code/modules/wod13/sounds/need_blood.ogg', 0, 0, 75))
-		to_chat(cstr, "<span class='warning'>You don't have enough <b>BLOOD</b> to use this discipline.</span>")
-		return
-
-	if(dscpln.check_activated(trgt, cstr))
-		dscpln.activate(trgt, cstr)
-		last_discipline_use = world.time
-	active = FALSE
-	icon_state = main_state
-*/
 /mob/living/carbon/werewolf/Life()
 	. = ..()
 	update_blood_hud()

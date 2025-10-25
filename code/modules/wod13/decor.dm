@@ -328,6 +328,25 @@
 		else
 			searching = FALSE
 
+/obj/structure/bricks
+	name = "pile of bricks"
+	desc = "Building material."
+	icon = 'code/modules/wod13/props.dmi'
+	icon_state = "bricks"
+	plane = GAME_PLANE
+	layer = ABOVE_ALL_MOB_LAYER
+	anchored = TRUE
+	density = TRUE
+
+/obj/structure/bricks/attack_hand(mob/living/user)
+	. = ..()
+	if(do_mob(user, src, 3 SECONDS))
+		var/i = pick(/obj/item/melee/vampirearms/brick)
+		var/obj/item/to_spawn = new i(get_turf(user))
+		to_chat(user, "<span class='notice'>You found [to_spawn].</span>")
+		user.put_in_active_hand(to_spawn)
+
+
 /obj/structure/trashbag
 	name = "trash bag"
 	desc = "Holds garbage inside."
@@ -639,16 +658,6 @@
 /obj/structure/barrels/rand/Initialize(mapload)
 	. = ..()
 	icon_state = "barrel[rand(1, 12)]"
-
-/obj/structure/bricks
-	name = "bricks"
-	desc = "Building material."
-	icon = 'code/modules/wod13/props.dmi'
-	icon_state = "bricks"
-	plane = GAME_PLANE
-	layer = ABOVE_ALL_MOB_LAYER
-	anchored = TRUE
-	density = TRUE
 
 /obj/effect/decal/pallet
 	name = "pallet"

@@ -652,6 +652,30 @@
 	desc = "The hood of some elegant-looking robes."
 	icon_state = "robes_purple_hood"
 
+/obj/item/clothing/suit/hooded/robes/tremere
+	name = "apprentice robe"
+	desc = "Some eldrich-looking robes."
+	icon_state = "tremere_robes"
+	inhand_icon_state = "robes_black"
+	hoodtype = /obj/item/clothing/head/hooded/robes_hood/tremere
+
+/obj/item/clothing/head/hooded/robes_hood/tremere
+	name = "apprentice hood"
+	desc = "The hood of some eldrich-looking robes."
+	icon_state = "tremere_hood"
+
+/obj/item/clothing/suit/hooded/robes/magister
+	name = "magister robe"
+	desc = "Some eldrich-looking robes."
+	icon_state = "magister_robes"
+	inhand_icon_state = "robes_red"
+	hoodtype = /obj/item/clothing/head/hooded/robes_hood/magister
+
+/obj/item/clothing/head/hooded/robes_hood/magister
+	name = "magister hood"
+	desc = "The hood of some eldrich-looking robes."
+	icon_state = "magister_hood"
+
 /obj/item/clothing/suit/vampire/coat
 	name = "coat"
 	desc = "Warm and heavy clothing."
@@ -721,16 +745,36 @@
 	armor = list(BASHING = 3, LETHAL = 4, AGGRAVATED = 1, MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 10, BOMB = 40, BIO = 0, RAD = 0, FIRE = 40, ACID = 10, WOUND = 25)
 	max_integrity = 1000
 
+/obj/item/clothing/suit/vampire/caftan
+	name = "red caftan"
+	desc = "Best clothes for a bogatyr. Provides some kind of protection."
+	icon_state = "caftan_red"
+	armor = list(BASHING = 3, LETHAL = 4, AGGRAVATED = 1, MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 10, BOMB = 40, BIO = 0, RAD = 0, FIRE = 40, ACID = 10, WOUND = 25)
+
+/obj/item/clothing/suit/vampire/caftan/blue
+	name = "blue caftan"
+	desc = "Best clothes for a bogatyr. Provides some kind of protection."
+	icon_state = "caftan_blue"
+
+/obj/item/clothing/suit/vampire/caftan/white
+	name = "white caftan"
+	desc = "Best clothes for a bogatyr. Provides some kind of protection."
+	icon_state = "caftan_white"
+
 /obj/item/clothing/suit/vampire/trench/archive
 	name = "rich trenchcoat"
 	desc = "Best choise for pleasant life... or not. This trench smeels like blood."
-	icon_state = "trench3"
-	armor = list(BASHING = 2, LETHAL = 1, AGGRAVATED = 1, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+	icon_state = "strauss_coat"
+	armor = list(BASHING = 3, LETHAL = 4, AGGRAVATED = 1, MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 10, BOMB = 40, BIO = 0, RAD = 0, FIRE = 40, ACID = 10, WOUND = 25)
 
 /obj/item/clothing/suit/vampire/trench/archive/pidors
 	desc = "Best choise for pleasant life... or not."
+	icon_state = "trench3"
 	armor = list(BASHING = 1, LETHAL = 1, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
 
+/obj/item/clothing/suit/vampire/trench/archive/pidors/blue
+	desc = "Best choise for pleasant life... or not."
+	icon_state = "voicoat"
 
 /obj/item/clothing/suit/vampire/trench/tzi
 	name = "fleshcoat"
@@ -743,12 +787,6 @@
 	name = "elder fleshcoat"
 	armor = list(BASHING = 4, LETHAL = 4, AGGRAVATED = 2, MELEE = 50, BULLET = 50, LASER = 10, ENERGY = 10, BOMB = 25, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 50)
 	masquerade_violating = 1
-
-/obj/item/clothing/suit/vampire/trench/voivode
-	name = "regal coat"
-	desc = "A beautiful jacket. The blue colors belong to clan Tzimisce. Whoever owns this must be important."
-	icon_state = "voicoat"
-	armor = list(BASHING = 4, LETHAL = 4, AGGRAVATED = 2, MELEE = 60, BULLET = 60, LASER = 10, ENERGY = 10, BOMB = 55, BIO = 0, RAD = 0, FIRE = 45, ACID = 10, WOUND = 25)
 
 /obj/item/clothing/suit/vampire/vest
 	name = "bulletproof vest"
@@ -1496,6 +1534,28 @@
 	visor_flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 	w_class = WEIGHT_CLASS_SMALL
 
+/////////// BOGATYR /////////////////
+
+/obj/item/clothing/head/berendeyka
+	name = "red berendeyka"
+	desc = "A bogatyr hat."
+	icon = 'code/modules/wod13/clothing.dmi'
+	worn_icon = 'code/modules/wod13/worn.dmi'
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
+	icon_state = "berendeyka_red"
+	flags_inv = HIDEHAIR
+	armor = list(BASHING = 2, LETHAL = 1, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
+	body_worn = TRUE
+	cost = 10
+
+/obj/item/clothing/head/berendeyka/blue
+	name = "blue berendeyka"
+	icon_state = "berendeyka_blue"
+
+/obj/item/clothing/head/berendeyka/white
+	name = "white berendeyka"
+	icon_state = "berendeyka_white"
+
 
 ///////// GASTARBAITER ///////////////
 
@@ -1535,10 +1595,9 @@
 /obj/item/clothing/head/uzanka
 	name = "Ushanka"
 	desc = "For cold winters!"
-	icon_state = "ushanka_rus"
+	icon_state = "ushanka_1"
 	armor = list(BASHING = 1, LETHAL = 0, AGGRAVATED = 0, MELEE = 10, BULLET = 0, LASER = 10, ENERGY = 10, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 10, WOUND = 10)
 	flags_inv = HIDEHAIR
-	actions_types = list(/datum/action/item_action/toggle)
 	icon = 'code/modules/wod13/clothing.dmi'
 	worn_icon = 'code/modules/wod13/worn.dmi'
 	onflooricon = 'code/modules/wod13/onfloor.dmi'
@@ -1549,22 +1608,24 @@
 /obj/item/clothing/head/uzanka/red
 	name = "Ushanka"
 	desc = "For cold winters!"
-	icon_state = "ushanka_red"
+	icon_state = "ushanka_2"
 	storona = 2
 
 /obj/item/clothing/head/uzanka/blue
 	name = "Ushanka"
 	desc = "For cold winters!"
-	icon_state = "ushanka_blue"
+	icon_state = "ushanka_3"
 	storona = 3
 
 /obj/item/clothing/head/uzanka/attack_self(mob/user)
 	if(earflaps)
 		icon_state = "ushanka_zavyaz_[storona]"
 		inhand_icon_state = "ushanka_zavyaz_[storona]"
+		worn_icon_state = "ushanka_zavyaz_[storona]"
 		to_chat(user, "<span class='notice'>You raise the ear flaps on the ushanka.</span>")
 	else
 		icon_state = "ushanka_[storona]"
 		inhand_icon_state = "ushanka_[storona]"
+		worn_icon_state = "ushanka_[storona]"
 		to_chat(user, "<span class='notice'>You lower the ear flaps on the ushanka.</span>")
 	earflaps = !earflaps

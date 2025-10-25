@@ -31,15 +31,12 @@
 	jobtype = /datum/job/vamp/regent
 
 	id = /obj/item/card/id/regent
-	glasses = /obj/item/clothing/glasses/vampire/perception
 	suit = /obj/item/clothing/suit/vampire/trench/archive
 	shoes = /obj/item/clothing/shoes/vampire
-	gloves = /obj/item/clothing/gloves/vampire/latex
 	uniform = /obj/item/clothing/under/vampire/archivist
 	r_pocket = /obj/item/vamp/keys/archive
 	l_pocket = /obj/item/vamp/phone/tremere_regent
-	accessory = /obj/item/clothing/accessory/pocketprotector/full
-	backpack_contents = list(/obj/item/passport=1, /obj/item/phone_book=1, /obj/item/cockclock=1, /obj/item/flashlight=1, /obj/item/arcane_tome=1, /obj/item/vamp/creditcard/elder=1, /obj/item/melee/vampirearms/katana/kosa=1)
+	backpack_contents = list(/obj/item/clothing/suit/hooded/robes/magister=1, /obj/item/passport=1, /obj/item/phone_book=1, /obj/item/cockclock=1, /obj/item/flashlight=1, /obj/item/arcane_tome=1, /obj/item/vamp/creditcard/elder=1, /obj/item/drinkable_bloodpack/full=1, /obj/item/drinkable_bloodpack/full/elite=1)
 
 /datum/outfit/job/regent/pre_equip(mob/living/carbon/human/H)
 	..()

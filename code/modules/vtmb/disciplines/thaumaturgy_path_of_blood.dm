@@ -223,9 +223,6 @@
 	owner.apply_status_effect(/datum/status_effect/blood_of_potency, chosen_generation, set_time)
 	activated = TRUE
 
-/datum/discipline_power/thaumaturgy_path_of_blood/blood_of_potency/deactivate()
-	. = ..()
-	owner.remove_status_effect(/datum/status_effect/blood_of_potency)
 
 //------------------------------------------------------------------------------------------------
 

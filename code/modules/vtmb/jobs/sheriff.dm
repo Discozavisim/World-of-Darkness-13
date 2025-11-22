@@ -37,7 +37,7 @@
 	max_generation = 7
 	minimal_masquerade = 5
 	allowed_species = list("Vampire")
-	allowed_bloodlines = list("True Brujah", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Giovanni", "Followers of Set", "Lasombra")
+	allowed_bloodlines = list("True Brujah", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Banu Haqim Sorcerer", "Banu Haqim Vizier", "Giovanni", "Followers of Set", "Lasombra")
 
 	known_contacts = list("Prince","Seneschal","Dealer")
 

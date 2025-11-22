@@ -516,6 +516,8 @@ SUBSYSTEM_DEF(woddices)
 			data["affiliation"] = "kuei-jin"
 		else if(isghoul(host))
 			data["affiliation"] = "ghoul"
+		else if(iszombie(host))
+			data["affiliation"] = "zombie"
 		else
 			data["affiliation"] = "mortal"
 		if(host.mind.assigned_role)
@@ -641,6 +643,20 @@ SUBSYSTEM_DEF(woddices)
 			memories += "Honor: [host.honor]"
 			memories += "Glory: [host.glory]"
 			memories += "Wisdom: [host.wisdom]"
+	if(iszombie(host))
+		var/masquerade_level = " have been a perfect tool for my Necromancer."
+		switch(host.masquerade)
+			if(4)
+				masquerade_level = " have let my true nature slip once."
+			if(3)
+				masquerade_level = " made errors in maintaining my Necromancer's image."
+			if(2)
+				masquerade_level = " cause great trouble to my masters."
+			if(1)
+				masquerade_level = " am close to outliving my usefulness."
+			if(0)
+				masquerade_level = " have become a danger to my Necromancer and their society."
+		memories += "In the world of the mundane, I[masquerade_level]"
 
 	var/list/attributes = list()
 	attributes += "Strength: [get_a_strength(host)]"

@@ -314,7 +314,7 @@
 							if(LivingSpotters.key)
 								var/datum/preferences/P = GLOB.preferences_datums[ckey(LivingSpotters.key)]
 								if(P)
-									P.add_experience(3)
+									P.add_experience(5)
 					masquerade_voters = list()
 					last_masquerade_violation = 0
 					AdjustMasquerade(-1)

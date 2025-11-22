@@ -384,6 +384,92 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
+/obj/effect/hallucination/simple/sending_snake
+	name = "Poisonous Snake"
+	image_icon = 'code/modules/wod13/64x64.dmi'
+	image_state = "setits_zmei"
+
+/datum/hallucination/sending_snakes
+	var/list/snakes = list()
+	var/step_count = 0
+	var/max_snakes = 6
+	var/turf/landing
+	var/any_reached
+	COOLDOWN_DECLARE(next_cooldown)
+
+/datum/hallucination/sending_snakes/New(mob/living/carbon/C, forced = TRUE)
+	set waitfor = FALSE
+	. = ..()
+	step_count = 0
+	var/turf/closed/wall/wall
+	for(var/turf/closed/wall/W in range(7,target))
+		wall = W
+		break
+	if(!wall)
+		return INITIALIZE_HINT_QDEL
+	feedback_details += "Source: [wall.x],[wall.y],[wall.z]"
+	target.playsound_local(wall, 'sound/effects/meteorimpact.ogg', 150, 1) // Change
+	snakes += new/obj/effect/hallucination/simple/sending_snake(wall, target)
+	addtimer(CALLBACK(src, PROC_REF(start_processing)), 10)
+
+/datum/hallucination/sending_snakes/proc/start_processing()
+	if (isnull(target))
+		qdel(src)
+		return
+	START_PROCESSING(SSfastprocess, src)
+
+/datum/hallucination/sending_snakes/process(delta_time)
+	if(!COOLDOWN_FINISHED(src, next_cooldown))
+		return
+
+	if (target?.stat != DEAD)
+		any_reached = FALSE
+		for(var/i in 1 to snakes.len)
+			var/obj/effect/hallucination/simple/sending_snake/s = snakes[i]
+			if(QDELETED(s))
+				continue
+			s.forceMove(get_step_towards(s, target))
+			s.setDir(get_dir(s, target))
+			target.playsound_local(get_turf(s), 'sound/effects/meteorimpact.ogg', 150, 1) // Replace also to hiss
+			if(s.Adjacent(target) && !any_reached)
+				any_reached = TRUE
+				qdel(s)
+				snakes.Remove(s)
+		if(any_reached && step_count < max_snakes)
+			step_count += 1
+			var/list/walls = list()
+			for(var/turf/closed/wall/W in range(7, target))
+				walls += W
+			var/snakes_to_spawn = step_count - snakes.len
+			for(var/i in 1 to snakes_to_spawn)
+				if(walls.len)
+					var/selected_wall = walls[rand(1, walls.len)]
+					walls.Remove(selected_wall)
+					var/new_snake = new /obj/effect/hallucination/simple/sending_snake(selected_wall, target)
+					snakes += new_snake
+
+		if(step_count == max_snakes && any_reached)
+			to_chat(target, span_userdanger("A serpent coils tightly around your body!"))
+			target.Stun(2.2 SECONDS)
+			for(var/obj/effect/hallucination/simple/sending_snake/snake in snakes)
+				QDEL_NULL(snake)
+			snakes = list()
+			step_count = 0
+			STOP_PROCESSING(SSfastprocess, src)
+			qdel(src)
+		COOLDOWN_START(src, next_cooldown, 1 SECONDS)
+	else
+		STOP_PROCESSING(SSfastprocess, src)
+		qdel(src)
+
+/datum/hallucination/sending_snakes/Destroy()
+	for(var/obj/effect/hallucination/simple/sending_snake/s in snakes)
+		QDEL_NULL(s)
+	snakes = list()
+	step_count = 0
+	STOP_PROCESSING(SSfastprocess, src)
+	return ..()
+
 /datum/hallucination/oh_yeah
 	var/obj/effect/hallucination/simple/bubblegum/bubblegum
 	var/image/fakebroken

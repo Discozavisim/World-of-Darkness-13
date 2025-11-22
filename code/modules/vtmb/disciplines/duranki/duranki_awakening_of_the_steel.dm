@@ -1,7 +1,7 @@
 /datum/discipline/duranki_awakening_of_the_steel
 	name = "Du-Ran-Ki: Awakening of the Steel"
 	desc = "Learn how to strengthen your blade and become the one with the sword."
-	icon_state = "valeren"
+	icon_state = "duranki_steel_awakening"
 	learnable_by_clans = list(/datum/vampireclane/banu_haqim_sorcerer)
 	power_type = /datum/discipline_power/duranki_awakening_of_the_steel
 
@@ -16,13 +16,19 @@
 
 	activate_sound = 'code/modules/wod13/sounds/quietus.ogg'
 
-	check_flags = DISC_CHECK_CONSCIOUS | DISC_CHECK_CAPABLE | DISC_CHECK_TORPORED
+	check_flags = DISC_CHECK_CONSCIOUS | DISC_CHECK_CAPABLE | DISC_CHECK_TORPORED | DISC_CHECK_FREE_HAND
 
 	duration_length = 15 SECONDS
 	cooldown_length = 15 SECONDS
 
+	var/obj/item/I_held
+
 /datum/discipline_power/duranki_awakening_of_the_steel/pre_activation_checks(atom/target)
 	. = ..()
+	I_held = owner.get_active_held_item()
+	if(!I_held || !I_held.force || !I_held.sharpness)
+		to_chat(owner, span_warning("You need to hold a sharp weapon in your hands!"))
+		return FALSE
 	var/success_roll
 	success_roll = secret_vampireroll(get_a_willpower(owner)+get_a_occult(owner), level+3, owner)
 	if(success_roll <= 0)
@@ -36,23 +42,19 @@
 	name = "Confer with the Blade"
 	desc = "Speak with the weapon's Soul"
 	level = 1
-	var/obj/item/I_examined
+	duration_length = 0
 
 /datum/discipline_power/duranki_awakening_of_the_steel/confer_with_the_blade/activate(atom/target)
 	. = ..()
-	I_examined = owner.get_active_held_item()
-	if(!I_examined || !I_examined.force || !I_examined.sharpness)
-		to_chat(owner, span_warning("You need to hold a sharp weapon in your hands!"))
-		return
-	to_chat(owner, span_notice("Your [I_examined.name] shudders. \nYour sword has a force of [I_examined.force] and a throwforce of [I_examined.throwforce]. It deals [I_examined.damtype] damage."))
-	if(I_examined.block_chance)
-		to_chat(owner, span_notice("You have [I_examined.block_chance]% chance to block attacks with this weapon."))
-	if(I_examined.armour_penetration)
-		to_chat(owner, span_notice("It pierces through [I_examined.armour_penetration]% of armor."))
-	if(I_examined.wound_bonus)
-		to_chat(owner, span_notice("The blade has a wound bonus of [I_examined.wound_bonus]."))
-	if(I_examined.bare_wound_bonus)
-		to_chat(owner, span_notice("It also has a bare wound bonus of [I_examined.bare_wound_bonus]."))
+	to_chat(owner, span_notice("Your [I_held.name] shudders. \nYour sword has a force of [I_held.force] and a throwforce of [I_held.throwforce]. It deals [I_held.damtype] damage."))
+	if(I_held.block_chance)
+		to_chat(owner, span_notice("You have [I_held.block_chance]% chance to block attacks with this weapon."))
+	if(I_held.armour_penetration)
+		to_chat(owner, span_notice("It pierces through [I_held.armour_penetration]% of armor."))
+	if(I_held.wound_bonus)
+		to_chat(owner, span_notice("The blade has a wound bonus of [I_held.wound_bonus]."))
+	if(I_held.bare_wound_bonus)
+		to_chat(owner, span_notice("It also has a bare wound bonus of [I_held.bare_wound_bonus]."))
 
 /datum/discipline_power/duranki_awakening_of_the_steel/grasp_of_the_mountain
 	name = "Grasp of the Mountain"
@@ -62,14 +64,9 @@
 	cooldown_length = 1 SCENES
 	toggled = TRUE
 	cancelable = TRUE
-	var/obj/item/I_held
 
 /datum/discipline_power/duranki_awakening_of_the_steel/grasp_of_the_mountain/activate(atom/target)
 	. = ..()
-	I_held = owner.get_active_held_item()
-	if(!I_held || !I_held.force || !I_held.sharpness)
-		to_chat(owner, span_warning("You need to hold a sharp weapon in your hands!"))
-		return
 	if(!HAS_TRAIT(I_held, TRAIT_NODROP))
 		ADD_TRAIT(I_held, TRAIT_NODROP, DISCIPLINE_TRAIT)
 		to_chat(owner, span_notice("You hold on the [I_held.name] tight."))
@@ -97,12 +94,12 @@
 /datum/discipline_power/duranki_awakening_of_the_steel/pierce_steels_skin/activate(atom/target)
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_ARMOR_BREAK, DISCIPLINE_TRAIT)
-	to_chat(owner, span_notice("You start targeting armor!"))
+	to_chat(owner, span_boldnotice("You start targeting just the armor!"))
 
 /datum/discipline_power/duranki_awakening_of_the_steel/pierce_steels_skin/deactivate(atom/target)
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_ARMOR_BREAK, DISCIPLINE_TRAIT)
-	to_chat(owner, span_warning("You no longer target just the armor."))
+	to_chat(owner, span_boldnotice("You no longer target just the armor."))
 
 
 /datum/discipline_power/duranki_awakening_of_the_steel/razors_shield
@@ -118,12 +115,12 @@
 /datum/discipline_power/duranki_awakening_of_the_steel/razors_shield/activate(atom/target)
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_HANDS_BLOCK_PROJECTILES, DISCIPLINE_TRAIT)
-	to_chat(owner, span_notice("Your muscles relax and start moving unintentionally. You feel perfect at projectile evasion skills..."))
+	to_chat(owner, span_boldnotice("Your ready the blade, preparing to parry the projectiles!"))
 
 /datum/discipline_power/duranki_awakening_of_the_steel/razors_shield/deactivate(atom/target)
 	. = ..()
 	REMOVE_TRAIT(owner, TRAIT_HANDS_BLOCK_PROJECTILES, DISCIPLINE_TRAIT)
-	to_chat(owner, span_warning("Your muscles feel natural again..."))
+	to_chat(owner, span_boldnotice("You relax your muscles, no longer parrying."))
 
 
 /datum/discipline_power/duranki_awakening_of_the_steel/strike_at_the_true_flesh
@@ -137,10 +134,10 @@
 /datum/discipline_power/duranki_awakening_of_the_steel/strike_at_the_true_flesh/activate(atom/target)
 	. = ..()
 	ADD_TRAIT(owner, TRAIT_FORTITUDE_NEGATION, DISCIPLINE_TRAIT)
-	to_chat(owner, span_notice("You feel like you're capable of shredding through magical armor."))
+	to_chat(owner, span_boldnotice("You feel like your next blow will shred through magical armor!"))
 
 /datum/discipline_power/duranki_awakening_of_the_steel/strike_at_the_true_flesh/deactivate(atom/target)
 	. = ..()
 	if(HAS_TRAIT(owner, TRAIT_FORTITUDE_NEGATION))
 		REMOVE_TRAIT(owner, TRAIT_FORTITUDE_NEGATION, DISCIPLINE_TRAIT)
-		to_chat(owner, span_warning("You can't shred through magical armor no longer."))
+		to_chat(owner, span_boldnotice("You can't shred through magical armor no longer."))

@@ -38,6 +38,7 @@
 	var/mob/living/last_activator
 	var/mystlevel = 1
 	var/sacrifice
+	var/list/clan_restricted_ritual = list()
 
 /obj/abyssrune/proc/complete()
 	return

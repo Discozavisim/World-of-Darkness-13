@@ -179,7 +179,7 @@
 			L.adjustFireLoss(-25)
 		if(istype(H.pulling, /mob/living/carbon/human))
 			var/mob/living/carbon/human/BLOODBONDED = H.pulling
-			if(iscathayan(BLOODBONDED))
+			if(iscathayan(BLOODBONDED) || iszombie(BLOODBONDED))
 				to_chat(owner, "<span class='warning'>[BLOODBONDED] vomits the vitae back!</span>")
 				return
 			if(!BLOODBONDED.client && !istype(H.pulling, /mob/living/carbon/human/npc))
@@ -426,7 +426,6 @@
 	button_icon_state = "blush_of_life"
 	check_flags = AB_CHECK_CONSCIOUS
 	vampiric = TRUE
-	var/active_blush = FALSE
 	var/cooldown = 3 SECONDS
 
 /datum/action/blush_of_life/Trigger()
@@ -444,14 +443,14 @@
 		return
 	COOLDOWN_START(blusher, blush_timer, cooldown)
 	blusher.bloodpool = max(0, blusher.bloodpool-1)
-	if(!active_blush)
+	if(!blusher.active_blush)
 		blusher.skin_tone = blusher.original_skin_tone
 		blusher.update_body()
-		active_blush = TRUE
+		blusher.active_blush = TRUE
 	else
 		blusher.skin_tone = get_vamp_skin_color(blusher.original_skin_tone)
 		blusher.update_body()
-		active_blush = FALSE
+		blusher.active_blush = FALSE
 
 
 

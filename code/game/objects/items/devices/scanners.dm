@@ -164,7 +164,7 @@ GENE SCANNER
 
 	var/mob/living/carbon/human/humhum = M
 
-	if(iskindred(M) || (iscathayan(M) && !humhum.check_kuei_jin_alive()))
+	if((iskindred(humhum) && !humhum.active_blush) || (iscathayan(humhum) && !humhum.check_kuei_jin_alive()) || iszombie(humhum))
 		mob_status = "<span class='alert'><b>Deceased</b></span>"
 		oxy_loss = max(rand(1, 40), oxy_loss, (300 - (tox_loss + fire_loss + brute_loss)))
 
@@ -211,7 +211,7 @@ GENE SCANNER
 		var/datum/species/the_dudes_species = the_dude.dna.species
 		if (!(NOBLOOD in the_dudes_species.species_traits) && !the_dude.getorganslot(ORGAN_SLOT_HEART))
 			render_list += "<span class='alert ml-1'>Subject lacks a heart.</span>\n"
-		if (!(TRAIT_NOBREATH in the_dudes_species.species_traits) && !the_dude.getorganslot(ORGAN_SLOT_LUNGS))
+		if (!(TRAIT_NOBREATH in the_dudes_species.species_traits) && !the_dude.getorganslot(ORGAN_SLOT_LUNGS) && !the_dude.active_blush)
 			render_list += "<span class='alert ml-1'>Subject lacks lungs.</span>\n"
 		if (!(TRAIT_NOMETABOLISM in the_dudes_species.species_traits) && !the_dude.getorganslot(ORGAN_SLOT_LIVER))
 			render_list += "<span class='alert ml-1'>Subject lacks a liver.</span>\n"
@@ -241,7 +241,7 @@ GENE SCANNER
 //			if(advanced)
 //				render_list += "<span class='info ml-1'>Subject Minor Disabilities: [C.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY)].</span>\n"
 	if(advanced)
-		if(iskindred(M) || (iscathayan(M) && !humhum.check_kuei_jin_alive()))
+		if((iskindred(humhum) && !humhum.active_blush) || (iscathayan(humhum) && !humhum.check_kuei_jin_alive()) || iszombie(humhum))
 			render_list += "<span class='info ml-1'>Brain Activity Level: 0%.</span>\n"
 		else
 			render_list += "<span class='info ml-1'>Brain Activity Level: [(200 - M.getOrganLoss(ORGAN_SLOT_BRAIN))/2]%.</span>\n"
@@ -333,7 +333,7 @@ GENE SCANNER
 
 			for(var/obj/item/organ/organ in H.internal_organs)
 				var/status = ""
-				if (iskindred(H) || (iscathayan(H) && !H.check_kuei_jin_alive())) status = "<font color='#E42426'>Non-Functional</font>"
+				if ((iskindred(H) && !H.active_blush) || (iscathayan(H) && !H.check_kuei_jin_alive()) || iszombie(H)) status = "<font color='#E42426'>Non-Functional</font>"
 				else if (organ.organ_flags & ORGAN_FAILING) status = "<font color='#E42426'>Non-Functional</font>"
 				else if (organ.damage > organ.high_threshold) status = "<font color='#EC6224'>Severely Damaged</font>"
 				else if (organ.damage > organ.low_threshold) status = "<font color='#F28F1F'>Mildly Damaged</font>"
@@ -410,7 +410,7 @@ GENE SCANNER
 			if(blood_id != /datum/reagent/blood) // special blood substance
 				var/datum/reagent/R = GLOB.chemical_reagents_list[blood_id]
 				blood_type = R ? R.name : blood_id
-			if(iskindred(C))
+			if(iskindred(C) && !C.active_blush)
 				render_list += "<span class='alert ml-1'>Blood level: LOW 0 %, 0 cl,</span> <span class='info'>type: [blood_type]</span>\n"
 			else if(C.blood_volume <= BLOOD_VOLUME_SAFE && C.blood_volume > BLOOD_VOLUME_OKAY)
 				render_list += "<span class='alert ml-1'>Blood level: LOW [blood_percent] %, [C.blood_volume] cl,</span> <span class='info'>type: [blood_type]</span>\n"

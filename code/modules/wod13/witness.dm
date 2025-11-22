@@ -91,13 +91,14 @@
 			holder.color = "#0000ff"
 
 	if (iskindred(src))
-		//pale aura for vampires
-		holder.color = "#ffffff"
+		if(!active_blush)
+			//pale aura for vampires
+			holder.color = "#ffffff"
 		//only Baali can get antifrenzy through selling their soul, so this gives them the unholy halo (MAKE THIS BETTER)
 		if (antifrenzy)
 			holder.icon = 'icons/effects/32x64.dmi'
 		//black aura for diablerists
-		if (diablerist)
+		if (diablerist || fakediablerist)
 			holder.icon_state = "diablerie_aura"
 
 	if(iscathayan(src))
@@ -138,13 +139,14 @@
 			holder.color = "#0000ff"
 
 	if (iskindred(src))
-		//pale aura for vampires
-		holder.color = "#ffffff"
+		if(!active_blush)
+			//pale aura for vampires
+			holder.color = "#ffffff"
 		//only Baali can get antifrenzy through selling their soul, so this gives them the unholy halo (MAKE THIS BETTER)
 		if (antifrenzy)
 			holder.icon = 'icons/effects/32x64.dmi'
 		//black aura for diablerists
-		if (diablerist)
+		if (diablerist || fakediablerist)
 			holder.icon_state = "diablerie_aura"
 
 	if(iscathayan(src))

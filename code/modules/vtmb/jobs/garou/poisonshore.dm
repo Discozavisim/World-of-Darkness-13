@@ -283,7 +283,7 @@
 	allowed_species = list("Vampire", "Ghoul", "Human", "Werewolf")
 	department_head = list("Endron International")
 	allowed_tribes = list("Black Spiral Dancers", "Ronin")
-	allowed_bloodlines = list("True Brujah", "Daughters of Cacophony", "Salubri", "Baali", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Giovanni", "Followers of Set", "Tzimisce", "Lasombra", "Caitiff", "Kiasyd")
+	allowed_bloodlines = list("True Brujah", "Daughters of Cacophony", "Salubri", "Baali", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Banu Haqim Sorcerer", "Banu Haqim Vizier", "Giovanni", "Followers of Set", "Tzimisce", "Lasombra", "Caitiff", "Kiasyd")
 
 	known_contacts = list("Endron Chief of Security", "Endron Internal Affairs Agent", "Endron Executive", "Endron Branch Lead")
 
@@ -316,7 +316,7 @@
 	allowed_species = list("Vampire", "Ghoul", "Human", "Werewolf")
 	department_head = list("Endron International")
 	allowed_tribes = list("Black Spiral Dancers", "Ronin")
-	allowed_bloodlines = list("True Brujah", "Daughters of Cacophony", "Salubri", "Baali", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Giovanni", "Followers of Set", "Tzimisce", "Lasombra", "Caitiff", "Kiasyd")
+	allowed_bloodlines = list("True Brujah", "Daughters of Cacophony", "Salubri", "Baali", "Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Banu Haqim Sorcerer", "Banu Haqim Vizier", "Giovanni", "Followers of Set", "Tzimisce", "Lasombra", "Caitiff", "Kiasyd")
 	faction = "Vampire"
 	selection_color = "#015334"
 

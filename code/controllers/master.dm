@@ -275,17 +275,17 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					var/special_role = H.mind?.special_role
 
 					if(H.total_erp > 1500)
-						char_sheet.add_experience(3)
+						char_sheet.add_experience(5)
 					if(H.total_cleaned > 25)
-						char_sheet.add_experience(2)
+						char_sheet.add_experience(5)
 						call_dharma("cleangrow", H)
 					if(role == "Graveyard Keeper")
 						if(SSgraveyard.total_good > SSgraveyard.total_bad)
-							char_sheet.add_experience(2)
+							char_sheet.add_experience(5)
 					if(special_role)
 						var/datum/antagonist/A = special_role
 						if(A.check_completed())
-							char_sheet.add_experience(4)
+							char_sheet.add_experience(5)
 
 					char_sheet.save_preferences()
 					char_sheet.save_character()

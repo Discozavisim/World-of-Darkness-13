@@ -78,7 +78,7 @@
 				P.reason_of_death = "Lost control to the Beast ([time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")])."
 
 /mob/living/carbon/human/proc/AdjustMasquerade(value, forced = FALSE)
-	if(!iskindred(src) && !isghoul(src) && !iscathayan(src))
+	if(!iskindred(src) && !isghoul(src) && !iscathayan(src)  && !iszombie(src))
 		return
 	if(!GLOB.canon_event)
 		return

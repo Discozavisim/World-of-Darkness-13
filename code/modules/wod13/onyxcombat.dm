@@ -13,12 +13,6 @@
 			if(V.zone_type == "masquerade")
 				SSmasquerade.dead_level = max(0, SSmasquerade.dead_level-50)
 
-	if(masquerade <= 0 && !GLOB.canon_event)
-		var/datum/preferences/P = GLOB.preferences_datums[ckey(key)]
-		if(P)
-			P.reset_character()
-			P.reason_of_death = "Failed to stay alive after breaking Masquerade completely ([time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")])."
-
 	if(bloodhunted)
 		SSbloodhunt.hunted -= src
 		bloodhunted = FALSE
@@ -44,7 +38,7 @@
 	yin_chi = min(max_yin_chi, yin_chi+yang_chi)
 	yang_chi = 0
 
-	if(iskindred(src))
+	if(iskindred(src) ||  iscathayan(src) || iszombie(src))
 		qdel(getorganslot(ORGAN_SLOT_BRAIN)) //NO REVIVAL EVER
 		if(in_frenzy)
 			exit_frenzymod()

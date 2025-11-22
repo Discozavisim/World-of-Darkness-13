@@ -86,7 +86,7 @@
 	///List of species that are limited to a certain amount of that species doing this job.
 	var/list/species_slots = list()
 	///List of Bloodlines that are allowed to do this job.
-	var/list/allowed_bloodlines = list("Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Giovanni", "Followers of Set")
+	var/list/allowed_bloodlines = list("Brujah", "Tremere", "Ventrue", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Banu Haqim Sorcerer", "Salubri", "Salubri Warrior", "Banu Haqim Vizier", "Giovanni", "Followers of Set")
 	///List of Tribes that are allowed to do this job.
 	var/list/allowed_tribes = list("Wendigo","Ghost Council", "Glass Walkers", "Bone Gnawers", "Ronin", "Black Spiral Dancers", "Silver Fangs", "Corax")
 	///List of Auspices that are allowed to do this job.

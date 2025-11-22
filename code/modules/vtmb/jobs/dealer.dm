@@ -23,7 +23,7 @@
 
 
 	known_contacts = list("Prince","Seneschal", "Sheriff", "Baron")
-	allowed_bloodlines = list("True Brujah", "Brujah", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Tzimisce", "Caitiff", "Ventrue", "Followers of Set", "Kiasyd", "Cappadocian")
+	allowed_bloodlines = list("True Brujah", "Brujah", "Nosferatu", "Gangrel", "Toreador", "Malkavian", "Banu Haqim", "Banu Haqim Sorcerer", "Banu Haqim Vizier", "Tzimisce", "Caitiff", "Ventrue", "Followers of Set", "Kiasyd", "Cappadocian")
 
 	v_duty = "You provide supplies to other kindred. The warehouse is yours, and it's your business who you'll deal with."
 	minimal_masquerade = 3

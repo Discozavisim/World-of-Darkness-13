@@ -184,6 +184,7 @@
 		"Thaumaturgy: Path of Blood" = list("Tremere"),
 		"Thaumaturgy: Path of Conjuring" = list("Tremere"),
 		"Thaumaturgy: The Lure of Flames" = list("Tremere"),
+		"Thaumaturgy: Path of the Levinbolt" = list("Tremere"),
 		"Dark Thaumaturgy: The Fires of the Inferno" = list("Baali"),
 		"Dark Thaumaturgy: Path of Pain" = list("Baali"),
 		"Dark Thaumaturgy: The Taking of the Spirit" = list("Baali"),
@@ -191,7 +192,8 @@
 		"Warrior Valeren" = list("Salubri", "Salubri Warrior"),
 		"Mytherceria" = list("Kiasyd"),
 		"Du-Ran-Ki: Awakening of the Steel" = list("Banu Haqim Sorcerer"),
-		"Du-Ran-Ki: Path of Blood" = list("Banu Haqim Sorcerer")
+		"Du-Ran-Ki: Path of Blood" = list("Banu Haqim Sorcerer"),
+		"Setite Sorcery: Path of Duat" = list("Followers of Set")
 	)
 	for(var/discipline in discipline_owners)
 		if(clan.get_discipline(discipline) && !(H.clane?.name in discipline_owners[discipline]))

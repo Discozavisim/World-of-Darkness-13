@@ -288,7 +288,7 @@
 					is_wyrm = 1
 			if (iskindred(target))
 				var/mob/living/carbon/human/vampire = target
-				if (vampire.humanity < 7 || vampire.clane?.name == "Baali")
+				if ((vampire.humanity < 7 || vampire.clane?.name == "Baali") && !vampire.active_blush)
 					is_wyrm = 1
 			if (isgarou(target) || iswerewolf(target))
 				var/mob/living/carbon/wolf = target

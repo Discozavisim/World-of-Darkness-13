@@ -132,4 +132,3 @@
 	created_fireball.firer = owner
 	created_fireball.preparePixelProjectile(target, start)
 	created_fireball.fire(direct_target = target)
-

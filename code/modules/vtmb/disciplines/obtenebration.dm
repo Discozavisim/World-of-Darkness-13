@@ -154,7 +154,6 @@
 	button_icon_state = "thaumaturgy"
 	check_flags = AB_CHECK_HANDS_BLOCKED|AB_CHECK_IMMOBILE|AB_CHECK_LYING|AB_CHECK_CONSCIOUS
 	vampiric = TRUE
-	var/drawing = FALSE
 	var/level = 1
 
 /datum/action/mysticism/Trigger()
@@ -163,55 +162,50 @@
 	if(H.bloodpool < 2)
 		to_chat(H, "<span class='warning'>You need more <b>BLOOD</b> to do that!</span>")
 		return
-	if(drawing)
-		return
 
 	if(istype(H.get_active_held_item(), /obj/item/mystic_tome))
-		var/list/shit = list()
+		var/list/rune_names = list()
 		for(var/i in subtypesof(/obj/abyssrune))
 			var/obj/abyssrune/R = new i(owner)
+			if(R.clan_restricted_ritual.len && !(H.clane.type in R.clan_restricted_ritual))
+				continue
 			if(R.mystlevel <= level)
-				shit += i
+				rune_names[R.name] = i
 			qdel(R)
-		var/ritual = input(owner, "Choose rune to draw:", "Mysticism") as null|anything in shit
-		if(ritual)
-			drawing = TRUE
-			if(do_after(H, 5 SECONDS, H))
-				var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
-				if(result > 1)
-					drawing = FALSE
-					new ritual(H.loc)
-					H.bloodpool = max(0, H.bloodpool-2)
-					if(H.CheckEyewitness(H, H, 7, FALSE))
-						H.AdjustMasquerade(-1)
-				else
-					drawing = FALSE
-					if(result == -1)
-						H.AdjustKnockdown(3 SECONDS)
+		var/ritual = tgui_input_list(owner, "Choose rune to draw:", "Mysticism", rune_names)
+		if(!ritual)
+			return
+		if(do_after(H, 3 SECONDS * max(1, 5 - get_a_occult(H)), H))
+			var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
+			if(result > 1)
+				var/ritual_type = rune_names[ritual]
+				new ritual_type(H.loc)
+				H.bloodpool = max(H.bloodpool - 2, 0)
+				if(H.CheckEyewitness(H, H, 7, FALSE))
+					H.AdjustMasquerade(-1)
 			else
-				drawing = FALSE
+				to_chat(owner, span_warning("You failed at rune drawing!"))
+				if(result == -1)
+					H.AdjustKnockdown(3 SECONDS)
 	else
-		var/list/shit = list()
+		var/list/rune_names = list()
 		for(var/i in subtypesof(/obj/abyssrune))
 			var/obj/abyssrune/R = new i(owner)
 			if(R.mystlevel <= level)
-				shit += i
+				rune_names += i
 			qdel(R)
 		var/ritual = input(owner, "Choose rune to draw (You need a Mystic Tome to reduce random):", "Mysticism") as null|anything in list("???")
-		if(ritual)
-			drawing = TRUE
-			if(do_after(H, 5 SECONDS, H))
-				var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
-				if(result > 1)
-					drawing = FALSE
-					var/rune = pick(shit)
-					new rune (H.loc)
-					H.bloodpool = max(0, H.bloodpool-2)
-					if(H.CheckEyewitness(H, H, 7, FALSE))
-						H.AdjustMasquerade(-1)
-				else
-					drawing = FALSE
-					if(result == -1)
-						H.AdjustKnockdown(3 SECONDS)
+		if(!ritual)
+			return
+		if(do_after(H, 3 SECONDS * max(1, 5 - get_a_occult(H)), H))
+			var/result = secret_vampireroll(get_a_intelligence(H)+get_a_occult(H), 6, H)
+			if(result > 1)
+				var/rune = pick(rune_names)
+				new rune(H.loc)
+				H.bloodpool = max(0, H.bloodpool-2)
+				if(H.CheckEyewitness(H, H, 7, FALSE))
+					H.AdjustMasquerade(-1)
 			else
-				drawing = FALSE
+				to_chat(owner, span_warning("You failed at rune drawing!"))
+				if(result == -1)
+					H.AdjustKnockdown(3 SECONDS)

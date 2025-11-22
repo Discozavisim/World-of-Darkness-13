@@ -491,7 +491,7 @@
 	layer = ABOVE_ALL_MOB_LAYER
 	anchored = TRUE
 
-/obj/structure/vampipe/Initialize(mapload)	
+/obj/structure/vampipe/Initialize(mapload)
 	. = ..()
 //	icon_state = "piping[rand(1, 4)]"
 
@@ -525,7 +525,7 @@
 	layer = ABOVE_ALL_MOB_LAYER
 	anchored = TRUE
 
-/obj/structure/vampipe/one/Initialize(mapload)	
+/obj/structure/vampipe/one/Initialize(mapload)
 	. = ..()
 	icon_state = "piping1[rand(15, 17)]"
 
@@ -544,7 +544,7 @@
 	name = "pipes"
 	icon_state = "piping9"
 
-/obj/structure/vampipe/hard/Initialize(mapload)	
+/obj/structure/vampipe/hard/Initialize(mapload)
 	. = ..()
 	icon_state = "piping[rand(9, 12)]"
 
@@ -904,6 +904,9 @@
 			var/obj/structure/bloodextractor/V = over_object
 			if(!buckled)
 				V.visible_message("<span class='warning'>Buckle [src] fist!</span>")
+			if(iszombie(src))
+				V.visible_message(span_warning("[src]'s still, rotten blood cannot be drawn!"))
+				return
 			if(bloodpool < 2)
 				V.visible_message("<span class='warning'>[V] can't find enough blood in [src]!</span>")
 				return

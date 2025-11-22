@@ -481,6 +481,9 @@
 					if ("rotten4")
 						msg += "<span class='danger'><b>[p_they(TRUE)] [p_are()] a skeletonised corpse!</b></span><br>"
 
+		if (iszombie(src) && is_face_visible())
+			msg += span_danger("<b>[p_they(TRUE)] [p_are()] a decayed corpse!</b><br>")
+
 		if(getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
 				msg += "<span class='deadsay'>[t_He] do[t_es]n't appear to be [t_him]self.</span>\n"
@@ -516,19 +519,24 @@
 					wyrm_taint++
 				named_splat = "You scent the dark journey through Erebus permeating this body, the mark of the Wan Kuei."
 
+			if(iszombie(src))
+				seems_alive = 0
+				wyrm_taint++
+				named_splat = "You scent nothing but the stench of death and decay - this is no living creature."
+
 			if (iskindred(src))
 				named_splat = "You scent the shiveringly addictive vitae of the children of Caine."
 				var/mob/living/carbon/human/vampire = src
 				weaver_taint++
-				if (humanity >= 7)
+				if (humanity >= 7 || vampire.active_blush)
 					seems_alive = 1
 				else
 					seems_alive = 0
 
-				if ((humanity < 7) || client?.prefs?.enlightenment)
+				if ((humanity < 7) || client?.prefs?.enlightenment || !vampire.active_blush)
 					wyrm_taint++
 
-				if ((vampire.clane?.name == "Baali") || ( (client?.prefs?.enlightenment && (humanity > 7)) || (!client?.prefs?.enlightenment && (humanity < 4)) ))
+				if (((vampire.clane?.name == "Baali") || ((client?.prefs?.enlightenment && (humanity > 7)) || (!client?.prefs?.enlightenment && (humanity < 4)))) && !active_blush)
 					wyrm_taint++
 
 			if (isgarou(src) || iswerewolf(src)) //werewolves have the taint of whatever Triat member they venerate most

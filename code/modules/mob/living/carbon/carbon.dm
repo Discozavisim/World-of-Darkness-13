@@ -750,6 +750,9 @@
 		lighting_alpha = min(lighting_alpha, LIGHTING_PLANE_ALPHA_NV_TRAIT)
 		see_in_dark = max(see_in_dark, 8)
 
+	if(HAS_TRAIT(src, TRAIT_GHOST_VISION))
+		see_override = SEE_INVISIBLE_OBSERVER
+
 	if(see_override)
 		see_invisible = see_override
 	. = ..()

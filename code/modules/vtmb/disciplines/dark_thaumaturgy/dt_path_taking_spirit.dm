@@ -127,4 +127,3 @@
 				ADD_TRAIT(H, TRAIT_TAKING_SPIRIT_USED, DISCIPLINE_TRAIT)
 	else
 		to_chat(owner, span_notice("You fail to sense Willpower in them."))
-

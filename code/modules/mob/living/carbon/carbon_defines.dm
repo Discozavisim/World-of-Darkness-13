@@ -159,6 +159,9 @@
 
 	var/diablerist = FALSE
 	var/antifrenzy = FALSE
+	var/fakediablerist = FALSE
+
+	var/active_blush = FALSE
 
 	COOLDOWN_DECLARE(bleeding_message_cd)
 

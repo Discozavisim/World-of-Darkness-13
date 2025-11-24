@@ -66,7 +66,7 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 		return FALSE
 	switch(action)
 		if("select_job")
-			if(player.client.prefs.invalid_disciplines_block()) && player.client.prefs.blocked_slot != TRUE
+			if(player.client.prefs.invalid_disciplines_block() && player.client.prefs.blocked_slot != TRUE)
 				player.client.prefs.blocked_slot = TRUE
 				to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
 				to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))

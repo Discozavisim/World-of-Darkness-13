@@ -195,6 +195,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	///Ranks of the Disciplines this character knows, corresponding to discipline_types.
 	var/list/discipline_levels = list()
 
+	var/blocked_slot = FALSE
+
 	//Skills
 	var/lockpicking = 0
 	var/athletics = 0
@@ -332,6 +334,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	slotlocked = 0
 	diablerist = 0
 	know_diablerie = 0
+	blocked_slot = FALSE
 	torpor_count = 0
 	generation_bonus = 0
 	reset_stats()
@@ -367,6 +370,43 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	true_experience = 50
 	real_name = random_unique_name(gender)
 	save_character()
+
+/datum/preferences/proc/invalid_disciplines_block()
+	if(pref_species.name != "Vampire")
+		return FALSE
+
+	var/basic_count = 0
+	var/learnable_count = 0
+
+	for(var/i in 1 to discipline_types.len)
+		var/D_type = discipline_types[i]
+		var/datum/discipline/D = new D_type
+
+		// Если дисциплина есть в списке клановых дисц, пропуск
+		if(clane.clane_disciplines.Find(D_type))
+			continue
+
+		//Если дисциплина клановая и ее нельзя изучить - блок слота
+		if(D.clan_restricted && !D.learnable_by_clans.len)
+			return TRUE
+
+		// Если дисцу можно изучить, +1 счетчик, если нет то блок слота
+		if(D.learnable_by_clans.len)
+			learnable_count += 1
+
+		// Если дисца и не клановая и ее изучить нельзя, счетчик +1. Исключение каитиффы ибо у нет нет клан дисц
+		if(!D.clan_restricted && !D.learnable_by_clans.len)
+			if(clane.name != "Caitiff")
+				basic_count += 1
+
+	// Проверка лимитов
+	if(learnable_count >= 3)
+		return TRUE
+
+	if(basic_count >= 2)
+		return TRUE
+
+	return FALSE
 
 /proc/reset_shit(mob/M)
 	if(M.key)

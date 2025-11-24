@@ -58,12 +58,22 @@
 		client.prefs.ShowChoices(src)
 		return TRUE
 	if(href_list["ready"])
+		if(usr.client.prefs.invalid_disciplines_block())
+			usr.client.prefs.blocked_slot = TRUE
+			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
+			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))
+			to_chat(usr, span_boldwarning("Так-же слот может быть заблокирован если у персонажа имеется клановая дисциплина другого клана."))
 		SSbad_guys_party.candidates -= src
 		late_ready = FALSE
 		ready = !ready
 		GLOB.lobby_screen.update(client)
 		return TRUE
 	if(href_list["late_party"])
+		if(usr.client.prefs.invalid_disciplines_block())
+			usr.client.prefs.blocked_slot = TRUE
+			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
+			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))
+			to_chat(usr, span_boldwarning("Так-же слот может быть заблокирован если у персонажа имеется клановая дисциплина другого клана."))
 		if (!can_respawn())
 			to_chat(src, "<span class='boldwarning'>You cannot respawn yet.</span>")
 			return
@@ -82,6 +92,11 @@
 		make_me_an_observer()
 		return TRUE
 	if(href_list["late_join"])
+		if(usr.client.prefs.invalid_disciplines_block())
+			usr.client.prefs.blocked_slot = TRUE
+			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
+			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))
+			to_chat(usr, span_boldwarning("Так-же слот может быть заблокирован если у персонажа имеется клановая дисциплина другого клана."))
 		if (!can_respawn())
 			to_chat(usr, "<span class='boldwarning'>You cannot respawn yet.</span>")
 			return FALSE
@@ -210,6 +225,8 @@
 		if(job.minimal_renownrank && !bypass)
 			if(client.prefs.renownrank < job.minimal_renownrank)
 				return JOB_UNAVAILABLE_RANK
+	if(client.prefs.blocked_slot)
+		return JOB_BLOCKED_SLOT
 	return JOB_AVAILABLE
 
 /mob/dead/new_player/proc/AttemptLateSpawn(rank)

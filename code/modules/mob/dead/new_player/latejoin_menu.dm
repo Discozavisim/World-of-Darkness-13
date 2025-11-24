@@ -119,4 +119,6 @@ GLOBAL_DATUM_INIT(latejoin_menu, /datum/latejoin_menu, new)
 			return "Your species cannot be [jobtitle]."
 		if(JOB_UNAVAILABLE_SPECIES_LIMITED)
 			return "Your species has a limit on how many can be [jobtitle]."
+		if(JOB_BLOCKED_SLOT)
+			return "Слот заблокирован."
 	return "Error: Unknown job availability."

@@ -289,12 +289,24 @@
 				dat += "<b>Marks:</b> <a href='byond://?_src_=prefs;preference=clane_acc;task=input'>[clane_accessory]</a><BR>"
 		else
 			clane_accessory = null
-		dat += "<h2>[make_font_cool("DISCIPLINES")]</h2>"
+		if(!blocked_slot)
+			dat += "<h2>[make_font_cool("DISCIPLINES")]</h2>"
+		else
+			dat += "<h2>[make_font_cool("DISCIPLINES (СЛОТ ЗАБЛОКИРОВАН)")]</h2>"
+
+		var/learnable_count = 0
+		var/basic_count = 0
 
 		for (var/i in 1 to discipline_types.len)
 			var/discipline_type = discipline_types[i]
 			var/datum/discipline/discipline = new discipline_type
 			var/discipline_level = discipline_levels[i]
+
+			if(discipline.learnable_by_clans.len && (clane.type in discipline.learnable_by_clans) && !(clane.clane_disciplines.Find(discipline_type)))
+				learnable_count += 1
+			else if(!discipline.clan_restricted && !discipline.learnable_by_clans.len && !(clane.clane_disciplines.Find(discipline_type)))
+				basic_count += 1
+
 
 			var/cost
 			if (discipline_level <= 0)
@@ -326,6 +338,9 @@
 
 			if (discipline.learnable_by_clans.len && !(clane.type in discipline.learnable_by_clans))
 				possible_new_disciplines -= discipline_type
+			else
+				if(learnable_count >= 2)
+					possible_new_disciplines -= discipline_type
 
 			if (!discipline.clan_restricted && !discipline.learnable_by_clans.len && clane.name != "Caitiff")
 				possible_new_disciplines -= discipline_type

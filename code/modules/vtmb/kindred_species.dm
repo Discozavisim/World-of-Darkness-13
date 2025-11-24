@@ -487,10 +487,10 @@
 						qdel(discipline)
 						continue
 
-				/* if (discipline.learnable_by_clans && discipline.learnable_by_clans.len)
+				if (discipline.learnable_by_clans.len)
 					if (!can_access_discipline(src, type_to_create))
 						qdel(discipline)
-						continue */
+						continue
 
 				adding_disciplines += discipline
 		else if (disciplines.len) //initialise given disciplines
@@ -617,7 +617,7 @@
 /mob/living/carbon/human/verb/teach_discipline(mob/living/carbon/human/student in (range(1, src) - src))
 	set name = "Teach Discipline"
 	set category = "IC"
-	set desc ="Teach a Discipline to a Kindred who has recently drank your blood. Costs 50 experience points."
+	set desc = "Teach a Discipline to a Kindred who has recently drank your blood. Costs 125 experience points."
 
 	var/mob/living/carbon/human/teacher = src
 	var/datum/preferences/teacher_prefs = teacher.client.prefs
@@ -650,17 +650,26 @@
 		var/datum/discipline/giving_discipline = new teaching_discipline
 
 		//if a Discipline is clan-restricted, it must be checked if the student has access to at least one Clan with that Discipline
-		if (giving_discipline.clan_restricted)
-			if (!can_access_discipline(student, teaching_discipline))
+		if (giving_discipline.clan_restricted && !giving_discipline.learnable_by_clans.len)
+			to_chat(teacher, span_warning("Your cannot teach them a clan-restricted discipline!"))
+			qdel(giving_discipline)
+			return
+			/*if (!can_access_discipline(student, teaching_discipline))
 				to_chat(teacher, span_warning("Your student is not whitelisted for any Clans with this Discipline, so they cannot learn it."))
+				qdel(giving_discipline)
+				return*/
+
+		if (giving_discipline.learnable_by_clans && giving_discipline.learnable_by_clans.len)
+			if(!can_access_discipline(student, teaching_discipline))
+				to_chat(teacher, span_warning("Your student is not whitelisted for any Clans which allows this Discipline, or they hit the learnable discipline limit, so they cannot learn it."))
 				qdel(giving_discipline)
 				return
 
-		/* if (giving_discipline.learnable_by_clans && giving_discipline.learnable_by_clans.len)
+		if(!giving_discipline.clan_restricted && !giving_discipline.learnable_by_clans)
 			if(!can_access_discipline(student, teaching_discipline))
-				to_chat(teacher, span_warning("Your student is not whitelisted for any Clans which allows this Discipline, so they cannot learn it."))
+				to_chat(teacher, span_warning("Your student hit the basic discipline limit, so they cannot learn it."))
 				qdel(giving_discipline)
-				return */
+				return
 
 		//ensure the teacher's mastered it, also prevents them from teaching with free starting experience
 		if (teacher_discipline.level < 5)
@@ -742,19 +751,40 @@
 	if (!vampire_checking.client)
 		return FALSE
 
+	var/learnable_count = 0
+	var/basic_count = 0
+
+	for(var/i in 1 to vampire_checking.client.prefs.discipline_types.len)
+		var/D_type = vampire_checking.client.prefs.discipline_types[i]
+		var/datum/discipline/D = new D_type
+
+		if(vampire_checking.clane.clane_disciplines.Find(D_type))
+			qdel(D)
+			continue
+
+		// Лернбл
+		if(D.learnable_by_clans.len && (vampire_checking.clane.type in D.learnable_by_clans))
+			learnable_count++
+
+		// Бейзики
+		else if(!D.clan_restricted && !D.learnable_by_clans.len)
+			basic_count++
+
+		qdel(D)
+
 	//make sure it's actually restricted and this check is necessary
 	var/datum/discipline/discipline_object_checking = new discipline_checking
 
-	if (!discipline_object_checking.clan_restricted && (!discipline_object_checking.learnable_by_clans || !discipline_object_checking.learnable_by_clans.len))
+	if (!discipline_object_checking.clan_restricted && !discipline_object_checking.learnable_by_clans.len && basic_count < 1)
 		qdel(discipline_object_checking)
 		return TRUE
 
-	/* if (discipline_object_checking.learnable_by_clans && discipline_object_checking.learnable_by_clans.len)
-		for (var/allowed_clan in discipline_object_checking.learnable_by_clans)
+	if (discipline_object_checking.learnable_by_clans && discipline_object_checking.learnable_by_clans.len && learnable_count < 2)
+		/* for (var/allowed_clan in discipline_object_checking.learnable_by_clans)
 			if (vampire_checking.clane.type == allowed_clan)
-				qdel(discipline_object_checking)
-				return TRUE */
-	qdel(discipline_object_checking)
+				qdel(discipline_object_checking) */
+		qdel(discipline_object_checking)
+		return TRUE
 
 	//first, check their Clan Disciplines to see if that gives them access
 	if (vampire_checking.clane.clane_disciplines.Find(discipline_checking))

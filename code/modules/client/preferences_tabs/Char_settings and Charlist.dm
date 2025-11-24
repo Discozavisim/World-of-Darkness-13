@@ -776,27 +776,57 @@
 	dat += "<h2>[make_font_cool("ABILITIES")]</h2>"
 
 	dat += "<b>TALENTS</b><BR>"
-	dat += "Alertness: [build_attribute_score(Alertness, 5, 3, "alertness")]"
-	dat += "Athletics: [build_attribute_score(Athletics, 5, 3, "athletics")]"
-	dat += "Brawl: [build_attribute_score(Brawl, 5, 3, "brawl")]"
-	dat += "Empathy: [build_attribute_score(Empathy, 5, 3, "empathy")]"
-	dat += "Intimidation: [build_attribute_score(Intimidation, 5, 3, "intimidation")]"
-	dat += "Expression: [build_attribute_score(Expression, 5, 3, "expression")]"
+	dat += "Main talents: <b>[uppertext(main_talent_one)], [uppertext(main_talent_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_main_talents;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Secondary talents: <b>[uppertext(second_talent_one)], [uppertext(second_talent_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_second_talents;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Alertness: [build_attribute_score(Alertness, calc_max_abilities_score("Alertness"), 3, "alertness")]"
+	dat += "Athletics: [build_attribute_score(Athletics, calc_max_abilities_score("Athletics"), 3, "athletics")]"
+	dat += "Brawl: [build_attribute_score(Brawl, calc_max_abilities_score("Brawl"), 3, "brawl")]"
+	dat += "Empathy: [build_attribute_score(Empathy, calc_max_abilities_score("Empathy"), 3, "empathy")]"
+	dat += "Intimidation: [build_attribute_score(Intimidation, calc_max_abilities_score("Intimidation"), 3, "intimidation")]"
+	dat += "Expression: [build_attribute_score(Expression, calc_max_abilities_score("Expression"), 3, "expression")]"
 	dat += "<b>SKILLS</b><BR>"
-	dat += "Crafts: [build_attribute_score(Crafts, 5, 3, "crafts")]"
-	dat += "Melee: [build_attribute_score(Melee, 5, 3, "melee")]"
-	dat += "Firearms: [build_attribute_score(Firearms, 5, 3, "firearms")]"
-	dat += "Drive: [build_attribute_score(Drive, 5, 3, "drive")]"
-	dat += "Security: [build_attribute_score(Security, 5, 3, "security")]"
+	dat += "Main skills: <b>[uppertext(main_skill_one)], [uppertext(main_skill_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_main_skills;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Secondary skills: <b>[uppertext(second_skill_one)], [uppertext(second_skill_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_second_skills;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Crafts: [build_attribute_score(Crafts, calc_max_abilities_score("Crafts"), 3, "crafts")]"
+	dat += "Melee: [build_attribute_score(Melee, calc_max_abilities_score("Melee"), 3, "melee")]"
+	dat += "Firearms: [build_attribute_score(Firearms, calc_max_abilities_score("Firearms"), 3, "firearms")]"
+	dat += "Drive: [build_attribute_score(Drive, calc_max_abilities_score("Drive"), 3, "drive")]"
+	dat += "Security: [build_attribute_score(Security, calc_max_abilities_score("Security"), 3, "security")]"
 //	dat += "Performance: [build_attribute_score(Performance, 5, 3, "performance")]"
 	if(clane.name == "Tzimisce" || (clane.name == "Old Clan Tzimisce" && K.get_discipline("Vicissitude" )) || (pref_species.name == "Ghoul" && G.get_discipline("Vicissitude")) )
-		dat += "Fleshcraft: [build_attribute_score(Fleshcraft, 5, 3, "fleshcraft")]"
+		dat += "Fleshcraft: [build_attribute_score(Fleshcraft, calc_max_abilities_score("Fleshcraft"), 3, "fleshcraft")]"
 	dat += "<b>KNOWLEDGES</b><BR>"
-	dat += "Finance: [build_attribute_score(Finance, 5, 3, "finance")]"
-	dat += "Investigation: [build_attribute_score(Investigation, 5, 3, "investigation")]"
-	dat += "Medicine: [build_attribute_score(Medicine, 5, 3, "medicine")]"
-	dat += "Linguistics: [build_attribute_score(Linguistics, 5, 3, "linguistics")]"
-	dat += "Occult: [build_attribute_score(Occult, 5, 3, "occult")]"
+	dat += "Main knowledges: <b>[uppertext(main_knowledge_one)], [uppertext(main_knowledge_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_main_knowledges;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Secondary knowledges: <b>[uppertext(second_knowledge_one)], [uppertext(second_knowledge_two)]</b> "
+	if(!slotlocked)
+		dat += "<a href='byond://?_src_=prefs;preference=refresh_second_knowledges;task=input'>Change</a><BR>"
+	else
+		dat += "<BR>"
+	dat += "Finance: [build_attribute_score(Finance, calc_max_abilities_score("Finance"), 3, "finance")]"
+	dat += "Investigation: [build_attribute_score(Investigation, calc_max_abilities_score("Investigation"), 3, "investigation")]"
+	dat += "Medicine: [build_attribute_score(Medicine, calc_max_abilities_score("Medicine"), 3, "medicine")]"
+	dat += "Linguistics: [build_attribute_score(Linguistics, calc_max_abilities_score("Linguistics"), 3, "linguistics")]"
+	dat += "Occult: [build_attribute_score(Occult, calc_max_abilities_score("Occult"), 3, "occult")]"
 	// if(clane.name == "Old Clan Tzimiscee" || (clane.name == "Tzimisce" && K.get_discipline("Koldunstvo" )) || (pref_species.name == "Ghoul" && G.get_discipline("Koldunstvo")) )
 	//	dat += "Koldun Sorcery: [build_attribute_score(Koldunt, 5, 3, "koldun")]"
 

@@ -294,6 +294,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/secondary_social_attribute = "Manipulation"
 	var/secondary_mental_attribute = "Intelligence"
 
+	var/main_talent_one = "Alertness"
+	var/main_talent_two = "Athletics"
+	var/second_talent_one = "Brawl"
+	var/second_talent_two = "Empathy"
+
+	var/main_skill_one = "Crafts"
+	var/main_skill_two = "Melee"
+	var/second_skill_one = "Firearms"
+	var/second_skill_two = "Drive"
+
+	var/main_knowledge_one = "Finance"
+	var/main_knowledge_two = "Investigation"
+	var/second_knowledge_one = "Medicine"
+	var/second_knowledge_two = "Linguistics"
+
 	var/old_enough_to_get_exp = FALSE
 
 /datum/preferences/proc/add_experience(amount)
@@ -559,6 +574,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	dat += "<br>"
 	return dat
 
+/datum/preferences/proc/calc_max_abilities_score(attribute)
+	if(attribute in list(main_talent_one, main_talent_two, main_skill_one, main_skill_two, main_knowledge_one, main_knowledge_two))
+		return 5
+	else if(attribute in list(second_talent_one, second_talent_two, second_skill_one, second_skill_two, second_knowledge_one, second_knowledge_two))
+		return 4
+	return 3
+
 /datum/preferences/proc/get_freebie_points(categor)
 	var/physical_priorities = 0
 	var/social_priorities = 0
@@ -738,7 +760,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		return 4
 	else
 		return 3
-
 
 #undef APPEARANCE_CATEGORY_COLUMN
 #undef MAX_MUTANT_ROWS
@@ -1827,6 +1848,122 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						secondary_mental_attribute = new_secondary_mental
 						verify_attributes()
 
+				if("refresh_main_talents")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/talent_abilities = list("Alertness", "Athletics", "Brawl", "Empathy", "Intimidation", "Expression")
+					talent_abilities -= second_talent_one
+					talent_abilities -= second_talent_two
+					var/first_talent = tgui_input_list(user, "Select first main talent:", "First Main Talent Selection", talent_abilities)
+					if(first_talent)
+						main_talent_one = first_talent
+						verify_abilities()
+					talent_abilities -= first_talent
+					var/second_talent = tgui_input_list(user, "Select second main talent:", "Second Main Talent Selection", talent_abilities)
+					if(second_talent)
+						main_talent_two = second_talent
+						verify_abilities()
+
+				if("refresh_second_talents")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/talent_abilities = list("Alertness", "Athletics", "Brawl", "Empathy", "Intimidation", "Expression")
+					talent_abilities -= main_talent_one
+					talent_abilities -= main_talent_two
+					var/first_talent = tgui_input_list(user, "Select first secondary talent:", "First Secondary Talent Selection", talent_abilities)
+					if(first_talent)
+						second_talent_one = first_talent
+						verify_abilities()
+					talent_abilities -= first_talent
+					var/second_talent = tgui_input_list(user, "Select second secondary talent:", "Second Secondary Talent Selection", talent_abilities)
+					if(second_talent)
+						second_talent_two = second_talent
+						verify_abilities()
+
+				if("refresh_main_skills")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/skill_abilities = list("Craft", "Melee", "Firearms", "Drive", "Security")
+					var/datum/species/kindred/K = pref_species
+					var/datum/species/ghoul/G = pref_species
+					if(clane.name == "Tzimisce" || (clane.name == "Old Clan Tzimisce" && K.get_discipline("Vicissitude")) || (G.name == "Ghoul" && G.get_discipline("Vicissitude")))
+						skill_abilities += "Fleshcraft"
+					skill_abilities -= second_skill_one
+					skill_abilities -= second_skill_two
+					var/first_skill = tgui_input_list(user, "Select first main skill:", "First Main Skill Selection", skill_abilities)
+					if(first_skill)
+						main_skill_one = first_skill
+						verify_abilities()
+					skill_abilities -= first_skill
+					var/second_skill = tgui_input_list(user, "Select second main skill:", "Second Main Skill Selection", skill_abilities)
+					if(second_skill)
+						main_skill_two = second_skill
+						verify_abilities()
+
+				if("refresh_second_skills")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/skill_abilities = list("Craft", "Melee", "Firearms", "Drive", "Security")
+					var/datum/species/kindred/K = pref_species
+					var/datum/species/ghoul/G = pref_species
+					if(clane.name == "Tzimisce" || (clane.name == "Old Clan Tzimisce" && K.get_discipline("Vicissitude")) || (G.name == "Ghoul" && G.get_discipline("Vicissitude")))
+						skill_abilities += "Fleshcraft"
+					skill_abilities -= main_skill_one
+					skill_abilities -= main_skill_two
+					var/first_skill = tgui_input_list(user, "Select first secondary skill:", "First Secondary Skill Selection", skill_abilities)
+					if(first_skill)
+						second_skill_one = first_skill
+						verify_abilities()
+					skill_abilities -= first_skill
+					var/second_skill = tgui_input_list(user, "Select second secondary skill:", "Second Secondary Skill Selection", skill_abilities)
+					if(second_skill)
+						second_skill_two = second_skill
+						verify_abilities()
+
+				if("refresh_main_knowledges")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/knowledge_abilities = list("Finance", "Investigation", "Medicine", "Linguistics", "Occult")
+					knowledge_abilities -= second_knowledge_one
+					knowledge_abilities -= second_knowledge_two
+					var/first_knowledge = tgui_input_list(user, "Select first main knowledge:", "First Main Knowledge Selection", knowledge_abilities)
+					if(first_knowledge)
+						main_knowledge_one = first_knowledge
+						verify_abilities()
+					knowledge_abilities -= first_knowledge
+					var/second_knowledge = tgui_input_list(user, "Select second main knowledge:", "Second Main Knowledge Selection", knowledge_abilities)
+					if(second_knowledge)
+						main_knowledge_two = second_knowledge
+						verify_abilities()
+
+				if("refresh_second_knowledges")
+					if(slotlocked)
+						return
+					if (alert("Are you sure you want to change your Priorities? This will reset your Abilities.", "Confirmation", "Yes", "No") != "Yes")
+						return
+					var/list/knowledge_abilities = list("Finance", "Investigation", "Medicine", "Linguistics", "Occult")
+					knowledge_abilities -= main_knowledge_one
+					knowledge_abilities -= main_knowledge_two
+					var/first_knowledge = tgui_input_list(user, "Select first secondary knowledge:", "First Secondary Knowledge Selection", knowledge_abilities)
+					if(first_knowledge)
+						second_knowledge_one = first_knowledge
+						verify_abilities()
+					knowledge_abilities -= first_knowledge
+					var/second_knowledge = tgui_input_list(user, "Select second secondary knowledge:", "Second Secondary Knowledge Selection", knowledge_abilities)
+					if(second_knowledge)
+						second_knowledge_two = second_knowledge
+						verify_abilities()
+
 				if("strength")
 					if(handle_upgrade(Strength, Strength * 5, get_gen_attribute_limit("Strength"), "Physical"))
 						Strength++
@@ -2172,6 +2309,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 								yin = initial(yin)
 								yang = initial(yang)
 						verify_attributes()
+						verify_abilities()
 
 				if("potype")
 					if(slotlocked)
@@ -2207,6 +2345,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						generation_bonus = 0
 						diablerist = FALSE
 						verify_attributes()
+						verify_abilities()
 
 				if("friend_text")
 					var/new_text = input(user, "What a Friend knows about me:", "Character Preference") as text|null
@@ -3477,6 +3616,27 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	Perception = min(Perception, get_gen_attribute_limit("Perception"))
 	Intelligence = min(Intelligence, get_gen_attribute_limit("Intelligence"))
 	Wits = min(Wits, get_gen_attribute_limit("Wits"))
+
+/datum/preferences/proc/verify_abilities()
+	Alertness = min(Alertness, calc_max_abilities_score("Alertness"))
+	Athletics = min(Athletics, calc_max_abilities_score("Athletics"))
+	Brawl = min(Brawl, calc_max_abilities_score("Brawl"))
+	Empathy = min(Empathy, calc_max_abilities_score("Empathy"))
+	Intimidation = min(Intimidation, calc_max_abilities_score("Intimidation"))
+	Expression = min(Expression, calc_max_abilities_score("Expression"))
+
+	Crafts = min(Crafts, calc_max_abilities_score("Crafts"))
+	Melee = min(Melee, calc_max_abilities_score("Melee"))
+	Firearms = min(Firearms, calc_max_abilities_score("Firearms"))
+	Drive = min(Drive, calc_max_abilities_score("Drive"))
+	Security = min(Security, calc_max_abilities_score("Security"))
+
+	Finance = min(Finance, calc_max_abilities_score("Finance"))
+	Investigation = min(Investigation, calc_max_abilities_score("Investigation"))
+	Medicine = min(Medicine, calc_max_abilities_score("Medicine"))
+	Linguistics = min(Linguistics, calc_max_abilities_score("Linguistics"))
+	Occult = min(Occult, calc_max_abilities_score("Occult"))
+	Fleshcraft = min(Fleshcraft, calc_max_abilities_score("Fleshcraft"))
 
 /datum/preferences/proc/reset_attributes()
 	Strength = 1

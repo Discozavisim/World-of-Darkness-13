@@ -772,7 +772,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 		to_chat(parent, "<span class='userdanger'>You tried to load a character slot with [true_experience] experience. It has been reset.</span>")
 		reset_character()
 
-	if(invalid_disciplines_block())
+	if(invalid_disciplines_block() && blocked_slot != TRUE)
 		blocked_slot = TRUE
 		to_chat(parent, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
 		to_chat(parent, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))

@@ -58,7 +58,7 @@
 		client.prefs.ShowChoices(src)
 		return TRUE
 	if(href_list["ready"])
-		if(usr.client.prefs.invalid_disciplines_block())
+		if(usr.client.prefs.invalid_disciplines_block() && usr.client.prefs.blocked_slot != TRUE)
 			usr.client.prefs.blocked_slot = TRUE
 			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
 			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))
@@ -69,7 +69,7 @@
 		GLOB.lobby_screen.update(client)
 		return TRUE
 	if(href_list["late_party"])
-		if(usr.client.prefs.invalid_disciplines_block())
+		if(usr.client.prefs.invalid_disciplines_block() && usr.client.prefs.blocked_slot != TRUE)
 			usr.client.prefs.blocked_slot = TRUE
 			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
 			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))
@@ -92,7 +92,7 @@
 		make_me_an_observer()
 		return TRUE
 	if(href_list["late_join"])
-		if(usr.client.prefs.invalid_disciplines_block())
+		if(usr.client.prefs.invalid_disciplines_block()) && usr.client.prefs.blocked_slot != TRUE
 			usr.client.prefs.blocked_slot = TRUE
 			to_chat(usr, span_boldwarning("Слот заблокирован так как у персонажа обнаружено слишком много дисциплин. Напишите в ахелп для их удаления."))
 			to_chat(usr, span_boldwarning("Кол-во разрешенных изучаемых дисциплин (Learnable_by_clans) - 2. Кол-во разрешенных обычных дисциплин - 1."))

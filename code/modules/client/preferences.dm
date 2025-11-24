@@ -2997,25 +2997,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	character.attributes.intelligence = min(get_gen_attribute_limit("Intelligence"), Intelligence)
 	character.attributes.wits = min(get_gen_attribute_limit("Wits"), Wits)
 
-	character.attributes.Alertness = Alertness
-	character.attributes.Athletics = Athletics
-	character.attributes.Brawl = Brawl
-	character.attributes.Empathy = Empathy
-	character.attributes.Intimidation = Intimidation
-	character.attributes.Expression = Expression
+	character.attributes.Alertness = min(Alertness, calc_max_abilities_score("Alertness"))
+	character.attributes.Athletics =min(Athletics, calc_max_abilities_score("Athletics"))
+	character.attributes.Brawl = min(Brawl, calc_max_abilities_score("Brawl"))
+	character.attributes.Empathy = min(Empathy, calc_max_abilities_score("Empathy"))
+	character.attributes.Intimidation = min(Intimidation, calc_max_abilities_score("Intimidation"))
+	character.attributes.Expression = min(Expression, calc_max_abilities_score("Expression"))
 
-	character.attributes.Crafts = Crafts
-	character.attributes.Melee = Melee
-	character.attributes.Firearms = Firearms
-	character.attributes.Drive = Drive
-	character.attributes.Security = Security
-	character.attributes.Fleshcraft = Fleshcraft
+	character.attributes.Crafts = min(Crafts, calc_max_abilities_score("Crafts"))
+	character.attributes.Melee = min(Melee, calc_max_abilities_score("Melee"))
+	character.attributes.Firearms = min(Firearms, calc_max_abilities_score("Firearms"))
+	character.attributes.Drive = min(Drive, calc_max_abilities_score("Drive"))
+	character.attributes.Security = min(Security, calc_max_abilities_score("Security"))
+	character.attributes.Fleshcraft = min(Fleshcraft, calc_max_abilities_score("Fleshcraft"))
 
-	character.attributes.Finance = Finance
-	character.attributes.Investigation = Investigation
-	character.attributes.Medicine = Medicine
-	character.attributes.Linguistics = Linguistics
-	character.attributes.Occult = Occult
+	character.attributes.Finance = min(Finance, calc_max_abilities_score("Finance"))
+	character.attributes.Investigation = min(Investigation, calc_max_abilities_score("Investigation"))
+	character.attributes.Medicine = min(Medicine, calc_max_abilities_score("Medicine"))
+	character.attributes.Linguistics = min(Linguistics, calc_max_abilities_score("Linguistics"))
+	character.attributes.Occult = min(Occult, calc_max_abilities_score("Occult"))
 
 /*
 	character.physique = physique

@@ -9,6 +9,7 @@
 	var/yang_chi = 1
 	var/yin_chi = 1
 	var/wall_rating = VERY_HIGH_WALL_RATING
+	var/teleportable = FALSE
 
 /area/vtm
 	name = "San Francisco"
@@ -55,6 +56,7 @@
 	upper = FALSE
 	fire_controled = TRUE
 	wall_rating = LOW_WALL_RATING
+	teleportable = TRUE
 
 /area/vtm/interior/giovanni
 	name = "Giovanni Mansion"
@@ -112,6 +114,7 @@
 	yang_chi = 0
 	yin_chi = 2
 	wall_rating = LOW_WALL_RATING
+	teleportable = TRUE
 
 /area/vtm/financialdistrict
 	name = "Financial District"
@@ -145,6 +148,7 @@
 	music = /datum/vampiremusic/chinatown
 	upper = TRUE
 	wall_rating = LOW_WALL_RATING	//Kinda chinatown is part of asia and has some deeper connection?
+	teleportable = TRUE
 
 /area/vtm/fishermanswharf
 	name = "Fisherman's Wharf"
@@ -283,6 +287,7 @@
 	ambience_index = AMBIENCE_INTERIOR
 	upper = FALSE
 	wall_rating = LOW_WALL_RATING
+	teleportable = TRUE
 
 /area/vtm/graveyard
 	name = "Graveyard"
@@ -294,6 +299,7 @@
 	yang_chi = 0
 	yin_chi = 2
 	wall_rating = LOW_WALL_RATING
+	teleportable = TRUE
 
 /area/vtm/graveyard/interior
 	name = "Graveyard Interior"
@@ -378,6 +384,7 @@
 	yang_chi = 2
 	yin_chi = 0
 	wall_rating = LOW_WALL_RATING	//for werewolves in future
+	teleportable = TRUE
 
 /area/vtm/interior/glasswalker
 	name = "Glasswalker's Lab"
@@ -422,6 +429,7 @@
 	zone_type = "battle"
 	fire_controled = FALSE
 	wall_rating = LOW_WALL_RATING
+	teleportable = TRUE
 
 //MUSIC
 

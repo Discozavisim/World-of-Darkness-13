@@ -41,9 +41,9 @@
 	..()
 	switch(level_casting)
 		if(1)
-			caster.invisibility = INVISIBILITY_LEVEL_OBFUSCATE
+			caster.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
 			caster.alpha = 100
-			caster.obfuscate_level = 3
+			caster.obfuscate_level = level
 			spawn(delay+caster.discipline_time_plus)
 				if(caster)
 					caster.obfuscate_level = 0
@@ -58,7 +58,7 @@
 				light_source.set_light(0)
 				qdel(light_source)
 		if(3)
-			for(var/mob/living/affected_mob in oviewers(5, caster))
+			for(var/mob/living/affected_mob in oviewers(7, caster))
 				affected_mob.AdjustKnockdown(2 SECONDS)
 				affected_mob.adjustStaminaLoss(50, TRUE)
 			var/matrix/double_size = matrix()

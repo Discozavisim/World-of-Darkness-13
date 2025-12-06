@@ -127,12 +127,12 @@
 				inflating_matrix.Scale(1.2, 1)
 				var/matrix/initial = caster.transform
 				animate(caster, transform = inflating_matrix, 1 SECONDS)
-				caster.attributes.bloodshield_bonus = 3
+				caster.attributes.bloodshield_bonus += level
 				caster.add_movespeed_modifier(/datum/movespeed_modifier/blood_fat)
 				spawn(delay+caster.discipline_time_plus)
 					if(caster)
 						animate(caster, transform = initial, 1 SECONDS)
-						caster.attributes.bloodshield_bonus = 0
+						caster.attributes.bloodshield_bonus -= 0
 						caster.remove_movespeed_modifier(/datum/movespeed_modifier/blood_fat)
 			else if(result == "Shrink")
 				var/matrix/shrinking_matrix = matrix()

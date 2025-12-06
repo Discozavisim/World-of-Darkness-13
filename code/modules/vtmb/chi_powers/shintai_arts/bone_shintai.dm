@@ -37,7 +37,7 @@
 		if(1)
 			ADD_TRAIT(caster, TRAIT_NOSOFTCRIT, MAGIC_TRAIT)
 			ADD_TRAIT(caster, TRAIT_NOHARDCRIT, MAGIC_TRAIT)
-			caster.attributes.stamina_bonus += 3
+			caster.attributes.stamina_bonus += level
 			caster.add_movespeed_modifier(/datum/movespeed_modifier/necroing)
 			var/initial_limbs_id = caster.dna.species.limbs_id
 			caster.dna.species.limbs_id = "rotten1"
@@ -47,7 +47,7 @@
 				if(caster)
 					REMOVE_TRAIT(caster, TRAIT_NOSOFTCRIT, MAGIC_TRAIT)
 					REMOVE_TRAIT(caster, TRAIT_NOHARDCRIT, MAGIC_TRAIT)
-					caster.attributes.stamina_bonus -= 3
+					caster.attributes.stamina_bonus -= level
 					caster.remove_movespeed_modifier(/datum/movespeed_modifier/necroing)
 					caster.dna.species.limbs_id = initial_limbs_id
 					caster.update_body()
@@ -86,7 +86,7 @@
 		if(5)
 			ADD_TRAIT(caster, TRAIT_NOSOFTCRIT, MAGIC_TRAIT)
 			ADD_TRAIT(caster, TRAIT_NOHARDCRIT, MAGIC_TRAIT)
-			caster.attributes.stamina_bonus += 3
+			caster.attributes.stamina_bonus += level
 			caster.unique_body_sprite = "rotten1"
 			caster.update_body()
 			caster.set_light(1.4,5,"#34D352")
@@ -95,7 +95,7 @@
 				if(caster)
 					REMOVE_TRAIT(caster, TRAIT_NOSOFTCRIT, MAGIC_TRAIT)
 					REMOVE_TRAIT(caster, TRAIT_NOHARDCRIT, MAGIC_TRAIT)
-					caster.attributes.stamina_bonus -= 3
+					caster.attributes.stamina_bonus -= level
 					caster.unique_body_sprite = null
 					caster.update_body()
 					caster.set_light(0)
@@ -104,7 +104,7 @@
 /datum/chi_discipline/bone_shintai/proc/freezing_aura_loop(mob/living/carbon/human/caster, duration)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/carbon/frozen_mob in oviewers(3, caster))
+		for(var/mob/living/carbon/frozen_mob in oviewers(7, caster))
 			frozen_mob.do_jitter_animation(1 SECONDS)
 			frozen_mob.adjust_bodytemperature(-15)
 

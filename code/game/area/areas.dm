@@ -113,6 +113,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			continue
 		if (!AR.contents.len)
 			continue
+		if(!AR.teleportable)
+			continue
 		var/turf/picked = AR.contents[1]
 		if (picked && is_station_level(picked.z))
 			GLOB.teleportlocs[AR.name] = AR

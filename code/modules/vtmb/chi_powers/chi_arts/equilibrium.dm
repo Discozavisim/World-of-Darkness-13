@@ -69,7 +69,7 @@
 				caster.yang_chi += actually_shifted
 				to_chat(caster, "<span class='warning'>You put your Demon into your Yang.</span>")
 		if(3)
-			for(var/mob/living/carbon/human/affected_mob in oviewers(5, caster))
+			for(var/mob/living/carbon/human/affected_mob in oviewers(7, caster))
 				affected_mob.attributes.strength_bonus += 2
 				affected_mob.attributes.dexterity_bonus += 2
 				affected_mob.attributes.stamina_bonus += 2
@@ -88,7 +88,7 @@
 						affected_mob.attributes.stamina_bonus -= 2
 						REMOVE_TRAIT(affected_mob, TRAIT_IGNORESLOWDOWN, SPECIES_TRAIT)
 		if(4)
-			for(var/mob/living/affected_mob in oviewers(5, caster))
+			for(var/mob/living/affected_mob in oviewers(7, caster))
 				affected_mob.AdjustKnockdown(2 SECONDS, TRUE)
 				affected_mob.emote("scream")
 				playsound(get_turf(affected_mob), 'code/modules/wod13/sounds/vicissitude.ogg', 75, FALSE)

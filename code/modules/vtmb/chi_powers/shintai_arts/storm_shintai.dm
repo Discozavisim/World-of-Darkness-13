@@ -119,10 +119,13 @@
 			fortitude_overlay.pixel_y = -16
 			caster.overlays_standing[FORTITUDE_LAYER] = fortitude_overlay
 			caster.apply_overlay(FORTITUDE_LAYER)
-			spawn(delay+caster.discipline_time_plus)
+			spawn((delay+caster.discipline_time_plus) - 3 SECONDS)
 				if(caster)
-					caster.dna.species.ToggleFlight(caster)
-					caster.remove_overlay(FORTITUDE_LAYER)
+					to_chat(caster, span_warning("Your flying ability is about to end!"))
+				spawn(3 SECONDS)
+					if(caster)
+						caster.dna.species.ToggleFlight(caster)
+						caster.remove_overlay(FORTITUDE_LAYER)
 		if(5)
 			caster.remove_overlay(FORTITUDE_LAYER)
 			var/mutable_appearance/fortitude_overlay = mutable_appearance('code/modules/wod13/icons.dmi', "puff_const", -FORTITUDE_LAYER)
@@ -138,7 +141,7 @@
 /datum/chi_discipline/storm_shintai/proc/wind_aura_loop(mob/living/carbon/human/caster, duration)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/pushed_by_wind in oviewers(2, caster))
+		for(var/mob/living/pushed_by_wind in oviewers(7, caster))
 			step_away(pushed_by_wind, caster)
 
 		sleep(1 SECONDS)
@@ -146,7 +149,7 @@
 /datum/chi_discipline/storm_shintai/proc/storm_aura_loop(mob/living/carbon/human/caster, duration)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/shocked_mob in oviewers(2, caster))
+		for(var/mob/living/shocked_mob in oviewers(7, caster))
 			if(prob(25))
 				var/turf/lightning_source = get_turf(caster)
 				lightning_source.Beam(shocked_mob, icon_state="lightning[rand(1,12)]", time = 0.5 SECONDS)

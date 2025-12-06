@@ -41,33 +41,36 @@
 					REMOVE_TRAIT(caster, TRAIT_SUPERNATURAL_DEXTERITY, "jade shintai 2")
 		if(3)
 			ADD_TRAIT(caster, TRAIT_PASS_THROUGH_WALLS, "jade shintai 3")
-			caster.invisibility = INVISIBILITY_LEVEL_OBFUSCATE
+			caster.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+level
 			caster.alpha = 100
-			caster.obfuscate_level = 3
+			caster.obfuscate_level = level
 			caster.add_movespeed_modifier(/datum/movespeed_modifier/wall_passing)
 			spawn(delay+caster.discipline_time_plus)
 				if(caster)
-					caster.obfuscate_level = 0
-					caster.alpha = 255
 					caster.invisibility = initial(caster.invisibility)
+					caster.alpha = 255
+					caster.obfuscate_level = 0
 					REMOVE_TRAIT(caster, TRAIT_PASS_THROUGH_WALLS, "jade shintai 3")
 					caster.remove_movespeed_modifier(/datum/movespeed_modifier/wall_passing)
 		if(4)
 			caster.dna.species.ToggleFlight(caster)
-			spawn(delay+caster.discipline_time_plus)
+			spawn((delay+caster.discipline_time_plus) - 3 SECONDS)
 				if(caster)
-					caster.dna.species.ToggleFlight(caster)
+					to_chat(caster, span_warning("Your flying ability is about to end!"))
+				spawn(3 SECONDS)
+					if(caster)
+						caster.dna.species.ToggleFlight(caster)
 		if(5)
 			caster.remove_overlay(POTENCE_LAYER)
 			var/mutable_appearance/fortitude_overlay = mutable_appearance('code/modules/wod13/icons.dmi', "[caster.base_body_mod]rock", -POTENCE_LAYER)
 			caster.overlays_standing[POTENCE_LAYER] = fortitude_overlay
 			caster.apply_overlay(POTENCE_LAYER)
-			caster.attributes.stamina_bonus += 3
-			caster.attributes.potence_bonus += 5
+			caster.attributes.stamina_bonus += level
+			caster.attributes.potence_bonus += level
 			ADD_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)
 			spawn(delay+caster.discipline_time_plus)
 				if(caster)
-					caster.attributes.stamina_bonus -= 3
-					caster.attributes.potence_bonus -= 5
+					caster.attributes.stamina_bonus -= level
+					caster.attributes.potence_bonus -= level
 					caster.remove_overlay(POTENCE_LAYER)
 					REMOVE_TRAIT(caster, TRAIT_NONMASQUERADE, TRAUMA_TRAIT)

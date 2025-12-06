@@ -164,9 +164,9 @@
 /datum/chi_discipline/demon_shintai/proc/foul_aura_loop(mob/living/carbon/human/caster, duration, strength)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/carbon/grossed_out_mob in oviewers(3, caster))
+		for(var/mob/living/carbon/grossed_out_mob in oviewers(7, caster))
 			if(prob(strength))
-				grossed_out_mob.Unconscious(0.5 SECONDS)
+				grossed_out_mob.Unconscious(0.5*strength SECONDS)
 			grossed_out_mob.adjust_blurriness(strength * 5)
 
 		sleep(3 SECONDS)

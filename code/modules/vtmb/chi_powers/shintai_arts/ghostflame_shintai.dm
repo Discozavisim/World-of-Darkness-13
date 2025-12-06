@@ -18,12 +18,13 @@
 	attack_verb_simple = "burn"
 	attack_sound = 'sound/effects/extinguish.ogg'
 	speak_chance = 0
-	turns_per_move = 3
+	turns_per_move = 5
 	see_in_dark = 6
 	ventcrawler = VENTCRAWLER_ALWAYS
 	pass_flags = PASSTABLE
 	mob_size = MOB_SIZE_SMALL
 	mob_biotypes = MOB_UNDEAD
+	density = FALSE
 	minbodytemp = 200
 	maxbodytemp = 400
 	unsuitable_atmos_damage = 1
@@ -145,7 +146,7 @@
 /datum/chi_discipline/ghost_flame_shintai/proc/burning_aura_loop(mob/living/carbon/human/caster, duration)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/carbon/burned_mob in oviewers(3, caster))
+		for(var/mob/living/carbon/burned_mob in oviewers(7, caster))
 			burned_mob.adjustFireLoss(10, TRUE)
 			burned_mob.adjust_bodytemperature(15)
 

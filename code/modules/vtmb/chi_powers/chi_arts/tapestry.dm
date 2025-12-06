@@ -91,37 +91,37 @@
 					caster.update_sight()
 		if(2)
 			var/chosen_z
-			var/umbra_z
 			var/obj/penumbra_ghost/ghost
+			var/in_umbra = FALSE
 
 			if(istype(caster.loc, /obj/penumbra_ghost))
 				ghost = caster.loc
+				in_umbra = TRUE
 
 			for(var/area/vtm/interior/penumbra/penumbra in world)
 				if(penumbra)
 					chosen_z = penumbra.z
-					umbra_z = penumbra.z
 
-			if(caster.z != chosen_z)
-				prev_z = caster.z
-			else
+			if(in_umbra)
 				chosen_z = prev_z
-				var/turf/caster_turf = get_turf(caster)
-				var/turf/to_wall = locate(caster_turf.x, caster_turf.y, chosen_z)
-				var/area/cross_area = get_area(to_wall)
-				if(cross_area)
-					if(cross_area.wall_rating > 1)
-						to_chat(caster, "<span class='warning'><b>GAUNTLET</b> rating there is too high! You can't cross <b>PENUMBRA</b> like this...</span>")
-						caster.yin_chi += 1
-						caster.yang_chi += 1
-						return
+			else
+				prev_z = caster.z
+
+			var/turf/caster_turf = get_turf(caster)
+			var/turf/to_wall = locate(caster_turf.x, caster_turf.y, chosen_z)
+			var/area/cross_area = get_area(to_wall)
+			if(cross_area && cross_area.wall_rating > 1)
+				to_chat(caster, span_warning("<b>GAUNTLET</b> rating there is too high!"))
+				caster.yin_chi++
+				caster.yang_chi++
+				return
 
 			if(do_mob(caster, caster, delay))
-				if(chosen_z != umbra_z)
+				if(in_umbra)
 					var/atom/myloc = caster.loc
 					caster.forceMove(locate(myloc.x, myloc.y, chosen_z))
-					if(ghost)
-						qdel(ghost)
+					qdel(ghost)
+					prev_z = null
 				else
 					caster.z = chosen_z
 					ghost = new (get_turf(caster))
@@ -129,6 +129,7 @@
 					ghost.name = caster.name
 					ghost.alpha = 128
 					caster.forceMove(ghost)
+
 				playsound(get_turf(caster), 'code/modules/wod13/sounds/portal.ogg', 100, TRUE)
 		if(3)
 			ADD_TRAIT(caster, TRAIT_SUPERNATURAL_LUCK, "tapestry 3")

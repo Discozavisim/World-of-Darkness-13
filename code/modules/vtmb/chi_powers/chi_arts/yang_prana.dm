@@ -70,7 +70,7 @@
 /datum/chi_discipline/yang_prana/proc/yang_mantle_loop(mob/living/carbon/human/caster, duration)
 	var/loop_started_time = world.time
 	while (world.time <= (loop_started_time + duration))
-		for(var/mob/living/viewing_mantle in oviewers(3, caster))
+		for(var/mob/living/viewing_mantle in oviewers(7, caster))
 			if(prob(20))
 				viewing_mantle.flash_act(affect_silicon = 1)
 

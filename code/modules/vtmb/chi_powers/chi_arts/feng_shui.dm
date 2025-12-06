@@ -76,7 +76,7 @@
 				to_chat(caster, "You don't seem to have last attacked soul earlier...")
 				return
 		if(4)
-			for(var/mob/living/affected_mob in oviewers(5, caster))
+			for(var/mob/living/affected_mob in oviewers(7, caster))
 				ADD_TRAIT(affected_mob, TRAIT_PACIFISM, MAGIC_TRAIT)
 				affected_mob.add_movespeed_modifier(/datum/movespeed_modifier/pacifisting)
 				affected_mob.emote("stare")
@@ -85,37 +85,32 @@
 						REMOVE_TRAIT(affected_mob, TRAIT_PACIFISM, MAGIC_TRAIT)
 						affected_mob.remove_movespeed_modifier(/datum/movespeed_modifier/pacifisting)
 		if(5)
-			var/atom/movable/visual1 = new (get_step(caster, caster.dir))
-			visual1.density = TRUE
-			visual1.anchored = TRUE
-			visual1.layer = ABOVE_ALL_MOB_LAYER
-			visual1.icon = 'icons/effects/effects.dmi'
-			visual1.icon_state = "static_base"
-			visual1.alpha = 128
-			var/atom/movable/visual2 = new (get_step(caster, turn(caster.dir, 90)))
-			visual2.density = TRUE
-			visual2.anchored = TRUE
-			visual2.layer = ABOVE_ALL_MOB_LAYER
-			visual2.icon = 'icons/effects/effects.dmi'
-			visual2.icon_state = "static_base"
-			visual2.alpha = 128
-			var/atom/movable/visual3 = new (get_step(caster, turn(caster.dir, -90)))
-			visual3.density = TRUE
-			visual3.anchored = TRUE
-			visual3.layer = ABOVE_ALL_MOB_LAYER
-			visual3.icon = 'icons/effects/effects.dmi'
-			visual3.icon_state = "static_base"
-			visual3.alpha = 128
-			var/atom/movable/visual4 = new (get_step(caster, turn(caster.dir, 180)))
-			visual4.density = TRUE
-			visual4.anchored = TRUE
-			visual4.layer = ABOVE_ALL_MOB_LAYER
-			visual4.icon = 'icons/effects/effects.dmi'
-			visual4.icon_state = "static_base"
-			visual4.alpha = 128
+			var/list/visuals = list()
+
+			for(var/dx = -2 to 2)
+				for(var/dy = -2 to 2)
+
+					// пропускаем центр + клеточки вокруг (то есть квадрат 3×3)
+					if(abs(dx) <= 1 && abs(dy) <= 1)
+						continue
+
+					var/turf/T = locate(caster.x + dx, caster.y + dy, caster.z)
+					if(!T)
+						continue
+
+					var/atom/movable/V = new /atom/movable(T)
+					V.density = TRUE
+					V.anchored = TRUE
+					V.layer = ABOVE_ALL_MOB_LAYER
+					V.name = "static"
+					V.icon = 'icons/effects/effects.dmi'
+					V.icon_state = "static_base"
+					V.alpha = 128
+
+					visuals += V
+
 			playsound(get_turf(caster), 'sound/effects/smoke.ogg', 50, TRUE)
-			spawn(delay+caster.discipline_time_plus)
-				qdel(visual1)
-				qdel(visual2)
-				qdel(visual3)
-				qdel(visual4)
+
+			spawn(delay + caster.discipline_time_plus)
+				for(var/V in visuals)
+					qdel(V)

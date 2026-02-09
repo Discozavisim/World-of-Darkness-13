@@ -225,58 +225,46 @@
 		return 1
 
 /mob/living/carbon/proc/dismembering_strike(mob/living/attacker, dam_zone, bypass_damage_check = FALSE)
-	if(attacker.limb_destroyer || get_potence_dices(attacker) >= 1)
-		if(iskindred(attacker) || isgarou(attacker) || iswerewolf(attacker))
-			var/list/missing = get_missing_limbs()
-			var/list/needed = list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
-			var/all_missing = TRUE
-			for(var/zone in needed)
-				if(!(zone in missing))
-					all_missing = FALSE
-			if(all_missing)
-				var/obj/item/bodypart/head = get_bodypart(ran_zone(BODY_ZONE_HEAD))
-				if(head)
-					head.dismember()
-		var/obj/item/bodypart/affecting
-		if(dam_zone && attacker.client)
-			affecting = get_bodypart(ran_zone(dam_zone))
-			if(!affecting)
-				var/list/things_to_ruin = shuffle(bodyparts.Copy())
-				for(var/B in things_to_ruin)
-					var/obj/item/bodypart/bodypart = B
-					if(bodypart.body_zone == BODY_ZONE_CHEST)
-						continue
-					if(bodypart.body_zone == BODY_ZONE_HEAD)
-						continue
-					if(!affecting || bypass_damage_check || ((affecting.get_damage() / affecting.max_damage) < (bodypart.get_damage() / bodypart.max_damage)))
-						affecting = bodypart
-		else
-			var/list/things_to_ruin = shuffle(bodyparts.Copy())
-			for(var/B in things_to_ruin)
-				var/obj/item/bodypart/bodypart = B
-				if(bodypart.body_zone == BODY_ZONE_CHEST)
-					continue
-				if(bodypart.body_zone == BODY_ZONE_HEAD)
-					continue
-				if(!affecting || bypass_damage_check || ((affecting.get_damage() / affecting.max_damage) < (bodypart.get_damage() / bodypart.max_damage)))
-					affecting = bodypart
+	if(!(attacker.limb_destroyer || get_potence_dices(attacker) >= 1))
+		return dam_zone
+	if(!(iskindred(attacker) || isgarou(attacker) || iswerewolf(attacker)))
+		return dam_zone
 
-		if(affecting)
-			dam_zone = affecting.body_zone
-			if(affecting.body_zone == BODY_ZONE_HEAD && ((affecting.get_damage(include_clone = TRUE) >= affecting.max_damage) || bypass_damage_check))
-				var/list/limbs = list()
-				for(var/obj/item/bodypart/B in bodyparts)
-					if(B.body_zone in list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG))
-						if(bypass_damage_check || (B.get_damage(include_clone = TRUE) < B.max_damage))
-							limbs += B
-				if(limbs.len)
-					affecting = pick(limbs)
-					dam_zone = affecting.body_zone
+	var/list/missing_zones = get_missing_limbs()
+	var/list/required_zones = list(BODY_ZONE_R_ARM, BODY_ZONE_L_ARM, BODY_ZONE_R_LEG, BODY_ZONE_L_LEG)
+	var/all_required_missing = TRUE
+	for(var/zone in required_zones)
+		if(!(zone in missing_zones))
+			all_required_missing = FALSE
+			break
+	if(all_required_missing)
+		var/obj/item/bodypart/head_part = get_bodypart(BODY_ZONE_HEAD)
+		if(head_part)
+			head_part.dismember()
+			return null
 
-			if(affecting.body_zone != BODY_ZONE_HEAD && ((affecting.get_damage(include_clone = TRUE) >= affecting.max_damage) || bypass_damage_check))
-				affecting.dismember()
-				return null
-			return affecting.body_zone
+	var/obj/item/bodypart/affecting
+	if(dam_zone && attacker.client)
+		affecting = get_bodypart(ran_zone(dam_zone))
+	if(!affecting)
+		var/list/bodyparts_to_check = shuffle(bodyparts.Copy())
+		for(var/obj/item/bodypart/chosen_bodypart in bodyparts_to_check)
+			if(chosen_bodypart.body_zone == BODY_ZONE_CHEST)
+				continue
+			if(chosen_bodypart.body_zone == BODY_ZONE_HEAD)
+				continue
+			if(!affecting || bypass_damage_check || ((affecting.get_damage() / affecting.max_damage) < (chosen_bodypart.get_damage() / chosen_bodypart.max_damage)))
+				affecting = chosen_bodypart
+	if(!affecting)
+		return dam_zone
+
+	dam_zone = affecting.body_zone
+	if((affecting.body_zone == BODY_ZONE_HEAD || affecting.body_zone == BODY_ZONE_CHEST) && !all_required_missing)
+		return dam_zone
+	if((affecting.get_damage(include_clone = TRUE) >= affecting.max_damage) || bypass_damage_check)
+		affecting.dismember()
+		return null
+
 	return dam_zone
 
 /**

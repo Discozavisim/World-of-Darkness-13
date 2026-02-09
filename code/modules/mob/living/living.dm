@@ -194,7 +194,7 @@
 					upper_limit = 50
 				else if(get_celerity_dices(bumper) >= 3)
 					damage = damage * 5
-				if(bumped.attributes.fortitude_bonus >= 0)
+				if(bumped.attributes.fortitude_bonus >= 1)
 					bumper.Knockdown(1 SECONDS)
 					bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
 					bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)

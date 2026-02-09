@@ -352,6 +352,22 @@
 	display_name = "tie, blue"
 	path = /obj/item/clothing/neck/tie/blue
 
+/datum/gear/neck/tie/btie
+	display_name = "bow tie, red"
+	path = /obj/item/clothing/neck/vampire/btie
+
+/datum/gear/neck/tie/jabo
+	display_name = "jabo, black"
+	path = /obj/item/clothing/neck/vampire/jabo
+
+/datum/gear/neck/tie/jabored
+	display_name = "jabo, red"
+	path = /obj/item/clothing/neck/vampire/jabo/red
+
+/datum/gear/neck/tie/jabowhite
+	display_name = "jabo, white"
+	path = /obj/item/clothing/neck/vampire/jabo/white
+
 //////////////////////////////// SUITS || КОСТЮМЫ ////////////////////////////////
 
 /datum/gear/suit
@@ -425,14 +441,43 @@
 	display_name = "jacket, black suit"
 	path = /obj/item/clothing/suit/toggle/lawyer/black
 
+/datum/gear/suit/jacket/plainjacket
+	display_name = "jacket, plain"
+	path = /obj/item/clothing/suit/vampire/jacket/better/plain
+
 // Trenchcoats
 /datum/gear/suit/trenchcoat
 	subtype_path = /datum/gear/suit/trenchcoat
 
+/datum/gear/suit/trenchcoat/gray
+	display_name = "trenchcoat, gray"
+	description = "Best noir clothes for night."
+	path = /obj/item/clothing/suit/vampire/trench
+
 /datum/gear/suit/trenchcoat/black
 	display_name = "trenchcoat, black"
 	description = "Best noir clothes for night."
-	path = /obj/item/clothing/suit/vampire/trench
+	path = /obj/item/clothing/suit/vampire/trench/black
+
+/datum/gear/suit/trenchcoat/white
+	display_name = "trenchcoat, white"
+	description = "Best noir clothes for night."
+	path = /obj/item/clothing/suit/vampire/trench/white
+
+/datum/gear/suit/trenchcoat/red
+	display_name = "trenchcoat, red"
+	description = "Best noir clothes for night."
+	path = /obj/item/clothing/suit/vampire/trench/red
+
+/datum/gear/suit/trenchcoat/blackred
+	display_name = "trenchcoat, red and black"
+	description = "Best noir clothes for night."
+	path = /obj/item/clothing/suit/vampire/trench/blackred
+
+/datum/gear/suit/trenchcoat/redblack
+	display_name = "trenchcoat, red and black (Alt)"
+	description = "Best noir clothes for night."
+	path = /obj/item/clothing/suit/vampire/trench/redblack
 
 /datum/gear/suit/trenchcoat/brown
 	display_name = "trenchcoat, brown"
@@ -566,6 +611,11 @@
 	description = "Some business clothes." // Consistency!
 	path = /obj/item/clothing/under/vampire/archivist/female
 
+/datum/gear/uniform/suit/calico
+	display_name = "plain suit, red and black"
+	description = "Some business clothes."
+	path = /obj/item/clothing/under/vampire/calico
+
 /datum/gear/uniform/suit/prince
 	display_name = "prince suit"
 	path = /obj/item/clothing/under/vampire/prince
@@ -602,6 +652,10 @@
 /datum/gear/uniform/turtleneck/red
 	display_name = "turtleneck, red"
 	path = /obj/item/clothing/under/vampire/turtleneck_red
+
+/datum/gear/uniform/turtleneck/bloodred
+	display_name = "turtleneck, bloodred"
+	path = /obj/item/clothing/under/vampire/red_turtleneck
 
 /datum/gear/uniform/turtleneck/white
 	display_name = "turtleneck, white"

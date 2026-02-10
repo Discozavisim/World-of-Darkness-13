@@ -141,6 +141,15 @@
 	desc = "A white turtleneck for hansome man."
 	icon_state = "turtleneck_white"
 
+/obj/item/clothing/under/vampire/calico
+	name = "Calico suit"
+	desc = "A suit for a real business."
+	icon_state = "calico"
+
+/obj/item/clothing/under/vampire/red_turtleneck
+	name = "Bloodred turtleneck"
+	desc = "Some usual clothes."
+	icon_state = "tremere_turtleneck" //*whistle...
 
 /obj/item/clothing/under/vampire/kon4atel
 	name = "Black T-short"
@@ -718,6 +727,9 @@
 	icon_state = "jacket2"
 	armor = list(BASHING = 2, LETHAL = 2, AGGRAVATED = 0, MELEE = 35, BULLET = 35, LASER = 10, ENERGY = 10, BOMB = 35, BIO = 0, RAD = 0, FIRE = 35, ACID = 10, WOUND = 35)
 
+/obj/item/clothing/suit/vampire/jacket/better/plain
+	icon_state = "plain_jacket"
+
 /obj/item/clothing/suit/vampire/jacket/better/armored
 	name = "armored leather jacket"
 	armor = list(BASHING = 2, LETHAL = 2, AGGRAVATED = 0, MELEE = 45, BULLET = 45, LASER = 10, ENERGY = 10, BOMB = 35, BIO = 0, RAD = 0, FIRE = 45, ACID = 10, WOUND = 35)
@@ -727,6 +739,21 @@
 	desc = "Best noir clothes for night. Provides some kind of protection."
 	icon_state = "trench1"
 	armor = list(BASHING = 2, LETHAL = 2, AGGRAVATED = 0, MELEE = 25, BULLET = 25, LASER = 10, ENERGY = 10, BOMB = 25, BIO = 0, RAD = 0, FIRE = 25, ACID = 10, WOUND = 25)
+
+/obj/item/clothing/suit/vampire/trench/white
+	icon_state = "trench1w"
+
+/obj/item/clothing/suit/vampire/trench/black
+	icon_state = "trench1b"
+
+/obj/item/clothing/suit/vampire/trench/red
+	icon_state = "trench4"
+
+/obj/item/clothing/suit/vampire/trench/blackred
+	icon_state = "trench5"
+
+/obj/item/clothing/suit/vampire/trench/redblack
+	icon_state = "trench6"
 
 /obj/item/clothing/suit/vampire/trench/armored
 	name = "armored trenchcoat"
@@ -1289,6 +1316,24 @@
 	name = "prayer beads"
 	desc = "These beads are used for prayer."
 	icon_state = "beads"
+
+/obj/item/clothing/neck/vampire/jabo
+	name = "black jabot"
+	desc = "Very gothic!"
+	icon_state = "jabo1"
+
+/obj/item/clothing/neck/vampire/jabo/red
+	name = "red jabot"
+	icon_state = "jabo2"
+
+/obj/item/clothing/neck/vampire/jabo/white
+	name = "white jabot"
+	icon_state = "jabo3"
+
+/obj/item/clothing/neck/vampire/btie
+	name = "red bow tie"
+	desc = "A subject of business style."
+	icon_state = "tie0"
 
 /obj/item/clothing/under/vampire/bacotell
 	desc = "Some BacoTell clothes."

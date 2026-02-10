@@ -228,7 +228,7 @@
 						if(modifikator >= 3)
 							var/obj/item/bodypart/damaged_limb = C.get_bodypart(user.zone_selected)
 
-							if(get_potence_dices(user) >= 5 && !get_fortitude_dices(C))
+							if(get_potence_dices(user) >= 5 && C.attributes.fortitude_bonus < 1)
 								if(user.zone_selected == BODY_ZONE_HEAD || user.zone_selected == BODY_ZONE_CHEST || !damaged_limb)
 									var/list/available_cut_limbs = list()
 									for(var/obj/item/bodypart/B in C.bodyparts)

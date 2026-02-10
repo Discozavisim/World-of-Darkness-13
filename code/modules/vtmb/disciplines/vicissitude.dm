@@ -816,7 +816,7 @@
 	icon = 'code/modules/wod13/weapons.dmi'
 	icon_state = "lasombra"
 	damtype = TOX
-	force = 16
+	force = 20
 	w_class = WEIGHT_CLASS_BULKY
 	block_chance = 10
 	armour_penetration = 10

@@ -49,10 +49,12 @@
 	if(!select)
 		burst_size = 1
 		fire_delay = 0
+		difficult = -1
 		to_chat(user, "<span class='notice'>You switch to semi-automatic.</span>")
 	else
 		burst_size = initial(burst_size)
 		fire_delay = initial(fire_delay)
+		difficult = 0
 		to_chat(user, "<span class='notice'>You switch to [burst_size]-round burst.</span>")
 
 	playsound(user, 'sound/weapons/empty.ogg', 100, TRUE)

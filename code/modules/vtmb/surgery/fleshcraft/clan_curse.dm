@@ -23,7 +23,7 @@
 		span_notice("[user] begins to manipulate [target]'s flesh in truly horrific ways!</span>"))
 
 /datum/surgery_step/add_curse/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	if(target.clan?.name == CLAN_NOSFERATU || target.clan?.name == CLAN_KIASYD || target.clan?.name == CLAN_CAPPADOCIAN || target.clan?.name == CLAN_GARGOYLE) //Clan check, since otherwise this would prevent you reverting appearance for those you curse afterwards.
+	if(target.clane?.name == CLAN_NOSFERATU || target.clane?.name == CLAN_KIASYD || target.clane?.name == CLAN_CAPPADOCIAN || target.clane?.name == CLAN_GARGOYLE) //clane check, since otherwise this would prevent you reverting appearance for those you curse afterwards.
 		addtimer(CALLBACK(target, TYPE_PROC_REF(/mob/living/carbon/human, revert_to_cursed_form)), 6 INGAME_HOURS)//Won't last all night, but takes a good while to heal, given how it's a pain to perform.
 		display_results(user, target, span_notice("[target]'s curse is already attempting to revert them to their cursed original form, it won't last much more than a few hours!"))
 	display_results(user, target, span_notice("You finish reshaping [target]!"),
@@ -40,7 +40,7 @@
 	if (HAS_TRAIT(target, TRAIT_MASQUERADE_VIOLATING_EYES))
 		REMOVE_TRAIT(target, TRAIT_MASQUERADE_VIOLATING_EYES, CLAN_TRAIT)
 	var/mutable_appearance/bodypart_overlay
-	var/list/changes = list("Nosferatu", "Kiasyd", "Cappadocian", "Gargoyle", "Gangrel", "None")
+	var/list/changes = list("Nosferatu", "Kiasyd", "Gargoyle", "Gangrel", "None")
 	var/chosen = tgui_input_list(user, "How shall we change them?", "Curse selection", changes)
 	switch(chosen)
 		if("None")
@@ -65,19 +65,6 @@
 					bodypart_overlay = mutable_appearance('code/modules/wod13/icons.dmi', "fae_ears", -UPPER_EARS_LAYER)
 					target.overlays_standing[UPPER_EARS_LAYER] = bodypart_overlay
 					target.apply_overlay(UPPER_EARS_LAYER)
-		if("Cappadocian")
-			target.set_body_sprite("rotten1")
-			var/list/decay = list("Fresh", "Decaying", "Rotten", "Skeleton")
-			var/selected_age = tgui_input_list(user, "How decayed should they look?", "Decay level selection", decay)
-			switch(selected_age)
-				if("Fresh")
-					target.rot_body(1)
-				if("Decaying")
-					target.rot_body(2)
-				if("Rotten")
-					target.rot_body(3)
-				if("Skeleton")
-					target.rot_body(4)
 		if("Gargoyle")
 			target.set_body_sprite("gargoyle")
 			ADD_TRAIT(target, TRAIT_MASQUERADE_VIOLATING_FACE, CLAN_TRAIT)

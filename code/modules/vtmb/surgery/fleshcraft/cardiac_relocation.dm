@@ -14,6 +14,19 @@
 	replaced_by = null
 	level_req = 5
 
+/datum/bioware/relocated_heart
+	name = "Relocated Heart"
+	desc = "The circulatory system has been completely reworked, and the heart moved into a new location!"
+	mod_type = BIOWARE_CIRCULATION
+
+/datum/bioware/relocated_heart/on_gain()
+	..()
+	owner.stakeimmune = TRUE
+
+/datum/bioware/relocated_heart/on_lose()
+	..()
+	owner.stakeimmune = FALSE
+
 /datum/surgery_step/relocate_heart
 	name = "Relocate Heart"
 	accept_hand = TRUE

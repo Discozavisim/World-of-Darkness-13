@@ -97,10 +97,13 @@
 				if(H.clane.name == "Baali")
 					H.emote("scream")
 					H.pointed(user)
-	M.show_message("<span class='warning'><b>GOD SEES YOU!</b></span>", MSG_AUDIBLE)
+
+	var/affected_by_faith = (ishuman(M) && (iskindred(M) || isghoul(M) || isgarou(M) || iscathayan(M))) || iswerewolf(M)
+	if(affected_by_faith)
+		M.show_message("<span class='warning'><b>GOD SEES YOU!</b></span>", MSG_AUDIBLE)
 	var/distance = max(0,get_dist(get_turf(src),T))
 
-	if(M.flash_act(affect_silicon = 1))
+	if(affected_by_faith && M.flash_act(affect_silicon = 1))
 		M.Immobilize(max(10/max(1,distance), 5))
 
 /obj/item/card/id/hunter/attack(mob/living/target, mob/living/user)

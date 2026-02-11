@@ -31,6 +31,7 @@
 	name = "Relocate Heart"
 	accept_hand = TRUE
 	time = 200 //Takes a long while, you've got to be careful!
+	tzimisce = TRUE
 
 /datum/surgery_step/relocate_heart/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to very, very carefully relocate [target]'s heart..."),

@@ -14,8 +14,9 @@
 
 /datum/surgery_step/reinforce_limb
 	name = "reinforce_limb"
-	implements = list(/obj/item/stack/human_flesh = 100) //A stack, made from several bodies, can't quite reinforce one body. 
+	implements = list(/obj/item/stack/human_flesh = 100) //A stack, made from several bodies, can't quite reinforce one body.
 	time = 125
+	tzimisce = TRUE
 
 /datum/surgery_step/reinforce_limb/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You start wrapping muscle and bone to reinforce [target]'s limbs."),

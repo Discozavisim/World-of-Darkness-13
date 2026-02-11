@@ -19,6 +19,7 @@
 	accept_hand = TRUE
 	time = 20
 	repeatable = TRUE
+	tzimisce = TRUE
 
 /datum/surgery_step/remove_fat/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to pull out [target]'s body fat."),
@@ -35,7 +36,7 @@
 		var/obj/item/stack/human_flesh/F = new (get_turf(target), 3)
 		F.add_fingerprint(user)
 		display_results(user, target, span_notice("You sucessfully make [target] thin! You can't make them any thinner for now!"))
-	else 
+	else
 		display_results(user, target, span_notice("You can't find a way to make [target] any slimmer!"))
 	display_results(user, target, span_notice("[user] pulls out [target]'s flesh in truly horrific ways!</span>"))
 	return TRUE

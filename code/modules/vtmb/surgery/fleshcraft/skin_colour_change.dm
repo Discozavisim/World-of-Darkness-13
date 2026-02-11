@@ -11,6 +11,7 @@
 	accept_hand = TRUE
 	time = 64
 	repeatable = TRUE
+	tzimisce = TRUE
 
 /datum/surgery_step/modify_skin/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to alter [target]'s skin..."),

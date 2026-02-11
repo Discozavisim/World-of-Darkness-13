@@ -15,9 +15,10 @@
 
 /datum/surgery_step/add_fat
 	name = "Add Fat"
-	implements = list(/obj/item/stack/human_flesh = 100)
+	implements = list(/obj/item/stack/human_flesh = 60)
 	time = 20
 	repeatable = TRUE
+	tzimisce = TRUE
 
 /datum/surgery_step/add_fat/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to stretch out [target]'s flesh!"),
@@ -32,7 +33,7 @@
 		target.set_body_model(FAT_BODY_MODEL)
 		tool.use(3)
 		display_results(user, target, span_notice("You sucessfully make [target] fat! You can't make them any larger for now!"))
-	else 
+	else
 		display_results(user, target, span_notice("You can't find a way to make [target] any larger!"))
 	display_results(user, target, span_notice("[user] stretches out [target]'s flesh in truly horrific ways!"))
 	return TRUE

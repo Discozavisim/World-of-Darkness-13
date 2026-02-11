@@ -13,9 +13,10 @@
 
 /datum/surgery_step/add_curse
 	name = "Modify Appearance"
-	implements = list(/obj/item/stack/human_flesh = 100)
+	implements = list(/obj/item/stack/human_flesh = 40)
 	repeatable = TRUE//lets the fleshcrafter try out the options, should allow for easier experimenting with how things look
 	time = 120
+	tzimisce = TRUE
 
 /datum/surgery_step/add_curse/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to reshape [target]..."),

@@ -19,6 +19,7 @@
 	accept_hand = TRUE
 	time = 100
 	repeatable = TRUE
+	tzimisce = TRUE
 
 /datum/surgery_step/extend_spine/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to stretch out [target]'s spine like taffy."),
@@ -31,7 +32,7 @@
 	else if (!target.has_quirk(/datum/quirk/tower))
 		target.add_quirk(/datum/quirk/tower)
 		display_results(user, target, span_notice("You sucessfully make [target] huge! You can't make them any taller for now!"))
-	else 
+	else
 		display_results(user, target, span_notice("You can't find a way to make [target] any taller!"))
 	display_results(user, target, span_notice("[user] stretches out [target]'s flesh in truly horrific ways!"))
 	return TRUE

@@ -12291,6 +12291,12 @@
 /obj/item/megaphone/cargo,
 /turf/open/floor/plating/concrete,
 /area/vtm/supply)
+"aVt" = (
+/obj/vampire_car/rand{
+	access = "police"
+	},
+/turf/open/floor/plating/sidewalk/poor,
+/area/vtm/chinatown)
 "aVu" = (
 /obj/effect/decal/wallpaper/red,
 /turf/closed/wall/vampwall/rich,
@@ -63387,7 +63393,8 @@
 /obj/structure/vampdoor/wood{
 	lock_id = "sabbat";
 	lockpick_difficulty = 8;
-	magic_lock = 1
+	magic_lock = 1;
+	locked = 1
 	},
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior)
@@ -71650,7 +71657,8 @@
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/structure/vampdoor/wood{
 	lock_id = "sabbat";
-	lockpick_difficulty = 8
+	lockpick_difficulty = 8;
+	last_investigation = 1
 	},
 /turf/open/floor/plating/parquetry/old,
 /area/vtm/interior)
@@ -73284,7 +73292,8 @@
 /obj/structure/vampdoor/wood{
 	lock_id = "sabbat";
 	lockpick_difficulty = 8;
-	magic_lock = 1
+	magic_lock = 1;
+	locked = 1
 	},
 /turf/open/floor/plating/sidewalk,
 /area/vtm/interior)
@@ -184736,7 +184745,7 @@ bAy
 vSr
 atL
 boW
-boW
+aVt
 bpx
 bdx
 bdx

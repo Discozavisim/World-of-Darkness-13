@@ -1,42 +1,46 @@
+/obj/item/vamp/keys/camarilla
+	name = "Camarilla keys"
+	accesslocks = list("camarilla")
+	color = "#bd3327"
+
 /obj/item/vamp/keys/prince
-	name = "Millenium Chief Executive Officer keys"
+	name = "Prince's keys"
 	accesslocks = list(
 		"camarilla",
 		"prince",
 		"clerk",
-		"milleniumCommon",
-		"theatre"
+		"archive",
+		"milleniumCommon"
 	)
-	color = "#70202f"
+	color = "#bd3327"
 
 /obj/item/vamp/keys/sheriff
-	name = "Millenium Security Officer keys"
+	name = "Sheriff's keys"
 	accesslocks = list(
 		"camarilla",
 		"prince",
-		"milleniumCommon",
-		"theatre"
+		"archive",
+		"milleniumCommon"
 	)
-	color = "#70202f"
+	color = "#bd3327"
 
 /obj/item/vamp/keys/clerk
-	name = "Millenium Chief Operating Officer keys"
+	name = "Clerk's keys"
 	accesslocks = list(
 		"camarilla",
 		"clerk",
-		"milleniumCommon",
-		"theatre"
+		"archive",
+		"milleniumCommon"
 	)
-	color = "#70202f"
+	color = "#bd3327"
 
 /obj/item/vamp/keys/camarilla
-	name = "Millenium Tower Personnel keys"
+	name = "Millenium Tower keys"
 	accesslocks = list(
 		"milleniumCommon",
-		"camarilla",
-		"theatre"
+		"clerk",
+		"camarilla"
 	)
-	color = "#8f2e40"
 
 /obj/item/vamp/keys/graveyard
 	name = "Graveyard keys"
@@ -49,57 +53,49 @@
 	accesslocks = list(
 		"clinic"
 	)
-	color = "#68b6bd"
 
 /obj/item/vamp/keys/cleaning
 	name = "Cleaning keys"
 	accesslocks = list(
 		"cleaning"
 	)
-	color = "#6c6860"
 
 /obj/item/vamp/keys/church
 	name = "Church keys"
 	accesslocks = list(
 		"church"
 	)
-	color = "#fffb8b"
 
 /obj/item/vamp/keys/archive
-	name = "Chronicler keys"
+	name = "Archive keys"
 	accesslocks = list(
-		"archive",
-		"theatre"
+		"archive"
 	)
-	color = "#704678"
-
 
 /obj/item/vamp/keys/anarch
-	name = "Rebel keys"
+	name = "Anarch keys"
 	accesslocks = list(
-		"anarch",
-		"fightclub"
+		"anarch"
 	)
-	color = "#784234"
+	color = "#434343"
 
 /obj/item/vamp/keys/bar
 	name = "Barkeeper keys"
 	accesslocks = list(
 		"bar",
 		"anarch",
-		"fightclub"
 	)
-	color = "#784234"
+	color = "#434343"
 
 /obj/item/vamp/keys/supply
 	name = "Supply keys"
 	accesslocks = list(
 		"supply"
 	)
-	color = "#6c6860"
+	color = "#434343"
 
 /obj/item/vamp/keys/npc
-	name = "Apartment keys"
+	name = "Some keys"
 	accesslocks = list(
 		"npc"
 	)
@@ -118,24 +114,21 @@
 	accesslocks = list(
 		"police"
 	)
-	color = "#263068"
 
 /obj/item/vamp/keys/police/secure
-	name = "Police Sergeant keys"
+	name = "Sergeant Police keys"
 	accesslocks = list(
 		"police",
 		"police_secure"
 	)
-	color = "#263068"
 
 /obj/item/vamp/keys/police/secure/lieutenant
-	name = "Police Lieutenant keys"
+	name = "Lieutenant keys"
 	accesslocks = list(
 		"police",
 		"police_secure",
 		"police_chief"
 	)
-	color = "#263068"
 
 /obj/item/vamp/keys/strip
 	name = "Strip keys"
@@ -144,21 +137,19 @@
 	)
 
 /obj/item/vamp/keys/giovanni
-	name = "Bianchi Associate keys"
+	name = "Mafia keys"
 	accesslocks = list(
 		"giovanni",
 		"bianchiBank"
 	)
-	color = "#99FF99"
 
 /obj/item/vamp/keys/capo
-	name = "Bianchi Executive keys"
+	name = "Capo keys"
 	accesslocks = list(
 		"bankboss",
 		"bianchiBank",
 		"giovanni"
 	)
-	color = "#66AA66"
 
 /obj/item/vamp/keys/taxi
 	name = "Taxi keys"
@@ -210,31 +201,32 @@
 	name = "Sexy keys"
 	accesslocks = list(
 		"toreador",
-		"strip"
+		"toreador1",
+		"toreador2",
+		"toreador3",
+		"toreador4"
 	)
 	color = "#ffa7e6"
-
-/obj/item/vamp/keys/toreador/primogen
-	name = "Really sexy keys"
-	accesslocks = list(
-		"primToreador",
-		"toreador",
-		"strip"
-	)
-	color = "#ff2fc4"
 
 /obj/item/vamp/keys/banuhaqim
 	name = "Just keys"
 	accesslocks = list(
 		"banuhaqim"
 	)
-	color = "#263068"
+	color = "#06053d"
+
+/obj/item/vamp/keys/toreador/primogen
+	name = "Really sexy keys"
+	accesslocks = list(
+		"primToreador",
+		"toreador"
+	)
+	color = "#ff2fc4"
 
 /obj/item/vamp/keys/nosferatu
 	name = "Ugly keys"
 	accesslocks = list(
-		"nosferatu",
-		"cleaning"
+		"nosferatu"
 	)
 	color = "#93bc8e"
 
@@ -242,16 +234,14 @@
 	name = "Really ugly keys"
 	accesslocks = list(
 		"primNosferatu",
-		"nosferatu",
-		"cleaning"
+		"nosferatu"
 	)
 	color = "#367c31"
 
 /obj/item/vamp/keys/brujah
 	name = "Punk keys"
 	accesslocks = list(
-		"brujah",
-		"fightclub"
+		"brujah"
 	)
 	color = "#ecb586"
 
@@ -259,8 +249,7 @@
 	name = "Really punk keys"
 	accesslocks = list(
 		"primBrujah",
-		"brujah",
-		"fightclub"
+		"brujah"
 	)
 	color = "#ec8f3e"
 
@@ -281,45 +270,28 @@
 	)
 	color = "#e8ff29"
 
-/obj/item/vamp/keys/sabbat
-	name = "Blood-soaked keys"
-	accesslocks = list(
-		"sabbat"
-	)
-	color = "#6c0404"
-
 /obj/item/vamp/keys/triads
-	name = "Guilded keys"
+	name = "Rusty keys"
 	accesslocks = list(
 		"triad",
 		"laundromat"
 	)
-	color = "#fff468"
 
 /obj/item/vamp/keys/pentex
-	name = "Endron Personnel keys"
+	name = "Pentex keys"
 	accesslocks = list(
 		"pentex"
 	)
-	color = "#337852"
-
-/obj/item/vamp/keys/pentextop
-	name = "Endron Executive keys"
-	accesslocks = list(
-		"pentex",
-		"pentextop"
-	)
-	color = "#225d3c"
 
 /obj/item/vamp/keys/children_of_gaia
-	name = "Green-touched keys"
+	name = "Ordinary keys"
 	accesslocks = list(
 		"children"
 	)
-	color = "#578000"
+
 
 /obj/item/vamp/keys/techstore
-	name = "Nightwolf Associate keys"
+	name = "Tech Shop keys"
 	accesslocks = list(
 		"wolftech"
 	)

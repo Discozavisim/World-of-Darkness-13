@@ -1,7 +1,3 @@
-/obj/item/gun
-
-	var/difficult = 0  // For semi-automatic and automatic weapons and rolls
-
 /obj/item/gun/ballistic/vampire
 	icon = 'code/modules/wod13/weapons.dmi'
 	lefthand_file = 'code/modules/wod13/righthand.dmi'
@@ -248,6 +244,7 @@
 	mag_type = /obj/item/ammo_box/magazine/glock9mm
 	burst_size = 3
 	fire_delay = 1
+	actions_types = list()
 	bolt_type = BOLT_TYPE_LOCKING
 	fire_sound = 'code/modules/wod13/sounds/glock.ogg'
 	dry_fire_sound = 'sound/weapons/gun/pistol/dry_fire.ogg'
@@ -285,6 +282,7 @@
 	mag_type = /obj/item/ammo_box/magazine/glock45acp
 	burst_size = 3
 	fire_delay = 1
+	actions_types = list()
 	bolt_type = BOLT_TYPE_LOCKING
 	fire_sound = 'code/modules/wod13/sounds/glock.ogg'
 	dry_fire_sound = 'sound/weapons/gun/pistol/dry_fire.ogg'

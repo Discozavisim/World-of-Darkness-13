@@ -34,10 +34,6 @@
 	grid_width = 2 GRID_BOXES
 	grid_height = 5 GRID_BOXES
 
-/obj/item/storage/belt/vampire/sheathe
-	grid_width = 2 GRID_BOXES
-	grid_height = 5 GRID_BOXES
-
 /obj/item/melee/vampirearms/baseball
 	grid_width = 3 GRID_BOXES
 	grid_height = 1 GRID_BOXES

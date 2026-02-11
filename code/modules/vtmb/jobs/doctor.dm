@@ -83,7 +83,7 @@
 	duty = "Collect blood by helping mortals at the Clinic."
 	experience_addition = 0
 	max_generation = 7
-	allowed_bloodlines = list("Salubri", "Tremere", "Malkavian", "Tzimisce", "Kiasyd", "Caitiff", "Salubri Warrior")
+	allowed_bloodlines = list("Salubri", "Tremere", "Malkavian", "Tzimisce", "Old Clan Tzimisce" , "Kiasyd", "Caitiff", "Salubri Warrior")
 	known_contacts = list("Prince","Seneschal","Dealer")
 
 /datum/outfit/job/cdoctor

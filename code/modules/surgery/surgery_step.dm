@@ -29,7 +29,6 @@
 		if(tzimisce)
 			reqiers = get_a_dexterity(user)+get_a_fleshcraft(user)
 
-
 		rollcheck = secret_vampireroll(reqiers, 6, user)
 
 		if(rollcheck > 1)

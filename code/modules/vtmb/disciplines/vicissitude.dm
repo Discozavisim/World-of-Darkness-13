@@ -525,6 +525,7 @@
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_tanker)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/cattzi)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/axetzi)
+	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_blade)
 
 
 /datum/action/basic_vicissitude
@@ -692,6 +693,7 @@
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_heart)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_med)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzicreature)
+	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_venom)
 
 
 //BLOODFORM
@@ -813,8 +815,8 @@
 /obj/item/melee/vampirearms/tzimisce/venom
 	name = "nematocyst whip"
 	desc = "An elongated tendril covered with stinging cells."
-	icon = 'code/modules/wod13/weapons.dmi'
-	icon_state = "lasombra"
+	icon = 'code/modules/wod13/48x32weapons.dmi'
+	icon_state = "zhalo"
 	damtype = TOX
 	force = 20
 	w_class = WEIGHT_CLASS_BULKY

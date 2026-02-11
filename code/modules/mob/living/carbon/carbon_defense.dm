@@ -356,7 +356,7 @@
 					if(obj_content.flags_1 & ON_BORDER_1 && obj_content.dir == turn(shove_dir, 180) && obj_content.density)
 						directional_blocked = TRUE
 						break
-		if((!target_table && !target_collateral_carbon && !target_disposal_bin) || directional_blocked)
+		if((!target_table && !target_collateral_carbon && !target_disposal_bin) || (directional_blocked && check_zone(src.zone_selected) == BODY_ZONE_HEAD))
 			target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
 			target.visible_message("<span class='danger'>[name] shoves [target.name], knocking [target.p_them()] down!</span>",
 							"<span class='userdanger'>You're knocked down from a shove by [name]!</span>", "<span class='hear'>You hear aggressive shuffling followed by a loud thud!</span>", COMBAT_MESSAGE_RANGE, src)

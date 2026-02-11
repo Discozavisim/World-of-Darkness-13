@@ -12,9 +12,10 @@
 
 /datum/surgery_step/add_flesh
 	name = "Add Flesh"
-	implements = list(/obj/item/stack/human_flesh = 100)
+	implements = list(/obj/item/stack/human_flesh = 10)
 	repeatable = TRUE//lets the fleshcrafter try out the options, should allow for easier experimenting with how things look
 	time = 64
+	tzimisce = TRUE
 
 /datum/surgery_step/add_flesh/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	display_results(user, target, span_notice("You begin to reshape [target]..."),

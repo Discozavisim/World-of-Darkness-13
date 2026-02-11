@@ -30,7 +30,7 @@
 		speed_mod = 1
 		skill_mod = 1
 
-	tackler = owner.AddComponent(/datum/component/tackler, stamina_cost=0, base_knockdown = 1 SECONDS, range = 3+level, speed = speed_mod, skill_mod = skill_mod, min_distance = 0)
+	tackler = owner.AddComponent(/datum/component/tackler, stamina_cost=0, base_knockdown = 0.5 SECONDS, range = 3+level, speed = speed_mod, skill_mod = skill_mod, min_distance = 0)
 	owner.attributes.potence_bonus += level
 	owner.dna.species.attack_sound = 'code/modules/wod13/sounds/heavypunch.ogg'
 

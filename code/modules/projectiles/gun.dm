@@ -419,7 +419,7 @@
 				add_hard = 3
 			if(target == user)
 				add_hard = -5
-			var/successess = secret_vampireroll(used_roll+get_a_firearms(user), 4+add_hard, user)
+			var/successess = secret_vampireroll(used_roll+get_a_firearms(user), 4+add_hard+difficult, user)
 			if(successess == -1)
 				shoot_with_empty_chamber(user)
 				return

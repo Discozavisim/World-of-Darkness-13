@@ -5,6 +5,7 @@
 
 	possible_locs = list(BODY_ZONE_CHEST)
 	self_operable = TRUE
+	lying_required = FALSE
 	replaced_by = /datum/surgery
 	var/level_req = 2
 

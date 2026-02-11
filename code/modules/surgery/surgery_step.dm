@@ -9,6 +9,8 @@
 	var/list/chems_needed = list()  //list of chems needed to complete the step. Even on success, the step will have no effect if there aren't the chems required in the mob.
 	var/require_all_chems = TRUE    //any on the list or all on the list?
 	var/silicons_obey_prob = FALSE
+	var/tzimisce = FALSE
+	var/rollcheck = null
 
 /datum/surgery_step/proc/try_op(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	var/success = FALSE
@@ -23,7 +25,12 @@
 			success = TRUE
 
 	else if(tool)
-		var/rollcheck = secret_vampireroll(get_a_intelligence(user)+get_a_medicine(user), 6, user)
+		var/reqiers = get_a_intelligence(user)+get_a_medicine(user)
+		if(tzimisce)
+			reqiers = get_a_dexterity(user)+get_a_fleshcraft(user)
+
+		rollcheck = secret_vampireroll(reqiers, 6, user)
+
 		if(rollcheck > 1)
 			for(var/key in implements)
 				var/match = FALSE

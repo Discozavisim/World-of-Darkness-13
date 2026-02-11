@@ -262,7 +262,7 @@ SUBSYSTEM_DEF(witness_pool)
 				remove_status_effect(STATUS_EFFECT_FEAR)
 
 		//masquerade violations due to unnatural appearances
-		if(is_face_visible() && clane?.violating_appearance)
+		if(is_face_visible() && clane?.violating_appearance || HAS_TRAIT(src, TRAIT_MASQUERADE_VIOLATING_FACE))
 			switch(clane.alt_sprite)
 				if ("kiasyd")
 					//masquerade breach if eyes are uncovered, short range

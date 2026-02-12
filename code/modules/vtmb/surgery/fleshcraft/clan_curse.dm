@@ -13,7 +13,7 @@
 
 /datum/surgery_step/add_curse
 	name = "Modify Appearance"
-	implements = list(/obj/item/stack/human_flesh = 40)
+	implements = list(/obj/item/stack/human_flesh = 100)
 	repeatable = TRUE//lets the fleshcrafter try out the options, should allow for easier experimenting with how things look
 	time = 120
 	tzimisce = TRUE

@@ -715,6 +715,8 @@
 /obj/item/organ/cyberimp/arm/surgery/vicissitude
 	icon_state = "toolkit_implant_vic"
 	contents = newlist(/obj/item/retractor/augment/vicissitude, /obj/item/hemostat/augment/vicissitude, /obj/item/cautery/augment/vicissitude, /obj/item/surgicaldrill/augment/vicissitude, /obj/item/scalpel/augment/vicissitude, /obj/item/circular_saw/augment/vicissitude, /obj/item/surgical_drapes/vicissitude)
+	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
+
 
 /obj/item/retractor/augment/vicissitude
 	name = "retracting appendage"
@@ -787,11 +789,13 @@
 	icon_state = "armblade"
 	zone = BODY_ZONE_L_ARM
 	contents = newlist(/obj/item/melee/vampirearms/tzimisce)
+	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
 
 /obj/item/organ/cyberimp/arm/tzimisce/venom
 	name = "nematocyst whip implant"
 	desc = "A concealed venomous whip."
-	icon_state = "lasombra"
+	icon = 'code/modules/wod13/48x32weapons.dmi'
+	icon_state = "zhalo"
 	contents = newlist(/obj/item/melee/vampirearms/tzimisce/venom)
 
 /obj/item/melee/vampirearms/tzimisce

@@ -14,7 +14,7 @@
 
 /datum/surgery_step/reinforce_limb
 	name = "reinforce_limb"
-	implements = list(/obj/item/stack/human_flesh = 100) //A stack, made from several bodies, can't quite reinforce one body.
+	implements = list(/obj/item/stack/human_flesh/twenty = 100) //A stack, made from several bodies, can't quite reinforce one body.
 	time = 125
 	tzimisce = TRUE
 

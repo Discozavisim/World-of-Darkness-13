@@ -15,7 +15,7 @@
 
 /datum/surgery_step/add_fat
 	name = "Add Fat"
-	implements = list(/obj/item/stack/human_flesh = 60)
+	implements = list(/obj/item/stack/human_flesh/fifty = 100)
 	time = 20
 	repeatable = TRUE
 	tzimisce = TRUE

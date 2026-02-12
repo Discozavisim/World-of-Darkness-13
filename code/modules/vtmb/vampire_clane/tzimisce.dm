@@ -541,6 +541,7 @@
 	bloodpool = 10
 	maxbloodpool = 10
 	dodging = TRUE
+	see_in_dark = 7
 
 /mob/living/simple_animal/hostile/tzimisce_beast/mouth
 	name = "Four claw creature"
@@ -574,6 +575,7 @@
 	minbodytemp = 0
 	bloodpool = 20
 	maxbloodpool = 20
+	see_in_dark = 6
 
 /mob/living/simple_animal/hostile/biter/hostile
 	faction = list("hostile")

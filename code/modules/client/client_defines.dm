@@ -143,6 +143,8 @@
 
 	//Hide top bars
 	var/fullscreen = FALSE
+	//Active presence text
+	var/presence_text = null
 
 	/// datum wrapper for client view
 	var/datum/view_data/view_size

@@ -219,7 +219,11 @@
 			continue
 		if(target.mass_presencer)
 			continue
-		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_intimidation(owner), get_a_wits(target)+target.conscience, owner, TRUE)
+		var/consience = 0
+		if(ishuman(target))
+			var/mob/living/carbon/human/human_target = target
+			consience = human_target.MyPath?.consience
+		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_intimidation(owner), get_a_wits(target)+consience, owner, TRUE)
 		if(success_chance >= 3)
 			affected_mobs += target
 

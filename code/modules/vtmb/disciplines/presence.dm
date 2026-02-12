@@ -137,7 +137,7 @@
 	plane = HUD_PLANE
 	alpha = 0
 
-/mob/living/proc/presence_text(text_to_send, var/color="#FF1493", var/shadow="#ff6dbc")
+/mob/living/proc/presence_text(text_to_send, color="#FF1493", shadow="#ff6dbc")
 	if(!mind)
 		return
 	if(!client)

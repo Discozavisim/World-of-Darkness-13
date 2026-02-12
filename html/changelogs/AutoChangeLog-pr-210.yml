@@ -1,0 +1,4 @@
+author: "TwitterTwiner"
+delete-after: True
+changes:
+  - balance: "Расстояние с которого ебашит по активному пользователю 1-го ауспекса"

@@ -12,7 +12,7 @@
 
 /datum/surgery_step/add_flesh
 	name = "Add Flesh"
-	implements = list(/obj/item/stack/human_flesh/twenty = 100)
+	implements = list(/obj/item/stack/human_flesh = 100)
 	repeatable = TRUE//lets the fleshcrafter try out the options, should allow for easier experimenting with how things look
 	time = 32
 	tzimisce = TRUE

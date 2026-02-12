@@ -56,13 +56,13 @@
 		return
 
 	for(var/mob/living/target in view(range, owner))
-		/*if(target == owner)
+		if(target == owner)
 			continue
 		if(target.mass_presencer)
 			continue
 		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_performance(owner), 7, owner, TRUE)
-		if(success_chance >= 3)*/
-		affected_mobs += target
+		if(success_chance >= 3)
+			affected_mobs += target
 
 	if(!affected_mobs.len)
 		to_chat(owner, span_warning("Тебе не удаётся ни на кого произвести впечатление."))
@@ -215,13 +215,13 @@
 	affected_mobs.Cut()
 
 	for(var/mob/living/target in view(range, owner))
-		/*if(target == owner)
+		if(target == owner)
 			continue
 		if(target.mass_presencer)
 			continue
 		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_intimidation(owner), get_a_wits(target)+target.conscience, owner, TRUE)
-		if(success_chance >= 3)*/
-		affected_mobs += target
+		if(success_chance >= 3)
+			affected_mobs += target
 
 	if(!affected_mobs.len)
 		to_chat(owner, span_warning("Тебе не удаётся ни кого запугать."))

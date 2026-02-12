@@ -44,6 +44,7 @@
 	maxbloodpool = 1
 	maxHealth = 850
 	health = 850
+	see_in_dark = 7
 
 
 	melee_damage_lower = 35
@@ -68,6 +69,7 @@
 	response_disarm_simple = "gently push"
 	response_harm_continuous = "punches"
 	response_harm_simple = "punch"
+	see_in_dark = 7
 
 
 	maxHealth = 250
@@ -106,6 +108,7 @@
 	health = 250
 	can_buckle = TRUE
 	var/vampiric = 0
+	see_in_dark = 4
 
 	bloodquality = BLOOD_QUALITY_LOW
 	melee_damage_lower = 10
@@ -135,6 +138,7 @@
 	response_harm_continuous = "punches"
 	response_harm_simple = "punch"
 	speed = 1.5
+	see_in_dark = 4
 
 	is_flying_animal = TRUE
 
@@ -183,5 +187,6 @@
 	icon_state = "cattzi"
 	icon_living = "cattzi"
 	icon_dead = "cattzi_dead"
+	see_in_dark = 8
 
 

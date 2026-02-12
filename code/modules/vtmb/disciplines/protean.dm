@@ -281,6 +281,7 @@
 	icon_state = "black"
 	icon_living = "black"
 	icon_dead = "black_rest"
+	see_in_dark = 6
 
 /mob/living/simple_animal/hostile/bear/wod13/vampire
 	bloodquality = BLOOD_QUALITY_HIGH

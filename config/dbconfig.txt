@@ -3,7 +3,7 @@
 ## administration, and the in game library.
 
 ## Should SQL be enabled? Uncomment to enable
-SQL_ENABLED
+#SQL_ENABLED
 
 ## Should the whitelist database be enabled? Uncomment to enable
 WHITELISTS_ENABLED
@@ -16,7 +16,7 @@ ADDRESS 127.0.0.1
 PORT 3306
 
 ## Database for all SQL functions, not just feedback.
-FEEDBACK_DATABASE vampiri
+FEEDBACK_DATABASE 
 
 ## Prefix to be added to the name of every table, older databases will require this be set to erro_
 ## Note, this does not change the table names in the database, you will have to do that yourself.

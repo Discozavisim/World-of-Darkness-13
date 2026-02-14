@@ -754,6 +754,9 @@
 	if(HAS_TRAIT(src, TRAIT_GHOST_VISION))
 		see_override = SEE_INVISIBLE_OBSERVER
 
+	if(get_trufaith_level(src) >= 3)
+		see_invisible = max(see_invisible, SEE_INVISIBLE_LEVEL_OBFUSCATE + 5)
+
 	if(see_override)
 		see_invisible = see_override
 	. = ..()

@@ -149,7 +149,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		return
 
 	var/chaplain = 0
-	if(user.mind && (user.mind.holy_role))
+	if((user.mind && user.mind.holy_role) || get_trufaith_level(user) >= 1)
 		chaplain = 1
 
 	if(!chaplain)
@@ -191,10 +191,10 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		return
 	if(isfloorturf(A))
 		to_chat(user, "<span class='notice'>You hit the floor with the bible.</span>")
-		if(user.mind && (user.mind.holy_role))
+		if((user.mind && user.mind.holy_role) || get_trufaith_level(user) >= 1)
 			for(var/obj/effect/rune/R in orange(2,user))
 				R.invisibility = 0
-	if(user?.mind?.holy_role)
+	if((user?.mind?.holy_role) || get_trufaith_level(user) >= 1)
 		if(A.reagents && A.reagents.has_reagent(/datum/reagent/water)) // blesses all the water in the holder
 			to_chat(user, "<span class='notice'>You bless [A].</span>")
 			var/water2holy = A.reagents.get_reagent_amount(/datum/reagent/water)

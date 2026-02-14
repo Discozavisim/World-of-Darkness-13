@@ -3432,6 +3432,7 @@
 #include "code\modules\vtmb\disciplines.dm"
 #include "code\modules\vtmb\faction_war.dm"
 #include "code\modules\vtmb\faith.dm"
+#include "code\modules\vtmb\trufaith.dm"
 #include "code\modules\vtmb\frenzy.dm"
 #include "code\modules\vtmb\ghoul_species.dm"
 #include "code\modules\vtmb\gridventory.dm"

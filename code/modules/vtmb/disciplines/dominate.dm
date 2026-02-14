@@ -39,6 +39,9 @@
 	multiplicative_slowdown = 5
 
 /datum/discipline_power/dominate/pre_activation_checks(mob/living/target)
+	if(get_trufaith_level(target) >= 2)
+		to_chat(owner, "<span class='warning'>Their faith protects their mind from domination.</span>")
+		return FALSE
 	var/difficulties_dominating = get_a_willpower(target)
 	if(ishuman(target))
 		var/mob/living/carbon/human/human_target = target

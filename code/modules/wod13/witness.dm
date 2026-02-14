@@ -116,7 +116,7 @@
 		holder.color = null
 		holder.icon_state = "aura_ghoul"
 
-	if(mind?.holy_role >= HOLY_ROLE_PRIEST)
+	if((mind?.holy_role >= HOLY_ROLE_PRIEST) || get_trufaith_level(src) >= 1)
 		holder.color = "#ffe12f"
 		holder.icon_state = "aura"
 
@@ -164,6 +164,6 @@
 		holder.color = null
 		holder.icon_state = "aura_ghoul"
 
-	if(mind?.holy_role >= HOLY_ROLE_PRIEST)
+	if((mind?.holy_role >= HOLY_ROLE_PRIEST) || get_trufaith_level(src) >= 1)
 		holder.color = "#ffe12f"
 		holder.icon_state = "aura"

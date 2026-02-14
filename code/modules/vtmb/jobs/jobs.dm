@@ -72,7 +72,7 @@
 		return
 	if(!user.mind)
 		return
-	if(user.mind.holy_role != HOLY_ROLE_PRIEST)
+	if(user.mind.holy_role != HOLY_ROLE_PRIEST && get_trufaith_level(user) < 1)
 		return
 	last_detonated = world.time
 	do_sparks(rand(5, 9), FALSE, user)
@@ -90,7 +90,7 @@
 		for(var/obj/item/card/id/hunter/HUNT in H.contents)
 			if(HUNT)
 				if(H.mind)
-					if(H.mind.holy_role == HOLY_ROLE_PRIEST)
+					if(H.mind.holy_role == HOLY_ROLE_PRIEST || get_trufaith_level(H) >= 1)
 						return
 		if(iskindred(H))
 			if(H.clane)
@@ -114,14 +114,13 @@
 		return
 	if(iskindred(target))
 		var/mob/living/carbon/human/H = target
-		if(H.clane)
-			if(H.clane.name == "Baali")
-				last_detonated = world.time
-				var/turf/lightning_source = get_step(get_step(H, NORTH), NORTH)
-				lightning_source.Beam(H, icon_state="lightning[rand(1,12)]", time = 5)
-				H.adjustFireLoss(100)
-				H.electrocution_animation(50)
-				to_chat(H, "<span class='userdanger'>The God has punished you for your sins!</span>", confidential = TRUE)
+		if(H.clane && H.clane.name == "Baali" && (user.mind?.holy_role || get_trufaith_level(user) >= 1))
+			last_detonated = world.time
+			var/turf/lightning_source = get_step(get_step(H, NORTH), NORTH)
+			lightning_source.Beam(H, icon_state="lightning[rand(1,12)]", time = 5)
+			H.adjustFireLoss(100)
+			H.electrocution_animation(50)
+			to_chat(H, "<span class='userdanger'>The God has punished you for your sins!</span>", confidential = TRUE)
 
 /obj/item/card/id/prince
 	name = "leader badge"

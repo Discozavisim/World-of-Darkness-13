@@ -48,6 +48,9 @@
 
 	var/mob/living/carbon/human/victim = input(owner, "Choose the target to Dominate over", "Dominate") as null|anything in victims_list
 	if(victim)
+		if(get_trufaith_level(victim) >= 2)
+			to_chat(owner, "<span class='warning'>Their faith protects their mind from domination.</span>")
+			return
 		var/dominate_me = get_a_wits(victim)+2
 		if(victim.clane?.name == "Gargoyle")
 			dominate_me = 1

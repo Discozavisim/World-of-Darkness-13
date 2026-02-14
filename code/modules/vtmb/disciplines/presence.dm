@@ -59,6 +59,8 @@
 			continue
 		if(target.awe_owner)
 			continue
+		if(get_trufaith_level(target) >= 3)
+			continue
 		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_performance(owner), 7, owner, TRUE)
 		if(success_chance >= 3)
 			affected_mobs += target
@@ -191,6 +193,9 @@
 	duration_length = 5 SECONDS
 
 /datum/discipline_power/presence/dread_gaze/pre_activation_checks(mob/living/target)
+	if(get_trufaith_level(target) >= 3)
+		to_chat(owner, "<span class='warning'>Their faith protects them from your presence.</span>")
+		return FALSE
 	var/mypower = secret_vampireroll(max(get_a_charisma(owner), get_a_appearance(owner))+get_a_empathy(owner), get_a_willpower(target), owner)
 	if(mypower < 3)
 		to_chat(owner, "<span class='warning'>You fail at sway!</span>")
@@ -256,6 +261,9 @@
 	duration_length = 5 SECONDS
 
 /datum/discipline_power/presence/entrancement/pre_activation_checks(mob/living/target)
+	if(get_trufaith_level(target) >= 3)
+		to_chat(owner, "<span class='warning'>Their faith protects them from your presence.</span>")
+		return FALSE
 	var/mypower = secret_vampireroll(max(get_a_charisma(owner), get_a_appearance(owner))+get_a_empathy(owner), get_a_willpower(target), owner)
 	if(mypower < 3)
 		to_chat(owner, "<span class='warning'>You fail at sway!</span>")
@@ -330,6 +338,9 @@
 	duration_length = 5 SECONDS
 
 /datum/discipline_power/presence/summon/pre_activation_checks(mob/living/target)
+	if(get_trufaith_level(target) >= 3)
+		to_chat(owner, "<span class='warning'>Their faith protects them from your presence.</span>")
+		return FALSE
 	var/mypower = secret_vampireroll(max(get_a_charisma(owner), get_a_appearance(owner))+get_a_empathy(owner), get_a_willpower(target), owner)
 	if(mypower < 3)
 		to_chat(owner, "<span class='warning'>You fail at sway!</span>")
@@ -383,6 +394,9 @@
 	duration_length = 5 SECONDS
 
 /datum/discipline_power/presence/majesty/pre_activation_checks(mob/living/target)
+	if(get_trufaith_level(target) >= 3)
+		to_chat(owner, "<span class='warning'>Their faith protects them from your presence.</span>")
+		return FALSE
 	var/mypower = secret_vampireroll(max(get_a_charisma(owner), get_a_appearance(owner))+get_a_empathy(owner), get_a_willpower(target), owner)
 	if(mypower < 3)
 		to_chat(owner, "<span class='warning'>You fail at sway!</span>")

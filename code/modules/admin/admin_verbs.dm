@@ -596,6 +596,11 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 			return
 		var/whitelist = input("Whitelist to give:") as null|anything in whitelist_pool
 		if (whitelist)
+			if (whitelist == "trufaith")
+				var/char_name = trim(input("Character name (exact, as in Character List):") as null|text)
+				if (!char_name)
+					return
+				whitelist = "trufaith:[char_name]"
 			var/ticket_link = input("Link to whitelist request ticket:") as null|text
 			if (ticket_link)
 				var/approval_reason = input("Reason for whitelist approval:") as null|text

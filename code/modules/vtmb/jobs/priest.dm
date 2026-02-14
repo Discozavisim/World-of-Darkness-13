@@ -101,7 +101,7 @@
 
 /datum/outfit/job/reverend/post_equip(mob/living/carbon/human/H)
 	..()
-	H.mind.holy_role = HOLY_ROLE_PRIEST
+	// True Faith abilities come only from trufaith_level in Character List, not from Reverend role
 /obj/effect/landmark/start/reverend
 	name = "Reverend"
 	icon_state = "Sheriff"

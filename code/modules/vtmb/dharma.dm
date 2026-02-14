@@ -215,6 +215,8 @@
 			dharma.tenets_done[i] = 0
 		update_dharma(cathayan, 1)
 
+	dharma.chi_check(cathayan)
+
 /proc/emit_po_call(atom/source, po_type)
 	if(!po_type)
 		return
@@ -326,3 +328,12 @@
 			else
 				step_to(src,frenzy_target,0)
 				face_atom(frenzy_target)
+
+
+/datum/dharma/proc/chi_check(mob/living/owner)
+	if(owner.yang_chi < 0 || owner.max_yang_chi < 0 || owner.yin_chi < 0 || owner.max_yin_chi < 0)
+		to_chat(owner, "<span class='userdanger'>Твоя энергия слишком огромна, чтобы ты мог продолжать движение вне медитации. Если ты двинешься - весь твой потенциал будет утрачен!</span>")
+	//	ADD_TRAIT(owner, TRAIT_CHI_ISSUE, TRAUMA_TRAIT)
+		return TRUE
+	return FALSE
+

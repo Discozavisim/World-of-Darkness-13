@@ -525,6 +525,7 @@
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_tanker)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/cattzi)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/axetzi)
+	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_blade)
 
 
 /datum/action/basic_vicissitude
@@ -692,6 +693,7 @@
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_heart)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_med)
 	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzicreature)
+	owner.mind.teach_crafting_recipe(/datum/crafting_recipe/tzi_venom)
 
 
 //BLOODFORM
@@ -713,6 +715,8 @@
 /obj/item/organ/cyberimp/arm/surgery/vicissitude
 	icon_state = "toolkit_implant_vic"
 	contents = newlist(/obj/item/retractor/augment/vicissitude, /obj/item/hemostat/augment/vicissitude, /obj/item/cautery/augment/vicissitude, /obj/item/surgicaldrill/augment/vicissitude, /obj/item/scalpel/augment/vicissitude, /obj/item/circular_saw/augment/vicissitude, /obj/item/surgical_drapes/vicissitude)
+	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
+
 
 /obj/item/retractor/augment/vicissitude
 	name = "retracting appendage"
@@ -785,11 +789,13 @@
 	icon_state = "armblade"
 	zone = BODY_ZONE_L_ARM
 	contents = newlist(/obj/item/melee/vampirearms/tzimisce)
+	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
 
 /obj/item/organ/cyberimp/arm/tzimisce/venom
 	name = "nematocyst whip implant"
 	desc = "A concealed venomous whip."
-	icon_state = "lasombra"
+	icon = 'code/modules/wod13/48x32weapons.dmi'
+	icon_state = "zhalo"
 	contents = newlist(/obj/item/melee/vampirearms/tzimisce/venom)
 
 /obj/item/melee/vampirearms/tzimisce
@@ -813,10 +819,10 @@
 /obj/item/melee/vampirearms/tzimisce/venom
 	name = "nematocyst whip"
 	desc = "An elongated tendril covered with stinging cells."
-	icon = 'code/modules/wod13/weapons.dmi'
-	icon_state = "lasombra"
+	icon = 'code/modules/wod13/48x32weapons.dmi'
+	icon_state = "zhalo"
 	damtype = TOX
-	force = 16
+	force = 20
 	w_class = WEIGHT_CLASS_BULKY
 	block_chance = 10
 	armour_penetration = 10

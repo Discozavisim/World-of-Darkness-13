@@ -11,6 +11,7 @@
 	var/list/items_list = list()// I would use contents, but they shuffle on every activation/deactivation leading to interface inconsistencies.
 	/// You can use this var for item path, it would be converted into an item on New().
 	var/obj/item/active_item
+	var/implant_sound = 'sound/mecha/mechmove03.ogg'
 
 /obj/item/organ/cyberimp/arm/Initialize(mapload)
 	. = ..()
@@ -101,7 +102,8 @@
 
 	owner.transferItemToLoc(active_item, src, TRUE)
 	active_item = null
-	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, TRUE)
+//	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, TRUE)
+	playsound(get_turf(owner), implant_sound, 50, TRUE)
 
 /obj/item/organ/cyberimp/arm/proc/Extend(obj/item/item)
 	if(!(item in src))
@@ -137,7 +139,9 @@
 	owner.visible_message("<span class='notice'>[owner] extends [active_item] from [owner.p_their()] [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm.</span>",
 		"<span class='notice'>You extend [active_item] from your [zone == BODY_ZONE_R_ARM ? "right" : "left"] arm.</span>",
 		"<span class='hear'>You hear a short mechanical noise.</span>")
-	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, TRUE)
+//	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, TRUE)
+	playsound(get_turf(owner), implant_sound, 50, TRUE)
+
 
 /obj/item/organ/cyberimp/arm/ui_action_click()
 	if((organ_flags & ORGAN_FAILING) || (!active_item && !contents.len))
@@ -225,6 +229,10 @@
 	desc = "A cybernetic implant that allows the user to project a healing beam from their hand."
 	contents = newlist(/obj/item/gun/medbeam)
 	zone = BODY_ZONE_L_ARM
+	icon = 'icons/obj/chronos.dmi'
+	icon_state = "medgun"
+
+	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
 
 
 /obj/item/organ/cyberimp/arm/flash

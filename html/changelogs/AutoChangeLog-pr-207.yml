@@ -1,0 +1,6 @@
+author: "TwitterTwiner"
+delete-after: True
+changes:
+  - rscadd: "Цимисхи много стаффа и операции"
+  - bugfix: "Баги"
+  - image: "Спрайты цимисхо"

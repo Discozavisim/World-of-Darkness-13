@@ -122,6 +122,11 @@
 	layer = CURSE_LAYER
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/screen/fullscreen/fear
+	icon_state = "fear"
+	layer = FEAR_LAYER
+	plane = FULLSCREEN_PLANE
+
 /atom/movable/screen/fullscreen/psychedelic
 	icon = 'code/modules/wod13/umbral.dmi'
 	icon_state = "psych"

@@ -1,0 +1,7 @@
+author: "TwitterTwiner"
+delete-after: True
+changes:
+  - bugfix: "Иконки имплантов"
+  - sound: "Звук органов цимисхов"
+  - bugfix: "Баг с лезвием"
+  - bugfix: "Успешность операции"

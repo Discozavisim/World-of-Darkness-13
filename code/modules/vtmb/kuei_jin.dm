@@ -42,6 +42,11 @@
 			else if(yin_chi < max_yin_chi)
 				yin_chi = min(yin_chi+1, max_yin_chi)
 
+/mob/living/Move()
+	. = ..()
+	if(mind?.dharma?.chi_check(src))
+		adjustFireLoss(80, TRUE, FALSE)
+
 /datum/species/kuei_jin
 	name = "Kuei-Jin"
 	id = "kuei-jin"
@@ -230,6 +235,11 @@
 		var/mob/living/carbon/werewolf_victim = victim
 		if (werewolf_victim.auspice?.gnosis > 0)
 			has_gnosis = TRUE
+	if(!do_mob(kueijin, src, 5 SECONDS))
+		return
+
+	if(!do_mob(kueijin, src, 5 SECONDS))
+		return
 
 	//this method of feeding targets splat-specific Quintessence sources first
 	if ((iskindred(victim) || isghoul(victim)) && (victim.bloodpool > 0)) //drain vitae bloodpool

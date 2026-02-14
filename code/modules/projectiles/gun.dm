@@ -192,13 +192,13 @@
 					if(EAST)
 						napravlenie = "востока"
 				switch(dist)
-					if(0 to 10)
+					if(0 to 6)
 						C.playsound_local(user, fire_sound, 100, vary_fire_sound)
-						C.soundbang_act(1, 100, 5, 10)
+						C.soundbang_act(1, 100-dist, 5, 10)
 						to_chat(C, "<span class='danger'>Выстрелы совсем близко! Вашим ушам очень больно!</span>")
-					if(11 to 20)
+					if(7 to 20)
 						C.playsound_local(user, fire_sound, 90, vary_fire_sound)
-						C.soundbang_act(1, 50, 1, 5)
+						C.soundbang_act(1, 50-dist, 1, 5)
 						to_chat(C, "<span class='danger'>Выстрелы примерно на расстоянии в пару десятков метров в направлении [napravlenie]! В ушах начинает гудеть...</span>")
 					if(21 to 39)
 						C.playsound_local(user, fire_sound, 80, vary_fire_sound)
@@ -419,7 +419,7 @@
 				add_hard = 3
 			if(target == user)
 				add_hard = -5
-			var/successess = secret_vampireroll(used_roll+get_a_firearms(user), 4+add_hard, user)
+			var/successess = secret_vampireroll(used_roll+get_a_firearms(user), 4+add_hard+difficult, user)
 			if(successess == -1)
 				shoot_with_empty_chamber(user)
 				return

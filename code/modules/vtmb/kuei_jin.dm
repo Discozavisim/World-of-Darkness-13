@@ -235,6 +235,8 @@
 		var/mob/living/carbon/werewolf_victim = victim
 		if (werewolf_victim.auspice?.gnosis > 0)
 			has_gnosis = TRUE
+	if(!do_mob(kueijin, src, 5 SECONDS))
+		return
 
 	if(!do_mob(kueijin, src, 5 SECONDS))
 		return

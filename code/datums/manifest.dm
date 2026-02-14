@@ -34,7 +34,8 @@ GLOBAL_DATUM_INIT(manifest, /datum/manifest, new)
 		"Police Force" = GLOB.police_positions,
 		"National Security" = GLOB.national_security_positions,
 		"Triads" = GLOB.gang_positions,
-		"Tzimisce Mansion" = GLOB.tzimisce_positions
+		"Tzimisce Mansion" = GLOB.tzimisce_positions,
+		"Criminal" = GLOB.criminal_positions
 	)
 	for(var/datum/data/record/t in GLOB.data_core.general)
 		var/name = t.fields["name"]

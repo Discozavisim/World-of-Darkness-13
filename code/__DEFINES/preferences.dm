@@ -90,6 +90,7 @@
 #define EXP_TYPE_SPIRAL    "Hive of the Poisoned Shore"
 #define EXP_TYPE_CHURCH         "Church"
 #define EXP_TYPE_SPECIAL		"Special"
+#define EXP_TYPE_CRIMINAL		"Criminal"
 #define EXP_TYPE_GHOST			"Ghost"
 #define EXP_TYPE_ADMIN			"Admin"
 

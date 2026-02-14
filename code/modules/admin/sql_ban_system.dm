@@ -241,6 +241,7 @@
 							"Law Enforcement" = GLOB.police_positions + GLOB.national_security_positions,
 							"Warehouse" = GLOB.warehouse_positions,
 							"Triad" = GLOB.gang_positions,
+							"Criminal" = GLOB.criminal_positions,
 							"Citizen" = GLOB.citizen_positions + GLOB.services_positions + GLOB.church_positions,
 							"Endron" = GLOB.spiral_positions)
 		for(var/department in job_lists)

@@ -414,3 +414,4 @@ SUBSYSTEM_DEF(factionwar)
 			update_sight()
 	if(get_trufaith_level(src) >= 3)
 		update_sight()
+

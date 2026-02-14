@@ -213,6 +213,10 @@
 			owner.Stun(3 SECONDS)
 			owner.do_jitter_animation(10)
 		return FALSE
+	return TRUE
+
+/datum/discipline_power/presence/dread_gaze/activate()
+	. = ..()
 
 	if(owner.client)
 		for(var/mob/living/T in owner_auras)
@@ -226,18 +230,18 @@
 
 	affected_mobs.Cut()
 
-	for(var/mob/living/target in view(range, owner))
-		if(target == owner)
+	for(var/mob/living/L in view(range, owner))
+		if(L == owner)
 			continue
-		if(target.mass_presencer)
+		if(L.mass_presencer)
 			continue
 		var/consience = 0
-		if(ishuman(target))
-			var/mob/living/carbon/human/human_target = target
+		if(ishuman(L))
+			var/mob/living/carbon/human/human_target = L
 			consience = human_target.MyPath?.consience
-		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_intimidation(owner), get_a_wits(target)+consience, owner, TRUE)
+		var/success_chance = secret_vampireroll(get_a_charisma(owner)+get_a_intimidation(owner), get_a_wits(L)+consience, owner, TRUE)
 		if(success_chance >= 3)
-			affected_mobs += target
+			affected_mobs += L
 
 	if(!affected_mobs.len)
 		to_chat(owner, span_warning("Тебе не удаётся ни кого запугать."))

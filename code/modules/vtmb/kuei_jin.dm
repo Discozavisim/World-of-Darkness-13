@@ -238,6 +238,9 @@
 	if(!do_mob(kueijin, src, 5 SECONDS))
 		return
 
+	if(!do_mob(kueijin, src, 5 SECONDS))
+		return
+
 	//this method of feeding targets splat-specific Quintessence sources first
 	if ((iskindred(victim) || isghoul(victim)) && (victim.bloodpool > 0)) //drain vitae bloodpool
 		victim.bloodpool = max(0, victim.bloodpool - 1)

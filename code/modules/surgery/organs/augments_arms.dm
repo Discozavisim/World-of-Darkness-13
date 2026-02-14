@@ -229,6 +229,9 @@
 	desc = "A cybernetic implant that allows the user to project a healing beam from their hand."
 	contents = newlist(/obj/item/gun/medbeam)
 	zone = BODY_ZONE_L_ARM
+	icon = 'icons/obj/chronos.dmi'
+	icon_state = "medgun"
+
 	implant_sound = 'code/modules/wod13/sounds/Tzim_Organ.ogg'
 
 

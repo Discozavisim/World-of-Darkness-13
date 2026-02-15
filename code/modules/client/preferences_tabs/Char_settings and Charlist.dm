@@ -519,6 +519,14 @@
 //		dat += "<a href='byond://?_src_=prefs;preference=toggle_random;random_type=[RANDOM_FACIAL_HAIR_COLOR]'>[(randomise[RANDOM_FACIAL_HAIR_COLOR]) ? "Lock" : "Unlock"]</A>"
 		dat += "<br></td>"
 
+
+	if(pref_species.id != "kuei-jin" && pref_species.id != "kindred")
+		dat+= APPEARANCE_CATEGORY_COLUMN
+		dat += "<h3>[make_font_cool("BLOOD TYPE")]</h3>"
+		dat += "<a href='byond://?_src_=prefs;preference=blood_type;task=input'>[blood_type]</a>"
+
+		dat += "<br></td>"
+
 			//Mutant stuff
 	var/mutant_category = 0
 
@@ -651,7 +659,7 @@
 		if(mutant_category >= MAX_MUTANT_ROWS)
 			dat += "</td>"
 			mutant_category = 0
-// ТАБУЛЯЦИИ УДАЛЯТЬ ВЫШЕ
+
 	if(pref_species.mutant_bodyparts["tail_human"])
 		if(pref_species.id != "kindred" && pref_species.id != "ghoul")
 			if(!mutant_category)

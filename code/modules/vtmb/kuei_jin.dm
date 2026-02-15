@@ -235,11 +235,10 @@
 		var/mob/living/carbon/werewolf_victim = victim
 		if (werewolf_victim.auspice?.gnosis > 0)
 			has_gnosis = TRUE
-	if(!do_mob(kueijin, src, 5 SECONDS))
+
+	if(!do_mob(kueijin, victim, 5 SECONDS))
 		return
 
-	if(!do_mob(kueijin, src, 5 SECONDS))
-		return
 
 	//this method of feeding targets splat-specific Quintessence sources first
 	if ((iskindred(victim) || isghoul(victim)) && (victim.bloodpool > 0)) //drain vitae bloodpool

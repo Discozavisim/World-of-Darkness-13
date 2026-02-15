@@ -201,9 +201,6 @@
 	var/list/owner_auras = list()
 	var/list/target_auras = list()
 
-
-
-
 /datum/discipline_power/presence/dread_gaze/activate()
 	. = ..()
 

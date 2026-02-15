@@ -2163,7 +2163,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						return
 					true_experience -= cost
 					trufaith_level = min(3, trufaith_level + 1)
-					save_character()
 
 				/*
 				if("torpor_restore")

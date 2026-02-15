@@ -202,17 +202,6 @@
 	var/list/target_auras = list()
 
 /datum/discipline_power/presence/dread_gaze/pre_activation_checks(mob/living/target)
-	if(get_trufaith_level(target) >= 3)
-		to_chat(owner, "<span class='warning'>Their faith protects them from your presence.</span>")
-		return FALSE
-	var/mypower = secret_vampireroll(max(get_a_charisma(owner), get_a_appearance(owner))+get_a_empathy(owner), get_a_willpower(target), owner)
-	if(mypower < 3)
-		to_chat(owner, "<span class='warning'>You fail at sway!</span>")
-		owner.emote("stare")
-		if(mypower == -1)
-			owner.Stun(3 SECONDS)
-			owner.do_jitter_animation(10)
-		return FALSE
 	return TRUE
 
 /datum/discipline_power/presence/dread_gaze/activate()
@@ -234,6 +223,8 @@
 		if(L == owner)
 			continue
 		if(L.mass_presencer)
+			continue
+		if(get_trufaith_level(L) >= 3)
 			continue
 		var/consience = 0
 		if(ishuman(L))

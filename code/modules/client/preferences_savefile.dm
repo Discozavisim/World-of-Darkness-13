@@ -395,8 +395,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["courage"], courage)
 	READ_FILE(S["exper"], exper)
 	READ_FILE(S["exper_plus"], exper_plus)
-	true_experience = initial(true_experience)
-	trufaith_level = initial(trufaith_level)
 	READ_FILE(S["true_experience"], true_experience)
 	READ_FILE(S["trufaith_level"], trufaith_level)
 

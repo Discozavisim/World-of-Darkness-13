@@ -521,9 +521,9 @@
 
 
 	if(pref_species.id != "kuei-jin" && pref_species.id != "kindred")
-		dat+= APPEARANCE_CATEGORY_COLUMN
+		dat += APPEARANCE_CATEGORY_COLUMN
 		dat += "<h3>[make_font_cool("BLOOD TYPE")]</h3>"
-		dat += "<a href='byond://?_src_=prefs;preference=blood_type;task=input'>[blood_type]</a>"
+		dat += "<br><a href='byond://?_src_=prefs;preference=blood_type;task=input'>[blood_type]</a>"
 
 		dat += "<br></td>"
 

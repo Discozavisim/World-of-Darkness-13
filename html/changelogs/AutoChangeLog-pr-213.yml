@@ -1,0 +1,5 @@
+author: "TwitterTwiner"
+delete-after: True
+changes:
+  - balance: "стан уменьшен"
+  - bugfix: "группы крови"

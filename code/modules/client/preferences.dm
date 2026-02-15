@@ -76,6 +76,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/gender = MALE					//gender of character (well duh)
 	var/age = 30						//age of character
 	var/total_age = 30
+	var/blood_type = "A+"
 	var/underwear = "Nude"				//underwear type
 	var/underwear_color = "000"			//underwear color
 	var/undershirt = "Nude"				//undershirt type
@@ -1345,6 +1346,14 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						if (total_age < age)
 							age = total_age
 						update_preview_icon()
+
+				if("blood_type")
+					if(slotlocked)
+						return
+					var/list/blood_types = list("A+", "A-", "B+", "B-", "O+", "O-")
+					var/bloods = input(user, "Choose your character's blood type:", "Character Preference")  as null|anything in blood_types
+					if(bloods)
+						blood_type = bloods
 
 				if("info_choose")
 					var/new_info_known = input(user, "Choose who knows your character:", "Fame")  as null|anything in list(INFO_KNOWN_UNKNOWN,INFO_KNOWN_CLAN_ONLY,INFO_KNOWN_FACTION,INFO_KNOWN_PUBLIC)
@@ -3013,6 +3022,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/datum/species/chosen_species
 	chosen_species = pref_species.type
 
+	character.dna.blood_type = blood_type
 	character.dna.features = features.Copy()
 	character.set_species(chosen_species, icon_update = FALSE, pref_load = TRUE)
 	character.dna.real_name = character.real_name

@@ -47,7 +47,7 @@
 	var/response_harm_continuous = "hits"
 	///Harm-intent verb in present simple tense.
 	var/response_harm_simple = "hit"
-	var/harm_intent_damage = 3
+	var/harm_intent_damage = 15
 	///Minimum force required to deal any damage.
 	var/force_threshold = 0
 	///Maximum amount of stamina damage the mob can be inflicted with total

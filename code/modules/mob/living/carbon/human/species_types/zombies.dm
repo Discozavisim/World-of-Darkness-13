@@ -6,7 +6,7 @@
 	id = "zombie"
 	default_color = "FFFFFF"
 	species_traits = list(EYECOLOR, LIPS, HAS_FLESH, HAS_BONE)
-	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LIMBATTACHMENT, TRAIT_VIRUSIMMUNE, TRAIT_NOBLEED, TRAIT_NOHUNGER, TRAIT_NOBREATH, TRAIT_NOMETABOLISM, TRAIT_TOXIMMUNE, TRAIT_NOCRITDAMAGE, TRAIT_FAKEDEATH)
+	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER, TRAIT_LIMBATTACHMENT, TRAIT_VIRUSIMMUNE, TRAIT_NOBLEED, TRAIT_NOHUNGER, TRAIT_NOBREATH, TRAIT_NOMETABOLISM, TRAIT_TOXIMMUNE, TRAIT_NOCRITDAMAGE, TRAIT_FAKEDEATH, TRAIT_UNMASQUERADE)
 	use_skintones = TRUE
 	limbs_id = "rotten2"
 	mutantbrain = /obj/item/organ/brain/vampire //to prevent brain transplant surgery
@@ -16,9 +16,6 @@
 	burnmod = 2
 	punchdamagelow = 10
 	punchdamagehigh = 20
-	bodytemp_normal = T0C // They have no natural body heat, the environment regulates body temp
-	bodytemp_heat_damage_limit = FIRE_MINIMUM_TEMPERATURE_TO_EXIST // Take damage at fire temp
-	bodytemp_cold_damage_limit = MINIMUM_TEMPERATURE_TO_MOVE // take damage below minimum movement temp
 	dust_anim = "dust-h"
 
 /datum/species/zombie/infectious
@@ -121,11 +118,14 @@
 	C.yin_chi = 6
 	C.max_yin_chi = 6
 
+	C.add_movespeed_modifier(/datum/movespeed_modifier/zombie)
+
 	//zombies resist vampire bites better than mortals
 	RegisterSignal(C, COMSIG_MOB_VAMPIRE_SUCKED, PROC_REF(on_zombie_bitten))
 
 /datum/species/zombie/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	. = ..()
+	C.remove_movespeed_modifier(/datum/movespeed_modifier/zombie)
 	UnregisterSignal(C, COMSIG_MOB_VAMPIRE_SUCKED)
 	for(var/datum/action/aboutme/infor in C.actions)
 		if(infor)
@@ -135,11 +135,9 @@
 	. = ..()
 	if(HAS_TRAIT(H, TRAIT_UNMASQUERADE))
 		if(H.CheckEyewitness(H, H, 7, FALSE))
-			H.AdjustMasquerade(-1)
-
-	if(H.is_face_visible())
-		if (H.CheckEyewitness(H, H, 5, FALSE)) //it's san fran, there are crackheads everywhere
-			H.AdjustMasquerade(-1)
+			if(H.zombie_owner)
+				var/mob/living/carbon/human/churka = H.zombie_owner
+				churka.AdjustMasquerade(-1)
 
 /datum/species/zombie/proc/on_zombie_bitten(datum/source, mob/living/carbon/being_bitten)
 	SIGNAL_HANDLER

@@ -44,7 +44,6 @@
 	max_yang_chi = 1
 	yin_chi = 0
 	max_yin_chi = 0
-	harm_intent_damage = 10
 	melee_damage_lower = 15
 	melee_damage_upper = 30
 	melee_damage_type = BURN

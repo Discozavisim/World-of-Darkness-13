@@ -318,7 +318,6 @@
 	maxHealth = 75
 	health = 75
 
-	harm_intent_damage = 8
 	obj_damage = 50
 	melee_damage_lower = 20
 	melee_damage_upper = 20
@@ -368,7 +367,6 @@
 	maxHealth = 125
 	health = 125
 	butcher_results = list(/obj/item/stack/human_flesh = 2)
-	harm_intent_damage = 5
 	melee_damage_lower = 30
 	melee_damage_upper = 30
 	attack_verb_continuous = "punches"
@@ -395,7 +393,6 @@
 	maxHealth = 350
 	health = 350
 	butcher_results = list(/obj/item/stack/human_flesh = 4)
-	harm_intent_damage = 5
 	melee_damage_lower = 25
 	melee_damage_upper = 25
 	attack_verb_continuous = "slashes"
@@ -422,7 +419,6 @@
 	maxHealth = 400
 	health = 400
 	butcher_results = list(/obj/item/stack/human_flesh = 10)
-	harm_intent_damage = 5
 	melee_damage_lower = 40
 	melee_damage_upper = 40
 	attack_verb_continuous = "slashes"
@@ -465,7 +461,6 @@
 	maxHealth = 400
 	health = 400
 	butcher_results = list(/obj/item/stack/human_flesh = 10)
-	harm_intent_damage = 5
 	melee_damage_lower = 25
 	melee_damage_upper = 45
 	attack_verb_continuous = "punches"
@@ -529,7 +524,6 @@
 	maxHealth = 575
 	health = 575
 	butcher_results = list(/obj/item/stack/human_flesh = 10)
-	harm_intent_damage = 5
 	melee_damage_lower = 35
 	melee_damage_upper = 50
 	attack_verb_continuous = "slashes"
@@ -563,7 +557,6 @@
 	maxHealth = 100
 	health = 100
 	butcher_results = list(/obj/item/stack/human_flesh = 1)
-	harm_intent_damage = 5
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	attack_verb_continuous = "slashes"

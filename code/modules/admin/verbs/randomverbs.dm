@@ -228,6 +228,9 @@
 		if(MUTE_DEADCHAT)
 			mute_string = "deadchat and DSAY"
 			feedback_string = "Deadchat"
+		if(MUTE_MASQREPORT)
+			mute_string = "masquerade violation report"
+			feedback_string = "Masquerade Report"
 		if(MUTE_ALL)
 			mute_string = "everything"
 			feedback_string = "Everything"

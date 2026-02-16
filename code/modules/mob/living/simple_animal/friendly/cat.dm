@@ -350,7 +350,6 @@
 	maxbloodpool = 1
 	maxHealth = 30
 	health = 30
-	harm_intent_damage = 20
 	melee_damage_lower = 15
 	melee_damage_upper = 30
 	speed = -0.1

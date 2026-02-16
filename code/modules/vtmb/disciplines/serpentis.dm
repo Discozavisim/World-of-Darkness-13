@@ -155,7 +155,6 @@
 	maxHealth = 450
 	health = 450
 	butcher_results = list(/obj/item/stack/human_flesh = 20)
-	harm_intent_damage = 5
 	melee_damage_lower = 50
 	melee_damage_upper = 50
 	attack_verb_continuous = "slashes"

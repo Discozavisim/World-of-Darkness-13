@@ -292,6 +292,9 @@
 			return
 		if(usr == src)
 			return
+		if(H.client.prefs.muted & MUTE_MASQREPORT)
+			to_chat(H, "<span class='danger'>You cannot report masquerade violations (muted).</span>", confidential = TRUE)
+			return
 		if(dna)
 			if (H.voted_for.Find(dna.real_name))
 				to_chat(H, "<span class='warning'>You have already noted their masquerade breach! Wait some time until you do that again.</span>")
@@ -307,7 +310,7 @@
 				message_admins("[ADMIN_LOOKUPFLW(H)] spotted [ADMIN_LOOKUPFLW(src)]'s Masquerade violation. Description: [reason]")
 				to_chat(src, "<span class='warning'>Someone spotted your behaviour as Masquerade Breach. Reason: [reason]</span>")
 				H.voted_for |= dna.real_name
-				if(masquerade_votes > 1)
+				if(masquerade_votes >= 1)
 					masquerade_votes = 0
 					for(var/mob/living/LivingSpotters in masquerade_voters)
 						if(LivingSpotters)

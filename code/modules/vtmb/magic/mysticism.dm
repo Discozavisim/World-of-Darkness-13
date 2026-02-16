@@ -122,7 +122,6 @@
 	maxHealth = 200
 	health = 200
 
-	harm_intent_damage = 8
 	obj_damage = 50
 	melee_damage_lower = 40
 	melee_damage_upper = 40

@@ -38,12 +38,15 @@
 			if(HAS_TRAIT(M, TRAIT_PACIFISM))
 				to_chat(M, "<span class='warning'>You don't want to hurt [src]!</span>")
 				return
+			var/damage = harm_intent_damage
+			if(get_potence_dices(M) >= 1)
+				damage *= get_potence_dices(M)
 			M.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 			visible_message("<span class='danger'>[M] [response_harm_continuous] [src]!</span>",\
 							"<span class='userdanger'>[M] [response_harm_continuous] you!</span>", null, COMBAT_MESSAGE_RANGE, M)
 			to_chat(M, "<span class='danger'>You [response_harm_simple] [src]!</span>")
 			playsound(loc, attacked_sound, 25, TRUE, -1)
-			attack_threshold_check(harm_intent_damage)
+			attack_threshold_check(damage)
 			log_combat(M, src, "attacked")
 			updatehealth()
 			return TRUE

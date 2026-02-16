@@ -266,7 +266,6 @@
 	speed = -0.50
 	maxHealth = 200
 	health = 200
-	harm_intent_damage = 20
 	melee_damage_lower = 24
 	melee_damage_upper = 42
 	melee_damage_type = CLONE

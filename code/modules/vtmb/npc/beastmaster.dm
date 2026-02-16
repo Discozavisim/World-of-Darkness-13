@@ -89,7 +89,6 @@ SUBSYSTEM_DEF(beastmastering)
 //	ranged = 1
 	maxHealth = 80
 	health = 85
-	harm_intent_damage = 5
 	melee_damage_lower = 10
 	melee_damage_upper = 25
 	attack_verb_continuous = "bites"
@@ -232,13 +231,13 @@ SUBSYSTEM_DEF(beastmastering)
 //				B.GiveTarget(A)
 
 /mob/living/simple_animal/hostile/beastmaster/attack_hand(mob/user)
+	. = ..()
 	if(user)
 		if(user.a_intent != INTENT_HELP)
 			for(var/mob/living/simple_animal/hostile/beastmaster/B in beastmaster.beastmaster)
 				B.add_beastmaster_enemies(user)
 			for(var/mob/living/carbon/human/npc/N in beastmaster.puppets)
 				N.add_presence_enemies(user)
-	..()
 
 /mob/living/simple_animal/hostile/beastmaster/on_hit(obj/projectile/P)
 	. = ..()

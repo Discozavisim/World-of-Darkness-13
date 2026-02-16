@@ -179,6 +179,9 @@
 	var/original_gender
 	var/original_headshot
 
+	var/original_isdwarf
+	var/original_istower
+
 	var/datum/dna/impersonating_dna
 	var/impersonating_name
 	var/impersonating_skintone
@@ -194,6 +197,14 @@
 	var/impersonating_age
 	var/impersonating_gender
 	var/impersonating_headshot
+
+	var/impersonating_clane
+	var/impersonating_faction
+	var/impersonating_job
+	var/impersonating_info
+
+	var/impersonating_isdwarf
+	var/impersonating_istower
 
 	var/is_shapeshifted = FALSE
 	var/proval = 0
@@ -370,7 +381,12 @@
 				owner.dna.copy_dna(impersonating_dna)
 				impersonating_headshot = victim.headshot_link
 
+				impersonating_clane = victim.clane
+				impersonating_faction = victim.vampire_faction
+				impersonating_job = victim.job
 
+				impersonating_isdwarf = victim.isdwarfy
+				impersonating_istower = victim.istower
 			if(2 to 3)
 				impersonating_haircolor = victim.hair_color
 				impersonating_facialhaircolor = victim.facial_hair_color
@@ -410,6 +426,9 @@
 	original_headshot = owner.headshot_link
 	original_gender = owner.gender
 
+	original_isdwarf = owner.isdwarfy
+	original_istower = owner.istower
+
 	original_dna = new
 	owner.dna.copy_dna(original_dna)
 	impersonating_hairstyle = owner.hairstyle
@@ -423,6 +442,14 @@
 	impersonating_body_mod = owner.base_body_mod
 	impersonating_gender = owner.gender
 	impersonating_headshot = owner.headshot_link
+
+	impersonating_clane = null
+	impersonating_faction = null
+	impersonating_job = null
+	impersonating_info = null
+
+	impersonating_isdwarf = owner.isdwarfy
+	impersonating_istower = owner.istower
 
 /datum/discipline_power/obfuscate/mask_of_a_thousand_faces/proc/shapeshift(to_original = FALSE)
 	// secret_vampireroll
@@ -458,6 +485,17 @@
 		is_shapeshifted = FALSE
 		owner.stealthy3 = 0
 		owner.switch_masquerade(owner)
+
+		if(owner.isdwarfy)
+			owner.RemoveElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.RemoveElement(/datum/element/giantism)
+		owner.isdwarfy = original_isdwarf
+		owner.istower = original_istower
+		if(owner.isdwarfy)
+			owner.AddElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.AddElement(/datum/element/giantism)
 	else
 		if(impersonating_dna)
 			impersonating_dna.transfer_identity(destination = owner, superficial = TRUE)
@@ -479,8 +517,18 @@
 		owner.headshot_link = impersonating_headshot
 		is_shapeshifted = TRUE
 		owner.switch_masquerade(owner)
-
 		owner.stealthy3 = 1
+
+		if(owner.isdwarfy)
+			owner.RemoveElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.RemoveElement(/datum/element/giantism)
+		owner.isdwarfy = impersonating_isdwarf
+		owner.istower = impersonating_istower
+		if(owner.isdwarfy)
+			owner.AddElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.AddElement(/datum/element/giantism)
 
 	owner.update_body()
 

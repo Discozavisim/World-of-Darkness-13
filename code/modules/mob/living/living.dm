@@ -172,7 +172,7 @@
 		if(HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
 			return TRUE
 
-	if(isliving(M) && isliving(src))
+	if(isliving(M) && isliving(src) && get_celerity_dices(src) >= 3)
 		SEND_SIGNAL(src, COSMIG_MOB_RUN_INTO_SOMEONE, M)
 		if(last_mobbump == 0 || last_mobbump+1 SECONDS < world.time)
 			last_mobbump = world.time
@@ -187,6 +187,7 @@
 				var/throw_distance = 2
 				var/lower_limit = 5
 				var/upper_limit = 25
+				var/no_downside = FALSE
 				if(get_celerity_dices(bumper) >= 5)
 					damage = damage * 7
 					throw_distance = 4
@@ -194,6 +195,11 @@
 					upper_limit = 50
 				else if(get_celerity_dices(bumper) >= 3)
 					damage = damage * 5
+				if(istype(bumped, /mob/living/simple_animal))
+					damage *= 5
+					lower_limit *= 5
+					upper_limit *= 5
+					no_downside = TRUE
 				if(bumped.attributes.fortitude_bonus >= 1)
 					bumper.Knockdown(1 SECONDS)
 					bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
@@ -209,13 +215,14 @@
 							bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
 						return
 				if(chance >= 3)
-					bumped.Knockdown(1 SECONDS)
 					bumped.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+					bumped.Knockdown(1 SECONDS)
 					bumped.throw_at(throw_bumped, throw_distance, throw_distance, bumped, TRUE)
 				else
-					bumper.Knockdown(1 SECONDS)
-					bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
-					bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
+					if(!no_downside)
+						bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+						bumper.Knockdown(1 SECONDS)
+						bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
 
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M) && (M.a_intent != INTENT_HELP))

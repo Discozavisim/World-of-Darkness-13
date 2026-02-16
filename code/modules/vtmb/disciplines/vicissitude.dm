@@ -105,6 +105,9 @@
 	var/original_gender
 	var/original_headshot
 
+	var/original_isdwarf
+	var/original_istower
+
 	var/datum/dna/impersonating_dna
 	var/impersonating_name
 	var/impersonating_skintone
@@ -120,6 +123,14 @@
 	var/impersonating_age
 	var/impersonating_gender
 	var/impersonating_headshot
+
+	var/impersonating_clane
+	var/impersonating_faction
+	var/impersonating_job
+	var/impersonating_info
+
+	var/impersonating_isdwarf
+	var/impersonating_istower
 
 	var/is_shapeshifted = FALSE
 
@@ -293,7 +304,13 @@
 				owner.dna.copy_dna(impersonating_dna)
 				impersonating_headshot = victim.headshot_link
 
+				impersonating_clane = victim.clane
+				impersonating_faction = victim.vampire_faction
+				impersonating_job = victim.job
+				impersonating_info = victim.info_known
 
+				impersonating_isdwarf = victim.isdwarfy
+				impersonating_istower = victim.istower
 			if(2 to 3)
 				impersonating_haircolor = victim.hair_color
 				impersonating_facialhaircolor = victim.facial_hair_color
@@ -301,7 +318,6 @@
 				if (victim.clane)
 					impersonating_alt_sprite = victim.clane.alt_sprite
 					impersonating_alt_sprite_greyscale = victim.clane.alt_sprite_greyscale
-
 			if(4 to INFINITY)
 				impersonating_eyecolor = victim.eye_color
 				impresonating_phonevoicetag = victim.phonevoicetag
@@ -333,6 +349,8 @@
 	original_headshot = owner.headshot_link
 	original_gender = owner.gender
 
+	original_isdwarf = owner.isdwarfy
+	original_istower = owner.istower
 
 	impersonating_hairstyle = owner.hairstyle
 	impersonating_name = owner.real_name
@@ -347,6 +365,14 @@
 	impersonating_headshot = owner.headshot_link
 	impersonating_alt_sprite = owner.clane.alt_sprite
 	impersonating_alt_sprite_greyscale = owner.clane.alt_sprite_greyscale
+
+	impersonating_clane = null
+	impersonating_faction = null
+	impersonating_job = null
+	impersonating_info = null
+
+	impersonating_isdwarf = owner.isdwarfy
+	impersonating_istower = owner.istower
 
 /datum/discipline_power/vicissitude/malleable_visage/proc/shapeshift(to_original = FALSE, instant = FALSE)
 	var/fleshcrafting = get_a_fleshcraft(owner)
@@ -391,6 +417,17 @@
 		owner.headshot_link = original_headshot
 		is_shapeshifted = FALSE
 		owner.switch_masquerade(owner)
+
+		if(owner.isdwarfy)
+			owner.RemoveElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.RemoveElement(/datum/element/giantism)
+		owner.isdwarfy = original_isdwarf
+		owner.istower = original_istower
+		if(owner.isdwarfy)
+			owner.AddElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.AddElement(/datum/element/giantism)
 	else
 		//Nosferatu, Cappadocians, Gargoyles, Kiasyd, etc. will revert instead of being indefinitely without their curse
 		if(original_alt_sprite)
@@ -414,6 +451,17 @@
 		owner.headshot_link = impersonating_headshot
 		is_shapeshifted = TRUE
 		owner.switch_masquerade(owner)
+
+		if(owner.isdwarfy)
+			owner.RemoveElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.RemoveElement(/datum/element/giantism)
+		owner.isdwarfy = impersonating_isdwarf
+		owner.istower = impersonating_istower
+		if(owner.isdwarfy)
+			owner.AddElement(/datum/element/dwarfism)
+		if(owner.istower)
+			owner.AddElement(/datum/element/giantism)
 
 	owner.update_body()
 

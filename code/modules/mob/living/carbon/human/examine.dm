@@ -56,20 +56,64 @@
 	//faction, job, etc
 	if(iskindred(user) && iskindred(src) && is_face_visible())
 		var/mob/living/carbon/human/vampire = user
-		var/same_clan = vampire.clane == clane
-		var/same_faction = vampire.vampire_faction == vampire_faction
+		var/display_clane = clane
+		var/display_faction = vampire_faction
+		var/display_job = job
+		if(iskindred(src))
+
+			var/mob/living/carbon/human/vampir = src
+			var/datum/species/kindred/vampir_species = vampir.dna.species
+			var/datum/discipline/vampir_obfuscate = vampir_species.get_discipline("Obfuscate")
+			var/datum/discipline/vampir_vicissitude = vampir_species.get_discipline("Vicissitude")
+			var/datum/discipline_power/obfuscate/mask_of_a_thousand_faces/obf_power
+			var/datum/discipline_power/vicissitude/malleable_visage/vici_power
+
+			if(vampir_obfuscate)
+				for(var/power in vampir_obfuscate.known_powers)
+					if(istype(power, /datum/discipline_power/obfuscate/mask_of_a_thousand_faces))
+						obf_power = power
+						break
+			else if(vampir_vicissitude)
+				for(var/power in vampir_vicissitude.known_powers)
+					if(istype(power, /datum/discipline_power/vicissitude/malleable_visage))
+						vici_power = power
+						break
+
+			if(obf_power && obf_power.is_shapeshifted)
+				if(obf_power.impersonating_clane)
+					display_clane = obf_power.impersonating_clane
+				if(obf_power.impersonating_faction)
+					display_faction = obf_power.impersonating_faction
+				if(obf_power.impersonating_job)
+					display_job = obf_power.impersonating_job
+				if(obf_power.impersonating_info)
+					info_known = obf_power.impersonating_info
+
+			else if(vici_power && vici_power.is_shapeshifted)
+				if(vici_power.impersonating_clane)
+					display_clane = vici_power.impersonating_clane
+				if(vici_power.impersonating_faction)
+					display_faction = vici_power.impersonating_faction
+				if(vici_power.impersonating_job)
+					display_job = vici_power.impersonating_job
+				if(vici_power.impersonating_info)
+					info_known = vici_power.impersonating_info
+
+		var/same_clan = vampire.clane == display_clane
+		var/same_faction = vampire.vampire_faction == display_faction
+
 		switch(info_known)
 			if(INFO_KNOWN_PUBLIC)
-				. += "<b>You know [p_them()] as a [job][vampire_faction ? " in the [vampire_faction]" : ""] of the [clane] bloodline.</b>"
+				. += "<b>You know [p_them()] as a [display_job][display_faction ? " in the [display_faction]" : ""] of the [display_clane] bloodline.</b>"
 			if(INFO_KNOWN_CLAN_ONLY)
 				if(same_clan)
-					. += "<b>You know [p_them()] as a [job][vampire_faction ? " in the [vampire_faction]" : ""]. You are of the same bloodline.</b>"
+					. += "<b>You know [p_them()] as a [display_job][display_faction ? " in the [display_faction]" : ""]. You are of the same bloodline.</b>"
 			if(INFO_KNOWN_FACTION)
-				if(same_faction && vampire_faction)
-					. += "<b>You know [p_them()] as a [job], belonging to the [clane] bloodline. You are both of the [vampire_faction].</b>"
+				if(same_faction && display_faction)
+					. += "<b>You know [p_them()] as a [display_job], belonging to the [display_clane] bloodline. You are both of the [display_faction].</b>"
 			else
-				if(same_faction && vampire_faction)
-					. += "<b>You know [p_them()] as a [job]. You are both of the [vampire_faction].</b>"
+				if(same_faction && display_faction)
+					. += "<b>You know [p_them()] as a [display_job]. You are both of the [display_faction].</b>"
 	if((isgarou(user) || iswerewolf(user)) && (isgarou(src) || iswerewolf(src)))
 		var/isknown = FALSE
 		var/mob/living/carbon/human/werewolf = user
@@ -685,16 +729,16 @@
 /mob/living/carbon/human/proc/get_beast_eyes_examine()
 	if(!istype(dna.species, /datum/species/kindred))
 		return null
-	
+
 	var/datum/species/kindred/kindred_spec = dna.species
 	for(var/datum/discipline/protean_disc in kindred_spec.disciplines)
 		if(!istype(protean_disc, /datum/discipline/protean))
 			continue
-		
+
 		for(var/datum/discipline_power/protean/eyes_of_the_beast/E in protean_disc.known_powers)
 			if(E.active)
 				return "<span class='danger'>[p_their(TRUE)] eyes glow with an eerie red light. </span>"
-	
+
 	return null
 
 /mob/living/proc/status_effect_examines(pronoun_replacement) //You can include this in any mob's examine() to show the examine texts of status effects!

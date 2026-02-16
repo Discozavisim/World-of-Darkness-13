@@ -18,7 +18,7 @@
 			if(!my_weapon)
 				my_weapon = new /obj/item/gun/ballistic/automatic/vampire/deagle(src)
 		else if(fights_anyway || my_weapon)
-			if(theirpower >= 3)
+			if(theirpower >= 3 && !presence_master)
 				fights_anyway = FALSE
 				QDEL_NULL(my_weapon)
 				my_weapon = null

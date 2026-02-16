@@ -487,7 +487,6 @@ GLOBAL_LIST_EMPTY(global_tentacle_grabs)
 	health = 120
 	see_in_dark = 10
 
-	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	attack_verb_continuous = "crushes"

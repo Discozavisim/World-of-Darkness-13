@@ -131,7 +131,8 @@
 			P.save_character()
 
 	if(value < 0)
-		if(masquerade <= 2)
+		if(masquerade <= 2 && (last_hunt_offer + 10 SECONDS) < world.time)
+			last_hunt_offer = world.time
 			var/list/landmarkslist = list()
 			for(var/obj/effect/landmark/start/S in GLOB.start_landmarks_list)
 				if(S.name == "Caitiff")

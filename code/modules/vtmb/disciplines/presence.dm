@@ -355,17 +355,13 @@
 				E1.Grant(owner)
 				var/datum/action/presence_deaggro/E2 = new()
 				E2.Grant(owner)
-
 			N.presence_master = owner
-
 			N.presence_follow = TRUE
 			N.remove_movespeed_modifier(/datum/movespeed_modifier/npc)
 			owner.puppets |= N
-			var/initial_fights_anyway = N.fights_anyway
 			N.fights_anyway = TRUE
 			owner.say("Come with me...")
 
-			addtimer(CALLBACK(src, PROC_REF(presence_end), target, owner, initial_fights_anyway), 50 SECONDS * mypower)
 	else
 		var/obj/item/I1 = target.get_active_held_item()
 		var/obj/item/I2 = target.get_inactive_held_item()

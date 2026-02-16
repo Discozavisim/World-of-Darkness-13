@@ -70,7 +70,7 @@
 	return TRUE
 
 /datum/job/vamp/elder/scale_with_pop()
-	var/maximum_elders = ceil(length(GLOB.player_list)/5)
+	var/maximum_elders = ceil(length(GLOB.player_list)/10)
 	if(GLOB.elders_joined >= maximum_elders)
 		return FALSE
 	return TRUE

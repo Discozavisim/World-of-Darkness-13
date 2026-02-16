@@ -9,7 +9,6 @@
 	stat_attack = HARD_CRIT //braains
 	maxHealth = 50
 	health = 50
-	harm_intent_damage = 5
 	melee_damage_lower = 21
 	melee_damage_upper = 21
 	attack_verb_continuous = "bites"
@@ -109,7 +108,6 @@
 	maxHealth = 50
 	health = 50
 	speed = 1
-	harm_intent_damage = 5
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	attack_verb_continuous = "bites"
@@ -139,7 +137,6 @@
 	speed = 2
 	maxHealth = 60
 	health = 60
-	harm_intent_damage = 10
 	melee_damage_lower = 15
 	melee_damage_upper = 15  // Keep in mind most characters will take up to half less damage from such mobs due to brutemods.
 	emote_see = list("weeps silently", "groans", "mumbles")
@@ -179,7 +176,6 @@
 	speed = 0
 	maxHealth = 20
 	health = 20
-	harm_intent_damage = 10
 	melee_damage_lower = 8
 	melee_damage_upper = 14
 	emote_see = list("chitters menacingly", "rubs its digit-limbs together", "squeaks")
@@ -212,7 +208,6 @@
 	speed = 0
 	maxHealth = 80 //Two attacks with a dedicated melee weapon or 4 9mm bullets
 	health = 80
-	harm_intent_damage = 15
 	melee_damage_lower = 20
 	melee_damage_upper = 30
 	emote_see = list("snarls", "dribbles with saliva", "wheezes")
@@ -240,7 +235,6 @@
 	speed = 1.5 //the tankier, the slower 1Code has comments. Press enter to view.
 	maxHealth = 120 //three attacks with a dedicated melee weapon or 6 9mm bullets
 	health = 120
-	harm_intent_damage = 15
 	melee_damage_lower = 25
 	melee_damage_upper = 35
 	emote_see = list("shambles", "stumbles in place", "groans")
@@ -268,7 +262,6 @@
 	speed = 3 //really slow
 	maxHealth = 300 //six attacks with a dedicated melee weapon or 15 9mm bullets
 	health = 300
-	harm_intent_damage = 5
 	melee_damage_lower = 40
 	melee_damage_upper = 50
 	emote_see = list("snorts", "guffaws", "gurgles")

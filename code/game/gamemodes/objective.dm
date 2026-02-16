@@ -1001,6 +1001,31 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	return stol >= amount
 
 
+/datum/objective/secret
+	name = "keep secret"
+	var/thetruth = "Эпштейн связан с Камарильей."
+	var/truthkept = TRUE
+
+/datum/objective/secret/update_explanation_text()
+	..()
+	explanation_text = "Whatever happens this night - DO NOT tell anyone, that [thetruth]"
+
+/datum/objective/secret/check_completion()
+	return truthkept
+
+/datum/objective/reveal
+	name = "reveal secret"
+	var/mob/secret_keeper
+	var/secret_keeper_name = "Unknown"
+	var/truthrevealed = FALSE
+
+/datum/objective/reveal/update_explanation_text()
+	..()
+	explanation_text = "Get [secret_keeper_name] to say the truth, even if it means to fight for it!"
+
+/datum/objective/reveal/check_completion()
+	return truthrevealed
+
 /datum/objective/steal_skull
 	name = "steal skull"
 	explanation_text = "Steal the Archon, which is used amongst western kin to announce bloodhunt."

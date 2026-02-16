@@ -1417,6 +1417,7 @@
 	uniforms = list(/obj/item/clothing/under/vampire/police)
 	hats = list(/obj/item/clothing/head/vampire/police)
 	suits = list(/obj/item/clothing/suit/vampire/vest/police)
+	id_type = /obj/item/card/id/police
 	pockets = list(/obj/item/stack/dollar/rand)
 
 	male_phrases = list("Я наблюдаю за тобой.",

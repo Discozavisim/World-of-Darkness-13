@@ -53,6 +53,7 @@ GLOBAL_LIST_EMPTY(phones_list)
 GLOBAL_LIST_EMPTY(published_numbers)		//Numbers that are published
 GLOBAL_LIST_EMPTY(published_number_names) //Names of published numbers.
 GLOBAL_LIST_EMPTY(bank_account_list)
+GLOBAL_LIST_EMPTY(secrets_list)
 
 GLOBAL_LIST_EMPTY(masquerade_breakers_list)
 GLOBAL_LIST_EMPTY(masquerade_latejoin)

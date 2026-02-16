@@ -34,6 +34,8 @@ SUBSYSTEM_DEF(whitelists)
 			possible_whitelists += tribe.name
 		qdel(tribe)
 
+	possible_whitelists += "trufaith"
+
 	//placeholder until a proper morality system is added
 	//possible_whitelists += "enlightenment"
 
@@ -41,7 +43,7 @@ SUBSYSTEM_DEF(whitelists)
 
 	return ..()
 
-/datum/controller/subsystem/whitelists/proc/is_whitelisted(checked_ckey, checked_whitelist)
+/datum/controller/subsystem/whitelists/proc/is_whitelisted(checked_ckey, checked_whitelist, character_name = null)
 	if (!initialized)
 		return FALSE
 	if (!whitelists_enabled)
@@ -52,9 +54,21 @@ SUBSYSTEM_DEF(whitelists)
 		if (admin.ckey == checked_ckey)
 			return TRUE
 
+	//trufaith:CharacterName entries are valid for "trufaith" whitelist type
+	var/whitelist_exists = possible_whitelists.Find(checked_whitelist) || (length(checked_whitelist) >= 9 && copytext(checked_whitelist, 1, 10) == "trufaith:")
 	//return as whitelisted if the given whitelist doesn't exist
-	if (!possible_whitelists.Find(checked_whitelist))
+	if (!whitelist_exists)
 		return TRUE
+
+	if (character_name != null && checked_whitelist == "trufaith")
+		for (var/datum/whitelist/current_whitelist in whitelist_entries)
+			if (current_whitelist.ckey != checked_ckey)
+				continue
+			if (current_whitelist.whitelist == "trufaith")
+				return TRUE
+			if (current_whitelist.whitelist == "trufaith:[character_name]")
+				return TRUE
+		return FALSE
 
 	for (var/datum/whitelist/current_whitelist in whitelist_entries)
 		if ((current_whitelist.ckey == checked_ckey) && (current_whitelist.whitelist == checked_whitelist))

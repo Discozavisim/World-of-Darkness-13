@@ -57,8 +57,8 @@
 	title = "Reverend"
 	department_head = list("Abbot")
 	faction = "Vampire"
-	total_positions = 1
-	spawn_positions = 1
+	total_positions = 0
+	spawn_positions = 0
 	supervisors = "God and Abbot"
 	selection_color = "#fff700"
 
@@ -101,7 +101,7 @@
 
 /datum/outfit/job/reverend/post_equip(mob/living/carbon/human/H)
 	..()
-	H.mind.holy_role = HOLY_ROLE_PRIEST
+	// True Faith abilities come only from trufaith_level in Character List, not from Reverend role
 /obj/effect/landmark/start/reverend
 	name = "Reverend"
 	icon_state = "Sheriff"

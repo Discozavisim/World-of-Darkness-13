@@ -723,6 +723,20 @@
 	if(!slotlocked)
 		dat += "<a href='byond://?_src_=prefs;preference=priorities;task=input'>Change Priorities</a><BR>"
 
+	if((pref_species.name == "Human" || pref_species.id == "kindred") && SSwhitelists.is_whitelisted(user?.client?.ckey, "trufaith", real_name))
+		dat += "<b>True Faith:</b> "
+		for(var/a in 1 to trufaith_level)
+			dat += "•"
+		for(var/c in 1 to (3 - trufaith_level))
+			dat += "o"
+		if(trufaith_level < 1 && true_experience >= 20)
+			dat += " <a href='byond://?_src_=prefs;preference=trufaith_buy;task=input'>Increase (20)</a>"
+		else if(trufaith_level == 1 && true_experience >= 30)
+			dat += " <a href='byond://?_src_=prefs;preference=trufaith_buy;task=input'>Increase (30)</a>"
+		else if(trufaith_level == 2 && true_experience >= 40)
+			dat += " <a href='byond://?_src_=prefs;preference=trufaith_buy;task=input'>Increase (40)</a>"
+		dat += "<BR>"
+
 	var/datum/species/kindred/K = pref_species
 	var/datum/species/ghoul/G = pref_species
 

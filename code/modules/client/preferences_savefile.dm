@@ -396,6 +396,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["exper"], exper)
 	READ_FILE(S["exper_plus"], exper_plus)
 	READ_FILE(S["true_experience"], true_experience)
+	READ_FILE(S["trufaith_level"], trufaith_level)
 
 	READ_FILE(S["a_priorities"], priorities)
 
@@ -629,6 +630,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	exper				= sanitize_integer(exper, 0, 99999999, initial(exper))
 	exper_plus				= sanitize_integer(exper_plus, 0, 99999999, initial(exper_plus))
 	true_experience				= sanitize_integer(true_experience, 0, 99999999, initial(true_experience))
+	trufaith_level				= sanitize_integer(trufaith_level, 0, 3, initial(trufaith_level))
 	priorities = sanitize_islist(priorities, list())
 	if(length(languages) > Linguistics)
 		languages = list()
@@ -803,6 +805,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["exper"]			, exper)
 	WRITE_FILE(S["exper_plus"]			, exper_plus)
 	WRITE_FILE(S["true_experience"]			, true_experience)
+	WRITE_FILE(S["trufaith_level"]			, trufaith_level)
 	WRITE_FILE(S["auspice_level"]			, auspice_level)
 
 	WRITE_FILE(S["a_priorities"], priorities)

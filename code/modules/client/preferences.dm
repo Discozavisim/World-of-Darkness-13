@@ -188,6 +188,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	//Character sheet stats
 	var/true_experience = 50
+	var/trufaith_level = 0 // 0-3, bought with experience in Character List (20/30/40)
 	var/torpor_count = 0
 
 	//linked lists determining known Disciplines and their known ranks
@@ -366,6 +367,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	random_character()
 	body_model = rand(1, 3)
 	true_experience = 50
+	trufaith_level = 0
 	real_name = random_unique_name(gender)
 	save_character()
 
@@ -2151,6 +2153,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if (dharma_level >= 6)
 						hun += 1
 						po += 1
+
+				if("trufaith_buy")
+					if(pref_species.name != "Human" && pref_species.id != "kindred")
+						return
+					if(!SSwhitelists.is_whitelisted(user?.client?.ckey, "trufaith", real_name))
+						return
+					var/cost = 0
+					if(trufaith_level == 0)
+						cost = 20
+					else if(trufaith_level == 1)
+						cost = 30
+					else if(trufaith_level == 2)
+						cost = 40
+					else
+						return
+					if(true_experience < cost)
+						return
+					true_experience -= cost
+					trufaith_level = min(3, trufaith_level + 1)
 
 				/*
 				if("torpor_restore")

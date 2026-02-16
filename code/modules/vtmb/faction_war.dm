@@ -412,3 +412,6 @@ SUBSYSTEM_DEF(factionwar)
 			E.see_invisible = SEE_INVISIBLE_FACTION
 			see_invisible = SEE_INVISIBLE_FACTION
 			update_sight()
+	if(get_trufaith_level(src) >= 3)
+		update_sight()
+

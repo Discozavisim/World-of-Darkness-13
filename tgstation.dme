@@ -3441,6 +3441,7 @@
 #include "code\modules\vtmb\living_procs.dm"
 #include "code\modules\vtmb\reflection.dm"
 #include "code\modules\vtmb\rolling.dm"
+#include "code\modules\vtmb\trufaith.dm"
 #include "code\modules\vtmb\werewolf_species.dm"
 #include "code\modules\vtmb\chi_powers\chi_arts\equilibrium.dm"
 #include "code\modules\vtmb\chi_powers\chi_arts\feng_shui.dm"

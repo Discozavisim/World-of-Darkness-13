@@ -388,35 +388,39 @@
 						if(new_master)
 							G.changed_master = TRUE
 					else if(!iskindred(BLOODBONDED) && !isnpc(BLOODBONDED))
-						var/save_data_g = FALSE
-						BLOODBONDED.set_species(/datum/species/ghoul)
-						BLOODBONDED.clane = null
-						var/response_g = input(BLOODBONDED, "Do you wish to keep being a ghoul on your save slot?(Yes will be a permanent choice and you can't go back)") in list("Yes", "No")
-//						if(BLOODBONDED.hud_used)
-//							var/datum/hud/human/HU = BLOODBONDED.hud_used
-//							HU.create_ghoulic()
-						BLOODBONDED.roundstart_vampire = FALSE
-						var/datum/species/ghoul/G = BLOODBONDED.dna.species
-						G.master = owner
-						G.last_vitae = world.time
-						if(new_master)
-							G.changed_master = TRUE
-						if(response_g == "Yes")
-							save_data_g = TRUE
+						if(get_trufaith_level(BLOODBONDED) >= 3)
+							to_chat(owner, "<span class='warning'>Their faith protects them from being turned into a ghoul.</span>")
+							to_chat(BLOODBONDED, "<span class='boldnotice'>Your faith shields you from the corruption of the blood.</span>")
 						else
-							save_data_g = FALSE
-						if(save_data_g)
-							var/datum/preferences/BLOODBONDED_prefs_g = BLOODBONDED.client.prefs
-							if(BLOODBONDED_prefs_g.discipline_types.len == 3)
-								for (var/i in 1 to 3)
-									var/removing_discipline = BLOODBONDED_prefs_g.discipline_types[1]
-									if (removing_discipline)
-										var/index = BLOODBONDED_prefs_g.discipline_types.Find(removing_discipline)
-										BLOODBONDED_prefs_g.discipline_types.Cut(index, index + 1)
-										BLOODBONDED_prefs_g.discipline_levels.Cut(index, index + 1)
-							BLOODBONDED_prefs_g.pref_species.name = "Ghoul"
-							BLOODBONDED_prefs_g.pref_species.id = "ghoul"
-							BLOODBONDED_prefs_g.save_character()
+							var/save_data_g = FALSE
+							BLOODBONDED.set_species(/datum/species/ghoul)
+							BLOODBONDED.clane = null
+							var/response_g = input(BLOODBONDED, "Do you wish to keep being a ghoul on your save slot?(Yes will be a permanent choice and you can't go back)") in list("Yes", "No")
+//							if(BLOODBONDED.hud_used)
+//								var/datum/hud/human/HU = BLOODBONDED.hud_used
+//								HU.create_ghoulic()
+							BLOODBONDED.roundstart_vampire = FALSE
+							var/datum/species/ghoul/G = BLOODBONDED.dna.species
+							G.master = owner
+							G.last_vitae = world.time
+							if(new_master)
+								G.changed_master = TRUE
+							if(response_g == "Yes")
+								save_data_g = TRUE
+							else
+								save_data_g = FALSE
+							if(save_data_g)
+								var/datum/preferences/BLOODBONDED_prefs_g = BLOODBONDED.client.prefs
+								if(BLOODBONDED_prefs_g.discipline_types.len == 3)
+									for (var/i in 1 to 3)
+										var/removing_discipline = BLOODBONDED_prefs_g.discipline_types[1]
+										if (removing_discipline)
+											var/index = BLOODBONDED_prefs_g.discipline_types.Find(removing_discipline)
+											BLOODBONDED_prefs_g.discipline_types.Cut(index, index + 1)
+											BLOODBONDED_prefs_g.discipline_levels.Cut(index, index + 1)
+								BLOODBONDED_prefs_g.pref_species.name = "Ghoul"
+								BLOODBONDED_prefs_g.pref_species.id = "ghoul"
+								BLOODBONDED_prefs_g.save_character()
 			else
 				giving = FALSE
 

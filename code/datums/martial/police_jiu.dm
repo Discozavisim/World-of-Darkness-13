@@ -13,6 +13,7 @@
 	help_verb = /mob/living/proc/PJ_help
 	block_chance = 75
 	smashes_tables = TRUE
+	max_streak_length = 6
 	var/old_grab_state = null
 	var/restraining = FALSE
 	display_combos = TRUE

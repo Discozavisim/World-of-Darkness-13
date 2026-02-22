@@ -184,8 +184,6 @@
 /datum/martial_art/police_jiu/grab_act(mob/living/A, mob/living/D)
 	if(A.a_intent == INTENT_GRAB && A!=D && can_use(A)) // A!=D prevents grabbing yourself
 		add_to_streak("G",D)
-		if(check_streak(A,D)) //if a combo is made no grab upgrade is done
-			return TRUE
 		old_grab_state = A.grab_state
 		D.grabbedby(A, 1)
 		if(old_grab_state == GRAB_PASSIVE)

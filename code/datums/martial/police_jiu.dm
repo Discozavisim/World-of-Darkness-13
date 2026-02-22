@@ -167,14 +167,12 @@
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Laying(mob/living/A, mob/living/D)
-	if(D.stat || D.IsParalyzed())
-		return FALSE
-	D.visible_message("<span class='danger'>[A] stomps [D] into the ground!</span>", \
-					"<span class='userdanger'>You're stomped into the ground by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-	to_chat(A, "<span class='danger'>You stomp [D] into the ground!</span>")
+	D.visible_message("<span class='danger'>[A] pins [D] into the ground!</span>", \
+					"<span class='userdanger'>You're pinned into the ground by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
+	to_chat(A, "<span class='danger'>You pin [D] into the ground!</span>")
 	playsound(get_turf(A), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1)
-	D.apply_damage(20, BRUTE)
-	D.Knockdown(30)
+	D.adjustStaminaLoss(25)
+	D.Paralyze(150)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
 	log_combat(A, D, "stomped (Police_Jiu)")
@@ -291,7 +289,7 @@
 	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
 	. += "<span class='notice'>Consecutive</span>: Disarm Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
 	. += "<span class='notice'>Footboard</span>: Disarm Disarm Harm. Step up and knock the criminal to the ground.</span>"
-	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm. Carefully lay the criminal on the ground without any consequences..</span>"
+	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm. Carefully lay the criminal on the ground without any consequences.</span>"
 	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or choke with your knee if he's lying down.</span>"
 
 #undef BRUSH_CLIP

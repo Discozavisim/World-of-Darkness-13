@@ -250,7 +250,7 @@
 						"<span class='userdanger'>You're nearly disarmed by [A]!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, "<span class='warning'>You fail to disarm [D]!</span>")
 		playsound(D, 'sound/weapons/cqchit1.ogg', 25, TRUE, -1)
-        D.adjustStaminaLoss(5)
+		D.adjustStaminaLoss(5)
 	log_combat(A, D, "disarmed (Police Jiu)", "[I ? " grabbing \the [I]" : ""]")
 	if(restraining && A.pulling == D)
 		log_combat(A, D, "knocked out (Chokehold)(Police Jiu)")

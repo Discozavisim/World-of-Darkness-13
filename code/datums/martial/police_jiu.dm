@@ -237,19 +237,20 @@
 	if(prob(65))
 		if(!D.stat || !D.IsParalyzed() || !restraining)
 			I = D.get_active_held_item()
-			D.visible_message("<span class='danger'>[A] strikes [D]'s jaw with their hand!</span>", \
-							"<span class='userdanger'>Your jaw is struck by [A], you feel disoriented!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-			to_chat(A, "<span class='danger'>You strike [D]'s jaw, leaving [D.p_them()] disoriented!</span>")
+			D.visible_message("<span class='danger'>[A] twist's [D]'s arm with their hands!</span>", \
+							"<span class='userdanger'>Your arm is twisted by [A], you feel disoriented!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
+			to_chat(A, "<span class='danger'>You twist [D]'s arm, leaving [D.p_them()] disoriented!</span>")
 			playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
 			if(I && D.temporarilyRemoveItemFromInventory(I))
 				A.put_in_hands(I)
 			D.Jitter(2)
-			D.apply_damage(5, A.get_attack_type())
+			D.adjustStaminaLoss(15)
 	else
 		D.visible_message("<span class='danger'>[A] fails to disarm [D]!</span>", \
 						"<span class='userdanger'>You're nearly disarmed by [A]!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, "<span class='warning'>You fail to disarm [D]!</span>")
-		playsound(D, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
+		playsound(D, 'sound/weapons/cqchit1.ogg', 25, TRUE, -1)
+        D.adjustStaminaLoss(5)
 	log_combat(A, D, "disarmed (Police Jiu)", "[I ? " grabbing \the [I]" : ""]")
 	if(restraining && A.pulling == D)
 		log_combat(A, D, "knocked out (Chokehold)(Police Jiu)")

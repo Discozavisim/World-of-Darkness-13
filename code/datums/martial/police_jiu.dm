@@ -105,7 +105,8 @@
 		to_chat(A, "<span class='danger'>You clamp [D]'s throat, choking [D.p_them()] out!</span>")
 		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
 		if(ishuman(D) || iswerewolf(D) || isghoul(D))
-			D.adjustOxyLoss(25)
+			D.adjustOxyLoss(15)
+			D.Losebreath += 3
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Handfuff(mob/living/A, mob/living/D)
@@ -165,7 +166,7 @@
 	to_chat(A, "<span class='danger'>You leg sweep [D]!</span>")
 	playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	D.apply_damage(rand(15,55	), STAMINA, affecting, armor_block)
-	D.Knockdown(75)
+	D.Knockdown(80)
 	log_combat(A, D, "leg sweeped(Police_Jiu)")
 	return TRUE
 

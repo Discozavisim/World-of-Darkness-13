@@ -1,10 +1,10 @@
 #define BRUSH_CLIP "GD"
-#define WRUNG_HAND "DDG"
+#define WRUNG_HAND "DG"
 #define RESTRAIN_COMBO "GG"
 #define HANDCUFFS_COMBO "DGHG"
-#define CONSECUTIVE_COMBO "DHD"
-#define FOOTBOARD "DDH"
-#define LAYING "DDD"
+#define CONSECUTIVE_COMBO "HD"
+#define FOOTBOARD "DH"
+#define LAYING "DDDD"
 #define KICK "HHH"
 
 /datum/martial_art/police_jiu
@@ -175,7 +175,7 @@
 	to_chat(A, "<span class='danger'>You pin [D] into the ground!</span>")
 	playsound(get_turf(A), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1)
 	D.adjustStaminaLoss(25)
-	D.Paralyze(40)
+	D.Paralyze(150)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
 	log_combat(A, D, "pinned (Police_Jiu)")
@@ -295,12 +295,12 @@
 	. = list("<span class='info'>*---------*\nThis is <EM>Police Jitsu</EM>!")
 
 	. += "<span class='notice'>Brush clip</span>: Grab Disarm. A brush clip with which you can put zombe on the ground.</span>"
-	. += "<span class='notice'>Wrung Hand</span>: Disarm Disarm Grab. Quickly disarms criminal.</span>"
+	. += "<span class='notice'>Wrung Hand</span>: Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
 	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
-	. += "<span class='notice'>Consecutive</span>: Disarm Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
-	. += "<span class='notice'>Footboard</span>: Disarm Disarm Harm. Step up and knock the criminal to the ground.</span>"
-	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm. Carefully lay the criminal on the ground without any consequences.</span>"
+	. += "<span class='notice'>Consecutive</span>: Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
+	. += "<span class='notice'>Footboard</span>: Disarm Harm. Step up and knock the criminal to the ground.</span>"
+	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm Disarm. Pin the criminal on the ground without any consequences.</span>"
 	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or choke with your knee if he's lying down.</span>"
 
 #undef BRUSH_CLIP

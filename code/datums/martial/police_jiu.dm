@@ -115,7 +115,7 @@
 		return FALSE
 	for(var/obj/item/restraints/handcuffs/H in A.contents)
 		H.apply_cuffs(D, A)
-		D.adjustStaminaLoss(30)
+		D.adjustStaminaLoss(60)
 		log_combat(A, D, "Handcuffed (Police_Jiu)")
 	return TRUE
 
@@ -286,14 +286,14 @@
 
 /atom/proc/get_martial_info()
 	. = list("<span class='info'>*---------*\nThis is [icon2html(usr, usr)] <EM>Police Jiu</EM>!")
-	. += "<span class='notice'>Bush clip</span>: Grab Disarm. A brush clip with which you can put it on the ground.</span>"
-	. += "<span class='notice'>Wrung Hand</span>: Disarm Disarm Grab.A quick and disarming criminal.</span>"
+	. += "<span class='notice'>Brush clip</span>: Grab Disarm. A brush clip with which you can put it on the ground.</span>"
+	. += "<span class='notice'>Wrung Hand</span>: Disarm Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
 	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
-	. += "<span class='notice'>Consecutive</span>: Disarm Disarm Harm. Mainly offensive move, huge damage and decent stamina damage.</span>"
-	. += "<span class='notice'>Footboard</span>: Disarm Disarm Harm. Step up and knock the criminal to the groun.</span>"
-	. += "<span class='notice'>Laying</span>: Disarm Disarm Harm. Carefully lay the criminal on the ground without any consequences..</span>"
-	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or put your knees on his stomach if he's lying down.</span>"
+	. += "<span class='notice'>Consecutive</span>: Disarm Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
+	. += "<span class='notice'>Footboard</span>: Disarm Disarm Harm. Step up and knock the criminal to the ground.</span>"
+	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm. Carefully lay the criminal on the ground without any consequences..</span>"
+	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or choke with your knee if he's lying down.</span>"
 
 #undef BRUSH_CLIP
 #undef WRUNG_HAND

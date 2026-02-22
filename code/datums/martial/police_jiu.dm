@@ -82,7 +82,7 @@
 	to_chat(A, "<span class='danger'>You wrung [D]'s hand!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.adjustStaminaLoss(15)
-	D.Paralyze(25)
+	D.Paralyze(30)
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 
@@ -105,7 +105,7 @@
 		to_chat(A, "<span class='danger'>You clamp [D]'s throat, choking [D.p_them()] out!</span>")
 		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
 		if(ishuman(D) || iswerewolf(D) || isghoul(D))
-			D.adjustOxyLoss(20)
+			D.adjustOxyLoss(25)
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Handfuff(mob/living/A, mob/living/D)

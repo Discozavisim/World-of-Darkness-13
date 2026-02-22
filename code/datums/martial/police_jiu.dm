@@ -67,8 +67,8 @@
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))
-		D.Paralyze(20)
-		D.adjustStaminaLoss(30)
+		D.Paralyze(10)
+		D.adjustStaminaLoss(55)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
 	log_combat(A, D, "brushed clip (Police_Jiu)")
@@ -81,8 +81,8 @@
 					"<span class='userdanger'>You're hand wrung by [A]!</span>", "<span class='hear'>You hear a sickening sound of clicking from hand!</span>", null, A)
 	to_chat(A, "<span class='danger'>You wrung [D]'s hand!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
-	D.adjustStaminaLoss(20)
-	D.Paralyze(40)
+	D.adjustStaminaLoss(15)
+	D.Paralyze(25)
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 

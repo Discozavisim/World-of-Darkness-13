@@ -163,7 +163,7 @@
 	playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
 	D.Knockdown(80)
 	log_combat(A, D, "punched liver(Police_Jiu)")
-	D.adjustStaminaLoss(25)
+	D.adjustStaminaLoss(15)
 	sleep(5)
 	D.adjustStaminaLoss(9)
 	sleep(5)

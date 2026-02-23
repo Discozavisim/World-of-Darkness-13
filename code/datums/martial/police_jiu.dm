@@ -158,8 +158,6 @@
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Footboard(mob/living/A, mob/living/D)
-	if(D.stat || D.IsParalyzed())
-		return FALSE
 	var/obj/item/bodypart/affecting = D.get_bodypart(BODY_ZONE_CHEST)
 	var/armor_block = D.run_armor_check(affecting, BASHING)
 	D.visible_message("<span class='warning'>[A] leg sweeps [D]!</span>", \

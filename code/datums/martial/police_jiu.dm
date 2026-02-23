@@ -153,7 +153,7 @@
 		if(I && D.temporarilyRemoveItemFromInventory(I))
 			A.put_in_hands(I)
 		D.adjustStaminaLoss(45)
-		D.apply_damage(35, A.get_attack_type())
+		D.apply_damage(30, A.get_attack_type())
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Footboard(mob/living/A, mob/living/D)

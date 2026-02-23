@@ -313,7 +313,7 @@
 	. += "<span class='notice'>Brush clip</span>: Grab Disarm. A brush clip with which you can put criminal on the ground.</span>"
 	. += "<span class='notice'>Wrung Hand</span>: Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
-	. += "<span class='notice'>Handcuffs combo</span>: Harm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
+	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
 	. += "<span class='notice'>Consecutive</span>: Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
 	. += "<span class='notice'>Liver Punch</span>: Disarm Harm. Punch criminal's liver making them weaker over time.</span>"
 	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm Disarm. Pin the criminal on the ground without any consequences.</span>"

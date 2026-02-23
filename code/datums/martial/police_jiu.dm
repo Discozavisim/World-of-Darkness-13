@@ -106,7 +106,7 @@
 		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
 		if(ishuman(D) || iswerewolf(D) || isghoul(D))
 			D.adjustOxyLoss(15)
-		//	D.Losebreath += 3
+			D.losebreath += 3
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Handfuff(mob/living/A, mob/living/D)

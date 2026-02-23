@@ -189,6 +189,7 @@
 		add_to_streak("G",D)
 		if(check_streak(A,D))
 			return FALSE
+			return TRUE
 		old_grab_state = A.grab_state
 		D.grabbedby(A, 1)
 		if(old_grab_state == GRAB_PASSIVE)

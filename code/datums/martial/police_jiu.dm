@@ -5,7 +5,7 @@
 #define CONSECUTIVE_COMBO "HD"
 #define FOOTBOARD "DH"
 #define LAYING "DDDD"
-#define KICK "HHH"
+#define CHOKE "HHH"
 
 /datum/martial_art/police_jiu
 	name = "Police Martial Arts"
@@ -52,9 +52,9 @@
 		streak = ""
 		Laying(A,D)
 		return TRUE
-	if(findtext(streak,KICK))
+	if(findtext(streak,CHOKE))
 		streak = ""
-		Kick(A,D)
+		Choke(A,D)
 		return TRUE
 	return FALSE
 
@@ -86,18 +86,19 @@
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 
-/datum/martial_art/police_jiu/proc/Kick(mob/living/A, mob/living/D)
+/datum/martial_art/police_jiu/proc/Choke(mob/living/A, mob/living/D)
 	if(!can_use(A))
 		return FALSE
 	if(!D.stat || !D.IsParalyzed())
-		D.visible_message("<span class='danger'>[A] kicks [D]'s leg!</span>", \
-						"<span class='userdanger'>You're kicked leg by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-		to_chat(A, "<span class='danger'>You kick [D]'s leg!</span>")
+		D.visible_message("<span class='danger'>[A] sweeps and chockes [D]!</span>", \
+						"<span class='userdanger'>You're chocked by [A]!</span>", "<span class='hear'>You hear muffled moan!</span>", COMBAT_MESSAGE_RANGE, A)
+		to_chat(A, "<span class='danger'>You chocke [D]!</span>")
 		playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
-		D.apply_damage(5, A.get_attack_type())
+		D.adjustOxyLoss(10)
 		D.adjustStaminaLoss(30)
+		D.losebreath += 2
 		D.Knockdown(25)
-		log_combat(A, D, "kicked (Police_Jiu)")
+		log_combat(A, D, "chocked (Police_Jiu)")
 	if(!(D.body_position == STANDING_UP))
 		log_combat(A, D, "chocked (leg on neck)(Police_Jiu)")
 		D.visible_message("<span class='danger'>[A] clamps [D]'s throat with his knee [D.p_them()]!</span>", \
@@ -303,7 +304,7 @@
 	. += "<span class='notice'>Consecutive</span>: Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
 	. += "<span class='notice'>Footboard</span>: Disarm Harm. Step up and knock the criminal to the ground.</span>"
 	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm Disarm. Pin the criminal on the ground without any consequences.</span>"
-	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or choke with your knee if he's lying down.</span>"
+	. += "<span class='notice'>Choke</span>: Harm Harm Harm. Chocke your opponent. Or choke with your knee if he's lying down(more effective).</span>"
 
 #undef BRUSH_CLIP
 #undef WRUNG_HAND
@@ -312,4 +313,4 @@
 #undef CONSECUTIVE_COMBO
 #undef FOOTBOARD
 #undef LAYING
-#undef KICK
+#undef CHOKE

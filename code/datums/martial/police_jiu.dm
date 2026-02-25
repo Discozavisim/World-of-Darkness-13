@@ -79,8 +79,8 @@
 	to_chat(A, "<span class='danger'>You wrung [D]'s hand!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.adjustStaminaLoss(20)
-	D.Paralyze(20)
-	D.Stun(30)
+	D.Paralyze(15)
+	D.Stun(20)
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 

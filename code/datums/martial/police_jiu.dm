@@ -173,16 +173,19 @@
 	D.adjustStaminaLoss(7)
 	sleep(10)
 	D.adjustStaminaLoss(6)
+	D.emote("cough")
 	sleep(10)
 	D.adjustStaminaLoss(5)
 	sleep(10)
 	D.adjustStaminaLoss(4)
+	D.emote("drool")
 	sleep(10)
 	D.adjustStaminaLoss(3)
 	sleep(10)
 	D.adjustStaminaLoss(2)
 	sleep(10)
 	D.adjustStaminaLoss(1)
+	D.vomit
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Laying(mob/living/A, mob/living/D)

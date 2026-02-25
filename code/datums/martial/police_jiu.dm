@@ -80,7 +80,7 @@
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.adjustStaminaLoss(20)
 	D.Paralyze(15)
-	D.Stun(20)
+	D.Knockdown(40)
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 

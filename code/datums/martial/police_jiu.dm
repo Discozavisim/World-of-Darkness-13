@@ -58,9 +58,9 @@
 /datum/martial_art/police_jiu/proc/Brush(mob/living/A, mob/living/D)
 	if(!can_use(A))
 		return FALSE
-	D.visible_message("<span class='danger'>[A] brushed [D]'s hand!</span>", \
-					"<span class='userdanger'>You're hand brushed by [A]!</span>", "<span class='hear'>You hear a sickening sound of clicking from hand!</span>", null, A)
-	to_chat(A, "<span class='danger'>You brushed [D]'s hand!</span>")
+	D.visible_message("<span class='danger'>[A] hip throws [D]!</span>", \
+					"<span class='userdanger'>You're hip throwed by [A]!</span>", "<span class='hear'>You hear a sickening sound of bones hitting flesh!</span>", null, A)
+	to_chat(A, "<span class='danger'>You hip throwed [D]!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))
@@ -322,9 +322,9 @@
 
 
 /atom/proc/get_martial_info()
-	. = list("<span class='info'>*---------*\nThis is <EM>Police Jitsu</EM>!")
+	. = list("<span class='notice'>*Police Jitsu*\nThis is <EM>Police Jitsu</EM>!")
 
-	. += "<span class='notice'>Brush clip</span>: Grab Disarm. A brush clip with which you can put criminal on the ground.</span>"
+	. += "<span class='notice'>Hip throw</span>: Grab Disarm. A hip throw with which you can put criminal on the ground.</span>"
 	. += "<span class='notice'>Wrung Hand</span>: Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
 	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"

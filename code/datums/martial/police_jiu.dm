@@ -65,7 +65,7 @@
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))
 		D.Paralyze(10)
-		D.adjustStaminaLoss(50)
+		D.adjustStaminaLoss(55)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
 	log_combat(A, D, "brushed clip (Police_Jiu)")

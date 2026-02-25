@@ -89,11 +89,11 @@
 		return FALSE
 	if(!D.stat || !D.IsParalyzed())
 		D.visible_message("<span class='danger'>[A] sweeps and chockes [D]!</span>", \
-						"<span class='userdanger'>You're chocked by [A]!</span>", "<span class='hear'>You hear muffled moan!</span>", COMBAT_MESSAGE_RANGE, A)
-		to_chat(A, "<span class='danger'>You chocke [D]!</span>")
+						"<span class='userdanger'>You're choked by [A]!</span>", "<span class='hear'>You hear muffled moan!</span>", COMBAT_MESSAGE_RANGE, A)
+		to_chat(A, "<span class='danger'>You choke [D]!</span>")
 		playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
 		D.adjustOxyLoss(10)
-		D.adjustStaminaLoss(30)
+		D.adjustStaminaLoss(25)
 		D.losebreath += 2
 		D.Knockdown(25)
 		log_combat(A, D, "choked (Police_Jiu)")

@@ -1,7 +1,7 @@
 #define BRUSH_CLIP "GD"
 #define WRUNG_HAND "DG"
 #define RESTRAIN_COMBO "GG"
-#define HANDCUFFS_COMBO "DGHG"
+#define HANDCUFFS_COMBO "DGHGG"
 #define CONSECUTIVE_COMBO "HD"
 #define FOOTBOARD "DH"
 #define LAYING "DDDD"

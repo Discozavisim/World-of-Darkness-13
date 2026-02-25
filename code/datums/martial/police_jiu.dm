@@ -106,7 +106,7 @@
 		if(ishuman(D) || iswerewolf(D) || isghoul(D))
 			D.adjustOxyLoss(15)
 			D.losebreath += 3
-			D.Knockdown(15)
+			D.Knockdown(20)
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Handfuff(mob/living/A, mob/living/D)

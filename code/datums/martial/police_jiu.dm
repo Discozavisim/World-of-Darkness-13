@@ -60,7 +60,7 @@
 		return FALSE
 	D.visible_message("<span class='danger'>[A] leg sweeps [D]!</span>", \
 					"<span class='userdanger'>You're leg sweeped by [A]!</span>", "<span class='hear'>You hear a sickening sound of bones hitting flesh!</span>", null, A)
-	to_chat(A, "<span class='danger'>You leg sweep[D]!</span>")
+	to_chat(A, "<span class='danger'>You leg sweep [D]!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))

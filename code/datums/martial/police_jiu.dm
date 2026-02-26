@@ -1,7 +1,7 @@
 #define BRUSH_CLIP "GD"
 #define WRUNG_HAND "DG"
 #define RESTRAIN_COMBO "GG"
-#define HANDCUFFS_COMBO "DGHG"
+#define HANDCUFFS_COMBO "DGHGD"
 #define CONSECUTIVE_COMBO "HD"
 #define FOOTBOARD "DH"
 #define LAYING "DDDD"
@@ -58,17 +58,18 @@
 /datum/martial_art/police_jiu/proc/Brush(mob/living/A, mob/living/D)
 	if(!can_use(A))
 		return FALSE
-	D.visible_message("<span class='danger'>[A] hip throws [D]!</span>", \
-					"<span class='userdanger'>You're hip throwed by [A]!</span>", "<span class='hear'>You hear a sickening sound of bones hitting flesh!</span>", null, A)
-	to_chat(A, "<span class='danger'>You hip throwed [D]!</span>")
+	D.visible_message("<span class='danger'>[A] leg sweeps [D]!</span>", \
+					"<span class='userdanger'>You're leg sweeped by [A]!</span>", "<span class='hear'>You hear a sickening sound of bones hitting flesh!</span>", null, A)
+	to_chat(A, "<span class='danger'>You leg sweep[D]!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))
 		D.Paralyze(10)
-		D.adjustStaminaLoss(55)
+	 D.adjustStaminaLoss(50)
+  D.Knockdown(30)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
-	log_combat(A, D, "brushed clip (Police_Jiu)")
+	log_combat(A, D, "leg sweeped (Police_Jiu)")
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Wrung(mob/living/A, mob/living/D)
@@ -327,7 +328,7 @@
 	. += "<span class='notice'>Hip throw</span>: Grab Disarm. A hip throw with which you can put criminal on the ground.</span>"
 	. += "<span class='notice'>Wrung Hand</span>: Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
-	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
+	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab Disarm. Put the criminal in handcuffs using an effective technique.</span>"
 	. += "<span class='notice'>Consecutive</span>: Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
 	. += "<span class='notice'>Liver Punch</span>: Disarm Harm. Punch criminal's liver making them weaker over time.</span>"
 	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm Disarm. Pin the criminal on the ground without any consequences.</span>"

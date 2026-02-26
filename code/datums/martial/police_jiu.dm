@@ -65,7 +65,7 @@
 	D.apply_damage(15, BRUTE)
 	if(ishuman(D) || iswerewolf(D) || isghoul(D))
 		D.Paralyze(5)
-		D.adjustStaminaLoss(45)
+		D.adjustStaminaLoss(50)
  	D.Knockdown(30)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()

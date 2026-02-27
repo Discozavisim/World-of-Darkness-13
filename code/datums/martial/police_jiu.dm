@@ -170,12 +170,12 @@
 		for(var/i=0, i<15, i++)
 			if(i<4)
 				sleep(20)
- 				D.adjustStaminaLoss(10)
+ 					D.adjustStaminaLoss(10)
 			else
 				sleep(10)
- 				D.adjustStaminaLoss(2)
+ 					D.adjustStaminaLoss(2)
 
-		D.vomit
+		D.vomit()
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Laying(mob/living/A, mob/living/D)

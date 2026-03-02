@@ -539,6 +539,7 @@
     icon_state = ""
     damage = 7 * rand(1, 7)
     paralyze = 0
+    range = 0.5
     dismemberment = 1
     armour_penetration = 25
 

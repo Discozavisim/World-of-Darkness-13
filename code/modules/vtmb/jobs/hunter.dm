@@ -61,7 +61,7 @@
 				H.put_in_l_hand(new /obj/item/ammo_box/vampire/c12g(H))
 			if("Holy Presence")
 				H.equip_to_slot_or_del(new /obj/item/clothing/suit/vampire/vest/army(H), ITEM_SLOT_OCLOTHING)
-				H.put_in_r_hand(new /obj/item/melee/vampirearms/chainsaw(H))
+				H.put_in_r_hand(new /obj/item/gun/ballistic/chainsaw(H))
 				H.resistant_to_disciplines = TRUE
 				to_chat(H, "<b>You are no longer vulnerable to vampire blood powers...</b>")
 

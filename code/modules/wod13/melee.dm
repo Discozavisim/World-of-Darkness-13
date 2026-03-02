@@ -506,67 +506,41 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT)
 
-/obj/item/melee/vampirearms/chainsaw
-	name = "chainsaw"
-	desc = "A versatile power tool. Useful for limbing trees and delimbing humans."
-	icon_state = "chainsaw"
-	flags_1 = CONDUCT_1
-	force = 15
-	var/force_on = 150
-	w_class = WEIGHT_CLASS_BULKY
-	throwforce = 10
-	throw_speed = 2
-	throw_range = 4
-	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
-	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
-	hitsound = "swing_hit"
-	sharpness = SHARP_EDGED
-	actions_types = list(/datum/action/item_action/startchainsaw)
-	tool_behaviour = list(TOOL_KNIFE, TOOL_SAW)
-	toolspeed = 0.5
-	resistance_flags = FIRE_PROOF
-	is_iron = TRUE
-	var/on = FALSE
-	var/wielded = FALSE
+/obj/item/gun/ballistic/chainsaw
+    name = "A chainsaw... huh"
+    desc = "A reminder, try to shoot it."
+    icon_state = "chainsaw"
+    flags_1 = CONDUCT_1
+    slot_flags = null
+    w_class = WEIGHT_CLASS_HUGE
+    custom_materials = null
+    burst_size = 1
+    automatic = 0
+    fire_delay = 0.1
+    fire_sound = 'sound/weapons/chainsawhit.ogg'
+    mag_type = /obj/item/ammo_box/magazine/internal/chainsaw
+    tac_reloads = FALSE
+    casing_ejector = FALSE
 
-/obj/item/melee/vampirearms/chainsaw/Initialize(mapload)
-	. = ..()
-	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, PROC_REF(on_wield))
-	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, PROC_REF(on_unwield))
+/obj/item/ammo_box/magazine/internal/chainsaw
+    name = "old as fuck fuel storage"
+    ammo_type = /obj/item/ammo_casing/caseless/laser/chainsaw
+    caliber = CALIBER_GATLING
+    max_ammo = INFINITY 
 
-/obj/item/melee/vampirearms/chainsaw/ComponentInitialize()
-	. = ..()
-	AddComponent(/datum/component/butchering, 30, 100, 0, 'sound/weapons/chainsawhit.ogg', TRUE)
-	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
+/obj/item/ammo_casing/caseless/laser/chainsaw
+    projectile_type = /obj/projectile/bullet/chainsaw
+    variance = 0.5
+    click_cooldown_override = 0.5
 
-/obj/item/melee/vampirearms/chainsaw/proc/on_wield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = TRUE
-
-/obj/item/melee/vampirearms/chainsaw/proc/on_unwield(obj/item/source, mob/user)
-	SIGNAL_HANDLER
-
-	wielded = FALSE
-
-/obj/item/melee/vampirearms/chainsaw/attack_self(mob/user)
-	on = !on
-	to_chat(user, "As you pull the starting cord dangling from [src], [on ? "it begins to whirr." : "the chain stops moving."]")
-	force = on ? force_on : initial(force)
-	throwforce = on ? force_on : initial(force)
-	var/datum/component/butchering/butchering = src.GetComponent(/datum/component/butchering)
-	butchering.butchering_enabled = on
-
-	if(on)
-		hitsound = 'sound/weapons/chainsawhit.ogg'
-	else
-		hitsound = "swing_hit"
-
-	if(src == user.get_active_held_item())
-		user.update_inv_hands()
-	for(var/X in actions)
-		var/datum/action/A = X
-		A.UpdateButtonIcon()
+/obj/projectile/bullet/chainsaw
+    name ="SAAAW"
+    speed = 1
+    icon_state = ""
+    damage = 7 * rand(1, 7)
+    paralyze = 0
+    dismemberment = 1
+    armour_penetration = 25
 
 /obj/item/vampire_stake
 	name = "stake"

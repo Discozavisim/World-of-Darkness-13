@@ -54,7 +54,7 @@
 	grid_width = 2 GRID_BOXES
 	grid_height = 1 GRID_BOXES
 
-/obj/item/melee/vampirearms/chainsaw
+//obj/item/gun/ballistic/chainsaw
 	grid_width = 8 GRID_BOXES
 	grid_height = 4 GRID_BOXES
 

@@ -75,7 +75,7 @@
 		/obj/item/police_radio,
 		/obj/item/vamp/phone,
 		/obj/item/melee/vampirearms/longsword,
-		/obj/item/melee/vampirearms/chainsaw,
+		/obj/item/gun/ballistic/chainsaw,
 		/obj/item/melee/vampirearms/fireaxe,
 		/obj/item/storage/pill_bottle/ephedrine,
 		/obj/item/gas_can/full,

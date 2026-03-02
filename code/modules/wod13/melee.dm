@@ -511,6 +511,7 @@
     desc = "A reminder, try to shoot it."
     icon_state = "chainsaw"
     flags_1 = CONDUCT_1
+    force = 50
     slot_flags = null
     w_class = WEIGHT_CLASS_HUGE
     custom_materials = null

@@ -347,5 +347,6 @@ var/is_cycle
     is_cycle = 1
     /obj/item/onMouseUp
     is_cycle = 0
-    while(is_cycle == 1)
-        return
+    if(is_cycle == 1)
+        sleep(cycle_cd)
+        return 

@@ -339,3 +339,13 @@
 			return "vamp11"
 		else
 			return value
+
+var/cycle_cd = 10 
+var/is_cycle
+/obj/item/proc/MouseHold(cycle_cd, object, location, params, mob)
+    /obj/item/onMouseDown
+    is_cycle = 1
+    /obj/item/onMouseUp
+    is_cycle = 0
+    while(is_cycle == 1)
+        return

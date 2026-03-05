@@ -1598,7 +1598,7 @@
 /area/vtm/interior/penumbra)
 "Cp" = (
 /obj/effect/landmark/teleport_mark{
-	tribe = "Black Spiral"
+	tribe = "Black Spiral Dancers"
 	},
 /turf/open/indestructible/necropolis/air{
 	umbra = 1

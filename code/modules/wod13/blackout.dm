@@ -68,10 +68,12 @@ SUBSYSTEM_DEF(witness_pool)
 /mob/living/carbon/werewolf/handle_witness()
 	if(stat != DEAD)
 		var/gaining_rage = TRUE
+		var/my_tribe = auspice?.tribe.name
+		var/is_bsd = (my_tribe == "Black Spiral Dancers")
 		for(var/obj/structure/werewolf_totem/W in GLOB.totems)
 			if(W)
 				if(W.totem_health)
-					if(W.tribe == auspice?.tribe.name)
+					if((W.tribe == "Black Spiral Dancers") ? is_bsd : !is_bsd)
 						if(get_area(W) == get_area(src) && client)
 							gaining_rage = FALSE
 							if(last_gnosis_buff+300 < world.time)
@@ -332,8 +334,21 @@ SUBSYSTEM_DEF(witness_pool)
 
 	else if(isgarou(src))
 
+		var/gaining_rage = TRUE
+		var/my_tribe = auspice?.tribe.name
+		var/is_bsd = (my_tribe == "Black Spiral Dancers")
+		for(var/obj/structure/werewolf_totem/W in GLOB.totems)
+			if(W)
+				if(W.totem_health)
+					if((W.tribe == "Black Spiral Dancers") ? is_bsd : !is_bsd)
+						if(get_area(W) == get_area(src) && client)
+							gaining_rage = FALSE
+							if(last_gnosis_buff+300 < world.time)
+								last_gnosis_buff = world.time
+								adjust_gnosis(1, src, TRUE)
+
 		if(auspice?.breed_form != FORM_HOMID && !(HAS_TRAIT(src, TRAIT_CORAX)))
-			if(client)
+			if(gaining_rage && client)
 				if(((last_rage_gain + RAGE_LIFE_COOLDOWN) < world.time) && (auspice.rage <= 6))
 					last_rage_gain = world.time
 					adjust_rage(1, src, TRUE)

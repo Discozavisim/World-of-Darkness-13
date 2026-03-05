@@ -639,7 +639,7 @@
 			var/howl_details
 			var/final_message
 			for(var/mob/living/carbon/Garou in GLOB.player_list)
-				if((isgarou(Garou) || iswerewolf(Garou) || HAS_TRAIT(Garou, TRAIT_CORAX)) && Garou != owner && Garou.auspice?.tribe == C.auspice?.tribe)
+				if((isgarou(Garou) || iswerewolf(Garou) || HAS_TRAIT(Garou, TRAIT_CORAX)) && Garou != owner)
 					if(!sound_hearers.Find(Garou))
 						if(!HAS_TRAIT(C, TRAIT_CORAX))
 							Garou.playsound_local(get_turf(Garou), pick('code/modules/wod13/sounds/awo1.ogg', 'code/modules/wod13/sounds/awo2.ogg'), 25, FALSE)

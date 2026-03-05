@@ -125,6 +125,11 @@
 			if(totem_health <= 0)
 				to_chat(C, "<span class='warning'>[src] is broken!</span>")
 				return
+			var/my_tribe = C.auspice?.tribe.name
+			var/is_bsd = (my_tribe == "Black Spiral Dancers")
+			if((tribe == "Black Spiral Dancers") ? !is_bsd : is_bsd)
+				to_chat(C, "<span class='warning'>The totem resists you! It does not accept outsiders!</span>")
+				return
 			var/obj/umbra_portal/prev = locate() in get_step(src, SOUTH)
 			if(!prev)
 				if(C.auspice.name == "Theurge")

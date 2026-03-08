@@ -322,6 +322,17 @@
 		return TRUE
 	return FALSE
 
+/proc/is_antagonist(mob/M)
+	if(!M.mind)
+		return FALSE
+	if(!M.mind.special_role)
+		return FALSE
+
+	var/datum/antagonist/A = M.mind.special_role
+	if(A.name == "Ambitious")
+		return FALSE
+
+	return is_special_character(M)
 
 /mob/proc/reagent_check(datum/reagent/R) // utilized in the species code
 	return 1

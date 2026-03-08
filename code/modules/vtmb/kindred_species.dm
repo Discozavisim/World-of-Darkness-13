@@ -421,6 +421,12 @@
 								BLOODBONDED_prefs_g.pref_species.name = "Ghoul"
 								BLOODBONDED_prefs_g.pref_species.id = "ghoul"
 								BLOODBONDED_prefs_g.save_character()
+
+				if(is_antagonist(owner))
+					var/datum/antagonist/A = owner.mind.has_antag_datum(/datum/antagonist/sabbatist)
+					for(var/datum/objective/sabbat/convert/obj in A.objectives)
+						obj.current++
+						to_chat(owner, "<span class='notice'> We [obj.current >= obj.num ? "acheived" : "need [obj.num - obj.current] more to achive"] our goals in converting new adepts.</span>")
 			else
 				giving = FALSE
 

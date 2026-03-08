@@ -276,6 +276,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 							HM.MyPath.trigger_morality("kill")
 						else
 							HM.AdjustHumanity(-1, 0)
+						SEND_SIGNAL(HM, COMSIG_KILL)
 						call_dharma("torture", user)
 						if(!(M in HM.mind.dharma?.deserving))
 							call_dharma("killfirst")

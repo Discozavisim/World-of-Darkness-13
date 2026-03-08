@@ -1135,7 +1135,43 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 /datum/objective/sabbat
 	name = "sabbat"
-	explanation_text = "Gain the power for Sabbat by claiming faction marks, shovelhead!"
+	explanation_text = "Gain the power for Sabbat by claiming faction marks, shovelhead! Surpass them at once!"
+	var/update_explanation = FALSE
 
 /datum/objective/sabbat/check_completion()
-	return (length(SSfactionwar.marks_sabbat) > length(SSfactionwar.marks_camarilla)+length(SSfactionwar.marks_anarch))
+	return length(SSfactionwar.marks_sabbat) > length(SSfactionwar.marks_camarilla) + length(SSfactionwar.marks_anarch)
+
+/datum/objective/sabbat/New(text)
+	. = ..()
+	if(update_explanation)
+		update_explanation_text() //This one doesnt need updating, but all subtypes is.
+
+/datum/objective/sabbat/convert //Individual objective
+	name = "sabbat"
+	explanation_text = "Enlight some souls by embracing them to the Darkness! Convert some people!"
+	update_explanation = TRUE
+	var/num = 1
+	var/current = 0
+
+/datum/objective/sabbat/convert/update_explanation_text()
+	..()
+	num = rand(2,5)
+	explanation_text = "Enlight some souls by embracing them to the Darkness! Convert [num] people!"
+
+/datum/objective/sabbat/convert/check_completion()
+	return current >= num
+
+/datum/objective/sabbat/mass_murder //Team objective
+	name = "sabbat"
+	explanation_text = "Commit mass murder for the sake of Cain!"
+	update_explanation = TRUE
+	var/needed = 5 //How many kills we need
+	var/kills = 0 //How many we currently killed
+
+//We need to kill 4 NPCs for each teammate in sqrt (so we dont need to kill a whole city of npcs in case of convert), counts each kill of each teammate
+/datum/objective/sabbat/mass_murder/update_explanation_text()
+	..()
+	explanation_text = "Commit mass murder for the sake of Cain! Kill [needed] mortals! And be warned: the more friends you have - the more blood you need to spill!"
+
+/datum/objective/sabbat/mass_murder/check_completion()
+	return kills >= needed

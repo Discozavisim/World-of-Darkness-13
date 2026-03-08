@@ -284,8 +284,9 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 							char_sheet.add_experience(5)
 					if(special_role)
 						var/datum/antagonist/A = special_role
-						if(A.check_completed())
-							char_sheet.add_experience(5)
+						for(var/datum/objective/obj in A.objectives) //We get 5 exp for each completed objective
+							if(obj.check_completion())
+								char_sheet.add_experience(5)
 
 					char_sheet.save_preferences()
 					char_sheet.save_character()

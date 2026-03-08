@@ -271,6 +271,8 @@
 					else
 						AdjustHumanity(-1, 0)
 					target.death()
+					SEND_SIGNAL(src, COMSIG_KILL)
+
 			if(!ishuman(target))
 				if(target.stat != DEAD)
 					target.death()

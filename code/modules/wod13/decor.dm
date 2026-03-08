@@ -896,6 +896,7 @@
 						H.MyPath.trigger_morality("kill")
 					else
 						H.AdjustHumanity(-1, 0)
+					SEND_SIGNAL(starter, COMSIG_KILL)
 		L.gib()
 	..()
 

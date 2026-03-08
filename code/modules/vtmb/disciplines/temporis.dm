@@ -25,14 +25,6 @@
 
 	return POWER_CANCEL_ACTIVATION
 
-/datum/discipline_power/temporis/activate()
-	. = ..()
-	owner.attributes.celerity_bonus += level
-
-/datum/discipline_power/temporis/deactivate()
-	. = ..()
-	owner.attributes.celerity_bonus -= level
-
 //HOURGLASS OF THE MIND
 /datum/discipline_power/temporis/hourglass_of_the_mind
 	name = "Hourglass of the Mind"
@@ -64,30 +56,46 @@
 	. = ..()
 	target.AddComponent(/datum/component/dejavu, rewinds = 4, interval = 2 SECONDS)
 
-//LEADEN MOMENT
-/datum/discipline_power/temporis/leaden_moment
-	name = "Leaden Moment"
-	desc = "Slow time around your opponent, reducing their speed."
+/mob/living
+	var/temporis_lapse = FALSE
+
+/datum/discipline_power/temporis/lapse
+	name = "Lapse"
+	desc = "Halves the speed of movement of one individual through time."
 
 	level = 3
 	check_flags = DISC_CHECK_CONSCIOUS | DISC_CHECK_CAPABLE | DISC_CHECK_IMMOBILE
 	target_type = TARGET_LIVING
 	range = 7
+	vitae_cost = 2
 
 	hostile = TRUE
 
 	multi_activate = TRUE
-	duration_length = 15 SECONDS
+	duration_length = 0
 	cooldown_length = 15 SECONDS
 
-/datum/discipline_power/temporis/leaden_moment/activate(mob/living/target)
+/datum/discipline_power/temporis/lapse/activate(mob/living/target)
 	. = ..()
-	to_chat(target, "<span class='userdanger'><b>Slow down.</b></span>")
-	target.add_movespeed_modifier(/datum/movespeed_modifier/temporis)
+	var/roll = secret_vampireroll(get_a_stamina(owner)+get_a_intimidation(owner), get_a_willpower(target), owner)
+	if(roll < 1)
+		to_chat(owner, span_warning("Тебе не удалось активировать Lapse."))
+		return
+	if(target.temporis_lapse)
+		to_chat(owner, span_warning("Цель уже под эффектом!"))
+		return
+	addtimer(CALLBACK(src, PROC_REF(lapse_activation), target, roll), 1 TURNS)
+	to_chat(target, span_boldwarning("Мир вокруг тебя начинает ускоряться - ты ощущаешь, что всё начинается двигаться слишком быстро!"))
 
-/datum/discipline_power/temporis/leaden_moment/deactivate(mob/living/target)
-	. = ..()
+/datum/discipline_power/temporis/lapse/proc/lapse_activation(mob/living/target, dices)
+	target.temporis_lapse = TRUE
+	target.add_movespeed_modifier(/datum/movespeed_modifier/temporis)
+	addtimer(CALLBACK(src, PROC_REF(lapse_deactivation), target), dices TURNS)
+
+/datum/discipline_power/temporis/lapse/proc/lapse_deactivation(mob/living/target)
+	target.temporis_lapse = FALSE
 	target.remove_movespeed_modifier(/datum/movespeed_modifier/temporis)
+	to_chat(target, span_boldwarning("Время возвращается в норму. Ты снова двигаешься в обычном ритме."))
 
 /datum/movespeed_modifier/temporis
 	multiplicative_slowdown = 7.5
@@ -128,6 +136,8 @@
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(temporis_visual))
 	RegisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION, PROC_REF(celerity_explode))
 	style.teach(owner, make_temporary = TRUE)
+	owner.next_move_modifier -= 0.6
+	owner.attributes.celerity_bonus += 4
 
 /datum/discipline_power/temporis/patience_of_the_norns/deactivate()
 	. = ..()
@@ -136,6 +146,8 @@
 	style.remove(owner)
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION)
+	owner.next_move_modifier += 0.6
+	owner.attributes.celerity_bonus -= 4
 
 
 /datum/discipline_power/temporis/patience_of_the_norns/proc/temporis_visual(datum/discipline_power/temporis/source, atom/newloc, dir)
@@ -188,19 +200,21 @@
 	. = ..()
 	owner.temporis_blur = TRUE
 	owner.add_movespeed_modifier(/datum/movespeed_modifier/temporis5)
-	owner.next_move_modifier *= 0.25
+	owner.next_move_modifier -= 0.8
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(temporis_blur))
 	RegisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION, PROC_REF(celerity_explode))
 	style.teach(owner, make_temporary = TRUE)
+	owner.attributes.celerity_bonus += 5
 
 /datum/discipline_power/temporis/clothos_gift/deactivate()
 	. = ..()
 	owner.temporis_blur = FALSE
 	owner.remove_movespeed_modifier(/datum/movespeed_modifier/temporis5)
-	owner.next_move_modifier /= 0.25
+	owner.next_move_modifier += 0.8
 	UnregisterSignal(owner, COMSIG_MOVABLE_MOVED)
 	UnregisterSignal(owner, COMSIG_POWER_PRE_ACTIVATION)
 	style.remove(owner)
+	owner.attributes.celerity_bonus -= 5
 
 /datum/discipline_power/temporis/clothos_gift/proc/temporis_blur(datum/discipline_power/temporis/source, atom/newloc, dir)
 	SIGNAL_HANDLER
@@ -215,4 +229,4 @@
 			owner.AdjustMasquerade(-1)
 
 /datum/movespeed_modifier/temporis5
-	multiplicative_slowdown = -2.5
+	multiplicative_slowdown = -2

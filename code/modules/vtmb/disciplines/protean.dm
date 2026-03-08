@@ -144,8 +144,6 @@
 			H.dna.species.attack_verb = "slash"
 			H.dna.species.attack_sound = 'sound/weapons/slash.ogg'
 			H.dna.species.miss_sound = 'sound/weapons/slashmiss.ogg'
-			H.dna.species.punchdamagelow += 5
-			H.dna.species.punchdamagehigh += 5
 			H.dna.species.attack_type = CLONE
 			to_chat(owner, "<span class='notice'>Твои ногти превращаются в острые когти...</span>")
 		if(FALSE)
@@ -187,7 +185,7 @@
 	burial_pit.alpha = 50
 	burial_pit.name = "Earth Meld"
 	burial_pit.supernatural = TRUE
-	burial_pit.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+4
+	burial_pit.invisibility = INVISIBILITY_LEVEL_OBFUSCATE+maxlevel
 	owner.forceMove(burial_pit)
 
 /datum/discipline_power/protean/shape_of_the_beast
@@ -206,7 +204,7 @@
 		/mob/living/simple_animal/hostile/beastmaster/shapeshift/cat/vampire, \
 		/mob/living/simple_animal/pet/horse/vampire, \
 		/mob/living/simple_animal/pet/crow/vampire, \
-		/mob/living/simple_animal/hostile/beastmaster/shapeshift/wolf
+		/mob/living/simple_animal/hostile/beastmaster/shapeshift/wolf, \
 	)
 	var/fly_shape = list(
 		/mob/living/simple_animal/pet/crow/vampire, \
@@ -214,7 +212,7 @@
 	)
 	var/non_gangrel_shapes = list(
 		/mob/living/simple_animal/hostile/beastmaster/rat/flying, \
-		/mob/living/simple_animal/hostile/beastmaster/shapeshift/wolf
+		/mob/living/simple_animal/hostile/beastmaster/cat
 	)
 
 	var/is_gangrel = FALSE
@@ -303,13 +301,13 @@
 ///// FORMS for Shape of The Beast
 
 /mob/living/simple_animal/hostile/beastmaster/shapeshift //Only used for Shapeshifting
-	speed = -0.50
+	speed = -0.4
 	maxHealth = 200
 	health = 200
-	melee_damage_lower = 24
-	melee_damage_upper = 42
+	melee_damage_lower = 15
+	melee_damage_upper = 30
 	melee_damage_type = CLONE
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 
 
@@ -323,13 +321,17 @@
 	see_in_dark = 6
 
 /mob/living/simple_animal/hostile/bear/wod13/vampire
+	maxHealth = 200
+	health = 200
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/hostile/beastmaster/rat/flying/vampire
+	maxHealth = 200
+	health = 200
 	melee_damage_type = CLONE
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 	movement_type = FLYING
 
 /mob/living/simple_animal/hostile/beastmaster/rat/flying/vampire/Initialize(mapload)
@@ -340,9 +342,9 @@
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
 	AIStatus = AI_OFF
-	maxHealth = 300
-	health = 300
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	maxHealth = 200
+	health = 200
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/hostile/beastmaster/shapeshift/cat/vampire
 	name = "Big cat"
@@ -351,11 +353,11 @@
 	icon_state = "cat2"
 	melee_damage_type = CLONE
 	AIStatus = AI_OFF
-	maxHealth = 150
-	health = 150
+	maxHealth = 200
+	health = 200
 	melee_damage_lower = 15
 	melee_damage_upper = 30
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 
 /mob/living/simple_animal/hostile/beastmaster/shapeshift/cat/vampire/Initialize(mapload)
@@ -368,9 +370,9 @@
 	bloodquality = BLOOD_QUALITY_HIGH
 	melee_damage_type = CLONE
 	AIStatus = AI_OFF
-	maxHealth = 300
-	health = 300
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	maxHealth = 200
+	health = 200
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/hostile/beastmaster/rat/vampire/Initialize(mapload)
 	. = ..()
@@ -383,21 +385,26 @@
 	vampiric = 1
 	AIStatus = AI_OFF
 	melee_damage_type = CLONE
-	maxHealth = 150
-	health = 150
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	maxHealth = 200
+	health = 200
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/pet/crow/vampire
 	bloodquality = BLOOD_QUALITY_HIGH
 	is_flying_animal = FALSE
 	melee_damage_type = CLONE
 	AIStatus = AI_OFF
-	maxHealth = 100
-	health = 100
+	maxHealth = 200
+	health = 200
 	icon_state = "crow"
-	damage_coeff = list(BRUTE = 0.5, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
+	damage_coeff = list(BRUTE = 1, BURN = 2, TOX = 1, CLONE = 1, STAMINA = 0, OXY = 0)
 
 /mob/living/simple_animal/pet/crow/vampire/Initialize(mapload)
 	. = ..()
 	var/datum/action/I_belive_I_can_Fly/FU = new()
 	FU.Grant(src)
+
+/mob/living/simple_animal/pet/crow/vampire/death()
+	. = ..()
+	for(var/datum/action/I_belive_I_can_Fly/FU in actions)
+		FU.Remove(src)

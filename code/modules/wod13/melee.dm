@@ -153,6 +153,10 @@
 /obj/item/melee/vampirearms/katana/fire
 	name = "burning katana"
 	icon_state = "firetana"
+	force = 25
+	block_chance = 0
+	wound_bonus = 0
+	bare_wound_bonus = 0
 	pixel_w = -8
 	cost = 0
 	item_flags = DROPDEL
@@ -163,7 +167,10 @@
 /obj/item/melee/vampirearms/katana/blood
 	name = "bloody katana"
 	color = "#bb0000"
-	force = 35
+	force = 25
+	block_chance = 0
+	wound_bonus = 0
+	bare_wound_bonus = 0
 	pixel_w = -8
 	cost = 0
 	item_flags = DROPDEL
@@ -512,7 +519,7 @@
 	icon_state = "chainsaw"
 	flags_1 = CONDUCT_1
 	force = 15
-	var/force_on = 150
+	var/force_on = 75
 	w_class = WEIGHT_CLASS_BULKY
 	throwforce = 10
 	throw_speed = 2

@@ -114,6 +114,20 @@
 		var/mob/living/carbon/victim = hit_atom
 		if(victim.movement_type & FLYING)
 			return
+		if(get_celerity_dices(victim) >= 1)
+			var/roll = secret_vampireroll(get_a_dexterity(victim)+get_celerity_dices(victim), 6, victim)
+			if(roll >= 3)
+				var/dir = get_dir(src, victim)
+				var/list/side_dirs = list(turn(dir, 90), turn(dir, -90))
+				var/list/valid_dirs = list()
+				for(var/d in side_dirs)
+					var/turf/tile = get_step(victim, d)
+					if(!tile.density)
+						valid_dirs += d
+				if(valid_dirs.len)
+					step(victim, pick(valid_dirs))
+					victim.visible_message(span_warning("[victim] с легкостью уворачивается от прыжка [src]!"), span_warning("Ты с легкостью уворачиваешься от прыжка [src]."))
+					return
 		if(hurt)
 			victim.take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
 			take_bodypart_damage(10 + 5 * extra_speed, check_armor = TRUE, wound_bonus = extra_speed * 5)
@@ -441,9 +455,10 @@
 	breakouttime = I.breakouttime
 	if(get_potence_dices(src) >= 5)
 		clear_cuffs(I, INSTANT_CUFFBREAK)
-		visible_message("<span class='danger'>[src] smashes the [I] effortlessly!</span>")
+		visible_message(span_boldwarning("[src] крошит наручники на 2 части, выбираясь из них!"))
 		I.item_flags &= ~BEING_REMOVED
-		Stun(3 SECONDS, TRUE)
+		Stun(5 SECONDS, TRUE)
+		src.Jitter(5 SECONDS)
 		return
 	if(!cuff_break)
 		visible_message("<span class='warning'>[src] attempts to remove [I]!</span>")

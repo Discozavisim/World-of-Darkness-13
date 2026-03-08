@@ -364,9 +364,9 @@
 	uniform = text2path(holder)
 
 /datum/outfit/job/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-
-	var/datum/vampireclane/clan = H.clane
-	clan.update_accessory_overlays(H)
+	if(iskindred(H))
+		var/datum/vampireclane/clan = H.clane
+		clan.update_accessory_overlays(H)
 
 	if(visualsOnly)
 		return

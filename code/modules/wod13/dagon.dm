@@ -177,6 +177,17 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/fly)
 		owner.down()
 
+/datum/action/I_belive_I_can_Fly/Destroy()
+	. = ..()
+	var/mob/living/simple_animal/pet/crow/C = owner
+	var/prejnii = C.movement_type
+	if(C.icon_state == "crow_fly")
+		C.icon_state = "crow"
+		C.is_flying_animal = FALSE
+		REMOVE_TRAIT(src, TRAIT_MOVE_FLYING, ELEMENT_TRAIT)
+		C.movement_type = prejnii
+		C.remove_movespeed_modifier(/datum/movespeed_modifier/fly)
+		owner.down()
 
 /mob/living/simple_animal/pet/cat/vampiretzi
 	name = "cat?"

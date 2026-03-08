@@ -37,7 +37,7 @@
 	range = 7
 
 	multi_activate = TRUE
-	cooldown_length = 10 SECONDS
+	cooldown_length = 15 SECONDS
 	duration_length = 3 SECONDS
 
 /datum/discipline_power/dementation/passion/activate(mob/living/target)
@@ -51,7 +51,6 @@
 		carbon_target.overlays_standing[MUTATIONS_LAYER] = dementation_overlay
 		carbon_target.apply_overlay(MUTATIONS_LAYER)
 
-	target.Stun(0.5 SECONDS)
 	target.emote("laugh")
 	to_chat(target, "<span class='userdanger'><b>HAHAHAHAHAHAHAHAHAHAHAHA!!</b></span>")
 	owner.playsound_local(get_turf(target), pick('sound/items/SitcomLaugh1.ogg', 'sound/items/SitcomLaugh2.ogg', 'sound/items/SitcomLaugh3.ogg'), 100, FALSE)
@@ -76,7 +75,7 @@
 	range = 7
 
 	multi_activate = TRUE
-	cooldown_length = 10 SECONDS
+	cooldown_length = 15 SECONDS
 	duration_length = 3 SECONDS
 
 /datum/discipline_power/dementation/the_haunting/activate(mob/living/target)
@@ -111,7 +110,7 @@
 	range = 7
 
 	multi_activate = TRUE
-	cooldown_length = 10 SECONDS
+	cooldown_length = 15 SECONDS
 	duration_length = 3 SECONDS
 
 /datum/discipline_power/dementation/eyes_of_chaos/activate(mob/living/target)
@@ -240,7 +239,7 @@
 	range = 7
 
 	multi_activate = TRUE
-	cooldown_length = 10 SECONDS
+	cooldown_length = 15 SECONDS
 	duration_length = 3 SECONDS
 
 /datum/discipline_power/dementation/voice_of_madness/activate(mob/living/target)
@@ -254,8 +253,8 @@
 		carbon_target.overlays_standing[MUTATIONS_LAYER] = dementation_overlay
 		carbon_target.apply_overlay(MUTATIONS_LAYER)
 
-	//change this to something better than an 8 second instastun
-	new /datum/hallucination/death(target, TRUE)
+	new /datum/hallucination/death/malkavian(owner, TRUE)
+	new /datum/hallucination/death/malkavian(target, TRUE)
 
 /datum/discipline_power/dementation/voice_of_madness/deactivate(mob/living/target)
 	. = ..()
@@ -275,7 +274,7 @@
 	range = 7
 
 	multi_activate = TRUE
-	cooldown_length = 10 SECONDS
+	cooldown_length = 15 SECONDS
 	duration_length = 3 SECONDS
 
 /datum/discipline_power/dementation/total_insanity/activate(mob/living/target)
@@ -290,7 +289,7 @@
 		carbon_target.apply_overlay(MUTATIONS_LAYER)
 
 	var/datum/cb = CALLBACK(target, /mob/living/proc/attack_myself_command)
-	for(var/i in 1 to 20)
+	for(var/i in 1 to 10)
 		addtimer(cb, (i - 1) * 1.5 SECONDS)
 
 /datum/discipline_power/dementation/total_insanity/deactivate(mob/living/target)

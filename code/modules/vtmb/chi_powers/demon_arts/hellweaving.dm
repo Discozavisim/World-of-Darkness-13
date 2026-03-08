@@ -3,7 +3,7 @@
 	desc = "Translate the view of Hell to someone."
 	icon_state = "hellweaving"
 	ranged = TRUE
-	delay = 20 SECONDS
+	delay = 30 SECONDS
 	cost_demon = 1
 	activate_sound = 'code/modules/wod13/sounds/hellweaving_activate.ogg'
 	discipline_type = "Demon"
@@ -13,6 +13,7 @@
 	icon_state = "hall"
 	layer = CURSE_LAYER
 	plane = FULLSCREEN_PLANE
+	alpha = 128
 
 /atom/movable/screen/fullscreen/yomi_world/Initialize(mapload)
 	. = ..()
@@ -34,7 +35,7 @@
 		return TRUE
 
 /datum/movespeed_modifier/yomi_flashback
-	multiplicative_slowdown = 6
+	multiplicative_slowdown = 2
 
 /datum/chi_discipline/hellweaving/activate(mob/living/target, mob/living/carbon/human/caster)
 	..()
@@ -48,7 +49,7 @@
 	switch(level_casting)
 		if(1)
 			target.overlay_fullscreen("yomi", /atom/movable/screen/fullscreen/yomi_world)
-			spawn(5 SECONDS)
+			spawn(10 SECONDS)
 				if(target)
 					target.clear_fullscreen("yomi", 5)
 		if(2)
@@ -60,7 +61,7 @@
 			target.overlay_fullscreen("yomi", /atom/movable/screen/fullscreen/yomi_world)
 			target.add_movespeed_modifier(/datum/movespeed_modifier/yomi_flashback)
 			target.emote("cry")
-			spawn(7 SECONDS)
+			spawn(10 SECONDS)
 				if(target)
 					target.clear_fullscreen("yomi", 5)
 					target.remove_movespeed_modifier(/datum/movespeed_modifier/yomi_flashback)
@@ -69,7 +70,7 @@
 			if(ishuman(target))
 				var/mob/living/carbon/human/human_target = target
 				var/datum/cb = CALLBACK(human_target, TYPE_PROC_REF(/mob/living/carbon/human, attack_myself_command))
-				for(var/i in 1 to 20)
+				for(var/i in 1 to 10)
 					addtimer(cb, (i - 1) * 1.5 SECONDS)
 				target.emote("scream")
 				target.do_jitter_animation(3 SECONDS)
@@ -79,9 +80,9 @@
 		if(5)
 			target.emote(pick("cry", "scream", "groan"))
 			target.point_at(caster)
-			target.resist_fire()
+			target.Immobilize(2 SECONDS, TRUE)
 			target.overlay_fullscreen("yomi", /atom/movable/screen/fullscreen/yomi_world)
-			spawn(20 SECONDS)
+			spawn(10 SECONDS)
 				if(target)
 					target.clear_fullscreen("yomi", 5)
 

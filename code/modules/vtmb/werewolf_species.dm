@@ -95,7 +95,7 @@
 
 /proc/adjust_rage(amount, mob/living/carbon/C, sound = TRUE)
 	if(amount > 0)
-		if(C.auspice.rage < 10)
+		if(C?.auspice.rage < 10)
 			if(sound)
 				SEND_SOUND(C, sound('code/modules/wod13/sounds/rage_increase.ogg', 0, 0, 75))
 			to_chat(C, "<span class='userdanger'><b>RAGE INCREASES</b></span>")

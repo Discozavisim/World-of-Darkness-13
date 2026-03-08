@@ -329,19 +329,28 @@ SUBSYSTEM_DEF(woddices)
 
 /proc/get_a_strength(mob/living/Living)
 	if(Living.attributes)
-		return Living.attributes.strength+Living.attributes.strength_bonus+Living.attributes.strength_reagent+get_potence_dices(Living)
+		if(Living.temporis_lapse)
+			return floor((Living.attributes.strength+Living.attributes.strength_bonus+Living.attributes.strength_reagent+get_potence_dices(Living))/2)
+		else
+			return Living.attributes.strength+Living.attributes.strength_bonus+Living.attributes.strength_reagent+get_potence_dices(Living)
 	else
 		return 3
 
 /proc/get_a_dexterity(mob/living/Living)
 	if(Living.attributes)
-		return Living.attributes.dexterity+Living.attributes.dexterity_bonus+Living.attributes.dexterity_reagent
+		if(Living.temporis_lapse)
+			return floor((Living.attributes.dexterity+Living.attributes.dexterity_bonus+Living.attributes.dexterity_reagent)/2)
+		else
+			return Living.attributes.dexterity+Living.attributes.dexterity_bonus+Living.attributes.dexterity_reagent
 	else
 		return 3
 
 /proc/get_a_stamina(mob/living/Living)
 	if(Living.attributes)
-		return Living.attributes.stamina+Living.attributes.stamina_bonus+Living.attributes.stamina_reagent
+		if(Living.temporis_lapse)
+			return floor((Living.attributes.stamina+Living.attributes.stamina_bonus+Living.attributes.stamina_reagent)*2)
+		else
+			return Living.attributes.stamina+Living.attributes.stamina_bonus+Living.attributes.stamina_reagent
 	else
 		return 3
 
@@ -377,7 +386,10 @@ SUBSYSTEM_DEF(woddices)
 
 /proc/get_a_wits(mob/living/Living)
 	if(Living.attributes)
-		return Living.attributes.wits+Living.attributes.wits_bonus+Living.attributes.wits_reagent
+		if(Living.temporis_lapse)
+			return floor((Living.attributes.wits+Living.attributes.wits_bonus+Living.attributes.wits_reagent)/2)
+		else
+			return Living.attributes.wits+Living.attributes.wits_bonus+Living.attributes.wits_reagent
 	else
 		return 3
 
@@ -444,7 +456,7 @@ SUBSYSTEM_DEF(woddices)
 	if(ishuman(rollperformer))
 		var/mob/living/carbon/human/Roller = rollperformer
 		if(Roller.mind?.willpower_auto)
-			autosuccesses += 2
+			autosuccesses += 1
 		if(Roller.clane?.name == "Followers of Set")
 			var/datum/vampireclane/setite/Setite = Roller.clane
 			var/turf/T = get_turf(Roller)
@@ -458,7 +470,7 @@ SUBSYSTEM_DEF(woddices)
 	if(iswerewolf(rollperformer))
 		var/mob/living/carbon/werewolf/WW_Roller = rollperformer
 		if(WW_Roller.mind?.willpower_auto)
-			autosuccesses += 2
+			autosuccesses += 1
 	hardness = clamp(hardness+rollperformer.attributes.diff_curse+clan_difficulty, 1, 10)
 	var/dices_decap = 0
 	if(decap_rolls && !autosuccesses)

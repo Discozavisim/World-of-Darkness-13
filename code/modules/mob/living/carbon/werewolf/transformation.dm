@@ -90,10 +90,9 @@
 	transfer_to.set_resting(transfer_from.resting)
 	if(transfer_from.body_position == LYING_DOWN)
 		transfer_to.set_body_position(LYING_DOWN)
-		transfer_to.set_lying_angle(transfer_from.lying_angle)
 	else
 		transfer_to.set_body_position(STANDING_UP)
-		transfer_to.set_lying_angle(0)
+	transfer_to.lying_fix()
 
 	if(transfer_from.reagents)
 		transfer_to.reagents.clear_reagents()

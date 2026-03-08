@@ -325,7 +325,7 @@
 		if(user.zone_selected == BODY_ZONE_L_ARM || user.zone_selected == BODY_ZONE_R_ARM || user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG)
 			add_hard = 1
 		if(user.zone_selected == BODY_ZONE_HEAD)
-			add_hard = 2
+			add_hard = 3
 		if(user.zone_selected == BODY_ZONE_PRECISE_EYES || user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 			add_hard = 3
 		if(target == user)
@@ -403,7 +403,7 @@
 			if(user.zone_selected == BODY_ZONE_L_ARM || user.zone_selected == BODY_ZONE_R_ARM || user.zone_selected == BODY_ZONE_L_LEG || user.zone_selected == BODY_ZONE_R_LEG)
 				add_hard = 1
 			if(user.zone_selected == BODY_ZONE_HEAD)
-				add_hard = 2
+				add_hard = 3
 			if(user.zone_selected == BODY_ZONE_PRECISE_EYES || user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 				add_hard = 3
 			if(target == user)

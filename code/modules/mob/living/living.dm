@@ -178,51 +178,73 @@
 			last_mobbump = world.time
 			var/mob/living/bumped = M
 			var/mob/living/bumper = src
-			if(get_celerity_dices(bumper) >= 3)
-				playsound(bumper, "sound/effects/pop_expl.ogg", 75)
-				var/chance = secret_vampireroll(get_a_dexterity(bumper)+get_celerity_dices(bumper), 6, bumper)
-				var/damage = secret_vampireroll(get_a_strength(bumper)+get_a_brawl(bumper), 6, bumper, TRUE)
-				var/atom/throw_bumped = get_edge_target_turf(bumped, get_dir(bumped, get_step_away(bumped, bumper)))
-				var/atom/throw_bumper = get_edge_target_turf(bumper, get_dir(bumper, get_step_away(bumper, bumped)))
-				var/throw_distance = 2
-				var/lower_limit = 5
-				var/upper_limit = 25
-				var/no_downside = FALSE
-				if(get_celerity_dices(bumper) >= 5)
-					damage = damage * 7
-					throw_distance = 4
-					lower_limit = 10
-					upper_limit = 50
-				else if(get_celerity_dices(bumper) >= 3)
-					damage = damage * 5
-				if(istype(bumped, /mob/living/simple_animal))
-					damage *= 5
-					lower_limit *= 5
-					upper_limit *= 5
-					no_downside = TRUE
-				if(bumped.attributes.fortitude_bonus >= 1)
-					bumper.Knockdown(1 SECONDS)
-					bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
-					bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
-					return
+			var/chance = secret_vampireroll(get_a_dexterity(bumper)+get_celerity_dices(bumper), 6, bumper)
+			var/damage = secret_vampireroll(get_a_strength(bumper)+get_a_brawl(bumper), 6, bumper, TRUE)
+			var/atom/throw_bumped = get_edge_target_turf(bumped, get_dir(bumped, get_step_away(bumped, bumper)))
+			var/atom/throw_bumper = get_edge_target_turf(bumper, get_dir(bumper, get_step_away(bumper, bumped)))
+			var/throw_distance = 2
+			var/lower_limit = 5
+			var/upper_limit = 25
+			var/no_downside = FALSE
+			if(get_celerity_dices(bumper) >= 5)
+				damage = damage * 7
+				throw_distance = 4
+				lower_limit = 10
+				upper_limit = 50
+			else if(get_celerity_dices(bumper) >= 3)
+				damage = damage * 5
+			if(istype(bumped, /mob/living/simple_animal))
+				damage *= 5
+				lower_limit *= 5
+				upper_limit *= 5
+				no_downside = TRUE
+			if(get_celerity_dices(bumped) >= 3)
 				if(ishuman(bumped))
 					var/mob/living/carbon/human/human_bumped = bumped
 					if(human_bumped.blocking)
 						if(iskindred(human_bumped) || isgarou(human_bumped) || iscathayan(human_bumped) || isgarou(human_bumped))
+							playsound(bumper, "sound/effects/pop_expl.ogg", 75)
 							human_bumped.SwitchBlocking()
 							bumper.Knockdown(1 SECONDS)
 							bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
 							bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
-						return
+							return
 				if(chance >= 3)
-					bumped.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
-					bumped.Knockdown(1 SECONDS)
-					bumped.throw_at(throw_bumped, throw_distance, throw_distance, bumped, TRUE)
-				else
-					if(!no_downside)
-						bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+					var/dir = get_dir(bumper, bumped)
+					var/list/side_dirs = list(turn(dir, 90), turn(dir, -90))
+					var/list/valid_dirs = list()
+					for(var/d in side_dirs)
+						var/turf/tile = get_step(bumped, d)
+						if(!tile.density)
+							valid_dirs += d
+					if(valid_dirs.len)
+						step(bumped, pick(valid_dirs))
+						bumped.visible_message(span_warning("[bumped] с легкостью уворачивается от толчка [bumper]!"), span_warning("Ты с легкостью уворачиваешься от толчка [bumper]."))
+						return
+			playsound(bumper, "sound/effects/pop_expl.ogg", 75)
+			if(bumped.attributes.fortitude_bonus >= 1)
+				bumper.Knockdown(1 SECONDS)
+				bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+				bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
+				return
+			if(ishuman(bumped))
+				var/mob/living/carbon/human/human_bumped = bumped
+				if(human_bumped.blocking)
+					if(iskindred(human_bumped) || isgarou(human_bumped) || iscathayan(human_bumped) || isgarou(human_bumped))
+						human_bumped.SwitchBlocking()
 						bumper.Knockdown(1 SECONDS)
+						bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
 						bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
+					return
+			if(chance >= 3)
+				bumped.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+				bumped.Knockdown(1 SECONDS)
+				bumped.throw_at(throw_bumped, throw_distance, throw_distance, bumped, TRUE)
+			else
+				if(!no_downside)
+					bumper.adjustBruteLoss(clamp(damage, lower_limit, upper_limit))
+					bumper.Knockdown(1 SECONDS)
+					bumper.throw_at(throw_bumper, throw_distance, throw_distance, bumper, TRUE)
 
 	//If they're a human, and they're not in help intent, block pushing
 	if(ishuman(M) && (M.a_intent != INTENT_HELP))

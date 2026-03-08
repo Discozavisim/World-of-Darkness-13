@@ -96,7 +96,7 @@
 			buckled_mob.visible_message("<span class='notice'>[user] tries to pull [buckled_mob] free of [src]!</span>",\
 				"<span class='notice'>[user] is trying to pull you off [src], opening up fresh wounds!</span>",\
 				"<span class='hear'>You hear a squishy wet noise.</span>")
-			if(!do_after(user, 30 SECONDS, target = src))
+			if(!do_after(user, 4 SECONDS, target = src))
 				if(buckled_mob?.buckled)
 					buckled_mob.visible_message("<span class='notice'>[user] fails to free [buckled_mob]!</span>",\
 					"<span class='notice'>[user] fails to pull you off of [src].</span>")
@@ -106,7 +106,7 @@
 				buckled_mob.visible_message("<span class='warning'>[buckled_mob] tears through the [src]!</span>",\
 				"<span class='notice'>You tear through the [src], attempting to free yourself!</span>",\
 				"<span class='hear'>You hear a wet squishing noise..</span>")
-				if(do_after(buckled_mob, 3 SECONDS, target = src))
+				if(do_after(buckled_mob, 1 SECONDS, target = src))
 					unbuckle_mob(buckled_mob, force = TRUE)
 					visible_message(text("<span class='danger'>[buckled_mob] falls free of [src]!</span>"))
 					qdel(src)
@@ -114,8 +114,7 @@
 			buckled_mob.visible_message("<span class='warning'>[buckled_mob] struggles to break free from [src]!</span>",\
 			"<span class='notice'>You struggle to break free from [src], exacerbating your wounds! (Stay still for two minutes.)</span>",\
 			"<span class='hear'>You hear a wet squishing noise..</span>")
-			buckled_mob.adjustBruteLoss(30)
-			if(!do_after(buckled_mob, 10 SECONDS, target = src))
+			if(!do_after(buckled_mob, 2 SECONDS, target = src))
 				if(buckled_mob?.buckled)
 					to_chat(buckled_mob, "<span class='warning'>You fail to free yourself!</span>")
 				return
@@ -125,11 +124,9 @@
 
 /obj/structure/flesh_grip/proc/release_mob(mob/living/buckled_mob)
 	buckled_mob.pixel_y = buckled_mob.base_pixel_y + PIXEL_Y_OFFSET_LYING
-	buckled_mob.adjustBruteLoss(30)
 	visible_message(text("<span class='danger'>[buckled_mob] falls free of [src]!</span>"))
 	unbuckle_mob(buckled_mob, force = TRUE)
 	buckled_mob.emote("scream")
-	buckled_mob.AdjustParalyzed(2 SECONDS)
 	qdel(src)
 
 /datum/chi_discipline/flesh_shintai/activate(mob/living/target, mob/living/carbon/human/caster)
@@ -168,11 +165,11 @@
 					to_chat(caster, "<span class='warning'>Your muscles feel natural again..</span>")
 		if(4)
 			var/obj/structure/flesh_grip/flesh_grip = new (get_turf(caster))
-			if(caster.pulling)
+			if(caster.pulling && caster.grab_state >= GRAB_AGGRESSIVE)
 				if(isliving(caster.pulling))
 					flesh_grip.buckle_mob(caster.pulling, TRUE, FALSE)
 			else
-				for(var/mob/living/grabbed_mob in (range(2, caster) - caster))
+				for(var/mob/living/grabbed_mob in orange(1, caster))
 					if(grabbed_mob.stat != DEAD)
 						flesh_grip.buckle_mob(grabbed_mob, TRUE, FALSE)
 		if(5)

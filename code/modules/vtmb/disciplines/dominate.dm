@@ -186,9 +186,8 @@
 	to_chat(target, "<span class='userdanger'><b>YOU SHOULD KILL YOURSELF NOW</b></span>")
 	owner.say("YOU SHOULD KILL YOURSELF NOW!!")
 	var/datum/cb = CALLBACK(target, /mob/living/proc/attack_myself_command)
-	for(var/i in 1 to 20)
+	for(var/i in 1 to 10)
 		addtimer(cb, (i - 1) * 1.5 SECONDS)
-	target.Immobilize(5 SECONDS, TRUE)
 	/*	if(do_mob(target, target, 6 SECONDS))
 			if(ishuman(target))
 				var/mob/living/carbon/human/suicider = target

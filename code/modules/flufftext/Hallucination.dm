@@ -523,8 +523,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 		shake_camera(target, 2, 1)
 		if(bubblegum.Adjacent(target) && !charged)
 			charged = TRUE
-			target.Paralyze(80)
-			target.adjustStaminaLoss(40)
+			target.Paralyze(20, TRUE)
 			step_away(target, bubblegum)
 			shake_camera(target, 4, 3)
 			target.visible_message("<span class='warning'>[target] jumps backwards, falling on the ground!</span>","<span class='userdanger'>[bubblegum] slams into you!</span>")
@@ -1458,6 +1457,42 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	if (target)
 		target.set_screwyhud(SCREWYHUD_NONE)
 		target.SetParalyzed(0)
+		target.silent = FALSE
+	qdel(src)
+
+/datum/hallucination/death/malkavian
+
+/datum/hallucination/death/malkavian/New(mob/living/carbon/C, forced = TRUE)
+	set waitfor = FALSE
+	..()
+	target.set_screwyhud(SCREWYHUD_DEAD)
+	if(target.body_position == STANDING_UP)
+		target.toggle_resting()
+	target.Immobilize(2 SECONDS, TRUE)
+	target.silent += 2
+	to_chat(target, "<span class='deadsay'><b>[target.real_name]</b> has died at <b>[get_area_name(target)]</b>.</span>")
+
+	var/delay = 1 SECONDS
+
+	if(prob(50))
+		var/mob/fakemob
+		var/list/dead_people = list()
+		for(var/mob/dead/observer/G in GLOB.player_list)
+			dead_people += G
+		if(LAZYLEN(dead_people))
+			fakemob = pick(dead_people)
+		else
+			fakemob = target //ever been so lonely you had to haunt yourself?
+		if(fakemob)
+			addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), target, "<span class='deadsay'><b>DEAD: [fakemob.name]</b> says, \"[pick("rip","why did i just drop dead?","hey [target.first_name()]","git gud","you too?","is the AI rogue?",\
+				"i[prob(50)?" fucking":""] hate [pick("blood cult", "clock cult", "revenants", "this round","this","myself","admins","you")]")]\"</span>"), delay)
+
+	addtimer(CALLBACK(src, PROC_REF(cleanup)), 2 SECONDS)
+
+/datum/hallucination/death/malkavian/cleanup()
+	if (target)
+		target.set_screwyhud(SCREWYHUD_NONE)
+		target.SetImmobilized(0)
 		target.silent = FALSE
 	qdel(src)
 

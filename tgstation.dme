@@ -3482,6 +3482,7 @@
 #include "code\modules\vtmb\disciplines\quietus.dm"
 #include "code\modules\vtmb\disciplines\serpentis.dm"
 #include "code\modules\vtmb\disciplines\temporis.dm"
+#include "code\modules\vtmb\disciplines\true_celerity.dm"
 #include "code\modules\vtmb\disciplines\vicissitude.dm"
 #include "code\modules\vtmb\disciplines\visceratika.dm"
 #include "code\modules\vtmb\disciplines\dark_thaumaturgy\dt_path_fires_inferno.dm"

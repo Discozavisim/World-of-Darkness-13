@@ -1,11 +1,11 @@
 #define BRUSH_CLIP "GD"
-#define WRUNG_HAND "DDG"
+#define WRUNG_HAND "DG"
 #define RESTRAIN_COMBO "GG"
 #define HANDCUFFS_COMBO "DGHG"
-#define CONSECUTIVE_COMBO "DHD"
-#define FOOTBOARD "DDH"
-#define LAYING "DDD"
-#define KICK "HHH"
+#define CONSECUTIVE_COMBO "HD"
+#define FOOTBOARD "DH"
+#define LAYING "DDDD"
+#define CHOKE "HHH"
 
 /datum/martial_art/police_jiu
 	name = "Police Martial Arts"
@@ -13,6 +13,7 @@
 	help_verb = /mob/living/proc/PJ_help
 	block_chance = 75
 	smashes_tables = TRUE
+	max_streak_length = 6
 	var/old_grab_state = null
 	var/restraining = FALSE
 	display_combos = TRUE
@@ -29,9 +30,7 @@
 		Brush(A,D)
 		return TRUE
 	if(findtext(streak,WRUNG_HAND))
-		streak = ""
 		Wrung(A,D)
-		return TRUE
 	if(findtext(streak,RESTRAIN_COMBO))
 		streak = ""
 		Restrain(A,D)
@@ -41,34 +40,36 @@
 		Handfuff(A,D)
 		return TRUE
 	if(findtext(streak,CONSECUTIVE_COMBO))
-		streak = ""
 		Consecutive(A,D)
 	if(findtext(streak,FOOTBOARD))
 		streak = ""
 		Footboard(A,D)
+		return TRUE
 	if(findtext(streak,LAYING))
 		streak = ""
 		Laying(A,D)
 		return TRUE
-	if(findtext(streak,KICK))
+	if(findtext(streak,CHOKE))
 		streak = ""
-		Kick(A,D)
+		Choke(A,D)
+		return TRUE
 	return FALSE
 
 /datum/martial_art/police_jiu/proc/Brush(mob/living/A, mob/living/D)
 	if(!can_use(A))
 		return FALSE
-	D.visible_message("<span class='danger'>[A] brushed [D]'s hand!</span>", \
-					"<span class='userdanger'>You're hand brushed by [A]!</span>", "<span class='hear'>You hear a sickening sound of clicking from hand!</span>", null, A)
-	to_chat(A, "<span class='danger'>You brushed [D]'s hand!</span>")
+	D.visible_message("<span class='danger'>[A] hand brushes [D]!</span>", \
+					"<span class='userdanger'>You're hand clipped [A]!</span>", "<span class='hear'>You hear a sickening sound of clicking!</span>", null, A)
+	to_chat(A, "<span class='danger'>You hand clip [D]!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
-	D.apply_damage(10, BRUTE)
-	if(ishuman(D) || iswerewolf(D) || isghoul(D))
-		D.Paralyze(10)
-		D.adjustStaminaLoss(30)
+	D.apply_damage(15, BRUTE)
+	if(!iskindred(D) && !iscathayan(D))
+		D.Paralyze(5)
+		D.adjustStaminaLoss(50)
+	D.Knockdown(30)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
-	log_combat(A, D, "brushed clip (Police_Jiu)")
+	log_combat(A, D, "hand clipped (Police_Jiu)")
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Wrung(mob/living/A, mob/living/D)
@@ -78,33 +79,35 @@
 					"<span class='userdanger'>You're hand wrung by [A]!</span>", "<span class='hear'>You hear a sickening sound of clicking from hand!</span>", null, A)
 	to_chat(A, "<span class='danger'>You wrung [D]'s hand!</span>")
 	playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, TRUE, -1)
-	D.apply_damage(5, BRUTE)
-	D.Paralyze(30)
+	D.adjustStaminaLoss(20)
+	D.Paralyze(15)
+	D.Knockdown(40)
 	log_combat(A, D, "wrung hand (Police_Jiu)")
 	return TRUE
 
-/datum/martial_art/police_jiu/proc/Kick(mob/living/A, mob/living/D)
+/datum/martial_art/police_jiu/proc/Choke(mob/living/A, mob/living/D)
 	if(!can_use(A))
 		return FALSE
 	if(!D.stat || !D.IsParalyzed())
-		D.visible_message("<span class='danger'>[A] kicks [D]'s leg!</span>", \
-						"<span class='userdanger'>You're kicked leg by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-		to_chat(A, "<span class='danger'>You kick [D]'s leg!</span>")
+		D.visible_message("<span class='danger'>[A] sweeps and chockes [D]!</span>", \
+						"<span class='userdanger'>You're choked by [A]!</span>", "<span class='hear'>You hear muffled moan!</span>", COMBAT_MESSAGE_RANGE, A)
+		to_chat(A, "<span class='danger'>You choke [D]!</span>")
 		playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
-		D.apply_damage(5, A.get_attack_type())
-		D.adjustStaminaLoss(30)
-		if(prob(30))
-			if(D.body_position == STANDING_UP)
-				D.toggle_resting()
-		log_combat(A, D, "kicked (Police_Jiu)")
-	if(!(D.body_position == STANDING_UP) && !D.stat)
+		D.adjustOxyLoss(10)
+		D.adjustStaminaLoss(25)
+		D.losebreath += 2
+		D.Knockdown(25)
+		log_combat(A, D, "choked (Police_Jiu)")
+	if(!(D.body_position == STANDING_UP))
 		log_combat(A, D, "chocked (leg on neck)(Police_Jiu)")
 		D.visible_message("<span class='danger'>[A] clamps [D]'s throat with his knee [D.p_them()]!</span>", \
 						"<span class='userdanger'>You're throat unconscious by [A]'s knee!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", null, A)
-		to_chat(A, "<span class='danger'>You clamps [D]'s throat, choked [D.p_them()] out!</span>")
+		to_chat(A, "<span class='danger'>You clamp [D]'s throat, choking [D.p_them()] out!</span>")
 		playsound(get_turf(A), 'sound/weapons/genhit1.ogg', 50, TRUE, -1)
-		if(ishuman(D) || iswerewolf(D) || isghoul(D))
-			D.adjustOxyLoss(20)
+		if(!iskindred(D) && !iscathayan(D))
+			D.adjustOxyLoss(15)
+			D.losebreath += 3
+			D.Knockdown(20)
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Handfuff(mob/living/A, mob/living/D)
@@ -115,7 +118,7 @@
 		return FALSE
 	for(var/obj/item/restraints/handcuffs/H in A.contents)
 		H.apply_cuffs(D, A)
-		D.adjustStaminaLoss(30)
+		D.adjustStaminaLoss(60)
 		log_combat(A, D, "Handcuffed (Police_Jiu)")
 	return TRUE
 
@@ -130,7 +133,10 @@
 						"<span class='userdanger'>You're locked into a restraining position by [A]!</span>", "<span class='hear'>You hear shuffling and a muffled groan!</span>", null, A)
 		to_chat(A, "<span class='danger'>You lock [D] into a restraining position!</span>")
 		D.adjustStaminaLoss(20)
-		D.Stun(100)
+		D.Stun(65)
+		if(old_grab_state == GRAB_PASSIVE)
+			D.drop_all_held_items()
+			A.setGrabState(GRAB_AGGRESSIVE) 
 		restraining = TRUE
 		addtimer(VARSET_CALLBACK(src, restraining, FALSE), 50, TIMER_UNIQUE)
 	return TRUE
@@ -147,44 +153,45 @@
 		var/obj/item/I = D.get_active_held_item()
 		if(I && D.temporarilyRemoveItemFromInventory(I))
 			A.put_in_hands(I)
-		D.adjustStaminaLoss(50)
-		D.apply_damage(25, A.get_attack_type())
+		D.adjustStaminaLoss(25)
+		D.apply_damage(20, A.get_attack_type())
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Footboard(mob/living/A, mob/living/D)
-	if(D.stat || D.IsParalyzed())
-		return FALSE
-	var/obj/item/bodypart/affecting = D.get_bodypart(BODY_ZONE_CHEST)
-	var/armor_block = D.run_armor_check(affecting, BASHING)
-	D.visible_message("<span class='warning'>[A] leg sweeps [D]!</span>", \
-					"<span class='userdanger'>Your legs are sweeped by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", null, A)
-	to_chat(A, "<span class='danger'>You leg sweep [D]!</span>")
+//	var/obj/item/bodypart/affecting = D.get_bodypart(BODY_ZONE_CHEST)
+	D.visible_message("<span class='warning'>[A] punches liver [D]!</span>", \
+					"<span class='userdanger'>Your liver blowed by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", null, A)
+	to_chat(A, "<span class='danger'>You liver punch[D]!</span>")
 	playsound(get_turf(A), 'sound/effects/hit_kick.ogg', 50, TRUE, -1)
-	D.apply_damage(rand(10,20), STAMINA, affecting, armor_block)
-	D.Knockdown(20)
-	log_combat(A, D, "leg sweeped(Police_Jiu)")
+	D.Knockdown(80)
+	log_combat(A, D, "punched liver(Police_Jiu)")
+	D.adjustStaminaLoss(5)
+	var/mob/living/carbon/C = D  /// 
+	for(var/i=0, i<15, i++)
+		sleep(10)
+		D.adjustStaminaLoss(5)
+	C.vomit(15)
 	return TRUE
 
 /datum/martial_art/police_jiu/proc/Laying(mob/living/A, mob/living/D)
-	if(D.stat || D.IsParalyzed())
-		return FALSE
-	D.visible_message("<span class='danger'>[A] stomps [D] into the ground!</span>", \
-					"<span class='userdanger'>You're stomped into the ground by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-	to_chat(A, "<span class='danger'>You stomp [D] into the ground!</span>")
+	D.visible_message("<span class='danger'>[A] pins [D] into the ground!</span>", \
+					"<span class='userdanger'>You're pinned into the ground by [A]!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
+	to_chat(A, "<span class='danger'>You pin [D] into the ground!</span>")
 	playsound(get_turf(A), 'sound/weapons/cqchit2.ogg', 50, TRUE, -1)
-	D.apply_damage(20, BRUTE)
-	D.Knockdown(30)
+	D.adjustStaminaLoss(25)
+	D.Paralyze(20)
+	D.Stun(125)
 	if(D.body_position == STANDING_UP)
 		D.toggle_resting()
-	log_combat(A, D, "stomped (Police_Jiu)")
+	log_combat(A, D, "pinned (Police_Jiu)")
 	return TRUE
 
 
 /datum/martial_art/police_jiu/grab_act(mob/living/A, mob/living/D)
 	if(A.a_intent == INTENT_GRAB && A!=D && can_use(A)) // A!=D prevents grabbing yourself
 		add_to_streak("G",D)
-		if(check_streak(A,D)) //if a combo is made no grab upgrade is done
-			return TRUE
+		if(check_streak(A,D))
+			return FALSE
 		old_grab_state = A.grab_state
 		D.grabbedby(A, 1)
 		if(old_grab_state == GRAB_PASSIVE)
@@ -194,6 +201,8 @@
 			D.visible_message("<span class='warning'>[A] violently grabs [D]!</span>", \
 							"<span class='userdanger'>You're grabbed violently by [A]!</span>", "<span class='hear'>You hear sounds of aggressive fondling!</span>", COMBAT_MESSAGE_RANGE, A)
 			to_chat(A, "<span class='danger'>You violently grab [D]!</span>")
+		else
+			add_to_streak("G",D)
 		return TRUE
 	else
 		return FALSE
@@ -237,22 +246,24 @@
 	var/obj/item/I = null
 	if(check_streak(A,D))
 		return TRUE
-	if(prob(65))
+	if(prob(rand(10, 100)))
 		if(!D.stat || !D.IsParalyzed() || !restraining)
 			I = D.get_active_held_item()
-			D.visible_message("<span class='danger'>[A] strikes [D]'s jaw with their hand!</span>", \
-							"<span class='userdanger'>Your jaw is struck by [A], you feel disoriented!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
-			to_chat(A, "<span class='danger'>You strike [D]'s jaw, leaving [D.p_them()] disoriented!</span>")
+			D.visible_message("<span class='danger'>[A] tries to tackle [D] to the ground!</span>", \
+							"<span class='userdanger'>[A] Shoves you to the ground!</span>", "<span class='hear'>You hear a sickening sound of flesh hitting flesh!</span>", COMBAT_MESSAGE_RANGE, A)
+			to_chat(A, "<span class='danger'>You tackle [D].</span>")
 			playsound(get_turf(D), 'sound/weapons/cqchit1.ogg', 50, TRUE, -1)
 			if(I && D.temporarilyRemoveItemFromInventory(I))
 				A.put_in_hands(I)
-			D.Jitter(2)
-			D.apply_damage(5, A.get_attack_type())
+			D.Jitter(10)
+			D.adjustStaminaLoss(15)
+			D.Knockdown(15)
 	else
 		D.visible_message("<span class='danger'>[A] fails to disarm [D]!</span>", \
 						"<span class='userdanger'>You're nearly disarmed by [A]!</span>", "<span class='hear'>You hear a swoosh!</span>", COMBAT_MESSAGE_RANGE, A)
 		to_chat(A, "<span class='warning'>You fail to disarm [D]!</span>")
-		playsound(D, 'sound/weapons/punchmiss.ogg', 25, TRUE, -1)
+		playsound(D, 'sound/weapons/cqchit1.ogg', 25, TRUE, -1)
+		D.adjustStaminaLoss(10)
 	log_combat(A, D, "disarmed (Police Jiu)", "[I ? " grabbing \the [I]" : ""]")
 	if(restraining && A.pulling == D)
 		log_combat(A, D, "knocked out (Chokehold)(Police Jiu)")
@@ -260,7 +271,7 @@
 						"<span class='userdanger'>You're put into a chokehold by [A]!</span>", "<span class='hear'>You hear shuffling and a muffled groan!</span>", null, A)
 		to_chat(A, "<span class='danger'>You put [D] into a chokehold!</span>")
 
-		if(ishuman(D) || iswerewolf(D) || isghoul(D))
+		if(!iskindred(D) && !iscathayan(D))
 			D.SetSleeping(400)
 		restraining = FALSE
 		if(A.grab_state < GRAB_NECK && !HAS_TRAIT(A, TRAIT_PACIFISM))
@@ -285,15 +296,16 @@
 
 
 /atom/proc/get_martial_info()
-	. = list("<span class='info'>*---------*\nThis is [icon2html(usr, usr)] <EM>Police Jiu</EM>!")
-	. += "<span class='notice'>Bush clip</span>: Grab Disarm. A brush clip with which you can put it on the ground.</span>"
-	. += "<span class='notice'>Wrung Hand</span>: Disarm Disarm Grab.A quick and disarming criminal.</span>"
+	. = list("<span class='notice'>*Police Jitsu*\nThis is <EM>Police Jitsu</EM>!")
+
+	. += "<span class='notice'>Hand clip</span>: Grab Disarm. A hand clip with you can weaken the criminal.</span>"
+	. += "<span class='notice'>Wrung Hand</span>: Disarm Grab. Quickly disarms criminal.</span>"
 	. += "<span class='notice'>Restrain</span>: Grab Grab. Locks opponents into a restraining position, disarm to knock them out with a chokehold.</span>"
 	. += "<span class='notice'>Handcuffs combo</span>: Disarm Grab Harm Grab. Put the criminal in handcuffs using an effective technique.</span>"
-	. += "<span class='notice'>Consecutive</span>: Disarm Disarm Harm. Mainly offensive move, huge damage and decent stamina damage.</span>"
-	. += "<span class='notice'>Footboard</span>: Disarm Disarm Harm. Step up and knock the criminal to the groun.</span>"
-	. += "<span class='notice'>Laying</span>: Disarm Disarm Harm. Carefully lay the criminal on the ground without any consequences..</span>"
-	. += "<span class='notice'>Kick</span>: Harm Harm Harm. Kick your opponent. Or put your knees on his stomach if he's lying down.</span>"
+	. += "<span class='notice'>Consecutive</span>: Harm Disarm. Mainly offensive move, huge damage and mid stamina damage.</span>"
+	. += "<span class='notice'>Liver Punch</span>: Disarm Harm. Punch criminal's liver making them weaker over time.</span>"
+	. += "<span class='notice'>Laying</span>: Disarm Disarm Disarm Disarm. Pin the criminal on the ground without any consequences.</span>"
+	. += "<span class='notice'>Choke</span>: Harm Harm Harm. Chocke your opponent. Or choke with your knee if he's lying down(more effective).</span>"
 
 #undef BRUSH_CLIP
 #undef WRUNG_HAND
@@ -302,4 +314,4 @@
 #undef CONSECUTIVE_COMBO
 #undef FOOTBOARD
 #undef LAYING
-#undef KICK
+#undef CHOKE

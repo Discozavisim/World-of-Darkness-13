@@ -568,16 +568,20 @@
 			// flip “following” on or off
 		following = !following
 		if(following)
-			H.say("Follow me")
-			to_chat(H, "You call your thralls to follow you.")
+			H.whisper(pick("Следуй.", "За мной.", "Сюда.", "Идем."))
+			to_chat(H, "Ты приказываешь своим подчиненным следовать за тобой.")
 			for(var/mob/living/carbon/human/npc/HPC in H.puppets)
 				if(HPC)
 					if(HPC.stat == 0 && !HPC.key && !HPC.IsSleeping() && !HPC.IsUnconscious() && !HPC.IsParalyzed() && !HPC.IsKnockdown() && !HPC.IsStun() && !HAS_TRAIT(HPC, TRAIT_RESTRAINED) && !HPC.pulledby)
+						HPC.staying = FALSE
 						HPC.forceMove(get_turf(H))
 		else
-			H.say("Stay here")
-			to_chat(H, "You command your thralls to remain here.")
-			// For each Presence’d NPC you control, apply the new setting
+			H.whisper(pick("Подожди.", "Стой.", "Замри.", "Стоп."))
+			to_chat(H, "Ты приказываешь своим подчиненным отстаться на месте.")
+			for(var/mob/living/carbon/human/npc/HPC in H.puppets)
+				if(HPC)
+					if(HPC.stat == 0 && !HPC.key && !HPC.IsSleeping() && !HPC.IsUnconscious() && !HPC.IsParalyzed() && !HPC.IsKnockdown() && !HPC.IsStun() && !HAS_TRAIT(HPC, TRAIT_RESTRAINED) && !HPC.pulledby)
+						HPC.staying = TRUE
 		for(var/mob/living/carbon/human/npc/N in GLOB.npc_list)
 			if(N.presence_master == H)
 				N.presence_follow = following
@@ -596,8 +600,8 @@
 			return
 		cool_down = world.time
 		var/mob/living/carbon/human/H = owner
-		H.say("Stop it!")
-		to_chat(H, "You order your thralls to stop attacking.")
+		H.whisper(pick("Остановись.", "Хватит.", "Прекрати."))
+		to_chat(H, "Ты приказываешь своим подчиненным прекратить атаковать.")
 		for(var/mob/living/carbon/human/npc/N in H.puppets)
 			N.presence_enemies = list()
 			N.danger_source = null

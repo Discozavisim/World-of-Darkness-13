@@ -482,10 +482,22 @@
 	message = "howls!"
 	emote_type = EMOTE_AUDIBLE
 
-/datum/emote/living/growl
-	key = "growl"
-	key_third_person = "growls"
-	message = "growls!"
+/datum/emote/living/squeak
+	key = "squeak"
+	key_third_person = "squeaks"
+	message = "squeaks!"
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/bark
+	key = "bark"
+	key_third_person = "barks"
+	message = "barks!"
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/meow
+	key = "meow"
+	key_third_person = "meows"
+	message = "meows!"
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/caw

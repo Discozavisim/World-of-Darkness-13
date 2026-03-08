@@ -60,6 +60,16 @@ SUBSYSTEM_DEF(beastmastering)
 
 /mob/living/simple_animal/hostile/beastmaster/death(gibbed)
 	. = ..()
+	if(animalism_controller)
+		var/mob/living/carbon/human/initial = animalism_controller
+		var/dam_percentage = health / maxHealth
+		var/percent_carbon = initial.maxHealth * dam_percentage
+		var/blago_damage = min(initial.maxHealth - percent_carbon, 100)
+		initial.apply_damage(blago_damage, BRUTE, forced = TRUE, wound_bonus = CANT_WOUND)
+		initial.ckey = initial.last_mind.key
+		initial.client.init_verbs()
+		log_game("[key_name(initial)] покинул тело зверя в виду смерти и вернулся обратно.")
+		animalism_controller = null
 	if(beastmaster)
 		beastmaster.beastmaster -= src
 		if(!length(beastmaster.beastmaster))
@@ -110,6 +120,7 @@ SUBSYSTEM_DEF(beastmastering)
 	var/mob/living/carbon/human/beastmaster
 	var/list/enemies = list()
 	var/mob/living/targa
+	var/mob/living/carbon/human/animalism_controller
 
 /mob/living/simple_animal/hostile/beastmaster/proc/handle_automated_beasting()
 	if(client)

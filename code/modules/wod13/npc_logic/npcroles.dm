@@ -1192,6 +1192,73 @@
 	pixel_w = rand(-8, 8)
 	pixel_z = rand(-8, 8)
 
+/mob/living/simple_animal/hostile/beastmaster/bear
+	name = "bear"
+	desc = "IS THAT A FUCKING BEAR-"
+	icon = 'code/modules/wod13/64x64.dmi'
+	icon_state = "bear"
+	icon_living = "bear"
+	icon_dead = "bear_dead"
+	icon_gib = "bear_gib"
+	emote_hear = list("roars.")
+	emote_see = list("shakes its head.", "stomps.")
+	attack_verb_continuous = "claws"
+	attack_verb_simple = "claw"
+	attack_sound = 'sound/weapons/bladeslice.ogg'
+	turns_per_move = 1
+	speed = 2.5
+	see_in_dark = 7
+	butcher_results = list(/obj/item/food/meat/slab = 7)
+	response_help_continuous = "pokes"
+	response_help_simple = "poke"
+	response_disarm_continuous = "gently pushes"
+	response_disarm_simple = "gently push"
+	response_harm_continuous = "punches"
+	response_harm_simple = "punch"
+	footstep_type = FOOTSTEP_MOB_CLAW
+	bloodquality = BLOOD_QUALITY_LOW
+	bloodpool = 3
+	maxbloodpool = 3
+	maxHealth = 180
+	health = 180
+	melee_damage_lower = 25
+	melee_damage_upper = 25
+
+/mob/living/simple_animal/hostile/beastmaster/bear/Initialize(mapload)
+	. = ..()
+	src.attributes.strength = 3;
+	src.attributes.stamina = 3;
+	src.attributes.Brawl = 3;
+
+/mob/living/simple_animal/hostile/beastmaster/wolf
+	name = "wolf"
+	desc = "It's hungry."
+	icon = 'code/modules/wod13/vtm_lupus.dmi'
+	icon_state = "black"
+	icon_living = "black"
+	icon_dead = "black_rest"
+	del_on_death = 1
+	footstep_type = FOOTSTEP_MOB_SHOE
+	mob_biotypes = MOB_ORGANIC
+	speak_chance = 0
+	turns_per_move = 2
+	speed = 0.2
+	maxHealth = 120
+	health = 120
+	melee_damage_lower = 15
+	melee_damage_upper = 15
+	attack_verb_continuous = "bites"
+	attack_verb_simple = "bite"
+	attack_sound = 'sound/weapons/bite.ogg'
+
+/mob/living/simple_animal/hostile/beastmaster/wolf/Initialize(mapload)
+	. = ..()
+	src.attributes.dexterity = 3;
+	src.attributes.strength = 1;
+	src.attributes.stamina = 2;
+	src.attributes.Athletics = 3;
+	src.attributes.Brawl = 2;
+
 /mob/living/simple_animal/hostile/beastmaster/rat/flying
 	icon = 'code/modules/wod13/mobs.dmi'
 	icon_state = "bat"

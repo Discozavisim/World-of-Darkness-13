@@ -1,16 +1,18 @@
 /datum/outfit/job/swat
 	name = "Swat Officer"
 	ears = /obj/item/p25radio/police/tactical
-	uniform = /obj/item/clothing/under/vampire/police
-	mask = /obj/item/clothing/mask/vampire/balaclava
-	glasses = /obj/item/clothing/glasses/vampire/sun
+	uniform = /obj/item/clothing/under/vampire/swat_fatigues
+	mask = /obj/item/clothing/mask/vampire/gasmask/swat
+	glasses = /obj/item/clothing/glasses/vampire/swat
 	r_pocket = /obj/item/flashlight
 	l_pocket = /obj/item/ammo_box/magazine/vamp556
-	shoes = /obj/item/clothing/shoes/vampire/jackboots
+	shoes = /obj/item/clothing/shoes/vampire/jackboots/swat
 	belt = /obj/item/gun/ballistic/automatic/vampire/ar15
-	suit = /obj/item/clothing/suit/vampire/vest/police
-	head = /obj/item/clothing/head/vampire/helmet
+	gloves = /obj/item/clothing/gloves/vampire/work
+	suit = /obj/item/clothing/suit/vampire/vest/swat
+	head = /obj/item/clothing/head/vampire/swat
 	id = /obj/item/card/id/police
+	back = /obj/item/storage/backpack/satchel/swat
 	backpack_contents = list(
 		/obj/item/ammo_box/magazine/vamp556 = 3,
 		/obj/item/radio/cop = 1,
@@ -72,6 +74,7 @@
 	equip_swat()
 	give_alias()
 	pick_car()
+	owner.current.playsound_local(get_turf(owner.current), 'code/modules/wod13/sounds/swat_arrival.ogg', 100, FALSE, pressure_affected = FALSE, use_reverb = FALSE)
 	return ..()
 
 /datum/antagonist/swat/on_removal()

@@ -253,6 +253,11 @@
 	icon_state = "satchel"
 	inhand_icon_state = "satchel"
 
+/obj/item/storage/backpack/satchel/swat
+	name = "MOLLE satchel"
+	desc = "It's a very robust-looking satchel made with fine materials."
+	icon_state = "satchelmolle"
+
 /obj/item/storage/backpack/satchel/leather/withwallet/PopulateContents()
 	new /obj/item/storage/wallet/random(src)
 

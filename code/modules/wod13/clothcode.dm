@@ -113,6 +113,11 @@
 	desc = "Some military clothes."
 	icon_state = "milfatigues"
 
+/obj/item/clothing/under/vampire/swat_fatigues
+	name = "SWAT fatigues"
+	desc = "Some special forces clothes."
+	icon_state = "swat"
+
 /obj/item/clothing/under/vampire/maid
 	name = "Maid Uniform"
 	desc = "An authentic victorian maid uniform. Old fashioned, but nonetheless timeless."
@@ -443,6 +448,11 @@
 	name = "boots"
 	desc = "Robust-looking boots."
 	icon_state = "jackboots"
+
+/obj/item/clothing/shoes/vampire/jackboots/swat
+	name = "armored boots"
+	desc = "Robust-looking boots."
+	icon_state = "swatboots"
 
 /obj/item/clothing/shoes/vampire/jackboots/high
 	name = "high boots"
@@ -873,6 +883,14 @@
 //	clothing_traits = list(TRAIT_UNMASQUERADE)
 	masquerade_violating = TRUE
 
+/obj/item/clothing/suit/vampire/vest/swat
+	name = "SWAT vest"
+	desc = "SWAT equipment. Provides great protection against blunt force."
+	icon_state = "swarmor"
+	armor = list(BASHING = 2, LETHAL = 4, AGGRAVATED = 2, MELEE = 60, BULLET = 60, LASER = 10, ENERGY = 10, BOMB = 50, BIO = 0, RAD = 0, FIRE = 40, ACID = 10, WOUND = 20)
+//	clothing_traits = list(TRAIT_UNMASQUERADE)
+	masquerade_violating = TRUE
+
 /obj/item/clothing/suit/vampire/eod
 	name = "EOD suit"
 	desc = "Demoman equipment. Provides best protection against nearly everything."
@@ -977,6 +995,13 @@
 	desc = "For working in dark environment."
 	icon_state = "redg"
 	inhand_icon_state = "glasses"
+
+/obj/item/clothing/glasses/vampire/swat
+	name = "ballistic goggles"
+	desc = "Protects your eyes."
+	icon_state = "ballisticgoggles"
+	inhand_icon_state = "glasses"
+	flash_protect = FLASH_PROTECTION_FLASH
 
 /obj/item/clothing/glasses/vampire/sun
 	name = "sunglasses"
@@ -1102,6 +1127,17 @@
 	dynamic_fhair_suffix = ""
 	armor = list(BASHING = 3, LETHAL = 3, AGGRAVATED = 1, MELEE = 40, BULLET = 40, LASER = 40, ENERGY = 40, BOMB = 20, BIO = 0, RAD = 0, FIRE = 20, ACID = 40, WOUND = 25)
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH | PEPPERPROOF
+//	clothing_traits = list(TRAIT_UNMASQUERADE)
+	masquerade_violating = TRUE
+
+/obj/item/clothing/head/vampire/swat
+	name = "swat helmet"
+	desc = "Looks dangerous. Provides great protection against blunt force."
+	icon_state = "swathelm"
+	flags_inv = HIDEEARS|HIDEHAIR
+	dynamic_hair_suffix = ""
+	dynamic_fhair_suffix = ""
+	armor = list(BASHING = 4, LETHAL = 4, AGGRAVATED = 2, MELEE = 45, BULLET = 45, LASER = 45, ENERGY = 45, BOMB = 25, BIO = 0, RAD = 0, FIRE = 20, ACID = 40, WOUND = 25)
 //	clothing_traits = list(TRAIT_UNMASQUERADE)
 	masquerade_violating = TRUE
 
@@ -1386,6 +1422,13 @@
 /obj/item/clothing/mask/vampire/gasmask/military
 	name = "military gas mask"
 	icon_state = "gasmask3"
+
+/obj/item/clothing/mask/vampire/gasmask/swat
+	name = "swat gas mask"
+	icon_state = "gasmask4"
+	flash_protect = FLASH_PROTECTION_FLASH
+	flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
+	visor_flags_inv = HIDEFACE|HIDEFACIALHAIR|HIDESNOUT
 
 /obj/item/clothing/mask/vampire/tragedy
 	name = "tragedy"

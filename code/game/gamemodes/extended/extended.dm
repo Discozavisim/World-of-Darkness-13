@@ -4,6 +4,7 @@
 	report_type = "extended"
 	false_report_weight = 5
 	required_players = 0
+	// required_jobs = list(list("Prince" = 1, "Sheriff" = 1)) // At least one player ready with Prince and one with Sheriff
 
 	announce_span = "notice"
 	announce_text = "Just have fun and enjoy the game!"

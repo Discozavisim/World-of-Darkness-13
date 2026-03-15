@@ -3497,6 +3497,7 @@
 #include "code\modules\vtmb\disciplines\thaumaturgy\thaumaturgy_path_of_conjuring.dm"
 #include "code\modules\vtmb\disciplines\thaumaturgy\thaumaturgy_path_of_flames.dm"
 #include "code\modules\vtmb\disciplines\thaumaturgy\thaumaturgy_path_of_levinbolt.dm"
+#include "code\modules\vtmb\disciplines\thaumaturgy\thaumaturgy_path_of_mercury.dm"
 #include "code\modules\vtmb\disciplines\valeren\heal_valeren.dm"
 #include "code\modules\vtmb\disciplines\valeren\warrior_valeren.dm"
 #include "code\modules\vtmb\electronics\p25.dm"

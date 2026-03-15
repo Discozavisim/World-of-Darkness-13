@@ -1445,6 +1445,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 					if(pref_species.name == "Vampire")
 						max_age = 100 + white_list_age
+					if(pref_species.name == "Kuei-Jin")
+						max_age = 500
 					if(pref_species.name == "Ghoul")
 						max_age = 400
 					if(pref_species.name == "Werewolf")

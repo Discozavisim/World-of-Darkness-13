@@ -400,6 +400,7 @@
 					if(has_chi_one)
 						possible_new_disciplines -= i
 //		if (possible_new_disciplines.len && (true_experience >= 10))
+
 		if (possible_new_disciplines.len  && (true_experience >= CTHN_NEW_DISCIPLINE_COST))
 			dat += "<a href='byond://?_src_=prefs;preference=newchidiscipline;task=input'>Learn a new Discipline ([CTHN_NEW_DISCIPLINE_COST])</a><BR>"
 

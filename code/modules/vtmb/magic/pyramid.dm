@@ -29,7 +29,7 @@
 					var/obj/item/I = new item_type(src)
 					required_items += I.name
 					qdel(I)
-				var/required_list
+				var/required_list = ""
 				if(required_items.len == 1)
 					required_list = required_items[1]
 				else
@@ -600,3 +600,419 @@
 	else
 		message += "The blood's origin is hard to trace. Perhaps it is one of the clanless?"
 	return message
+
+/obj/ritualrune/impressive_visage
+	name = "Impressive Visage"
+	desc = "A ritual that enhances the thaumaturge's attractiveness and charm through blood magic."
+	icon_state = "rune3"
+	word = "SANG'UIS FORMOSUS"
+	thaumlevel = 2
+	cost = 2
+
+/obj/ritualrune/impressive_visage/complete()
+	var/mob/living/carbon/human/H = last_activator
+	if(HAS_TRAIT(H, TRAIT_CHARMER))
+		to_chat(H, span_warning("Вы уже обладаете сверхъестественным обаянием."))
+		qdel(src)
+		return
+
+	ADD_TRAIT(H, TRAIT_CHARMER, "blood_magic")
+	playsound(loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	to_chat(H, span_notice("Кровь пульсирует под вашей кожей, придавая вам неотразимую привлекательность."))
+	qdel(src)
+
+/mob/living
+	var/list/my_bloodstones
+
+/obj/ritualrune/bloodstone
+	name = "Craft Bloodstone"
+	desc = "Creates a mystical bloodstone linked to the caster. The caster always senses the stone's approximate location."
+	icon_state = "rune3"
+	word = "SANG'UIS LAPIS"
+	thaumlevel = 2
+	cost = 2
+	sacrifices = list(/obj/item/shard, /obj/item/drinkable_bloodpack)
+
+/obj/ritualrune/bloodstone/complete()
+	var/mob/living/carbon/human/H = last_activator
+	var/occult = get_a_occult(H)
+	var/max_stones = max(1, occult)
+
+	if(!H.my_bloodstones)
+		H.my_bloodstones = list()
+
+	var/list/cleaned = list()
+	for(var/obj/item/bloodstone/old in H.my_bloodstones)
+		if(!QDELETED(old))
+			cleaned += old
+	H.my_bloodstones = cleaned
+
+	if(length(H.my_bloodstones) >= max_stones)
+		to_chat(H, span_warning("Ваш разум не может поддерживать больше мистических связей. Вам нужно больше знаний в Оккультизме."))
+		qdel(src)
+		return
+
+	var/stone_name = tgui_input_text(H, "Назовите этот кровавый камень:", "Кровавый камень", "Bloodstone", MAX_NAME_LEN)
+	if(!stone_name)
+		stone_name = "Bloodstone"
+	stone_name = sanitize_text(stone_name)
+
+	var/obj/item/bloodstone/BS = new(loc)
+	BS.stone_name = stone_name
+	BS.name = "bloodstone ([stone_name])"
+	BS.creator = H
+	H.my_bloodstones += BS
+
+	var/has_sense = FALSE
+	for(var/datum/action/bloodstone_sense/existing in H.actions)
+		has_sense = TRUE
+		break
+	if(!has_sense)
+		var/datum/action/bloodstone_sense/sense = new()
+		sense.Grant(H)
+
+	playsound(loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	to_chat(H, span_warning("Камень жадно впитывает кровь. Когда жидкость проясняется, вы чувствуете новую связь в своём разуме — <b>[stone_name]</b>."))
+	qdel(src)
+
+/obj/item/bloodstone
+	name = "Bloodstone"
+	desc = "Небольшой камешек, переливающийся изнутри багровым светом. На ощупь теплый."
+	icon = 'icons/obj/wizard.dmi'
+	icon_state = "soulstone"
+	color = rgb(128,0,0)
+	w_class = WEIGHT_CLASS_TINY
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+	var/mob/living/creator
+	var/stone_name = "Bloodstone"
+
+/obj/item/bloodstone/examine(mob/user)
+	. = ..()
+	if(user == creator)
+		. += span_notice("Вы чувствуете, как ваша мистическая связь резонирует с этим камнем.")
+	else
+		. += span_notice("От этого камешка исходит странное тепло.")
+
+/obj/item/bloodstone/Destroy()
+	if(creator && !QDELETED(creator))
+		to_chat(creator, span_danger("Вы чувствуете, как мистическая связь разрывается — <b>[stone_name]</b> уничтожен!"))
+		if(creator.my_bloodstones)
+			creator.my_bloodstones -= src
+			var/has_stones = FALSE
+			for(var/obj/item/bloodstone/BS in creator.my_bloodstones)
+				if(!QDELETED(BS))
+					has_stones = TRUE
+					break
+			if(!has_stones)
+				for(var/datum/action/bloodstone_sense/A in creator.actions)
+					A.Remove(creator)
+					qdel(A)
+	creator = null
+	return ..()
+
+/datum/action/bloodstone_sense
+	name = "Sense Bloodstones"
+	desc = "Закройте глаза и сосредоточьтесь на мистических связях с вашими кровавыми камнями."
+	button_icon_state = "soulstone"
+	button_icon = 'code/modules/wod13/UI/actions.dmi'
+	background_icon_state = "discipline"
+	icon_icon = 'icons/obj/wizard.dmi'
+	check_flags = AB_CHECK_CONSCIOUS
+
+/datum/action/bloodstone_sense/ApplyIcon(atom/movable/screen/movable/action_button/current_button, force = FALSE)
+	. = ..()
+	if(current_button)
+		var/image/img = image(icon = 'icons/obj/wizard.dmi', icon_state = "soulstone")
+		img.color = rgb(128,0,0)
+		current_button.cut_overlays()
+		current_button.add_overlay(img)
+
+/datum/action/bloodstone_sense/Trigger(trigger_flags)
+	. = ..()
+	var/mob/living/H = owner
+
+	if(!H.my_bloodstones || !length(H.my_bloodstones))
+		to_chat(H, span_warning("Все ваши мистические связи были разорваны."))
+		Remove(H)
+		qdel(src)
+		return
+
+	var/list/cleaned = list()
+	for(var/obj/item/bloodstone/BS in H.my_bloodstones)
+		if(!QDELETED(BS))
+			cleaned += BS
+	H.my_bloodstones = cleaned
+
+	if(!length(H.my_bloodstones))
+		to_chat(H, span_warning("Все ваши мистические связи были разорваны."))
+		Remove(H)
+		qdel(src)
+		return
+
+	to_chat(H, span_warning("<b>Вы закрываете глаза и сосредотачиваетесь на своих кровавых камнях...</b>"))
+
+	var/turf/UT = get_turf(H)
+	if(UT)
+		to_chat(H, "<b>ВЫ</b>, [get_area_name(H)] X:[UT.x] Y:[UT.y]")
+
+	for(var/obj/item/bloodstone/BS in H.my_bloodstones)
+		var/turf/TT = get_turf(BS)
+		if(TT)
+			to_chat(H, "<b>[BS.stone_name]</b>, [get_area_name(BS)] X:[TT.x] Y:[TT.y]")
+		else
+			to_chat(H, "<b>[BS.stone_name]</b> — <i>за пределами ваших чувств.</i>")
+
+/mob/living
+	var/datum/blood_contract/active_blood_contract
+
+/datum/blood_contract
+	var/mob/living/carbon/human/creator
+	var/mob/living/carbon/human/signer
+	var/obj/item/blood_contract_item/document
+	var/terms = ""
+	var/signed_time = 0
+	var/is_signed = FALSE
+
+/datum/blood_contract/Destroy()
+	remove_from_parties()
+	if(document && !QDELETED(document))
+		document.contract = null
+		qdel(document)
+	creator = null
+	signer = null
+	document = null
+	return ..()
+
+/datum/blood_contract/proc/remove_from_parties()
+	if(creator && !QDELETED(creator))
+		if(creator.active_blood_contract == src)
+			creator.active_blood_contract = null
+		creator.remove_status_effect(/datum/status_effect/blood_contract_bound)
+	if(signer && !QDELETED(signer))
+		if(signer.active_blood_contract == src)
+			signer.active_blood_contract = null
+		signer.remove_status_effect(/datum/status_effect/blood_contract_bound)
+
+/atom/movable/screen/alert/status_effect/blood_contract_bound
+	name = "Контракт Крови"
+	desc = "Вы связаны контрактом крови."
+	icon_state = "in_love"
+	color = rgb(128,0,0)
+
+/atom/movable/screen/alert/status_effect/blood_contract_bound/Click()
+	if(!usr || !usr.mind)
+		return
+	var/mob/living/L = usr
+	if(!L.active_blood_contract)
+		return
+	var/datum/blood_contract/C = L.active_blood_contract
+
+	if(QDELETED(C.creator) || C.creator.stat == DEAD || !C.creator.client)
+		to_chat(usr, span_warning("Создатель контракта погиб или покинул город. Договор расторгнут."))
+		qdel(C)
+		return
+
+	if(QDELETED(C.signer) || C.signer.stat == DEAD || !C.signer.client)
+		to_chat(usr, span_warning("Подписант погиб или покинул город. Договор расторгнут."))
+		qdel(C)
+		return
+
+	to_chat(usr, span_danger("<b>--- КОНТРАКТ КРОВИ ---</b>"))
+	to_chat(usr, span_danger("Составил: <b>[C.creator.real_name]</b>"))
+	to_chat(usr, span_danger("Подписал: <b>[C.signer.real_name]</b>"))
+	to_chat(usr, span_danger("Условия: \"[C.terms]\""))
+	to_chat(usr, span_danger("<b>---</b>"))
+
+	if(usr != C.creator)
+		return
+
+	if(!C.document || QDELETED(C.document))
+		to_chat(usr, span_warning("Документ утерян. Вы не можете вынести решение."))
+		return
+	var/atom/doc_loc = C.document.loc
+	while(doc_loc && !ismob(doc_loc))
+		doc_loc = doc_loc.loc
+	if(doc_loc != C.creator)
+		to_chat(usr, span_warning("Контракт должен быть при вас, чтобы вынести решение."))
+		return
+
+	var/time_passed = world.time - C.signed_time
+	var/grace_period = 30 MINUTES
+
+	if(time_passed < grace_period)
+		var/minutes_left = round((grace_period - time_passed) / (1 MINUTES))
+		var/choice = tgui_alert(usr, "Кровь ещё не устоялась. Осталось [minutes_left] мин. Вы можете лишь признать контракт выполненным.", "Контракт Крови", list("Выполнен", "Отмена"))
+		if(choice == "Выполнен")
+			var/confirm = tgui_alert(usr, "Вы уверены? Контракт будет расторгнут.", "Контракт Крови", list("Да", "Нет"))
+			if(confirm == "Да" && !QDELETED(C))
+				to_chat(C.creator, span_notice("Контракт крови выполнен. Договор расторгнут."))
+				to_chat(C.signer, span_notice("Контракт крови выполнен. Вы свободны."))
+				playsound(get_turf(usr), 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+				qdel(C)
+		return
+
+	var/choice = tgui_input_list(usr, "Каково ваше решение?", "Контракт Крови", list("Выполнен", "Нарушен", "Отмена"))
+	if(!choice || choice == "Отмена" || QDELETED(C))
+		return
+	if(choice == "Выполнен")
+		var/confirm = tgui_alert(usr, "Вы уверены? Контракт будет расторгнут.", "Контракт Крови", list("Да", "Нет"))
+		if(confirm == "Да" && !QDELETED(C))
+			to_chat(C.creator, span_notice("Контракт крови выполнен. Договор расторгнут."))
+			to_chat(C.signer, span_notice("Контракт крови выполнен. Вы свободны."))
+			playsound(get_turf(usr), 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+			qdel(C)
+	else if(choice == "Нарушен")
+		var/confirm = tgui_alert(usr, "Вы уверены? Подписавший сильно пострадает.", "Контракт Крови", list("Да", "Нет"))
+		if(confirm == "Да" && !QDELETED(C))
+			var/mob/living/carbon/human/victim = C.signer
+			to_chat(C.creator, span_danger("Вы обрушиваете гнев контракта на [victim.real_name]."))
+			to_chat(victim, span_userdanger("КОНТРАКТ КРОВИ ЖЖЁТ ВАШИ ВЕНЫ! ВАС ПОКАРАЛИ!"))
+			playsound(get_turf(victim), 'code/modules/wod13/sounds/thaum.ogg', 100, FALSE)
+			victim.adjustCloneLoss(200)
+			qdel(C)
+
+/datum/status_effect/blood_contract_bound
+	id = "blood_contract_bound"
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+	alert_type = /atom/movable/screen/alert/status_effect/blood_contract_bound
+
+/obj/ritualrune/blood_contract
+	name = "Blood Contract"
+	desc = "Forge an unbreakable blood contract binding a signer to its terms."
+	icon_state = "rune7"
+	word = "SANG'UIS PACTUM"
+	thaumlevel = 5
+	cost = 2
+	sacrifices = list(/obj/item/paper, /obj/item/drinkable_bloodpack/full/elite)
+
+/obj/ritualrune/blood_contract/complete()
+	var/mob/living/carbon/human/H = last_activator
+	if(H.active_blood_contract)
+		to_chat(H, span_warning("У вас уже есть активный контракт крови."))
+		qdel(src)
+		return
+
+	var/contract_terms = tgui_input_text(H, "Напишите условия контракта крови:", "Контракт Крови", max_length = MAX_MESSAGE_LEN)
+	if(!contract_terms)
+		to_chat(H, span_warning("Вы не смогли начертать контракт."))
+		qdel(src)
+		return
+	contract_terms = sanitize_text(contract_terms)
+
+	var/obj/item/blood_contract_item/doc = new(loc)
+	var/datum/blood_contract/contract = new()
+	contract.creator = H
+	contract.terms = contract_terms
+	contract.document = doc
+	doc.contract = contract
+
+	H.active_blood_contract = contract
+	H.put_in_active_hand(doc)
+
+	playsound(loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	to_chat(H, span_warning("Вы начертали контракт собственной кровью. Найдите того, кто его подпишет."))
+	qdel(src)
+
+/obj/item/blood_contract_item
+	name = "Blood contract"
+	desc = "Документ, написанный кровью. От него исходит тёмная сила."
+	icon = 'code/modules/wod13/items.dmi'
+	icon_state = "masquerade"
+	color = rgb(128,0,0)
+	onflooricon = 'code/modules/wod13/onfloor.dmi'
+	w_class = WEIGHT_CLASS_SMALL
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+	var/datum/blood_contract/contract
+	var/last_offer_time = 0
+
+/obj/item/blood_contract_item/examine(mob/user)
+	. = ..()
+	if(!contract)
+		. += span_warning("Этот контракт не несёт силы.")
+		return
+	if(user == contract.creator)
+		. += span_notice("Условия: \"[contract.terms]\"")
+		if(contract.is_signed)
+			. += span_notice("Подписал: [contract.signer.real_name]")
+	else
+		if(contract.is_signed)
+			. += span_warning("Документ пульсирует тёмной энергией. Он подписан.")
+		else
+			. += span_warning("Условия мистически сокрыты, пока документ не предложат вам.")
+
+/obj/item/blood_contract_item/attack(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	if(!istype(target) || !istype(user))
+		return ..()
+	if(!contract)
+		return ..()
+	if(user != contract.creator)
+		return ..()
+	if(contract.is_signed)
+		to_chat(user, span_warning("Этот контракт уже подписан."))
+		return
+	if(target == user)
+		to_chat(user, span_warning("Вы не можете подписать собственный контракт."))
+		return
+	if(!iskindred(target) && !isghoul(target) && !iscathayan(target))
+		to_chat(user, span_warning("Только существа с силой крови могут подписать контракт крови."))
+		return
+	if(target.active_blood_contract)
+		to_chat(user, span_warning("[target] уже связан контрактом крови."))
+		return
+	if(last_offer_time + 30 SECONDS > world.time)
+		to_chat(user, span_warning("Подождите, прежде чем предлагать контракт снова."))
+		return
+	last_offer_time = world.time
+
+	to_chat(target, span_danger("<b>--- КОНТРАКТ КРОВИ ---</b>"))
+	to_chat(target, span_danger("Составил: <b>[user.real_name]</b>"))
+	to_chat(target, span_danger("Условия: \"[contract.terms]\""))
+	to_chat(target, span_danger("<b>---</b>"))
+
+	var/choice = tgui_alert(target, "Вы принимаете условия контракта крови? Вы будете связаны магией крови.", "Контракт Крови", list("Принять", "Отказать"), 30 SECONDS)
+	if(choice != "Принять")
+		to_chat(user, span_warning("[target] отказался подписать контракт крови."))
+		to_chat(target, span_notice("Вы отказались от контракта."))
+		return
+
+	if(QDELETED(src) || QDELETED(contract) || contract.is_signed)
+		return
+	if(QDELETED(user) || QDELETED(target) || user.stat == DEAD || target.stat == DEAD)
+		return
+	if(get_dist(user, target) > 2)
+		to_chat(user, span_warning("Вы слишком далеко от [target]."))
+		return
+	if(user.bloodpool < 1 || target.bloodpool < 1)
+		to_chat(user, span_warning("Недостаточно крови для заключения договора."))
+		return
+
+	user.bloodpool = max(0, user.bloodpool - 1)
+	target.bloodpool = max(0, target.bloodpool - 1)
+	user.update_blood_hud()
+	target.update_blood_hud()
+
+	contract.signer = target
+	contract.is_signed = TRUE
+	contract.signed_time = world.time
+	target.active_blood_contract = contract
+
+	user.apply_status_effect(/datum/status_effect/blood_contract_bound)
+	target.apply_status_effect(/datum/status_effect/blood_contract_bound)
+
+	playsound(loc, 'code/modules/wod13/sounds/thaum.ogg', 50, FALSE)
+	to_chat(user, span_danger("[target.real_name] подписывает контракт кровью. Договор скреплён."))
+	to_chat(target, span_danger("Вы подписываете контракт кровью. Тяжесть договора ложится на вас."))
+
+/obj/item/blood_contract_item/Destroy()
+	if(contract)
+		var/datum/blood_contract/C = contract
+		contract = null
+		C.document = null
+		if(C.is_signed)
+			if(C.creator && !QDELETED(C.creator))
+				to_chat(C.creator, span_danger("Контракт крови уничтожен! Договор расторгнут."))
+			if(C.signer && !QDELETED(C.signer))
+				to_chat(C.signer, span_danger("Контракт крови уничтожен! Вы свободны."))
+			qdel(C)
+	return ..()

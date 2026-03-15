@@ -100,8 +100,8 @@
 /datum/antagonist/swat/proc/pick_car()
 	if(swat_team)
 		swat_team.choose_landmark()
-		var/obj/effect/landmark/start/D = swat_team.dislocation
-		owner.current.forceMove(D.loc)
+//		var/obj/effect/landmark/start/D = swat_team.dislocation
+		owner.current.forceMove(swat_team.dislocation.loc)
 
 /datum/antagonist/swat/proc/forge_objectives()
 	spawn(2 SECONDS)

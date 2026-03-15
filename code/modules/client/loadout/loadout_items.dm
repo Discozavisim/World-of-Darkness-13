@@ -17,6 +17,16 @@
 	path = /obj/item/dice/d20
 	cost = 0
 
+// Books
+/datum/gear/general/bible
+	display_name = "Holy Bible"
+	path = /obj/item/storage/book/bible
+
+/datum/gear/general/coran
+	display_name = "Quran"
+	path = /obj/item/vampirebook/quran
+
+
 // Lipsticks
 
 /datum/gear/general/lipstick_black

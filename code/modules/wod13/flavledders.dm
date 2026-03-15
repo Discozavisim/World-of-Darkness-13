@@ -93,16 +93,9 @@
 	density = 0
 
 /obj/transfer_point_vamp/umbral
-	name = "portal"
+	name = "Gateway to Earth"
 	icon = 'code/modules/wod13/48x48.dmi'
 	icon_state = "portal"
-	plane = ABOVE_LIGHTING_PLANE
-	layer = ABOVE_LIGHTING_LAYER
-	pixel_w = -8
-
-/obj/transfer_point_vamp/umbral/Initialize(mapload)
-	. = ..()
-	set_light(2, 1, "#a4a0fb")
 
 /obj/transfer_point_vamp/umbral/Bumped(atom/movable/AM)
 	. = ..()
@@ -114,3 +107,9 @@
 //	to_chat(world, "Moving from [x] [y] [z] to [exit.x] [exit.y] [exit.z]")
 //	to_chat(world, "Actually [T.x] [T.y] [T.z]")
 	AM.forceMove(T)
+
+/obj/transfer_point_vamp/umbral/earth
+	name = "Gateway to Umbra"
+	density = FALSE
+	alpha = 0
+

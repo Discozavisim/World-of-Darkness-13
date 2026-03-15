@@ -72,7 +72,8 @@
 
 /datum/outfit/job/prince/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Camarilla"
+	H.add_to_sect("Camarilla")
+//	H.vampire_faction = "Camarilla"
 	H.ignores_warrant = TRUE
 	if(H.gender == FEMALE)
 		uniform = /obj/item/clothing/under/vampire/prince/female

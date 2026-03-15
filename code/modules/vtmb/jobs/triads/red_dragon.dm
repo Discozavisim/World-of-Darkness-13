@@ -26,7 +26,8 @@
 /datum/outfit/job/red_dragon/pre_equip(mob/living/carbon/human/H)
 	..()
 	H.grant_language(/datum/language/cantonese)
-	H.vampire_faction = "Triad"
+//	H.vampire_faction = "Triad"
+	H.add_to_sect("Triad")
 	if(H.gender == FEMALE)
 		uniform = /obj/item/clothing/under/vampire/suit/red_dragon/female
 		shoes = /obj/item/clothing/shoes/vampire/heels

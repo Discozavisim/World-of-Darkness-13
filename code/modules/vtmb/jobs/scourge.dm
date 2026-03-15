@@ -49,7 +49,8 @@
 
 /datum/outfit/job/hound/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Camarilla"
+	H.add_to_sect("Camarilla")
+//	H.vampire_faction = "Camarilla"
 
 /obj/effect/landmark/start/hound
 	name = "Hound"
@@ -112,7 +113,8 @@
 
 /datum/outfit/job/milleniumsecurity/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Camarilla"
+	H.add_to_sect("Camarilla")
+//	H.vampire_faction = "Camarilla"
 
 /obj/effect/landmark/start/milleniumsecurity
 	name = "Millenium security"

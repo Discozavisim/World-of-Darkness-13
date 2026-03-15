@@ -2,6 +2,20 @@
 
 	var/difficult = 0  // For semi-automatic and automatic weapons and rolls
 
+	var/safety = 0
+
+/obj/item/gun/proc/check_safety(mob/user)
+	if(safety)
+		to_chat(user, "<span class='info'> Ты чувствуешь, как не можешь сдвинуть спусковой крючок. </span>")
+		return TRUE
+	return FALSE
+
+/obj/item/gun/ballistic/automatic/vampire/AltClick(mob/living/user)
+//	. = ..()
+	..()
+	safety = !safety
+	to_chat(user, "<span class='info'> Ты переключил предохранитель. </span>")
+
 /obj/item/gun/ballistic/vampire
 	icon = 'code/modules/wod13/weapons.dmi'
 	lefthand_file = 'code/modules/wod13/righthand.dmi'

@@ -18,8 +18,13 @@
 
 	if(masq_breakers.len)
 		var/turf/UT = get_turf(user)
+		var/mod_x = 0
+		var/mod_y = 0
 		if(UT)
-			to_chat(user, "<b>YOU</b>, [get_area_name(user)] X:[UT.x] Y:[UT.y]")
+			if(HAS_TRAIT(user, TRAIT_NON_INT))
+				mod_x = rand(-20, 20)
+				mod_y = rand(-20, 20)
+			to_chat(user, "<b>YOU</b>, [get_area_name(user)] X:[UT.x+mod_x] Y:[UT.y+mod_y]")
 		for(var/mob/living/carbon/human/H in masq_breakers)
 			if(iskindred(H) || isghoul(H) || iscathayan(H) || iszombie(H))
 				var/turf/TT = get_turf(H)
@@ -50,8 +55,13 @@
 
 	if(masq_breakers.len)
 		var/turf/UT = get_turf(user)
+		var/mod_x = 0
+		var/mod_y = 0
 		if(UT)
-			to_chat(user, "<b>YOU</b>, [get_area_name(user)] X:[UT.x] Y:[UT.y]")
+			if(HAS_TRAIT(user, TRAIT_NON_INT))
+				mod_x = rand(-20, 20)
+				mod_y = rand(-20, 20)
+			to_chat(user, "<b>YOU</b>, [get_area_name(user)] X:[UT.x+mod_x] Y:[UT.y+mod_y]")
 		for(var/mob/living/carbon/human/W in masq_breakers)
 			var/turf/TT = get_turf(W)
 			if(TT)
@@ -300,10 +310,22 @@
 			L.update(FALSE)
 		playsound(loc, 'code/modules/wod13/sounds/explode.ogg', 100, TRUE)
 		if(user && !owner_immune)
+			var/mob/living/carbon/human/HHRU = user
+			if(HHRU.MyPath)
+				HHRU.MyPath.trigger_morality("electro_act")
 			user.electrocute_act(50, src, siemens_coeff = 1, flags = NONE)
 
 /obj/fusebox/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/wire_cutters))
+		if(HAS_TRAIT(user, TRAIT_NON_INT))
+			var/daun_roll = secret_vampireroll(get_a_intelligence(user)+get_a_wits(user), 10, user, TRUE)
+			var/mob/living/carbon/human/HHRU = user
+			if(daun_roll <= 0)
+				if(HHRU.MyPath)
+					HHRU.MyPath.trigger_morality("electro_act")
+				user.electrocute_act(50, src, siemens_coeff = 1, flags = NONE)
+				return
+
 		if(!repairing)
 			repairing = TRUE
 			if(do_after(user, 100, src))
@@ -394,6 +416,14 @@
 	if(fuel_remain == 0)
 		to_chat(user, "<span class='warning'>There is no fuel in [src].</span>")
 		return
+	if(HAS_TRAIT(user, TRAIT_NON_INT))
+		var/daun_roll = secret_vampireroll(get_a_intelligence(user)+get_a_wits(user), 10, user, TRUE)
+		var/mob/living/carbon/human/HHRU = user
+		if(daun_roll <= 0)
+			if(HHRU.MyPath)
+				HHRU.MyPath.trigger_morality("electro_act")
+			HHRU.electrocute_act(50, src, siemens_coeff = 1, flags = NONE)
+			return
 	if(!switching_on)
 		switching_on = TRUE
 		if(do_after(user, 50, src))

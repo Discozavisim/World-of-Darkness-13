@@ -159,6 +159,7 @@
 /obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)
 //	if(recoil)
 //		shake_camera(user, recoil + 1, recoil)
+
 	if(suppressed)
 		if(HAS_TRAIT(user, TRAIT_THUNDERSHOT))
 			playsound(src, 'sound/magic/lightningshock.ogg', 40, TRUE, extrarange = 5)
@@ -307,6 +308,13 @@
 	if(!user || !firing_burst)
 		firing_burst = FALSE
 		return FALSE
+
+	if(HAS_TRAIT(user, TRAIT_NON_INT))
+		var/daun_roll = secret_vampireroll(get_a_intelligence(user)+get_a_wits(user), 10, user, TRUE)
+		if(daun_roll <= 1)
+			safety = !safety
+			to_chat(user, "<span class='info'> Ты дернул интересную движущуюся часть оружия. </span>")
+
 	if(!issilicon(user))
 		if(iteration > 1 && !(user.is_holding(src))) //for burst firing
 			firing_burst = FALSE
@@ -366,6 +374,9 @@
 	SEND_SIGNAL(src, COMSIG_GUN_FIRED, user, target, params, zone_override)
 
 	add_fingerprint(user)
+
+	if(check_safety(user))
+		return FALSE
 
 	if(semicd)
 		return

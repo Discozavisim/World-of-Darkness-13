@@ -147,6 +147,13 @@ Dancer
 	lose_text = "<span class='notice'>You don't feel dumb anymore.</span>"
 	allowed_species = list("Vampire", "Human", "Ghoul", "Kuei-Jin", "Werewolf")
 
+
+/datum/quirk/non_int/on_spawn()
+//	var/traumas = pick(/datum/brain_trauma/mild/dumbness, /datum/brain_trauma/mild/speech_impediment)
+	var/traumas = /datum/brain_trauma/mild/dumbness
+	var/mob/living/carbon/H = quirk_holder
+	H.gain_trauma(traumas)
+
 /datum/quirk/coffin_therapy
 	name = "Coffin Therapy"
 	desc = "Your wounds heal only in a coffin."

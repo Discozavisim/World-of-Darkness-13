@@ -407,6 +407,14 @@
 			var/replic_attackedfail = pick(" — Я, пожалуй, отойду. Ты тоже, пожалуй, отойди...", " — Пережить развод, взять кредит, жить без родителей - это я могу... А это мне не под силу.", " — Знаешь, что я тебе посоветую? Беги, сука, беги!")
 			to_chat(owner, "<font size=12>[icon2html('icons/courage.png', owner)]</font> <span class='sciradio'><b>COURAGE</b></span> <span class='info'>Failure</span> <span class='discosay'>[replic_attackedfail]</span>")
 
+		if("electro_act")
+			var/replic_electro_act = pick(" — Спокойно, через нас всего лишь прошло несколько тысяч вольт.", " — Не думал, что мы когда-нибудь станем проводниками... Ваш билетик пожалуйста!", " — Хоть это и больно, но хорошо так бодрит!", " — Ух, я прям чувствую прилив ЭНЕРГИИ!")
+			var/replic_daun_act = pick(" — Бззз, смотри какая тряска!", " — Нас ударил ток... Но это не точно", " — Гигатокичь нас шарахнул!",  " — Бля какого уровня у тебя асикью, что ты так ебнулся?")
+			if(HAS_TRAIT(owner, TRAIT_NON_INT))
+				to_chat(owner, "<font size=12>[icon2html('icons/courage.png', owner)]</font> <span class='sciradio'><b>COURAGE</b></span> <span class='info'>Failure</span> <span class='discosay'>[replic_electro_act]</span>")
+			else
+				to_chat(owner, "<font size=12>[icon2html('icons/courage.png', owner)]</font> <span class='sciradio'><b>COURAGE</b></span> <span class='info'>Failure</span> <span class='discosay'>[replic_daun_act]</span>")
+
 		//SELF-CONTROL
 		if ("gettingdrunk")
 			var/replic_gettingdrunk = pick(" — Какое интересное ощущение... Хочется подружиться со всеми и спорить о политике до драки. Ты сейчас в розовых очках юности", " — Пьяный не значит безотвественный. Главное - не переборщить.", " — Выпил - закусил, закусил - выпил. Главное не забыть, где твой дом.")

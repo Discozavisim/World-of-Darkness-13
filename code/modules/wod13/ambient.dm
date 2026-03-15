@@ -71,10 +71,28 @@
 
 /area/vtm/interior/techshop
 	name = "Nightwolf Techshop"
-	icon_state = "shop"
+	icon_state = "theatre"
+	music = /datum/vampiremusic/downtown
 	upper = FALSE
 	fire_controled = TRUE
 	wall_rating = HIGH_WALL_RATING
+
+/area/vtm/interior/glasswalker
+	name = "Nightwolf Labs"
+	icon_state = "supply"
+	upper = FALSE
+	zone_type = "battle"
+	music = /datum/vampiremusic/downtown
+	fire_controled = TRUE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/ranger
+	name = "Park Ranger Station"
+	icon_state = "police"
+	upper = FALSE
+	music = /datum/vampiremusic/forest
+	fire_controled = TRUE
+	wall_rating = LOW_WALL_RATING
 
 /area/vtm/interior/bianchiBank
 	name = "Bianchi Bank"
@@ -389,21 +407,12 @@
 	wall_rating = LOW_WALL_RATING	//for werewolves in future
 	teleportable = TRUE
 
-/area/vtm/interior/glasswalker
-	name = "Nightwolf Labs"
-	icon_state = "supply"
-	upper = FALSE
-	zone_type = "battle"
-	music = /datum/vampiremusic/forest
-	fire_controled = TRUE
-	wall_rating = LOW_WALL_RATING
-
 /area/vtm/interior/wyrm_corrupted
 	name = "Poisoned Shore"
 	icon_state = "graveyard"
 	upper = FALSE
 	zone_type = "battle"
-	music = /datum/vampiremusic/forest
+	music = /datum/vampiremusic/nosferatu
 	fire_controled = FALSE
 	yang_chi = 0
 	yin_chi = 2
@@ -427,15 +436,143 @@
 	upper = FALSE
 	music = /datum/vampiremusic/nosferatu
 
+//////////////////umbra
+
+/area/vtm/interior/umbra
+	name = "Umbra"
+	icon_state = "interior"
+	ambience_index = AMBIENCE_CITY
+	upper = FALSE
+	zone_type = "battle"
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
 /area/vtm/interior/penumbra
 	name = "Penumbra"
+	icon_state = "shop"
+	ambience_index = AMBIENCE_CITY
+	upper = FALSE
+	zone_type = "battle"
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/scar
+	name = "Scar"
+	icon_state = "sewer"
+	ambience_index = AMBIENCE_SEWER
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 0
+	yin_chi = 2
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/scar/caern
+	name = "Sept of the Poison Shore"
+	icon_state = "sewer"
+	ambience_index = AMBIENCE_SEWER
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 0
+	yin_chi = 2
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/huntinggrounds
+	name = "Hunting Grounds"
+	icon_state = "park"
+	ambience_index = AMBIENCE_NATURE
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 2
+	yin_chi = 0
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/huntinggrounds/caern
+	name = "Sept of the Western Eye"
+	icon_state = "park"
+	ambience_index = AMBIENCE_NATURE
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 2
+	yin_chi = 0
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/cyberrealm
+	name = "CyberRealm"
 	icon_state = "church"
+	ambience_index = AMBIENCE_CITY
+	upper = FALSE
+	zone_type = "battle"
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/cyberrealm/caern
+	name = "Sept of the Telegraph Hill"
+	icon_state = "financialdistrict"
+	ambience_index = AMBIENCE_CITY
+	upper = FALSE
+	zone_type = "battle"
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/tigertemple
+	name = "Temple of the Leaping Tiger"
+	icon_state = "chinatown"
 	ambience_index = AMBIENCE_NATURE
 	upper = FALSE
 	zone_type = "battle"
 	music = /datum/vampiremusic/penumbra
 	fire_controled = FALSE
 	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/abyss
+	name = "Abyss"
+	icon_state = "church"
+	ambience_index = AMBIENCE_SEWER
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 0
+	yin_chi = 2
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/underworld
+	name = "Underworld"
+	icon_state = "graveyard"
+	ambience_index = AMBIENCE_SEWER
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 0
+	yin_chi = 2
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/area/vtm/interior/umbra/arcadia
+	name = "Arcadia Gateway"
+	icon_state = "theatre"
+	ambience_index = AMBIENCE_NATURE
+	upper = FALSE
+	zone_type = "battle"
+	yang_chi = 2
+	yin_chi = 0
+	music = /datum/vampiremusic/penumbra
+	fire_controled = FALSE
+	wall_rating = LOW_WALL_RATING
+
+/////////////////////////////
 
 /area/vtm/interior/backrooms
 	name = "Backrooms"

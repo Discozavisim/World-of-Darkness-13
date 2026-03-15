@@ -1168,6 +1168,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			total += 15
 		if(701 to INFINITY)
 			total += 20
+
 	var/available = total - discipline_spent
 	var/list/all_stats = list(
 		"Strength", "Dexterity", "Stamina",
@@ -1180,7 +1181,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/spent_total = 0
 	for(var/stat in all_stats)
 		var/value = vars[stat]
-		var/free = vars["free_" + lowertext(stat)]
+		var/free = vars["free_" + LOWER_TEXT(stat)]
 		var/base = 0
 		if(stat in list("Strength", "Dexterity", "Stamina", "Charisma", "Manipulation", "Appearance", "Perception", "Intelligence", "Wits"))
 			base = 1
@@ -1191,7 +1192,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	spent_total = 0
 	for(var/stat in all_stats)
 		var/value = vars[stat]
-		var/free = vars["free_" + lowertext(stat)]
+		var/free = vars["free_" + LOWER_TEXT(stat)]
 		var/base = 0
 		if(stat in list("Strength", "Dexterity", "Stamina", "Charisma", "Manipulation", "Appearance", "Perception", "Intelligence", "Wits"))
 			base = 1
@@ -1201,6 +1202,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		log_game("[key_name(parent)]/[real_name] exceeds statpoints limit! spent=[spent_total], total=[available]")
 		blocked_slot = TRUE
 	true_experience = available - spent_total
+
 
 /datum/preferences/Topic(href, href_list, hsrc)			//yeah, gotta do this I guess..
 	. = ..()
@@ -2576,6 +2578,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						reset_attributes()
 						true_experience = POINTS
 						total_age = age
+						generation = initial(generation)
 
 				if("mutant_color")
 					if(slotlocked)

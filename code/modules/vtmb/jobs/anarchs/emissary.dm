@@ -40,7 +40,8 @@
 
 /datum/outfit/job/emissary/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Anarchs"
+	H.add_to_sect("Anarchs")
+//	H.vampire_faction = "Anarchs"
 
 /obj/effect/landmark/start/emissary
 	name = "Emissary"

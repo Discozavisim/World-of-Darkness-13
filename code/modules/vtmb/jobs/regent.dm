@@ -40,7 +40,8 @@
 
 /datum/outfit/job/regent/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Chantry"
+	H.add_to_sect("Chantry")
+//	H.vampire_faction = "Chantry"
 	if(H.gender == FEMALE)
 		uniform = /obj/item/clothing/under/vampire/archivist/female
 		shoes = /obj/item/clothing/shoes/vampire/heels

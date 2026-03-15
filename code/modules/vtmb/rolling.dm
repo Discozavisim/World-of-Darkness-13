@@ -382,12 +382,20 @@ SUBSYSTEM_DEF(woddices)
 
 /proc/get_a_intelligence(mob/living/Living)
 	if(Living.attributes)
+		if(HAS_TRAIT(Living, TRAIT_NON_INT))
+			if(Living.attributes.intelligence > 2)
+				return 2
+			return 1
 		return Living.attributes.intelligence+Living.attributes.intelligence_bonus+Living.attributes.intelligence_reagent
 	else
 		return 3
 
 /proc/get_a_wits(mob/living/Living)
 	if(Living.attributes)
+		if(HAS_TRAIT(Living, TRAIT_NON_INT))
+			if(Living.attributes.wits > 2)
+				return 3
+			return 2
 		if(Living.temporis_lapse)
 			return floor((Living.attributes.wits+Living.attributes.wits_bonus+Living.attributes.wits_reagent)/2)
 		else

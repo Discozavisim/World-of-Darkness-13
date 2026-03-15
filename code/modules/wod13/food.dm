@@ -330,20 +330,32 @@
 /obj/machinery/mineral/equipment_vendor/fastfood/bacotell
 	prize_list = list(new /datum/data/mining_equipment("taco",	/obj/item/food/vampire/taco,	10),
 		new /datum/data/mining_equipment("cola can",	/obj/item/reagent_containers/food/drinks/soda_cans/vampirecola,	5),
-		new /datum/data/mining_equipment("cherry cola can",	/obj/item/reagent_containers/food/drinks/soda_cans/vampirecola/blue,	5),
-		new /datum/data/mining_equipment("summer thaw", /obj/item/reagent_containers/food/drinks/bottle/vampirecola/summer_thaw, 8)
+		new /datum/data/mining_equipment("cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola,	8)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/bubway
-	prize_list = list(new /datum/data/mining_equipment("donut",	/obj/item/storage/fancy/donut_box,	5),
-		new /datum/data/mining_equipment("burger",	/obj/item/food/vampire/burger,	10),
+	prize_list = list(new /datum/data/mining_equipment("sandwich",	/obj/item/food/sandwich,	10),
 		new /datum/data/mining_equipment("coffee",	/obj/item/reagent_containers/food/drinks/coffee/vampire,	5),
 		new /datum/data/mining_equipment("robust coffee",	/obj/item/reagent_containers/food/drinks/coffee/vampire/robust,	10)
 	)
 
+/obj/machinery/mineral/equipment_vendor/fastfood/otolley
+	prize_list = list(new /datum/data/mining_equipment("summer thaw cola can",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola/summer_thaw,	5),
+		new /datum/data/mining_equipment("thaw cola can",	/obj/item/reagent_containers/food/drinks/soda_cans/vampirecola/blue,	5),
+		new /datum/data/mining_equipment("thaw cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola/blue,	8),
+		new /datum/data/mining_equipment("kings beer", /obj/item/reagent_containers/food/drinks/beer/vampire/blue_stripe, 8)
+	)
+
+/obj/machinery/mineral/equipment_vendor/fastfood/gummaguts
+	prize_list = list(new /datum/data/mining_equipment("chicken leg",	/obj/item/food/fried_chicken,	5),
+		new /datum/data/mining_equipment("chicken wing box",	/obj/item/storage/fancy/nugget_box,	10),
+		new /datum/data/mining_equipment("cola can",	/obj/item/reagent_containers/food/drinks/soda_cans/vampirecola,	5),
+		new /datum/data/mining_equipment("cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola,	8),
+		new /datum/data/mining_equipment("beer",	/obj/item/reagent_containers/food/drinks/beer/vampire,	10)
+	)
+
 /obj/machinery/mineral/equipment_vendor/fastfood/pizza
-	prize_list = list(new /datum/data/mining_equipment("five-piece chicken wing box",	/obj/item/storage/fancy/nugget_box,	5),
-		new /datum/data/mining_equipment("square pizza",	/obj/item/food/vampire/pizza,	10),
+	prize_list = list(new /datum/data/mining_equipment("square pizza",	/obj/item/food/vampire/pizza,	10),
 		new /datum/data/mining_equipment("coffee",	/obj/item/reagent_containers/food/drinks/coffee/vampire,	5),
 		new /datum/data/mining_equipment("robust coffee",	/obj/item/reagent_containers/food/drinks/coffee/vampire/robust,	10)
 	)
@@ -353,11 +365,10 @@
 	prize_list = list(new /datum/data/mining_equipment("chocolate bar",	/obj/item/food/vampire/bar,	3),
 		new /datum/data/mining_equipment("chips",	/obj/item/food/vampire/crisps,	5),
 		new /datum/data/mining_equipment("water bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirewater,	3),
-		new /datum/data/mining_equipment("two liter cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola, 8),
-		new /datum/data/mining_equipment("two liter cherry cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola/blue, 8),
-		new /datum/data/mining_equipment("milk",	/obj/item/reagent_containers/food/condiment/vampiremilk,	5),
-		new /datum/data/mining_equipment("red stripe",	/obj/item/reagent_containers/food/drinks/beer/vampire,	10),
-		new /datum/data/mining_equipment("blue stripe", /obj/item/reagent_containers/food/drinks/beer/vampire/blue_stripe, 8)
+		new /datum/data/mining_equipment("cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola, 8),
+		new /datum/data/mining_equipment("thaw cola bottle",	/obj/item/reagent_containers/food/drinks/bottle/vampirecola/blue, 8),
+		new /datum/data/mining_equipment("beer",	/obj/item/reagent_containers/food/drinks/beer/vampire,	10),
+		new /datum/data/mining_equipment("kings beer", /obj/item/reagent_containers/food/drinks/beer/vampire/blue_stripe, 8)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/clothing
@@ -413,8 +424,12 @@
 		new /datum/data/mining_equipment("labcoat",	/obj/item/clothing/suit/vampire/labcoat,	75),
 		new /datum/data/mining_equipment("fancy gray jacket",	/obj/item/clothing/suit/vampire/fancy_gray,	50),
 		new /datum/data/mining_equipment("fancy red jacket",	/obj/item/clothing/suit/vampire/fancy_red,	50),
-		new /datum/data/mining_equipment("black trenchcoat",	/obj/item/clothing/suit/vampire/trench,	45),
-		new /datum/data/mining_equipment("brown trenchcoat",	/obj/item/clothing/suit/vampire/trench/alt,	35),
+		new /datum/data/mining_equipment("black trenchcoat",	/obj/item/clothing/suit/vampire/trench,	50),
+		new /datum/data/mining_equipment("brown trenchcoat",	/obj/item/clothing/suit/vampire/trench/alt,	50),
+		new /datum/data/mining_equipment("black trenchcoat",	/obj/item/clothing/suit/vampire/trench/black,	50),
+		new /datum/data/mining_equipment("white trenchcoat",	/obj/item/clothing/suit/vampire/trench/white,	50),
+		new /datum/data/mining_equipment("red fur coat",	/obj/item/clothing/suit/vampire/trench/archive/pidors,	50),
+		new /datum/data/mining_equipment("blue fur coat",	/obj/item/clothing/suit/vampire/trench/archive/pidors/blue,	50),
 		new /datum/data/mining_equipment("brown coat",	/obj/item/clothing/suit/vampire/coat,	15),
 		new /datum/data/mining_equipment("green coat",	/obj/item/clothing/suit/vampire/coat/alt,	15),
 		new /datum/data/mining_equipment("jacket",	/obj/item/clothing/suit/vampire/jacket,	15),
@@ -440,15 +455,7 @@
 		new /datum/data/mining_equipment("blue scarf",	/obj/item/clothing/neck/vampire/scarf/blue,	10),
 		new /datum/data/mining_equipment("green scarf",	/obj/item/clothing/neck/vampire/scarf/green,	10),
 		new /datum/data/mining_equipment("white scarf",	/obj/item/clothing/neck/vampire/scarf/white,	10),
-		new /datum/data/mining_equipment("apron",	/obj/item/clothing/suit/apron/chef,  60),
-		new /datum/data/mining_equipment("white robes",	/obj/item/clothing/suit/hooded/robes,	40),
-		new /datum/data/mining_equipment("black robes",	/obj/item/clothing/suit/hooded/robes/black,	40),
-		new /datum/data/mining_equipment("grey robes",	/obj/item/clothing/suit/hooded/robes/grey,	40),
-		new /datum/data/mining_equipment("dark red robes",	/obj/item/clothing/suit/hooded/robes/darkred,	40),
-		new /datum/data/mining_equipment("yellow robes",	/obj/item/clothing/suit/hooded/robes/yellow,	40),
-		new /datum/data/mining_equipment("green robes",	/obj/item/clothing/suit/hooded/robes/green,	40),
-		new /datum/data/mining_equipment("red robes",	/obj/item/clothing/suit/hooded/robes/red,	40),
-		new /datum/data/mining_equipment("purple robes",	/obj/item/clothing/suit/hooded/robes/purple,	40)
+		new /datum/data/mining_equipment("leather satchel",	/obj/item/storage/backpack/satchel/leather,	50)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/costumes
@@ -471,8 +478,18 @@
 		new /datum/data/mining_equipment("jester mask",	/obj/item/clothing/mask/vampire/venetian_mask/jester,	50),
 		new /datum/data/mining_equipment("bloody mask",	/obj/item/clothing/mask/vampire/venetian_mask/scary,	30),
 		new /datum/data/mining_equipment("comedy mask", /obj/item/clothing/mask/vampire/comedy,	25),
-		new /datum/data/mining_equipment("tragedy mask", /obj/item/clothing/mask/vampire/tragedy,	25)
-
+		new /datum/data/mining_equipment("tragedy mask", /obj/item/clothing/mask/vampire/tragedy,	25),
+		new /datum/data/mining_equipment("white robes",	/obj/item/clothing/suit/hooded/robes,	40),
+		new /datum/data/mining_equipment("black robes",	/obj/item/clothing/suit/hooded/robes/black,	40),
+		new /datum/data/mining_equipment("grey robes",	/obj/item/clothing/suit/hooded/robes/grey,	40),
+		new /datum/data/mining_equipment("dark red robes",	/obj/item/clothing/suit/hooded/robes/darkred,	40),
+		new /datum/data/mining_equipment("yellow robes",	/obj/item/clothing/suit/hooded/robes/yellow,	40),
+		new /datum/data/mining_equipment("green robes",	/obj/item/clothing/suit/hooded/robes/green,	40),
+		new /datum/data/mining_equipment("red robes",	/obj/item/clothing/suit/hooded/robes/red,	40),
+		new /datum/data/mining_equipment("purple robes",	/obj/item/clothing/suit/hooded/robes/purple,	40),
+		new /datum/data/mining_equipment("black jabo",	/obj/item/clothing/neck/vampire/jabo,	20),
+		new /datum/data/mining_equipment("red jabo",	/obj/item/clothing/neck/vampire/jabo/red,	20),
+		new /datum/data/mining_equipment("white jabo",	/obj/item/clothing/neck/vampire/jabo/white,	20)
 	)
 
 /obj/food_cart
@@ -496,31 +513,32 @@
 		new /datum/data/mining_equipment("Elite 92G",	/obj/item/gun/ballistic/automatic/vampire/beretta,	400),
 		new /datum/data/mining_equipment("desert eagle",	/obj/item/gun/ballistic/automatic/vampire/deagle,	600),
 		new	/datum/data/mining_equipment("5.45 ammo",	/obj/item/ammo_box/vampire/c545,	1000),
-		new	/datum/data/mining_equipment(".45 ACP ammo",	/obj/item/ammo_box/vampire/c45acp,	2000),
+		new	/datum/data/mining_equipment(".45 ACP ammo",	/obj/item/ammo_box/vampire/c45acp,	800),
 		new /datum/data/mining_equipment("9mm ammo",	/obj/item/ammo_box/vampire/c9mm,	600),
 		new /datum/data/mining_equipment(".44 ammo",	/obj/item/ammo_box/vampire/c44,	800),
 		new /datum/data/mining_equipment("5.56 ammo",	/obj/item/ammo_box/vampire/c556,	2000),
 		new /datum/data/mining_equipment(".45 ACP ammo",	/obj/item/ammo_box/vampire/c45acp,	500),
 		new /datum/data/mining_equipment(".45 ACP glock magazine",	/obj/item/ammo_box/magazine/glock45acp,	100),
 		new /datum/data/mining_equipment("shotgun",		/obj/item/gun/ballistic/shotgun/vampire, 1000),
-		new /datum/data/mining_equipment("hunt rifle",		/obj/item/gun/ballistic/rifle/boltaction/vampire, 1500),
-		new /datum/data/mining_equipment("12ga shotgun shells, buckshot",/obj/item/ammo_box/vampire/c12g/buck,	800),
-		new /datum/data/mining_equipment("12ga shotgun shells",/obj/item/ammo_box/vampire/c12g,	800),
+		new /datum/data/mining_equipment("hunt rifle",		/obj/item/gun/ballistic/rifle/boltaction/vampire, 800),
+		new /datum/data/mining_equipment("12ga shotgun shells, buckshot",/obj/item/ammo_box/vampire/c12g/buck,	1200),
+		new /datum/data/mining_equipment("12ga shotgun shells",/obj/item/ammo_box/vampire/c12g,	1200),
 		new /datum/data/mining_equipment("desert eagle magazine",	/obj/item/ammo_box/magazine/m44,	100),
 		new /datum/data/mining_equipment("Glock19 magazine",		/obj/item/ammo_box/magazine/glock9mm,	100),
-		new /datum/data/mining_equipment("hunting rifle magazine, 5.56",	/obj/item/ammo_box/magazine/vamp556/hunt,	200),
 		new /datum/data/mining_equipment("9mm pistol magazine, 18 rounds",		/obj/item/ammo_box/magazine/semi9mm,	100),
 		new /datum/data/mining_equipment("Colt M1911 magazine",		/obj/item/ammo_box/magazine/vamp45acp,	50),
 		new /datum/data/mining_equipment("baseball bat",	/obj/item/melee/vampirearms/baseball,	200),
 		new /datum/data/mining_equipment("knife",	/obj/item/melee/vampirearms/knife,	100),
 		new /datum/data/mining_equipment("switchblade",	/obj/item/melee/vampirearms/knife/switchblade, 50),
-		new /datum/data/mining_equipment("brass knuckles",	/obj/item/kastet,	100),
-		new /datum/data/mining_equipment("brass knuckles (spiked)",	/obj/item/kastet/spiked,	250),
-		new /datum/data/mining_equipment("flashlight", /obj/item/flashlight, 50),
-		new /datum/data/mining_equipment("seclite", /obj/item/flashlight/seclite, 200),
+		new /datum/data/mining_equipment("brass knuckles",	/obj/item/kastet,	50),
+		new /datum/data/mining_equipment("brass knuckles (spiked)",	/obj/item/kastet/spiked,	80),
+		new /datum/data/mining_equipment("flashlight", /obj/item/flashlight, 20),
+		new /datum/data/mining_equipment("seclite", /obj/item/flashlight/seclite, 50),
 		new /datum/data/mining_equipment("gas mask",	/obj/item/clothing/mask/vampire/gasmask,	50),
 		new /datum/data/mining_equipment("tactical gas mask",	/obj/item/clothing/mask/vampire/gasmask/tactical,	100),
-		new /datum/data/mining_equipment("military gas mask",	/obj/item/clothing/mask/vampire/gasmask/military,	200)
+		new /datum/data/mining_equipment("military gas mask",	/obj/item/clothing/mask/vampire/gasmask/military,	150),
+		new /datum/data/mining_equipment("backpack",	/obj/item/storage/backpack,	50),
+		new /datum/data/mining_equipment("duffelbag",	/obj/item/storage/backpack/duffelbag,	50)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/smith
@@ -532,20 +550,19 @@
 		new /datum/data/mining_equipment("silver .45 ACP ammo",	/obj/item/ammo_box/vampire/c45acp/silver,	4000),
 		new /datum/data/mining_equipment("silver .44 ammo",	/obj/item/ammo_box/vampire/c44/silver,	4000),
 		new /datum/data/mining_equipment("silver 5.56 ammo",	/obj/item/ammo_box/vampire/c556/silver,	6000),
-		new /datum/data/mining_equipment("stake",	/obj/item/vampire_stake,	100),
-		new /datum/data/mining_equipment("metal stake",	/obj/item/vampire_stake/metal,	150),
+		new /datum/data/mining_equipment("stake",	/obj/item/vampire_stake,	50),
+		new /datum/data/mining_equipment("metal stake",	/obj/item/vampire_stake/metal,	50),
 		new /datum/data/mining_equipment("longsword",	/obj/item/storage/belt/vampire/sheathe/longsword,	6000),
 		new /datum/data/mining_equipment("rapier",	/obj/item/storage/belt/vampire/sheathe/rapier,	4500),
 		new /datum/data/mining_equipment("sabre",	/obj/item/storage/belt/vampire/sheathe/sabre,	4500),
-		new /datum/data/mining_equipment("machete", /obj/item/melee/vampirearms/machete, 400),
-		new /datum/data/mining_equipment("butcher cleaver",	/obj/item/kitchen/knife/butcher,	100),
+		new /datum/data/mining_equipment("machete", /obj/item/melee/vampirearms/machete, 300),
 		new /datum/data/mining_equipment("beartrap",	/obj/item/restraints/legcuffs/beartrap, 500)
 		)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/illegal
 	desc = "Is not crime if you pay."
 	prize_list = list(
-		new /datum/data/mining_equipment("lockpick",	/obj/item/vamp/keys/hack, 85),
+		new /datum/data/mining_equipment("lockpick",	/obj/item/vamp/keys/hack, 50),
 		new /datum/data/mining_equipment("DMT pill", /obj/item/reagent_containers/pill/dmt,	150),
 		new /datum/data/mining_equipment("LSD pill",	/obj/item/reagent_containers/pill/lsd,	50),
 		new /datum/data/mining_equipment("estrogen pill bottle",	/obj/item/storage/pill_bottle/estrogen,	50),
@@ -612,7 +629,7 @@
 	prize_list = list(new /datum/data/mining_equipment("malboro",	/obj/item/storage/fancy/cigarettes/cigpack_robust,	50),
 		new /datum/data/mining_equipment("newport",		/obj/item/storage/fancy/cigarettes/cigpack_xeno,	30),
 		new /datum/data/mining_equipment("camel",	/obj/item/storage/fancy/cigarettes/dromedaryco,	30),
-		new /datum/data/mining_equipment("lighter",		/obj/item/lighter/greyscale,	10),
+		new /datum/data/mining_equipment("lighter",		/obj/item/lighter/greyscale,	10)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/gas
@@ -643,65 +660,115 @@
 		new /datum/data/mining_equipment("camera",	/obj/item/camera, 300),
 		new /datum/data/mining_equipment("camera film",	/obj/item/camera_film, 50),
 		new /datum/data/mining_equipment("headphones",	/obj/item/instrument/piano_synth/headphones, 100),
+		new /datum/data/mining_equipment("earmuffs",	/obj/item/clothing/ears/earmuffs, 20),
 		new /datum/data/mining_equipment("radio headset",	/obj/item/p25radio, 500),
 		new /datum/data/mining_equipment("city bounced radio", /obj/item/radio, 250),
 		new /datum/data/mining_equipment("tape recorder", /obj/item/taperecorder, 100),
 		new /datum/data/mining_equipment("tape", /obj/item/tape, 50),
 		new /datum/data/mining_equipment("wirecutters", /obj/item/wire_cutters, 200),
-		new /datum/data/mining_equipment("phone book", /obj/item/phone_book, 200)
+		new /datum/data/mining_equipment("hand drill", /obj/item/screwdriver/power, 400),
+		new /datum/data/mining_equipment("phone book", /obj/item/phone_book, 200),
+		new /datum/data/mining_equipment("satchel",	/obj/item/storage/backpack/satchel,	50)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/flowershop
 	desc = "Tis' a deal!!!"
 	prize_list = list(
 		new /datum/data/mining_equipment("Respirator",	/obj/item/clothing/mask/vampire,	50),
-		new /datum/data/mining_equipment("Basic Fertilizer",	/obj/item/reagent_containers/glass/bottle/nutrient/ez,	100),
-		new /datum/data/mining_equipment("Spade", /obj/item/shovel/spade,	100),
-		new /datum/data/mining_equipment("Secateurs",	 /obj/item/secateurs,	100),
-		new /datum/data/mining_equipment("Cultivator",	/obj/item/cultivator,	100),
-		new /datum/data/mining_equipment("Poppy seeds", /obj/item/seeds/poppy, 25),
-		new /datum/data/mining_equipment("Sunflower seeds", /obj/item/seeds/sunflower, 25),
-		new /datum/data/mining_equipment("Geranium seeds", /obj/item/seeds/poppy/geranium, 25),
-		new /datum/data/mining_equipment("Harebell seeds", /obj/item/seeds/harebell, 25),
-		new /datum/data/mining_equipment("Lily seeds", /obj/item/seeds/poppy/lily, 25),
-		new /datum/data/mining_equipment("Forget me not seeds", /obj/item/seeds/forgetmenot, 25),
-		new /datum/data/mining_equipment("Aloe seeds", /obj/item/seeds/aloe, 25),
-		new /datum/data/mining_equipment("Cabbage seeds", /obj/item/seeds/cabbage, 25),
-		new /datum/data/mining_equipment("Carrot seeds", /obj/item/seeds/carrot, 25),
-		new /datum/data/mining_equipment("Parsnip seeds", /obj/item/seeds/carrot/parsnip, 25),
-		new /datum/data/mining_equipment("Corn seeds", /obj/item/seeds/corn, 25),
-		new /datum/data/mining_equipment("Onion seeds", /obj/item/seeds/onion, 25),
-		new /datum/data/mining_equipment("Garlic seeds", /obj/item/seeds/garlic, 25),
-		new /datum/data/mining_equipment("Peas seeds", /obj/item/seeds/peas, 25),
-		new /datum/data/mining_equipment("Potato seeds", /obj/item/seeds/potato, 25),
-		new /datum/data/mining_equipment("Sweet potato seeds", /obj/item/seeds/potato/sweet, 25),
-		new /datum/data/mining_equipment("Pumpkin seeds", /obj/item/seeds/pumpkin, 25),
-		new /datum/data/mining_equipment("Soy seeds", /obj/item/seeds/soya, 25),
-		new /datum/data/mining_equipment("Tomato seeds", /obj/item/seeds/tomato, 25),
-		new /datum/data/mining_equipment("Red beetseeds", /obj/item/seeds/redbeet, 25),
-		new /datum/data/mining_equipment("White beet seeds", /obj/item/seeds/whitebeet, 25),
-		new /datum/data/mining_equipment("Chili seeds", /obj/item/seeds/chili, 25),
-		new /datum/data/mining_equipment("bailer",	/obj/item/bailer, 20)
+		new /datum/data/mining_equipment("Basic Fertilizer",	/obj/item/reagent_containers/glass/bottle/nutrient/ez,	40),
+		new /datum/data/mining_equipment("Spade", /obj/item/shovel/spade,	20),
+		new /datum/data/mining_equipment("Secateurs",	 /obj/item/secateurs,	20),
+		new /datum/data/mining_equipment("Cultivator",	/obj/item/cultivator,	20),
+		new /datum/data/mining_equipment("shovel",	/obj/item/melee/vampirearms/shovel, 50),
+		new /datum/data/mining_equipment("Poppy seeds", /obj/item/seeds/poppy, 5),
+		new /datum/data/mining_equipment("Sunflower seeds", /obj/item/seeds/sunflower, 5),
+		new /datum/data/mining_equipment("Geranium seeds", /obj/item/seeds/poppy/geranium, 5),
+		new /datum/data/mining_equipment("Harebell seeds", /obj/item/seeds/harebell, 5),
+		new /datum/data/mining_equipment("Lily seeds", /obj/item/seeds/poppy/lily, 5),
+		new /datum/data/mining_equipment("Aloe seeds", /obj/item/seeds/aloe, 5),
+		new /datum/data/mining_equipment("Cabbage seeds", /obj/item/seeds/cabbage, 5),
+		new /datum/data/mining_equipment("Carrot seeds", /obj/item/seeds/carrot, 5),
+		new /datum/data/mining_equipment("Parsnip seeds", /obj/item/seeds/carrot/parsnip, 5),
+		new /datum/data/mining_equipment("Corn seeds", /obj/item/seeds/corn, 5),
+		new /datum/data/mining_equipment("Onion seeds", /obj/item/seeds/onion, 5),
+		new /datum/data/mining_equipment("Garlic seeds", /obj/item/seeds/garlic, 5),
+		new /datum/data/mining_equipment("Peas seeds", /obj/item/seeds/peas, 5),
+		new /datum/data/mining_equipment("Potato seeds", /obj/item/seeds/potato, 5),
+		new /datum/data/mining_equipment("Sweet potato seeds", /obj/item/seeds/potato/sweet, 5),
+		new /datum/data/mining_equipment("Pumpkin seeds", /obj/item/seeds/pumpkin, 5),
+		new /datum/data/mining_equipment("Soy seeds", /obj/item/seeds/soya, 5),
+		new /datum/data/mining_equipment("Tomato seeds", /obj/item/seeds/tomato, 5),
+		new /datum/data/mining_equipment("Red beetseeds", /obj/item/seeds/redbeet, 5),
+		new /datum/data/mining_equipment("White beet seeds", /obj/item/seeds/whitebeet, 5),
+		new /datum/data/mining_equipment("Chili seeds", /obj/item/seeds/chili, 5),
+		new /datum/data/mining_equipment("bailer",	/obj/item/bailer, 20),
+		new /datum/data/mining_equipment("fishing rod",		/obj/item/fishing_rod,	200)
 	)
 
 /obj/machinery/mineral/equipment_vendor/fastfood/dishes
 	desc = "Tis' a deal!!!"
 	prize_list = list(new /datum/data/mining_equipment("bowl",	/obj/item/reagent_containers/glass/bowl,	5),
-		new /datum/data/mining_equipment("wine glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/wine_glass,	10),
-		new /datum/data/mining_equipment("pint glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/pint,	10),
-		new /datum/data/mining_equipment("whiskey glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/whiskey_shot,	10),
-		new /datum/data/mining_equipment("martini glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/martini_glass,	10),
-		new /datum/data/mining_equipment("shot glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass,	10),
+		new /datum/data/mining_equipment("wine glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/wine_glass,	5),
+		new /datum/data/mining_equipment("pint glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/pint,	5),
+		new /datum/data/mining_equipment("whiskey glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/whiskey_shot,	5),
+		new /datum/data/mining_equipment("martini glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/martini_glass,	5),
+		new /datum/data/mining_equipment("shot glass",	/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass,	5),
+		new /datum/data/mining_equipment("spoon",	/obj/item/kitchen/spoon,	5),
+		new /datum/data/mining_equipment("fork",	/obj/item/kitchen/fork,	5),
 		new /datum/data/mining_equipment("tray",	/obj/item/storage/bag/tray,	20),
 		new /datum/data/mining_equipment("rolling pin",	/obj/item/kitchen/rollingpin,	20),
-		new /datum/data/mining_equipment("knife",	/obj/item/kitchen/knife,	100),
+		new /datum/data/mining_equipment("knife",	/obj/item/melee/vampirearms/knife,	50),
 		new /datum/data/mining_equipment("small bottle",	/obj/item/reagent_containers/food/drinks/bottle/small,	20),
 		new /datum/data/mining_equipment("bottle", /obj/item/reagent_containers/food/drinks/bottle, 30),
-		new /datum/data/mining_equipment("canned beans",	/obj/item/food/canned/beans,	25),
-		new /datum/data/mining_equipment("canned peaches",	/obj/item/food/canned/peaches,	25),
-		new /datum/data/mining_equipment("peppermill",	/obj/item/reagent_containers/food/condiment/peppermill, 30),
-		new /datum/data/mining_equipment("salt shaker",	/obj/item/reagent_containers/food/condiment/saltshaker,	30),
 		new /datum/data/mining_equipment("bucket",	/obj/item/reagent_containers/glass/bucket,	50),
-		new /datum/data/mining_equipment("mop",	/obj/item/mop,	30),
-		new /datum/data/mining_equipment("fishing rod",		/obj/item/fishing_rod,	200)
+		new /datum/data/mining_equipment("mop",	/obj/item/mop,	30)
+	)
+
+/obj/machinery/mineral/equipment_vendor/fastfood/grocery
+	desc = "Tis' a deal!!!"
+	prize_list = list(new /datum/data/mining_equipment("Pineapple",	/obj/item/food/grown/pineapple,	10),
+		new /datum/data/mining_equipment("Cabbage", /obj/item/food/grown/cabbage, 5),
+		new /datum/data/mining_equipment("Carrot", /obj/item/food/grown/carrot, 5),
+		new /datum/data/mining_equipment("Parsnip", /obj/item/food/grown/parsnip, 5),
+		new /datum/data/mining_equipment("Corn", /obj/item/food/grown/corn, 5),
+		new /datum/data/mining_equipment("Onion", /obj/item/food/grown/onion, 5),
+		new /datum/data/mining_equipment("Garlic", /obj/item/food/grown/garlic, 5),
+		new /datum/data/mining_equipment("Peas", /obj/item/food/grown/peas, 5),
+		new /datum/data/mining_equipment("Potato", /obj/item/food/grown/potato, 5),
+		new /datum/data/mining_equipment("Sweet potato", /obj/item/food/grown/potato/sweet, 5),
+		new /datum/data/mining_equipment("Pumpkin", /obj/item/food/grown/pumpkin, 10),
+		new /datum/data/mining_equipment("Soy", /obj/item/food/grown/soybeans, 5),
+		new /datum/data/mining_equipment("Tomato", /obj/item/food/grown/tomato, 5),
+		new /datum/data/mining_equipment("Red beet", /obj/item/food/grown/redbeet, 5),
+		new /datum/data/mining_equipment("White beet", /obj/item/food/grown/whitebeet, 5),
+		new /datum/data/mining_equipment("Chili", /obj/item/food/grown/chili, 5),
+		new /datum/data/mining_equipment("Chanterelle", /obj/item/food/grown/mushroom/chanterelle, 5),
+		new /datum/data/mining_equipment("Berries", /obj/item/food/grown/berries, 5),
+		new /datum/data/mining_equipment("Grapes", /obj/item/food/grown/grapes, 10),
+		new /datum/data/mining_equipment("Green grapes", /obj/item/food/grown/grapes/green, 10),
+		new /datum/data/mining_equipment("Lemon", /obj/item/food/grown/citrus/lemon, 5),
+		new /datum/data/mining_equipment("Lime", /obj/item/food/grown/citrus/lime, 5),
+		new /datum/data/mining_equipment("Orange", /obj/item/food/grown/citrus/orange, 5),
+		new /datum/data/mining_equipment("Apple", /obj/item/food/grown/apple, 5),
+		new /datum/data/mining_equipment("Watermelon", /obj/item/food/grown/watermelon, 10),
+		new /datum/data/mining_equipment("canned beans",	/obj/item/food/canned/beans,	5),
+		new /datum/data/mining_equipment("canned peaches",	/obj/item/food/canned/peaches,	5),
+		new /datum/data/mining_equipment("peppermill",	/obj/item/reagent_containers/food/condiment/peppermill, 5),
+		new /datum/data/mining_equipment("salt shaker",	/obj/item/reagent_containers/food/condiment/saltshaker,	5),
+		new /datum/data/mining_equipment("enzyme",	/obj/item/reagent_containers/food/condiment/enzyme,	20),
+		new /datum/data/mining_equipment("flour",	/obj/item/reagent_containers/food/condiment/flour,	10),
+		new /datum/data/mining_equipment("sugar",	/obj/item/reagent_containers/food/condiment/sugar,	10),
+		new /datum/data/mining_equipment("rice",	/obj/item/reagent_containers/food/condiment/rice,	10),
+		new /datum/data/mining_equipment("milk",	/obj/item/reagent_containers/food/condiment/vampiremilk,	5),
+		new /datum/data/mining_equipment("Paper bag",	/obj/item/storage/box/papersack,	20)
+	)
+
+/obj/machinery/mineral/equipment_vendor/fastfood/meat
+	desc = "Tis' a deal!!!"
+	prize_list = list(new /datum/data/mining_equipment("cheap meat",	/obj/item/food/meat/slab/meatproduct,	10),
+		new /datum/data/mining_equipment("normal meat", /obj/item/food/meat/slab, 20),
+		new /datum/data/mining_equipment("exotic meat", /obj/item/food/meat/slab/human, 500),
+		new /datum/data/mining_equipment("chicken meat", /obj/item/food/meat/slab/chicken, 20),
+		new /datum/data/mining_equipment("bear meat", /obj/item/food/meat/slab/bear, 800),
+		new /datum/data/mining_equipment("rotten meat", /obj/item/food/meat/slab/human/mutant/zombie, 5)
 	)

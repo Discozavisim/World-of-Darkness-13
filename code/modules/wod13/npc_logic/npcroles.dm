@@ -380,6 +380,154 @@
 		"СМЕРТЬ ЕРЕТИКАМ!!"
 	)
 
+
+/datum/socialrole/camarilla
+	s_tones = list("caucasian3",
+								"latino",
+								"mediterranean",
+								"asian1",
+								"asian2",
+								"arab",
+								"indian",
+								"african1",
+								"african2")
+
+	min_age = 18
+	max_age = 65
+	preferedgender = MALE
+	male_names = null
+	surnames = null
+
+	hair_colors = list("040404",	//Black
+										"120b05",	//Dark Brown
+										"342414",	//Brown
+										"554433",	//Light Brown
+										"695c3b",	//Dark Blond
+										"ad924e",	//Blond
+										"dac07f",	//Light Blond
+										"802400",	//Ginger
+												)
+	male_hair = list("Balding Hair",
+										"Bedhead",
+										"Bedhead 2",
+										"Bedhead 3",
+										"Boddicker",
+										"Business Hair",
+										"Business Hair 2",
+										"Business Hair 3",
+										"Business Hair 4",
+										"Coffee House",
+										"Combover",
+										"Crewcut",
+										"Father",
+										"Flat Top",
+										"Gelled Back",
+										"Joestar",
+										"Keanu Hair",
+										"Oxton",
+										"Volaju")
+
+	male_facial = list("Beard (Abraham Lincoln)",
+											"Beard (Chinstrap)",
+											"Beard (Full)",
+											"Beard (Cropped Fullbeard)",
+											"Beard (Hipster)",
+											"Beard (Neckbeard)",
+											"Beard (Three o Clock Shadow)",
+											"Beard (Five o Clock Shadow)",
+											"Beard (Seven o Clock Shadow)",
+											"Moustache (Hulk Hogan)",
+											"Moustache (Watson)",
+											"Sideburns (Elvis)",
+											"Sideburns",
+											"Shaved")
+
+	shoes = list(
+		/obj/item/clothing/shoes/vampire/sneakers,
+		/obj/item/clothing/shoes/vampire/sneakers/red,
+		/obj/item/clothing/shoes/vampire/jackboots,
+		/obj/item/clothing/shoes/vampire/businessblack,
+		/obj/item/clothing/shoes/vampire/businesstip,
+		/obj/item/clothing/shoes/vampire/businessblack
+	)
+	uniforms = list(
+		/obj/item/clothing/under/vampire/larry,
+		/obj/item/clothing/under/vampire/bandit,
+		/obj/item/clothing/under/vampire/biker,
+		/obj/item/clothing/under/vampire/mechanic,
+		/obj/item/clothing/under/vampire/office
+	)
+	hats = list(
+		/obj/item/clothing/head/vampire/bandana,
+		/obj/item/clothing/head/vampire/bandana/red,
+		/obj/item/clothing/head/vampire/bandana/black,
+		/obj/item/clothing/head/vampire/baseballcap,
+		/obj/item/clothing/head/vampire/beanie/black
+	)
+	pockets = list(
+		/obj/item/stack/dollar/rand,
+		/obj/item/vamp/keys/hack,
+		/obj/item/drinkable_bloodpack/full/vitae
+	)
+	suits = list(/obj/item/clothing/suit/vampire/trench,
+	/obj/item/clothing/suit/vampire/trench/alt,
+	/obj/item/clothing/suit/vampire/trench/black)
+
+	gloves = list(/obj/item/clothing/gloves/vampire/leather)
+
+	//[Lucia] - this has been edited to have better English because it included slurs, but none of the others have yet
+	male_phrases = list(
+		"На шо это ты смотришь?",
+		"Пытаешься напугать меня?",
+		"Те чето нужно?",
+		"Будь уверен, яйца то у меня есть.",
+		"Ты хоть знаешь на кого я работаю?",
+		"Пшел отсюда, пока моя банда не надрала тебе зад.",
+		"Чето нужно, фрик?",
+		"Уйди, либераха.",
+		"Уходи с нашего района.",
+		"Думаешь напугал меня? Знаешь на кого работаю?",
+		"Думаешь ты крепкий орешек?"
+	)
+	neutral_phrases = list(
+		"Че ты пялишься на меня?",
+		"Еще один идиот, пытающийся выглядеть угрожающе.",
+		"Скоро нужно будет возвращаться домой, семья ждет.",
+		"Ушел с пути, чертила.",
+		"Я думаю... скучаю по нему.",
+		"Че? Те надо чето?",
+		"Пшол с дороги, у меня дела.",
+		"Пшел нахуй, не в настроении.",
+		"Отъебись."
+	)
+	random_phrases = list(
+		"Гнида.",
+		"Я потерял мою девочку...",
+		"Что случилось братан?",
+		"Доброго.",
+		"Безумный город...",
+		"Мы всё потеряли, всё...",
+		"Эххх..."
+	)
+	answer_phrases = list(
+		"У меня все получилось...",
+		"Чертова дыра... весь этот город.",
+		"Чувак, это дерьмо.",
+		"Ты выглядишь так, будто я тебя знаю...",
+		"Хорошо.",
+		"Эмм... думаю... классно?",
+		"Поел я значит в забегаловке, так до сих пор мутит...",
+		"Так хочется... ещё... дозы..."
+	)
+	help_phrases = list(
+		"Мочите нарушителя!!",
+		"Оборзел, чертила!?",
+		"Это твоя последняя смерть!",
+		"Прах к праху, пидорас!",
+		"Жгите, жгите!",
+	)
+
+
 /datum/socialrole/usualmale
 	s_tones = list(
 		"albino",
@@ -2009,3 +2157,21 @@
 /mob/living/carbon/human/npc/illegal/Initialize(mapload)
 	..()
 	AssignSocialRole(/datum/socialrole/shop/illegal)
+
+/mob/living/carbon/human/npc/camarilla
+	vampire_faction = "Camarilla"
+	var/first_weapon = /obj/item/gun/ballistic/automatic/vampire/glock21
+	var/second_weapon = /obj/item/gun/ballistic/automatic/vampire/glock21
+	var/third_weapon = /obj/item/gun/ballistic/automatic/vampire/glock21
+
+/mob/living/carbon/human/npc/camarilla/ghoul
+	first_weapon = /obj/item/gun/ballistic/automatic/vampire/beretta
+	second_weapon = /obj/item/gun/ballistic/automatic/vampire/deagle
+	third_weapon = /obj/item/gun/ballistic/automatic/vampire/glock21
+
+/mob/living/carbon/human/npc/camarilla/ghoul/Initialize(mapload)
+	..()
+	var/choice = pick(first_weapon, second_weapon, third_weapon)
+	my_weapon = new choice
+//	ignores_warrant = TRUE
+	AssignSocialRole(/datum/socialrole/camarilla)

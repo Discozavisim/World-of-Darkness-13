@@ -808,6 +808,13 @@
 		sharpness = SHARP_EDGED
 		grid_width = 1 GRID_BOXES
 		grid_height = 2 GRID_BOXES
+		if(HAS_TRAIT(user, TRAIT_NON_INT))
+			var/mob/living/carbon/DAUN = user
+			var/daun_roll = secret_vampireroll(get_a_intelligence(DAUN)+get_a_wits(DAUN), 7, DAUN, TRUE)
+			if(daun_roll <= 0)
+				DAUN.adjustBruteLoss(5, TRUE)
+				to_chat(DAUN, span_notice("Ты не правильно держал нож и поранил свои пальцы!"))
+
 	else
 		force = 5
 		w_class = WEIGHT_CLASS_TINY

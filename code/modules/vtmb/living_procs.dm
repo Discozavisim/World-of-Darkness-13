@@ -120,3 +120,40 @@
 	// Update icon to reflect new body model
 	update_body()
 
+/mob/living/proc/add_to_sect(sect)
+	switch(sect)
+		if("Camarilla")
+			GLOB.camarilla_autoritories += src
+			src.vampire_faction = "Camarilla"
+		if("Anarchs")
+			GLOB.anarchy_autoritories += src
+			src.vampire_faction = "Anarchs"
+		if("Triad")
+			GLOB.triads_autoritories += src
+			src.vampire_faction = "Triad"
+		if("Giovanni")
+			GLOB.giovanie_autoritories += src
+			src.vampire_faction = "Giovanni"
+		if("Chantry")
+			GLOB.chantry_autoritories += src
+			src.vampire_faction = "Chantry"
+		if("Sabbat")
+			GLOB.sabbat_autoritories -= src
+			src.vampire_faction = "Sabbat"
+
+/mob/living/proc/remove_from_sect(sect, new_sect)
+	switch(sect)
+		if("Camarilla")
+			GLOB.camarilla_autoritories -= src
+		if("Anarchs")
+			GLOB.anarchy_autoritories -= src
+		if("Triad")
+			GLOB.triads_autoritories -= src
+		if("Giovanni")
+			GLOB.giovanie_autoritories -= src
+		if("Sabbat")
+			GLOB.sabbat_autoritories -= src
+
+	if(new_sect)
+		add_to_sect(new_sect)
+

@@ -62,7 +62,8 @@
 
 /datum/outfit/job/clerk/pre_equip(mob/living/carbon/human/H)
 	..()
-	H.vampire_faction = "Camarilla"
+	H.add_to_sect("Camarilla")
+//	H.vampire_faction = "Camarilla"
 	if(H.gender == FEMALE)
 		uniform = /obj/item/clothing/under/vampire/clerk/female
 		shoes = /obj/item/clothing/shoes/vampire/heels
